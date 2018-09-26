@@ -19,17 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppPage } from './app.po';
+import {catchError} from 'rxjs/operators';
+import {MonoTypeOperatorFunction} from 'rxjs/internal/types';
+import {throwError} from 'rxjs';
 
-describe('workspace-project App', () => {
-  let page: AppPage;
+export class DreimtError extends Error {
+  public readonly summary: string;
+  public readonly detail: string;
+  public readonly cause?: Error;
 
-  beforeEach(() => {
-    page = new AppPage();
-  });
+  static throwOnError<T>(summary: string, detail: string): MonoTypeOperatorFunction<T> {
+    return catchError(
+      (error: Error) => throwError(new DreimtError(summary, detail, error))
+    );
+  }
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to dreimt-frontend!');
-  });
-});
+  constructor(summary: string, detail: string, cause?: Error) {
+    super(detail);
+
+    this.summary = summary;
+    this.detail = detail;
+    this.cause = cause;
+
+    Object.setPrototypeOf(this, DreimtError.prototype);
+  }
+}

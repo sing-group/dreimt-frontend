@@ -19,17 +19,18 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppPage } from './app.po';
+import {inject, TestBed} from '@angular/core/testing';
 
-describe('workspace-project App', () => {
-  let page: AppPage;
+import {NotificationService} from './notification.service';
 
+describe('NotificationService', () => {
   beforeEach(() => {
-    page = new AppPage();
+    TestBed.configureTestingModule({
+      providers: [NotificationService]
+    });
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to dreimt-frontend!');
-  });
+  it('should be created', inject([NotificationService], (service: NotificationService) => {
+    expect(service).toBeTruthy();
+  }));
 });

@@ -19,17 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppPage } from './app.po';
+import {ErrorHandler, Injectable} from '@angular/core';
+import {NotificationService} from '../services/notification.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {DreimtError} from '../entities';
 
-describe('workspace-project App', () => {
-  let page: AppPage;
+@Injectable()
+export class ErrorNotificationHandler implements ErrorHandler {
+  constructor(
+    private notificationService: NotificationService
+  ) {
+  }
 
-  beforeEach(() => {
-    page = new AppPage();
-  });
+  public handleError(error: Error | DreimtError | HttpErrorResponse): void {
+    if (console) {
+      console.log(error);
+    }
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to dreimt-frontend!');
-  });
-});
+    if (error instanceof DreimtError) {
+      console.log('CAUSE', error.cause);
+      this.notificationService.error(error.detail, error.summary);
+    } else if (error instanceof HttpErrorResponse) {
+      this.notificationService.error(error.statusText, error.message);
+    }
+  }
+}

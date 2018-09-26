@@ -19,17 +19,10 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppPage } from './app.po';
+import {Severity} from './severity.model';
 
-describe('workspace-project App', () => {
-  let page: AppPage;
-
-  beforeEach(() => {
-    page = new AppPage();
-  });
-
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to dreimt-frontend!');
-  });
-});
+export interface ErrorMessage {
+  severity: Severity;
+  summary: string;
+  detail: string;
+}

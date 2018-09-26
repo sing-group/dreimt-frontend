@@ -19,17 +19,17 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppPage } from './app.po';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NotificationService} from './services/notification.service';
 
-describe('workspace-project App', () => {
-  let page: AppPage;
-
-  beforeEach(() => {
-    page = new AppPage();
-  });
-
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to dreimt-frontend!');
-  });
-});
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  providers: [
+    NotificationService
+  ],
+  declarations: []
+})
+export class NotificationModule {}

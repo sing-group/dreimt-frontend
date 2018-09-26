@@ -19,17 +19,16 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppPage } from './app.po';
+import {NotificationModule} from './notification.module';
 
-describe('workspace-project App', () => {
-  let page: AppPage;
+describe('NotificationModule', () => {
+  let notificationModule: NotificationModule;
 
   beforeEach(() => {
-    page = new AppPage();
+    notificationModule = new NotificationModule();
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to dreimt-frontend!');
+  it('should create an instance', () => {
+    expect(notificationModule).toBeTruthy();
   });
 });

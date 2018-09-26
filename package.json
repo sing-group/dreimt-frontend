@@ -1,7 +1,7 @@
 {
   "name": "@dreimt/frontend",
   "description": "DREIMT - Drug REpositioning for IMmuno Transcriptomics",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "license": "GPLv3",
   "author": {
     "name": "Hugo López-Fernández",
@@ -14,7 +14,7 @@
     "Kevin Troulé",
     "Gonzalo Gómez-López"
   ],
-  "repository": "https://dev.sing-group.org/gitlab/dreimt/dreimt-frontend",
+  "repository": "https://dev.sing-group.org/gitlab/dreimt/frontend.git",
   "scripts": {
     "ng": "./node_modules/@angular/cli/bin/ng",
     "start": "./node_modules/@angular/cli/bin/ng serve --open",
@@ -38,6 +38,7 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "angular2-notifications": "^1.0.4",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "rxjs": "^6.3.3",

@@ -19,17 +19,26 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NotificationModule} from './modules/notification/notification.module';
+import {SimpleNotificationsModule} from 'angular2-notifications';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    NotificationModule,
+    SimpleNotificationsModule.forRoot({
+      timeOut: 5000,
+      preventDuplicates: true
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
