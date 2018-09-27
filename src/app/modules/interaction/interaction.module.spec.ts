@@ -19,17 +19,16 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { InteractionModule } from './interaction.module';
 
-import {AppModule} from './app/app.module';
-import {environment} from './environments/environment';
+describe('InteractionModule', () => {
+  let interactionModule: InteractionModule;
 
-import 'hammerjs';
+  beforeEach(() => {
+    interactionModule = new InteractionModule();
+  });
 
-if (environment.production) {
-  enableProdMode();
-}
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+  it('should create an instance', () => {
+    expect(interactionModule).toBeTruthy();
+  });
+});

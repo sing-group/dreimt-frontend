@@ -19,17 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {DrugCellInteractionsTableComponent} from './components/drug-cell-interactions-table/drug-cell-interactions-table.component';
+import {MatTableModule} from '@angular/material';
+import {DrugCellInteractionsService} from './services/drug-cell-interactions.service';
+import {HttpClientModule} from '@angular/common/http';
 
-import {AppModule} from './app/app.module';
-import {environment} from './environments/environment';
-
-import 'hammerjs';
-
-if (environment.production) {
-  enableProdMode();
+@NgModule({
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    MatTableModule
+  ],
+  declarations: [
+    DrugCellInteractionsTableComponent
+  ],
+  exports: [
+    DrugCellInteractionsTableComponent
+  ],
+  providers: [
+    DrugCellInteractionsService
+  ]
+})
+export class InteractionModule {
 }
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));

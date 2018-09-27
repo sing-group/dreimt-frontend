@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2018 - Hugo López-Fernández,
+ *  Copyright (C) 2018 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -20,5 +20,6 @@
  */
 
 export const environment = {
-  production: true
+  production: true,
+  dreimtUrl: 'http://dreimt.sing-group.org/dreimt-backend/rest/api'
 };

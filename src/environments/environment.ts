@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2018 - Hugo López-Fernández,
+ *  Copyright (C) 2018 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -24,7 +24,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  dreimtUrl: 'http://localhost:8080/dreimt-backend/rest/api'
 };
 
 /*

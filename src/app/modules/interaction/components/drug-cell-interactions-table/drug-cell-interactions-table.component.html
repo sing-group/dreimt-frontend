@@ -19,18 +19,22 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>DreimtFrontend</title>
-  <base href="/">
+<table mat-table [dataSource]="interactions">
+  <ng-container matColumnDef="drugName">
+    <th mat-header-cell *matHeaderCellDef>Drug</th>
+    <td mat-cell *matCellDef="let interaction">{{interaction.drugName}}</td>
+  </ng-container>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-<body>
-  <app-root></app-root>
-</body>
-</html>
+  <ng-container matColumnDef="cellTypeA">
+    <th mat-header-cell *matHeaderCellDef>Cell Type A</th>
+    <td mat-cell *matCellDef="let interaction">{{interaction.cellTypeA}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="cellTypeB">
+    <th mat-header-cell *matHeaderCellDef>Cell Type B</th>
+    <td mat-cell *matCellDef="let interaction">{{interaction.cellTypeB}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

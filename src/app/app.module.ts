@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2018 - Hugo López-Fernández,
+ *  Copyright (C) 2018 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -26,6 +26,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
+import {InteractionModule} from './modules/interaction/interaction.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    InteractionModule,
     NotificationModule,
     SimpleNotificationsModule.forRoot({
       timeOut: 5000,

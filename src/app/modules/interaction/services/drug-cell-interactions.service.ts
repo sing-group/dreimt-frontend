@@ -19,17 +19,24 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {DrugCellInteractionModel} from '../models/drug-cell-interaction.model';
+import {Observable} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
-import {AppModule} from './app/app.module';
-import {environment} from './environments/environment';
+@Injectable({
+  providedIn: 'root'
+})
+export class DrugCellInteractionsService {
 
-import 'hammerjs';
+  constructor(
+    private http: HttpClient
+  ) {
+  }
 
-if (environment.production) {
-  enableProdMode();
+  public list(): Observable<DrugCellInteractionModel[]> {
+    return this.http.get<DrugCellInteractionModel[]>(
+      `${environment.dreimtUrl}/interaction`);
+  }
 }
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));

@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2018 - Hugo López-Fernández,
+ *  Copyright (C) 2018 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -21,7 +21,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {NotificationService} from './modules/notification/services/notification.service';
-import {NotificationsService} from 'angular2-notifications';
+import {NotificationsService as ToastService} from 'angular2-notifications';
 import {Severity} from './modules/notification/entities';
 
 @Component({
@@ -30,11 +30,11 @@ import {Severity} from './modules/notification/entities';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  title = 'DREIMT';
+  public readonly title = 'DREIMT';
 
   constructor(
     private notificationService: NotificationService,
-    private notificationsService: NotificationsService
+    private toastService: ToastService
   ) {
   }
 
@@ -43,16 +43,16 @@ export class AppComponent implements OnInit {
       message => {
         switch (message.severity) {
           case Severity.ERROR:
-            this.notificationsService.error(message.summary, message.detail);
+            this.toastService.error(message.summary, message.detail);
             break;
           case Severity.SUCCESS:
-            this.notificationsService.success(message.summary, message.detail);
+            this.toastService.success(message.summary, message.detail);
             break;
           case Severity.INFO:
-            this.notificationsService.info(message.summary, message.detail);
+            this.toastService.info(message.summary, message.detail);
             break;
           case Severity.WARNING:
-            this.notificationsService.warn(message.summary, message.detail);
+            this.toastService.warn(message.summary, message.detail);
             break;
         }
       }

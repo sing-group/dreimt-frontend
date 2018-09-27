@@ -19,17 +19,18 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { TestBed, inject } from '@angular/core/testing';
 
-import {AppModule} from './app/app.module';
-import {environment} from './environments/environment';
+import { DrugCellInteractionsService } from './drug-cell-interactions.service';
 
-import 'hammerjs';
+describe('DrugCellInteractionsService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [DrugCellInteractionsService]
+    });
+  });
 
-if (environment.production) {
-  enableProdMode();
-}
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+  it('should be created', inject([DrugCellInteractionsService], (service: DrugCellInteractionsService) => {
+    expect(service).toBeTruthy();
+  }));
+});

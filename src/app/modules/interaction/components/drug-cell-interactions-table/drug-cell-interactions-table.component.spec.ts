@@ -19,17 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AppModule} from './app/app.module';
-import {environment} from './environments/environment';
+import { DrugCellInteractionsTableComponent } from './drug-cell-interactions-table.component';
 
-import 'hammerjs';
+describe('DrugCellInteractionsTableComponent', () => {
+  let component: DrugCellInteractionsTableComponent;
+  let fixture: ComponentFixture<DrugCellInteractionsTableComponent>;
 
-if (environment.production) {
-  enableProdMode();
-}
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ DrugCellInteractionsTableComponent ]
+    })
+    .compileComponents();
+  }));
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DrugCellInteractionsTableComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

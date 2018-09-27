@@ -19,17 +19,30 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {Component, OnInit} from '@angular/core';
+import {DrugCellInteractionsService} from '../../services/drug-cell-interactions.service';
+import {DrugCellInteractionModel} from '../../models/drug-cell-interaction.model';
 
-import {AppModule} from './app/app.module';
-import {environment} from './environments/environment';
+@Component({
+  selector: 'app-drug-cell-interactions-table',
+  templateUrl: './drug-cell-interactions-table.component.html',
+  styleUrls: ['./drug-cell-interactions-table.component.sass']
+})
+export class DrugCellInteractionsTableComponent implements OnInit {
+  public interactions: DrugCellInteractionModel[];
 
-import 'hammerjs';
+  public displayedColumns: string[];
 
-if (environment.production) {
-  enableProdMode();
+  constructor(
+    private interactionsService: DrugCellInteractionsService
+  ) {
+  }
+
+  ngOnInit() {
+    this.displayedColumns = ['drugName', 'cellTypeA', 'cellTypeB'];
+
+    this.interactionsService.list()
+      .subscribe(interactions => this.interactions = interactions);
+  }
+
 }
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
