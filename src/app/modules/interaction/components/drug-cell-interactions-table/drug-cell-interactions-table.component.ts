@@ -26,7 +26,7 @@ import {DrugCellInteractionModel} from '../../models/drug-cell-interaction.model
 @Component({
   selector: 'app-drug-cell-interactions-table',
   templateUrl: './drug-cell-interactions-table.component.html',
-  styleUrls: ['./drug-cell-interactions-table.component.sass']
+  styleUrls: ['./drug-cell-interactions-table.component.scss']
 })
 export class DrugCellInteractionsTableComponent implements OnInit {
   public interactions: DrugCellInteractionModel[];
