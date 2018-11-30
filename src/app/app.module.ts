@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {BrowserModule} from '@angular/platform-browser';
@@ -27,6 +27,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {InteractionModule} from './modules/interaction/interaction.module';
+import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,12 @@ import {InteractionModule} from './modules/interaction/interaction.module';
       preventDuplicates: true
     })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: ErrorNotificationHandler
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

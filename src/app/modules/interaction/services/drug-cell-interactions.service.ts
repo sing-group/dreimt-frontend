@@ -24,6 +24,7 @@ import {HttpClient} from '@angular/common/http';
 import {DrugCellInteractionModel} from '../models/drug-cell-interaction.model';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
+import {DreimtError} from '../../notification/entities';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,9 @@ export class DrugCellInteractionsService {
 
   public list(): Observable<DrugCellInteractionModel[]> {
     return this.http.get<DrugCellInteractionModel[]>(
-      `${environment.dreimtUrl}/interaction`);
+      `${environment.dreimtUrl}/interaction`
+    ).pipe(
+      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell interactions could not be retrieved.')
+    );
   }
 }
