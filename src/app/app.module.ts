@@ -28,15 +28,23 @@ import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {InteractionModule} from './modules/interaction/interaction.module';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
+import {MainModule} from './modules/main/main.module';
+import {DatabaseModule} from './modules/database/database.module';
+import {MatButtonModule} from '@angular/material';
+import {AppRoutingModule} from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    DatabaseModule,
     InteractionModule,
+    MainModule,
+    MatButtonModule,
     NotificationModule,
     SimpleNotificationsModule.forRoot({
       timeOut: 5000,
@@ -51,4 +59,5 @@ import {ErrorNotificationHandler} from './modules/notification/handlers/error-no
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

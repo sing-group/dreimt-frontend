@@ -1,4 +1,4 @@
-/*!
+/*
  * DREIMT Frontend
  *
  *  Copyright (C) 2018 - Hugo López-Fernández,
@@ -18,30 +18,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-@import '~@angular/material/theming';
 
-// always include only once per project
-@include mat-core();
+import {RouterModule, Routes} from '@angular/router';
+import {InteractionsQueryComponent} from './components/interactions-query/interactions-query.component';
+import {NgModule} from '@angular/core';
 
-// import our custom theme
-@import 'theme.scss';
+const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'query'
+  },
+  {
+    path: 'query',
+    component: InteractionsQueryComponent
+  }
+];
 
-@import "app/app.component.scss";
-
-@mixin custom-component-theme($theme) {
-  @include app-component-theme($theme);
-}
-
-// specify theme class eg: <body class="my-theme"> ... </body>
-.dreimt-theme {
-  // use our theme with angular-material-theme mixin
-  @include angular-material-theme($dreimt-theme);
-
-  @include custom-component-theme($dreimt-theme);
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class InteractionRoutingModule {
 }

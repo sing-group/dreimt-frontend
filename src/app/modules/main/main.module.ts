@@ -1,4 +1,4 @@
-/*!
+/*
  * DREIMT Frontend
  *
  *  Copyright (C) 2018 - Hugo López-Fernández,
@@ -18,30 +18,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-@import '~@angular/material/theming';
 
-// always include only once per project
-@include mat-core();
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MainComponent} from './components/main/main.component';
+import {MatButtonModule, MatCardModule} from '@angular/material';
+import {MainRoutingModule} from './main-routing.module';
 
-// import our custom theme
-@import 'theme.scss';
-
-@import "app/app.component.scss";
-
-@mixin custom-component-theme($theme) {
-  @include app-component-theme($theme);
-}
-
-// specify theme class eg: <body class="my-theme"> ... </body>
-.dreimt-theme {
-  // use our theme with angular-material-theme mixin
-  @include angular-material-theme($dreimt-theme);
-
-  @include custom-component-theme($dreimt-theme);
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-}
+@NgModule({
+  declarations: [MainComponent],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MainRoutingModule
+  ]
+})
+export class MainModule { }

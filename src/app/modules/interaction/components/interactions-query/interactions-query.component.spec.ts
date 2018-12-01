@@ -1,4 +1,4 @@
-/*!
+/*
  * DREIMT Frontend
  *
  *  Copyright (C) 2018 - Hugo López-Fernández,
@@ -18,30 +18,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-@import '~@angular/material/theming';
 
-// always include only once per project
-@include mat-core();
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-// import our custom theme
-@import 'theme.scss';
+import { InteractionsQueryComponent } from './interactions-query.component';
 
-@import "app/app.component.scss";
+describe('InteractionsQueryComponent', () => {
+  let component: InteractionsQueryComponent;
+  let fixture: ComponentFixture<InteractionsQueryComponent>;
 
-@mixin custom-component-theme($theme) {
-  @include app-component-theme($theme);
-}
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ InteractionsQueryComponent ]
+    })
+    .compileComponents();
+  }));
 
-// specify theme class eg: <body class="my-theme"> ... </body>
-.dreimt-theme {
-  // use our theme with angular-material-theme mixin
-  @include angular-material-theme($dreimt-theme);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(InteractionsQueryComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  @include custom-component-theme($dreimt-theme);
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

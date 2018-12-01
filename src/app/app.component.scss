@@ -18,3 +18,64 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+@import '~@angular/material/theming';
+
+@mixin app-component-theme($theme) {
+  $primary: map-get($theme, primary);
+  $text-color: mat-color($primary, default-contrast);
+
+  .container {
+    display: grid;
+    min-height: 100vh;
+    grid-template-areas:
+      'header header header'
+      'main-left main main-right'
+      'footer footer footer'
+    ;
+    grid-template-rows: 50px 1fr 80px;
+    grid-template-columns: 1fr 10fr 1fr;
+  }
+
+  main {
+    grid-area: main;
+    padding: 20px 40px;
+  }
+
+  header {
+    grid-area: header;
+    background-color: mat-color($primary);
+    color: $text-color;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .header-left {
+    jutify-self: start;
+  }
+
+  .header-left a {
+    color: $text-color;
+    text-decoration: none;
+  }
+
+  .header-right {
+    justify-self: end;
+  }
+
+  footer {
+    grid-area: footer;
+    background-color: mat-color($primary);
+    color: $text-color;
+    padding: 20px 10px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-areas: 'list query';
+    grid-template-columns: 1fr 1fr;
+    place-items: center / center;
+  }
+}

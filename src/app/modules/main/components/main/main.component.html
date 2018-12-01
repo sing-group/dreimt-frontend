@@ -19,19 +19,17 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Dreimt</title>
-  <base href="/">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-</head>
-<body class="dreimt-theme">
-  <app-root></app-root>
-</body>
-</html>
+<mat-card>
+  <mat-card-title>DREIMT</mat-card-title>
+  <mat-card-content>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac tempus ipsum. Nam a nunc felis. Vestibulum suscipit
+    mollis eros, vel lacinia tortor tristique at. Nunc iaculis ligula sed lectus bibendum, in fermentum nisi vulputate.
+    Quisque at cursus urna, in porta nulla. Donec auctor rutrum mauris, a maximus urna bibendum tincidunt. Curabitur
+    porta at ante vel fringilla. Donec pulvinar ante ac leo volutpat porta. Nullam lectus risus, pulvinar eget urna
+    quis, vehicula condimentum tortor.
+  </mat-card-content>
+  <mat-card-actions class="actions">
+    <button mat-button (click)="onNavigateToDatabase()">Database</button>
+    <button mat-button (click)="onNavigateToInteractions()">Interactions</button>
+  </mat-card-actions>
+</mat-card>

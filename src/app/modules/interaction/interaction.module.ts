@@ -22,21 +22,24 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DrugCellInteractionsTableComponent} from './components/drug-cell-interactions-table/drug-cell-interactions-table.component';
-import {MatTableModule} from '@angular/material';
+import {MatCardModule, MatTableModule} from '@angular/material';
 import {DrugCellInteractionsService} from './services/drug-cell-interactions.service';
 import {HttpClientModule} from '@angular/common/http';
+import {InteractionsQueryComponent} from './components/interactions-query/interactions-query.component';
+import {InteractionRoutingModule} from './interaction-routing.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    MatTableModule
+    MatCardModule,
+    MatTableModule,
+    InteractionRoutingModule
   ],
   declarations: [
-    DrugCellInteractionsTableComponent
-  ],
-  exports: [
-    DrugCellInteractionsTableComponent
+    DrugCellInteractionsTableComponent,
+    InteractionsQueryComponent
   ],
   providers: [
     DrugCellInteractionsService
