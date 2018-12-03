@@ -30,7 +30,7 @@ import {InteractionModule} from './modules/interaction/interaction.module';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
 import {MainModule} from './modules/main/main.module';
 import {DatabaseModule} from './modules/database/database.module';
-import {MatButtonModule} from '@angular/material';
+import {MatBadgeModule, MatButtonModule, MatListModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 import {AppRoutingModule} from './app-routing.module';
 
 @NgModule({
@@ -44,7 +44,11 @@ import {AppRoutingModule} from './app-routing.module';
     DatabaseModule,
     InteractionModule,
     MainModule,
+    MatBadgeModule,
     MatButtonModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule,
     NotificationModule,
     SimpleNotificationsModule.forRoot({
       timeOut: 5000,

@@ -18,23 +18,36 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <div class="container">
   <header>
     <div class="header-left mat-title">
       <a routerLink="/">{{title}}</a>
     </div>
     <div class="header-right">
-      <button mat-button>Help</button>
-      <button mat-button>License</button>
-      <button mat-button>About</button>
+      <button mat-button matBadge="3" matBadgePosition="before" matBadgeColor="accent" (click)="queriesList.toggle()">Queries</button>
     </div>
   </header>
+
   <main>
-    <router-outlet></router-outlet>
+    <mat-sidenav-container id="main-container">
+      <mat-sidenav #queriesList mode="side" position="end">
+        <mat-toolbar color="primary">Queries</mat-toolbar>
+        <mat-list role="list">
+          <mat-list-item role="listitem">Query Item 1</mat-list-item>
+          <mat-list-item role="listitem">Query Item 2</mat-list-item>
+          <mat-list-item role="listitem">Query Item 3</mat-list-item>
+        </mat-list>
+      </mat-sidenav>
+      <mat-sidenav-content id="main-content">
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   </main>
+
   <footer>
     <div class="footer-right">&copy;SING</div>
   </footer>
-
-  <simple-notifications></simple-notifications>
 </div>
+
+<simple-notifications></simple-notifications>
