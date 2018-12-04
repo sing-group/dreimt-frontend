@@ -37,10 +37,13 @@ export class DrugSignatureInteractionQueryParams {
   public static toPlainObject(params: DrugSignatureInteractionQueryParams): {
     [param: string]: string | string[];
   } {
-    return {
-      page: String(params.page),
-      pageSize: String(params.pageSize)
-    };
+    return Object.keys(params).reduce((acc, key) => {
+      if (params[key] !== undefined) {
+        acc[key] = String(params[key]);
+      }
+
+      return acc;
+    }, {});
   }
 }
 

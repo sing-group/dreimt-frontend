@@ -19,33 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatTableModule,
-  MatTooltipModule
-} from '@angular/material';
-import {DatabaseRoutingModule} from './database-routing.module';
-import { SignatureTypeIconPipe } from './pipes/signature-type-icon.pipe';
+import { SignatureTypeIconPipe } from './signature-type-icon.pipe';
 
-@NgModule({
-  declarations: [DatabaseComponent, SignatureTypeIconPipe],
-  imports: [
-    CommonModule,
-    DatabaseRoutingModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    MatTooltipModule
-  ]
-})
-export class DatabaseModule { }
+describe('SignatureTypeIconPipe', () => {
+  it('create an instance', () => {
+    const pipe = new SignatureTypeIconPipe();
+    expect(pipe).toBeTruthy();
+  });
+});

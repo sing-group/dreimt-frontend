@@ -42,7 +42,11 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     private service: InteractionsService
   ) {
     this.dataSource = new DatabaseDataSource(this.service);
-    this.columns = ['drug', 'signature', 'tes', 'pValue', 'fdr'];
+    this.columns = [
+      'drug', 'signature', 'tes', 'pValue', 'fdr',
+      'signatureType', 'experimentalDesign', 'cellTypeA', 'cellTypeB', 'cellSubtypeA', 'cellSubtypeB',
+      'disease', 'organism', 'article', 'signatureSourceDb', 'drugSourceName', 'drugSourceDb'
+    ];
   }
 
   public ngOnInit(): void {

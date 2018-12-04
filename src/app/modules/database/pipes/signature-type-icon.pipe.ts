@@ -19,33 +19,26 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatTableModule,
-  MatTooltipModule
-} from '@angular/material';
-import {DatabaseRoutingModule} from './database-routing.module';
-import { SignatureTypeIconPipe } from './pipes/signature-type-icon.pipe';
+import {Pipe, PipeTransform} from '@angular/core';
+import {SignatureType} from '../models/drug-signature-interaction-query-params.model';
 
-@NgModule({
-  declarations: [DatabaseComponent, SignatureTypeIconPipe],
-  imports: [
-    CommonModule,
-    DatabaseRoutingModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    MatTooltipModule
-  ]
+@Pipe({
+  name: 'signatureTypeIcon'
 })
-export class DatabaseModule { }
+export class SignatureTypeIconPipe implements PipeTransform {
+
+  transform(value: string | SignatureType): string {
+    switch (value) {
+      case 'GENESET':
+      case SignatureType.GENESET:
+        return 'grain';
+      case 'UPDOWN':
+      case SignatureType.UPDOWN:
+        return 'swap_vert';
+      default:
+        console.log('void');
+        return '';
+    }
+  }
+
+}
