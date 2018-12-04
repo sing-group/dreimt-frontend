@@ -19,30 +19,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatTableModule
-} from '@angular/material';
-import {DatabaseRoutingModule} from './database-routing.module';
-
-@NgModule({
-  declarations: [DatabaseComponent],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    DatabaseRoutingModule
-  ]
-})
-export class DatabaseModule { }
+export class Drug {
+  public readonly commonName: string;
+  public readonly sourceName: string;
+  public readonly sourceDb: string;
+}

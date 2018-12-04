@@ -19,18 +19,47 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {InteractionsService} from '../../services/interactions.service';
+import {DatabaseDataSource} from './database-data-source';
+import {MatPaginator} from '@angular/material';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-database',
   templateUrl: './database.component.html',
   styleUrls: ['./database.component.scss']
 })
-export class DatabaseComponent implements OnInit {
+export class DatabaseComponent implements AfterViewInit, OnInit {
+  public readonly columns;
+  public readonly dataSource;
 
-  constructor() { }
+  public length;
 
-  ngOnInit() {
+  @ViewChild(MatPaginator) private paginator: MatPaginator;
+
+  constructor(
+    private service: InteractionsService
+  ) {
+    this.dataSource = new DatabaseDataSource(this.service);
+    this.columns = ['drug', 'signature', 'tes', 'pValue', 'fdr'];
   }
 
+  public ngOnInit(): void {
+    this.dataSource.count$.subscribe(count => this.length = count);
+    this.loadInteractions();
+  }
+
+  public ngAfterViewInit(): void {
+    this.paginator.page.pipe(
+      tap(() => this.loadInteractions())
+    ).subscribe();
+  }
+
+  private loadInteractions(defaultPageIndex = 0, defaultPageSize = 10): void {
+    this.dataSource.list({
+      page: this.paginator.pageIndex || defaultPageIndex,
+      pageSize: this.paginator.pageSize || defaultPageSize
+    });
+  }
 }

@@ -19,30 +19,13 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatTableModule
-} from '@angular/material';
-import {DatabaseRoutingModule} from './database-routing.module';
+import {Drug} from './drug.model';
+import {Signature} from './signature.model';
 
-@NgModule({
-  declarations: [DatabaseComponent],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    DatabaseRoutingModule
-  ]
-})
-export class DatabaseModule { }
+export class DrugSignatureInteraction {
+  public readonly drug: Drug;
+  public readonly signature: Signature;
+  public readonly tes: number;
+  public readonly pValue: number;
+  public readonly fdr: number;
+}

@@ -19,30 +19,17 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatTableModule
-} from '@angular/material';
-import {DatabaseRoutingModule} from './database-routing.module';
-
-@NgModule({
-  declarations: [DatabaseComponent],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    DatabaseRoutingModule
-  ]
-})
-export class DatabaseModule { }
+export class Signature {
+  public readonly signatureName: string;
+  public readonly cellTypeA: string[];
+  public readonly cellTypeB: string[];
+  public readonly sourceDb: string;
+  public readonly experimentalDesign: string;
+  public readonly organism: string;
+  public readonly disease: string;
+  public readonly articlePubMedId: number;
+  public readonly articleTitle: string;
+  public readonly signatureType: string;
+  public readonly signatureGenesUri: string;
+  public readonly signatureMetadataUri: string;
+}

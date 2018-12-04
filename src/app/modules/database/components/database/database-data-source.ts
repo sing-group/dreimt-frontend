@@ -19,30 +19,19 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatTableModule
-} from '@angular/material';
-import {DatabaseRoutingModule} from './database-routing.module';
+import {DrugSignatureInteraction} from '../../models/drug-signature-interaction.model';
+import {DrugSignatureInteractionQueryParams} from '../../models/drug-signature-interaction-query-params.model';
+import {InteractionsService} from '../../services/interactions.service';
+import {PartialDataSourceService} from '../../../../utils/partial-data-source.service';
 
-@NgModule({
-  declarations: [DatabaseComponent],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    DatabaseRoutingModule
-  ]
-})
-export class DatabaseModule { }
+export class DatabaseDataSource extends PartialDataSourceService<DrugSignatureInteraction> {
+  constructor(
+    private service: InteractionsService
+  ) {
+    super();
+  }
+
+  list(queryParams: DrugSignatureInteractionQueryParams): void {
+    this.update(this.service.list(queryParams));
+  }
+}

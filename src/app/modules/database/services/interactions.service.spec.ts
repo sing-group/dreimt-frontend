@@ -19,30 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatTableModule
-} from '@angular/material';
-import {DatabaseRoutingModule} from './database-routing.module';
+import { TestBed } from '@angular/core/testing';
 
-@NgModule({
-  declarations: [DatabaseComponent],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    DatabaseRoutingModule
-  ]
-})
-export class DatabaseModule { }
+import { InteractionsService } from './interactions.service';
+
+describe('InteractionsService', () => {
+  beforeEach(() => TestBed.configureTestingModule({}));
+
+  it('should be created', () => {
+    const service: InteractionsService = TestBed.get(InteractionsService);
+    expect(service).toBeTruthy();
+  });
+});
