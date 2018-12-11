@@ -24,7 +24,7 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {CollectionViewer} from '@angular/cdk/collections';
 import {catchError, finalize} from 'rxjs/operators';
 
-export abstract class PartialDataSourceService<T> extends DataSource<T> {
+export abstract class PartialDataSource<T> extends DataSource<T> {
   private readonly dataSubject: BehaviorSubject<T[]>;
   private readonly countSubject: BehaviorSubject<number>;
   private readonly loadingSubject: BehaviorSubject<boolean>;

@@ -19,10 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteraction} from './drug-signature-interaction.model';
-import {PartialResult} from '../../../utils/partial-data-source';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-export class DrugSignatureInteractionQueryResult implements PartialResult<DrugSignatureInteraction> {
-  public readonly result: DrugSignatureInteraction[];
-  public readonly count: number;
-}
+import { FilterFieldComponent } from './filter-field.component';
+
+describe('FilterFieldComponent', () => {
+  let component: FilterFieldComponent;
+  let fixture: ComponentFixture<FilterFieldComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ FilterFieldComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(FilterFieldComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

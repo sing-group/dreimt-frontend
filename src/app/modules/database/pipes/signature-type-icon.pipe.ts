@@ -36,7 +36,6 @@ export class SignatureTypeIconPipe implements PipeTransform {
       case SignatureType.UPDOWN:
         return 'swap_vert';
       default:
-        console.log('void');
         return '';
     }
   }

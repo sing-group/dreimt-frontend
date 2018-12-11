@@ -1,4 +1,4 @@
-/*
+/*!
  * DREIMT Frontend
  *
  *  Copyright (C) 2018 - Hugo López-Fernández,
@@ -19,10 +19,6 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteraction} from './drug-signature-interaction.model';
-import {PartialResult} from '../../../utils/partial-data-source';
-
-export class DrugSignatureInteractionQueryResult implements PartialResult<DrugSignatureInteraction> {
-  public readonly result: DrugSignatureInteraction[];
-  public readonly count: number;
+mat-form-field {
+  width: 100%;
 }

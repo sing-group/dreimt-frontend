@@ -25,9 +25,12 @@ export class DrugSignatureInteractionQueryParams {
   public readonly cellTypeA?: string;
   public readonly cellTypeB?: string;
   public readonly experimentalDesign?: ExperimentalDesign;
+  public readonly disease?: string;
   public readonly organism?: string;
   public readonly drugSourceName?: string;
+  public readonly drugSourceDb?: string;
   public readonly drugCommonName?: string;
+  public readonly signatureSourceDb?: string;
   public readonly signatureType?: SignatureType;
   public readonly maxPvalue?: number;
   public readonly minTes?: number;
@@ -38,7 +41,19 @@ export class DrugSignatureInteractionQueryParams {
     [param: string]: string | string[];
   } {
     return Object.keys(params).reduce((acc, key) => {
-      if (params[key] !== undefined) {
+      if (params[key] !== undefined && params[key] !== null) {
+        acc[key] = String(params[key]);
+      }
+
+      return acc;
+    }, {});
+  }
+
+  public static toPlainObjectNoPagination(params: DrugSignatureInteractionQueryParams): {
+    [param: string]: string | string[];
+  } {
+    return Object.keys(params).reduce((acc, key) => {
+      if (key !== 'page' && key !== 'pageSize' && params[key] !== undefined && params[key] !== null) {
         acc[key] = String(params[key]);
       }
 
@@ -48,7 +63,13 @@ export class DrugSignatureInteractionQueryParams {
 }
 
 export enum ExperimentalDesign {
-  IN_VIVO, EX_VIVO, IN_VITRO, IN_SILICO, PATIENT, TRANSFECTION, UNKNOWN
+  IN_VIVO = 'IN_VIVO',
+  EX_VIVO = 'EX_VIVO',
+  IN_VITRO = 'IN_VITRO',
+  IN_SILICO = 'IN_SILICO',
+  PATIENT = 'PATIENT',
+  TRANSFECTION = 'TRANSFECTION',
+  UNKNOWN = 'UNKNOWN'
 }
 
 export enum SignatureType {

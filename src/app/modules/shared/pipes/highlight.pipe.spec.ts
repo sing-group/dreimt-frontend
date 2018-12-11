@@ -19,10 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteraction} from './drug-signature-interaction.model';
-import {PartialResult} from '../../../utils/partial-data-source';
+import { HighlightPipe } from './highlight.pipe';
 
-export class DrugSignatureInteractionQueryResult implements PartialResult<DrugSignatureInteraction> {
-  public readonly result: DrugSignatureInteraction[];
-  public readonly count: number;
-}
+describe('HighlightPipe', () => {
+  it('create an instance', () => {
+    const pipe = new HighlightPipe();
+    expect(pipe).toBeTruthy();
+  });
+});

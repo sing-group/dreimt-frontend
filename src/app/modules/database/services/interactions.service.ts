@@ -57,4 +57,51 @@ export class InteractionsService {
       }))
     );
   }
+
+  public listDrugCommonNameValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('drug-common-name', queryParams);
+  }
+
+  public listCellTypeAValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('cell-type-a', queryParams);
+  }
+
+  public listCellTypeBValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('cell-type-b', queryParams);
+  }
+
+  public listDiseaseValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('disease', queryParams);
+  }
+
+  public listOrganismValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('organism', queryParams);
+  }
+
+  public listSignatureSourceDbValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('signature-source-db', queryParams);
+  }
+
+  public listDrugSourceNameValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('drug-source-name', queryParams);
+  }
+
+  public listDrugSourceDbValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('drug-source-db', queryParams);
+  }
+
+  public listExperimentalDesignValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('experimental-design', queryParams);
+  }
+
+  private listValues(resource: string, queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    const options = {
+      params: new HttpParams({
+        fromObject: DrugSignatureInteractionQueryParams.toPlainObjectNoPagination(queryParams)
+      })
+    };
+
+    return this.http.get<string[]>(`${environment.dreimtUrl}/interactions/params/${resource}/values`, options)
+      .pipe(DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.'));
+  }
 }

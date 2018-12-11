@@ -19,10 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteraction} from './drug-signature-interaction.model';
-import {PartialResult} from '../../../utils/partial-data-source';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-export class DrugSignatureInteractionQueryResult implements PartialResult<DrugSignatureInteraction> {
-  public readonly result: DrugSignatureInteraction[];
-  public readonly count: number;
-}
+import { NumberFieldComponent } from './number-field.component';
+
+describe('NumberFieldComponent', () => {
+  let component: NumberFieldComponent;
+  let fixture: ComponentFixture<NumberFieldComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ NumberFieldComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NumberFieldComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

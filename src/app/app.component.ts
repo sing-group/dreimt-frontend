@@ -41,7 +41,6 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     this.notificationService.getMessages().subscribe(
       message => {
-        console.log('message');
         switch (message.severity) {
           case Severity.ERROR:
             this.toastService.error(message.summary, message.detail);

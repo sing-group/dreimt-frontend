@@ -22,9 +22,9 @@
 import {DrugSignatureInteraction} from '../../models/drug-signature-interaction.model';
 import {DrugSignatureInteractionQueryParams} from '../../models/drug-signature-interaction-query-params.model';
 import {InteractionsService} from '../../services/interactions.service';
-import {PartialDataSourceService} from '../../../../utils/partial-data-source.service';
+import {PartialDataSource} from '../../../../utils/partial-data-source';
 
-export class DatabaseDataSource extends PartialDataSourceService<DrugSignatureInteraction> {
+export class DatabaseDataSource extends PartialDataSource<DrugSignatureInteraction> {
   constructor(
     private service: InteractionsService
   ) {

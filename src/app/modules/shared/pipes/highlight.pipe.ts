@@ -19,10 +19,19 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteraction} from './drug-signature-interaction.model';
-import {PartialResult} from '../../../utils/partial-data-source';
+import {Pipe, PipeTransform} from '@angular/core';
 
-export class DrugSignatureInteractionQueryResult implements PartialResult<DrugSignatureInteraction> {
-  public readonly result: DrugSignatureInteraction[];
-  public readonly count: number;
+@Pipe({
+  name: 'highlight'
+})
+export class HighlightPipe implements PipeTransform {
+
+  public transform(value: string, toReplace: string): string {
+    if (value.trim() === '' || toReplace.trim() === '') {
+      return value;
+    } else {
+      return value.replace(new RegExp(toReplace, 'gi'), match => `<strong>${match}</strong>`);
+    }
+  }
+
 }

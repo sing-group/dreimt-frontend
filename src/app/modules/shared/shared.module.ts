@@ -21,46 +21,39 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
 import {
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatSelectModule,
-  MatTableModule,
-  MatToolbarModule,
-  MatTooltipModule
+  MatSelectModule
 } from '@angular/material';
-import {DatabaseRoutingModule} from './database-routing.module';
-import {SignatureTypeIconPipe} from './pipes/signature-type-icon.pipe';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SharedModule} from '../shared/shared.module';
+import {ReactiveFormsModule} from '@angular/forms';
+import {HighlightPipe} from './pipes/highlight.pipe';
+import {FilterFieldComponent} from './components/filter-field/filter-field.component';
+import {NumberFieldComponent} from './components/number-field/number-field.component';
 
 @NgModule({
-  declarations: [DatabaseComponent, SignatureTypeIconPipe],
+  declarations: [
+    FilterFieldComponent,
+    HighlightPipe,
+    NumberFieldComponent
+  ],
   imports: [
     CommonModule,
-    DatabaseRoutingModule,
-    FormsModule,
     MatAutocompleteModule,
     MatButtonModule,
-    MatCardModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
     MatSelectModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    ReactiveFormsModule,
-    SharedModule
+    ReactiveFormsModule
+  ],
+  exports: [
+    FilterFieldComponent,
+    NumberFieldComponent
   ]
 })
-export class DatabaseModule { }
+export class SharedModule {
+}
