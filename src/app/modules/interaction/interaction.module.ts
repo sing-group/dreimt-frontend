@@ -22,27 +22,55 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DrugCellInteractionsTableComponent} from './components/drug-cell-interactions-table/drug-cell-interactions-table.component';
-import {MatCardModule, MatTableModule} from '@angular/material';
-import {DrugCellInteractionsService} from './services/drug-cell-interactions.service';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule, MatDividerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatSliderModule,
+  MatTableModule,
+  MatTabsModule
+} from '@angular/material';
+import {QueryService} from './services/query.service';
 import {HttpClientModule} from '@angular/common/http';
 import {InteractionsQueryComponent} from './components/interactions-query/interactions-query.component';
 import {InteractionRoutingModule} from './interaction-routing.module';
+import {JaccardQueryPanelComponent} from './components/jaccard-query-panel/jaccard-query-panel.component';
+import {CmapQueryPanelComponent} from './components/cmap-query-panel/cmap-query-panel.component';
+import {GeneListComponent} from './components/gene-list/gene-list.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {SharedModule} from '../shared/shared.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     HttpClientModule,
+    InteractionRoutingModule,
+    MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSliderModule,
     MatTableModule,
-    InteractionRoutingModule
+    MatTabsModule,
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [
+    CmapQueryPanelComponent,
     DrugCellInteractionsTableComponent,
-    InteractionsQueryComponent
+    GeneListComponent,
+    InteractionsQueryComponent,
+    JaccardQueryPanelComponent
   ],
   providers: [
-    DrugCellInteractionsService
+    QueryService
   ]
 })
 export class InteractionModule {

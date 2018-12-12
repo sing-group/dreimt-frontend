@@ -1,4 +1,4 @@
-/*
+/*!
  * DREIMT Frontend
  *
  *  Copyright (C) 2018 - Hugo López-Fernández,
@@ -19,30 +19,6 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, OnInit} from '@angular/core';
-import {QueryService} from '../../services/query.service';
-import {DrugCellInteractionModel} from '../../models/drug-cell-interaction.model';
-
-@Component({
-  selector: 'app-drug-cell-interactions-table',
-  templateUrl: './drug-cell-interactions-table.component.html',
-  styleUrls: ['./drug-cell-interactions-table.component.scss']
-})
-export class DrugCellInteractionsTableComponent implements OnInit {
-  public interactions: DrugCellInteractionModel[];
-
-  public displayedColumns: string[];
-
-  constructor(
-    private interactionsService: QueryService
-  ) {
-  }
-
-  ngOnInit() {
-    this.displayedColumns = ['drugName', 'cellTypeA', 'cellTypeB'];
-
-    this.interactionsService.list()
-      .subscribe(interactions => this.interactions = interactions);
-  }
-
+mat-form-field {
+  width: 100%;
 }

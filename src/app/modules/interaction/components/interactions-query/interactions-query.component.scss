@@ -19,3 +19,38 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+mat-card {
+  max-width: 960px;
+  width: 960px;
+}
+
+.query-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "query-row-1 query-row-1"
+    "query-row-2-col-1 query-row-2-col-2";
+  grid-column-gap: 40px;
+}
+
+.query-configuration {
+  grid-area: query-row-1;
+}
+
+.query-up-genes {
+  grid-area: query-row-2-col-1;
+}
+
+.query-down-genes {
+  grid-area: query-row-2-col-2;
+}
+
+.tab-content {
+  padding: 20px 0;
+  height: 150px;
+}
+
+app-gene-list {
+  width: 100%;
+}

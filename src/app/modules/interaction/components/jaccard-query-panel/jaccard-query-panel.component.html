@@ -1,0 +1,78 @@
+<!--
+  ~ DREIMT Frontend
+  ~
+  ~  Copyright (C) 2018 - Hugo López-Fernández,
+  ~  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
+  ~  Fátima Al-Sharhour and Gonzalo Gómez-López.
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<div class="jaccard-form">
+
+  <!-- TODO: layout and fields for Cell Subtypes (A and B) -->
+
+  <app-filter-field
+    label="Cell type A"
+    [options]="cellTypeAFieldFilter.options"
+    [(filter)]="cellTypeAFieldFilter.filter"
+    (filterChange)="updateFieldValues()"
+    [debounceTime]="debounceTime"
+    [maxOptions]="maxOptions"></app-filter-field>
+
+  <app-filter-field
+    label="Cell type B"
+    [options]="cellTypeBFieldFilter.options"
+    [(filter)]="cellTypeBFieldFilter.filter"
+    (filterChange)="updateFieldValues()"
+    [debounceTime]="debounceTime"
+    [maxOptions]="maxOptions"></app-filter-field>
+
+  <app-filter-field
+    label="Organism"
+    [options]="organismFieldFilter.options"
+    [(filter)]="organismFieldFilter.filter"
+    (filterChange)="updateFieldValues()"
+    [debounceTime]="debounceTime"
+    [maxOptions]="maxOptions"></app-filter-field>
+
+  <app-filter-field
+    label="Disease"
+    [options]="diseaseFieldFilter.options"
+    [(filter)]="diseaseFieldFilter.filter"
+    (filterChange)="updateFieldValues()"
+    [debounceTime]="debounceTime"
+    [maxOptions]="maxOptions"></app-filter-field>
+
+  <app-filter-field
+    label="Signature source DB"
+    [options]="signatureSourceDbFieldFilter.options"
+    [(filter)]="signatureSourceDbFieldFilter.filter"
+    (filterChange)="updateFieldValues()"
+    [debounceTime]="debounceTime"
+    [maxOptions]="maxOptions"></app-filter-field>
+
+  <app-filter-field
+    label="Experimental design"
+    [options]="experimentalDesignFieldFilter.options"
+    [(filter)]="experimentalDesignFieldFilter.filter"
+    fixedValues="true"
+    (filterChange)="updateFieldValues()"
+    [debounceTime]="debounceTime"
+    [maxOptions]="maxOptions"></app-filter-field>
+
+  <mat-checkbox [(ngModel)]="considerOnlyUniverseGenes" (change)="updateFieldValues()">
+    Consider only universe genes
+  </mat-checkbox>
+</div>

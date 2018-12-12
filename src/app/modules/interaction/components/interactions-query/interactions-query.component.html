@@ -21,4 +21,31 @@
 
 <mat-card>
   <mat-card-title>Interactions Query</mat-card-title>
+
+  <mat-card-content class="query-container">
+    <mat-tab-group class="query-configuration" [(selectedIndex)]="selectedTab"
+                   (selectedTabChange)="selectedTabChanged()">
+      <mat-tab label="Jaccard">
+        <div class="tab-content">
+          <app-jaccard-query-panel
+            (configurationChanged)="onJaccardConfigurationChanged($event)"></app-jaccard-query-panel>
+        </div>
+      </mat-tab>
+      <mat-tab label="Cmap">
+        <div class="tab-content">
+          <app-cmap-query-panel
+            (configurationChanged)="onCmapConfigurationChanged($event)"></app-cmap-query-panel>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <app-gene-list class="query-up-genes" title="Up genes / Geneset"
+                   (genesChanged)="onUpGenesChanged($event)"></app-gene-list>
+    <app-gene-list class="query-down-genes" title="Down genes"
+                   (genesChanged)="onDownUpGenesChanged($event)"></app-gene-list>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button (click)="launchQuery()" [disabled]="!isValid()">Launch query</button>
+  </mat-card-actions>
 </mat-card>

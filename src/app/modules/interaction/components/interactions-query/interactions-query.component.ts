@@ -19,18 +19,91 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {QueryService} from '../../services/query.service';
+import {
+  CmapSignatureQueryParams,
+  GeneSet,
+  JaccardSignatureQueryParams,
+  QueryParams,
+  UpDownGenes
+} from '../../models/signature-query-params.model';
 
 @Component({
   selector: 'app-interactions-query',
   templateUrl: './interactions-query.component.html',
   styleUrls: ['./interactions-query.component.scss']
 })
-export class InteractionsQueryComponent implements OnInit {
+export class InteractionsQueryComponent {
+  private selectedTab: number;
+  private upGenes: string[];
+  private downGenes: string[];
+  private jaccardConfiguration: JaccardSignatureQueryParams;
+  private cmapConfiguration: CmapSignatureQueryParams;
 
-  constructor() { }
-
-  ngOnInit() {
+  private static cleanAndFilterGenes(genes: string): string[] {
+    return genes.split(/\s+/)
+      .map(gene => gene.trim())
+      .filter(gene => gene.length > 0);
   }
 
+  public constructor(private interactionsService: QueryService) {
+    this.selectedTab = 0;
+    this.upGenes = [];
+    this.downGenes = [];
+  }
+
+  public onUpGenesChanged(genes: string): void {
+    this.upGenes = InteractionsQueryComponent.cleanAndFilterGenes(genes);
+  }
+
+  public onDownUpGenesChanged(genes: string): void {
+    this.downGenes = InteractionsQueryComponent.cleanAndFilterGenes(genes);
+  }
+
+  public onJaccardConfigurationChanged(event): void {
+    this.jaccardConfiguration = event;
+  }
+
+  public onCmapConfigurationChanged(event): void {
+    this.cmapConfiguration = event;
+  }
+
+  public isValid(): boolean {
+    return this.upGenes.length > 0 && this.getQueryConfiguration() !== undefined;
+  }
+
+  public launchQuery(): void {
+    let genes: UpDownGenes | GeneSet;
+    if (this.downGenes.length === 0) {
+      genes = {
+        genes: this.upGenes
+      };
+    } else {
+      genes = {
+        upGenes: this.upGenes,
+        downGenes: this.downGenes
+      };
+    }
+
+    const queryParams: QueryParams = {
+      params: this.getQueryConfiguration(),
+      genes: genes
+    };
+
+    this.interactionsService.launchQuery(queryParams)
+      .subscribe(work => console.log(work)); // Forces execution
+  }
+
+  private getQueryConfiguration(): JaccardSignatureQueryParams | CmapSignatureQueryParams {
+    let configuration: JaccardSignatureQueryParams | CmapSignatureQueryParams;
+
+    if (this.selectedTab === 0) {
+      configuration = this.jaccardConfiguration;
+    } else {
+      configuration = this.cmapConfiguration;
+    }
+
+    return configuration;
+  }
 }

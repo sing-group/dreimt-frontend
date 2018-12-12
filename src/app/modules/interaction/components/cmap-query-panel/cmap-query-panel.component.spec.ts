@@ -19,30 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, OnInit} from '@angular/core';
-import {QueryService} from '../../services/query.service';
-import {DrugCellInteractionModel} from '../../models/drug-cell-interaction.model';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-drug-cell-interactions-table',
-  templateUrl: './drug-cell-interactions-table.component.html',
-  styleUrls: ['./drug-cell-interactions-table.component.scss']
-})
-export class DrugCellInteractionsTableComponent implements OnInit {
-  public interactions: DrugCellInteractionModel[];
+import { CmapQueryPanelComponent } from './cmap-query-panel.component';
 
-  public displayedColumns: string[];
+describe('CmapQueryPanelComponent', () => {
+  let component: CmapQueryPanelComponent;
+  let fixture: ComponentFixture<CmapQueryPanelComponent>;
 
-  constructor(
-    private interactionsService: QueryService
-  ) {
-  }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ CmapQueryPanelComponent ]
+    })
+    .compileComponents();
+  }));
 
-  ngOnInit() {
-    this.displayedColumns = ['drugName', 'cellTypeA', 'cellTypeB'];
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CmapQueryPanelComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    this.interactionsService.list()
-      .subscribe(interactions => this.interactions = interactions);
-  }
-
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

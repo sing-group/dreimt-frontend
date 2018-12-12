@@ -131,7 +131,6 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
   }
 
   private updatePage(queryParams = this.createQueryParameters()): void {
-    console.log('updatepage');
     this.dataSource.list(queryParams);
   }
 
@@ -141,7 +140,6 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     const queryParams = this.createQueryParameters();
 
     this.updatePage(queryParams);
-    console.log('loadfields');
     this.loadDrugCommonNames(queryParams);
     this.loadCellTypeAs(queryParams);
     this.loadCellTypeBs(queryParams);

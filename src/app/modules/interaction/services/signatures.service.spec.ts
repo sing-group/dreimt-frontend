@@ -19,30 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, OnInit} from '@angular/core';
-import {QueryService} from '../../services/query.service';
-import {DrugCellInteractionModel} from '../../models/drug-cell-interaction.model';
+import { TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-drug-cell-interactions-table',
-  templateUrl: './drug-cell-interactions-table.component.html',
-  styleUrls: ['./drug-cell-interactions-table.component.scss']
-})
-export class DrugCellInteractionsTableComponent implements OnInit {
-  public interactions: DrugCellInteractionModel[];
+import { SignaturesService } from './signatures.service';
 
-  public displayedColumns: string[];
+describe('SignaturesService', () => {
+  beforeEach(() => TestBed.configureTestingModule({}));
 
-  constructor(
-    private interactionsService: QueryService
-  ) {
-  }
-
-  ngOnInit() {
-    this.displayedColumns = ['drugName', 'cellTypeA', 'cellTypeB'];
-
-    this.interactionsService.list()
-      .subscribe(interactions => this.interactions = interactions);
-  }
-
-}
+  it('should be created', () => {
+    const service: SignaturesService = TestBed.get(SignaturesService);
+    expect(service).toBeTruthy();
+  });
+});

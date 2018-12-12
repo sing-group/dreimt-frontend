@@ -19,28 +19,22 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {DrugCellInteractionModel} from '../models/drug-cell-interaction.model';
-import {Observable} from 'rxjs';
-import {environment} from '../../../../environments/environment';
-import {DreimtError} from '../../notification/entities';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class DrugCellInteractionsService {
-
-  constructor(
-    private http: HttpClient
-  ) {
-  }
-
-  public list(): Observable<DrugCellInteractionModel[]> {
-    return this.http.get<DrugCellInteractionModel[]>(
-      `${environment.dreimtUrl}/interaction`
-    ).pipe(
-      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell interactions could not be retrieved.')
-    );
-  }
+export class WorkModel {
+  id: {
+    id: string,
+    uri: string
+  };
+  name: string;
+  description: string;
+  creationDateTime: Date;
+  schedulingDateTime: Date;
+  startingDateTime: Date;
+  finishingDateTime: Date;
+  resultReference: string;
+  status: string;
+  steps: {
+    order: number;
+    description: string;
+    progress: number;
+  }[];
 }
