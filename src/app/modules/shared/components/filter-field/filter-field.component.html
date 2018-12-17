@@ -19,22 +19,24 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<mat-form-field floatLabel="never">
+<mat-form-field floatLabel="never" *ngIf="fixedValues">
   <mat-label>{{label}}</mat-label>
-  <mat-select *ngIf="fixedValues" [formControl]="formControl">
+  <mat-select [formControl]="formControl">
     <mat-option class="clearOption">Clear filter</mat-option>
     <mat-option *ngFor="let option of sortedOptions | async" [value]="option">{{option}}</mat-option>
   </mat-select>
+</mat-form-field>
 
-  <ng-container *ngIf="!fixedValues">
-    <input matInput [formControl]="formControl" [matAutocomplete]="auto">
-    <button mat-button *ngIf="hasFilterValue()" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue()">
-      <mat-icon>close</mat-icon>
-    </button>
+<mat-form-field floatLabel="never" *ngIf="!fixedValues">
+  <mat-label>{{label}}</mat-label>
 
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of sortedOptions | async" [value]="option"
-                  [innerHTML]="option | highlight: filter"></mat-option>
-    </mat-autocomplete>
-  </ng-container>
+  <input #filterInput matInput [formControl]="formControl" [matAutocomplete]="auto" (keyup.enter)="clearSelection()">
+  <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue()">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of sortedOptions | async" [value]="option"
+                [innerHTML]="option | highlight: filter"></mat-option>
+  </mat-autocomplete>
 </mat-form-field>

@@ -19,9 +19,14 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {SortDirection} from './sort-direction.model';
+import {DrugSignatureInteractionField} from './drug-signature-interaction-field.model';
+
 export class DrugSignatureInteractionQueryParams {
   public readonly page?: number;
   public readonly pageSize?: number;
+  public readonly orderField?: DrugSignatureInteractionField;
+  public readonly sortDirection?: SortDirection;
   public readonly cellTypeA?: string;
   public readonly cellTypeB?: string;
   public readonly experimentalDesign?: ExperimentalDesign;
@@ -49,11 +54,13 @@ export class DrugSignatureInteractionQueryParams {
     }, {});
   }
 
-  public static toPlainObjectNoPagination(params: DrugSignatureInteractionQueryParams): {
+  public static toPlainObjectOnlyFilterFields(params: DrugSignatureInteractionQueryParams): {
     [param: string]: string | string[];
   } {
+    const fieldsToIgnore = [ 'page', 'pageSize', 'orderField', 'sortDirection'];
+
     return Object.keys(params).reduce((acc, key) => {
-      if (key !== 'page' && key !== 'pageSize' && params[key] !== undefined && params[key] !== null) {
+      if (!fieldsToIgnore.includes(key) && params[key] !== undefined && params[key] !== null) {
         acc[key] = String(params[key]);
       }
 
@@ -73,5 +80,5 @@ export enum ExperimentalDesign {
 }
 
 export enum SignatureType {
-  GENESET, UPDOWN
+  GENESET = 'GENESET', UPDOWN = 'UPDOWN'
 }

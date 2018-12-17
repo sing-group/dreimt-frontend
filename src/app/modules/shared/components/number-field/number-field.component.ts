@@ -21,7 +21,7 @@
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {debounceTime} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-number-field',
@@ -44,7 +44,8 @@ export class NumberFieldComponent implements OnInit {
   public ngOnInit(): void {
     this.formControl.valueChanges
       .pipe(
-        debounceTime(this.debounceTime)
+        debounceTime(this.debounceTime),
+        distinctUntilChanged()
       )
       .subscribe(value => this.valueChange.emit(value));
   }

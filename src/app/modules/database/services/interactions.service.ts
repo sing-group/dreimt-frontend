@@ -97,7 +97,7 @@ export class InteractionsService {
   private listValues(resource: string, queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
     const options = {
       params: new HttpParams({
-        fromObject: DrugSignatureInteractionQueryParams.toPlainObjectNoPagination(queryParams)
+        fromObject: DrugSignatureInteractionQueryParams.toPlainObjectOnlyFilterFields(queryParams)
       })
     };
 

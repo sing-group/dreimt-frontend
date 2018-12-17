@@ -19,10 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {debounce, debounceTime, map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {MatAutocompleteTrigger} from '@angular/material';
 
 @Component({
   selector: 'app-filter-field',
@@ -38,6 +39,9 @@ export class FilterFieldComponent implements OnInit {
 
   @Output() public filterChange: EventEmitter<string>;
 
+  @ViewChild(MatAutocompleteTrigger) private autocomplete: MatAutocompleteTrigger;
+  @ViewChild('filterInput') private filterInput: ElementRef;
+
   public readonly formControl: FormControl;
 
   constructor() {
@@ -52,7 +56,8 @@ export class FilterFieldComponent implements OnInit {
   public ngOnInit(): void {
     this.formControl.valueChanges
       .pipe(
-        debounceTime(this.debounceTime)
+        debounceTime(this.debounceTime),
+        distinctUntilChanged()
       )
       .subscribe(value => this.filterChange.emit(value));
   }
@@ -111,5 +116,14 @@ export class FilterFieldComponent implements OnInit {
 
   public clearValue(): void {
     this.filter = '';
+  }
+
+  public isAutocompleteVisible(): boolean {
+    return this.autocomplete.panelOpen;
+  }
+
+  public clearSelection(): void {
+    this.filterInput.nativeElement.blur();
+    this.autocomplete.closePanel();
   }
 }

@@ -22,11 +22,14 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {InteractionsService} from '../../services/interactions.service';
 import {DatabaseDataSource} from './database-data-source';
-import {MatPaginator} from '@angular/material';
-import {debounceTime} from 'rxjs/operators';
+import {MatPaginator, MatSort} from '@angular/material';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {DrugSignatureInteractionQueryParams, ExperimentalDesign} from '../../models/drug-signature-interaction-query-params.model';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
+import {merge} from 'rxjs';
+import {SortDirection} from '../../models/sort-direction.model';
+import {DrugSignatureInteractionField} from '../../models/drug-signature-interaction-field.model';
 
 @Component({
   selector: 'app-database',
@@ -57,6 +60,7 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
   public readonly maxFdrFilter: FormControl;
 
   @ViewChild(MatPaginator) private paginator: MatPaginator;
+  @ViewChild(MatSort) private sort: MatSort;
 
   constructor(
     private service: InteractionsService
@@ -97,11 +101,21 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
 
   private watchForChanges(field: FormControl): void {
     field.valueChanges
-      .pipe(debounceTime(this.debounceTime))
+      .pipe(
+        debounceTime(this.debounceTime),
+        distinctUntilChanged()
+      )
       .subscribe(() => this.updateInteractions());
   }
 
   public ngAfterViewInit(): void {
+    this.sort.sortChange.pipe(
+      debounceTime(this.debounceTime)
+    ).subscribe(() => {
+      this.resetPage();
+      this.updatePage();
+    });
+
     this.paginator.page.pipe(
       debounceTime(this.debounceTime)
     ).subscribe(() => this.updatePage());
@@ -112,14 +126,22 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
       .filter(key => !isNaN(Number(ExperimentalDesign[key])));
   }
 
+  private resetPage(): void {
+    this.paginator.pageIndex = 0;
+  }
+
   private updatePage(queryParams = this.createQueryParameters()): void {
+    console.log('updatepage');
     this.dataSource.list(queryParams);
   }
 
-  public updateInteractions(): void {
+  public updateInteractions(resetPage = true): void {
+    this.resetPage();
+
     const queryParams = this.createQueryParameters();
 
     this.updatePage(queryParams);
+    console.log('loadfields');
     this.loadDrugCommonNames(queryParams);
     this.loadCellTypeAs(queryParams);
     this.loadCellTypeBs(queryParams);
@@ -176,6 +198,25 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
       .subscribe(values => this.experimentalDesignFilter.update(values));
   }
 
+  private sortDirection(): SortDirection {
+    switch (this.sort.direction) {
+      case 'asc':
+        return SortDirection.ASCENDING;
+      case 'desc':
+        return SortDirection.DESCENDING;
+      default:
+        return undefined;
+    }
+  }
+
+  private orderField(): DrugSignatureInteractionField {
+    if (this.sortDirection() !== undefined) {
+      return DrugSignatureInteractionField[this.sort.active];
+    } else {
+      return undefined;
+    }
+  }
+
   private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): DrugSignatureInteractionQueryParams {
     const experimentalDesign = this.experimentalDesignFilter.hasValue()
       ? ExperimentalDesign[this.experimentalDesignFilter.getClearedFilter()]
@@ -184,6 +225,8 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     return {
       page: this.paginator.pageIndex || defaultPageIndex,
       pageSize: this.paginator.pageSize || defaultPageSize,
+      sortDirection: this.sortDirection(),
+      orderField: this.orderField(),
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       cellTypeA: this.cellTypeAFieldFilter.getClearedFilter(),
       cellTypeB: this.cellTypeBFieldFilter.getClearedFilter(),

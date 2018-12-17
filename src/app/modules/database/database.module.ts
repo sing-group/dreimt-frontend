@@ -31,7 +31,7 @@ import {
   MatInputModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
-  MatSelectModule,
+  MatSelectModule, MatSortModule,
   MatTableModule,
   MatToolbarModule,
   MatTooltipModule
@@ -56,6 +56,7 @@ import {SharedModule} from '../shared/shared.module';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSortModule,
     MatTableModule,
     MatToolbarModule,
     MatTooltipModule,

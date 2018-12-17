@@ -22,10 +22,10 @@
 <mat-card>
   <mat-card-title>Database</mat-card-title>
   <mat-card-content>
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="drug">
         <th mat-header-cell *matHeaderCellDef>
-          Drug
+          <span mat-sort-header="DRUG_COMMON_NAME">Drug</span>
           <app-filter-field label="Filter"
                             [options]="drugCommonNameFieldFilter.options"
                             [(filter)]="drugCommonNameFieldFilter.filter"
@@ -43,7 +43,7 @@
 
       <ng-container matColumnDef="tes">
         <th id="tes" mat-header-cell *matHeaderCellDef>
-          <span id="tesHead">TES</span>
+          <span id="tesHead" mat-sort-header="TES">TES</span>
 
           <app-number-field id="tesMin" label="Min." [debounceTime]="debounceTime"
                             (valueChange)="minTesFilter.setValue($event)"></app-number-field>
@@ -58,7 +58,7 @@
 
       <ng-container matColumnDef="pValue">
         <th mat-header-cell *matHeaderCellDef>
-          p-value
+          <span mat-sort-header="P_VALUE">p-value</span>
           <app-number-field label="Max." [debounceTime]="debounceTime"
                             (valueChange)="maxPvalueFilter.setValue($event)"></app-number-field>
         </th>
@@ -69,7 +69,7 @@
 
       <ng-container matColumnDef="fdr">
         <th mat-header-cell *matHeaderCellDef>
-          FDR
+          <span mat-sort-header="FDR">FDR</span>
           <app-number-field label="Max." [debounceTime]="debounceTime"
                             (valueChange)="maxFdrFilter.setValue($event)"></app-number-field>
         </th>
@@ -79,7 +79,9 @@
       </ng-container>
 
       <ng-container matColumnDef="signatureType">
-        <th mat-header-cell *matHeaderCellDef>Sinagture Type</th>
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="SIGNATURE_TYPE">Signature Type</span>
+        </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.signature.signatureType">
           <mat-icon>{{interaction.signature.signatureType | signatureTypeIcon}}</mat-icon>
         </td>
@@ -87,7 +89,7 @@
 
       <ng-container matColumnDef="experimentalDesign">
         <th mat-header-cell *matHeaderCellDef>
-          Experimental Design
+          <span mat-sort-header="EXPERIMENTAL_DESIGN">Experimental Design</span>
           <app-filter-field label="Filter"
                             [options]="experimentalDesignFilter.options"
                             [(filter)]="experimentalDesignFilter.filter"
@@ -101,7 +103,7 @@
 
       <ng-container matColumnDef="cellTypeA">
         <th mat-header-cell *matHeaderCellDef>
-          Cell Type A
+          <span mat-sort-header="CELL_TYPE_A">Cell Type A</span>
           <app-filter-field label="Filter"
                             [options]="cellTypeAFieldFilter.options"
                             [(filter)]="cellTypeAFieldFilter.filter"
@@ -114,7 +116,7 @@
 
       <ng-container matColumnDef="cellTypeB">
         <th mat-header-cell *matHeaderCellDef>
-          Cell Type B
+          <span mat-sort-header="CELL_TYPE_B">Cell Type B</span>
           <app-filter-field label="Filter"
                             [options]="cellTypeBFieldFilter.options"
                             [(filter)]="cellTypeBFieldFilter.filter"
@@ -137,7 +139,7 @@
 
       <ng-container matColumnDef="disease">
         <th mat-header-cell *matHeaderCellDef>
-          Disease
+          <span mat-sort-header="DISEASE">Disease</span>
           <app-filter-field label="Filter"
                             [options]="diseaseFieldFilter.options"
                             [(filter)]="diseaseFieldFilter.filter"
@@ -150,7 +152,7 @@
 
       <ng-container matColumnDef="organism">
         <th mat-header-cell *matHeaderCellDef>
-          Organism
+          <span mat-sort-header="ORGANISM">Organism</span>
           <app-filter-field label="Filter"
                             [options]="organismFieldFilter.options"
                             [(filter)]="organismFieldFilter.filter"
@@ -162,7 +164,9 @@
       </ng-container>
 
       <ng-container matColumnDef="article">
-        <th mat-header-cell *matHeaderCellDef>Article PubMedID</th>
+        <th mat-header-cell *matHeaderCellDef>
+          Article PubMedID
+        </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.signature.articleTitle">
           {{interaction.signature.articlePubMedId}}
         </td>
@@ -170,7 +174,7 @@
 
       <ng-container matColumnDef="signatureSourceDb">
         <th mat-header-cell *matHeaderCellDef>
-          Signature Source DB
+          <span mat-sort-header="SIGNATURE_SOURCE_DB">Signature Source DB</span>
           <app-filter-field label="Filter"
                             [options]="signatureSourceDbFieldFilter.options"
                             [(filter)]="signatureSourceDbFieldFilter.filter"
@@ -183,7 +187,7 @@
 
       <ng-container matColumnDef="drugSourceName">
         <th mat-header-cell *matHeaderCellDef>
-          Drug Source Name
+          <span mat-sort-header="DRUG_SOURCE_NAME">Drug Source Name</span>
           <app-filter-field label="Filter"
                             [options]="drugSourceNameFieldFilter.options"
                             [(filter)]="drugSourceNameFieldFilter.filter"
@@ -196,7 +200,7 @@
 
       <ng-container matColumnDef="drugSourceDb">
         <th mat-header-cell *matHeaderCellDef>
-          Drug Source DB
+          <span mat-sort-header="DRUG_SOURCE_DB">Drug Source DB</span>
           <app-filter-field label="Filter"
                             [options]="drugSourceDbFieldFilter.options"
                             [(filter)]="drugSourceDbFieldFilter.filter"
