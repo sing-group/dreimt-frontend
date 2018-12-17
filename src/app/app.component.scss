@@ -49,11 +49,17 @@
 
   .header-left {
     jutify-self: start;
+    padding-left: 30px;
   }
 
   .header-left a {
     color: $text-color;
     text-decoration: none;
+    outline: none;
+  }
+
+  #logo {
+    height: 40px;
   }
 
   .header-right {
