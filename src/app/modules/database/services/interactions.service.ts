@@ -20,7 +20,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, OperatorFunction} from 'rxjs';
 import {DrugSignatureInteractionQueryParams} from '../models/drug-signature-interaction-query-params.model';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
@@ -62,6 +62,10 @@ export class InteractionsService {
     return this.listValues('drug-common-name', queryParams);
   }
 
+  public listSignatureNameValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('signature-name', queryParams);
+  }
+
   public listCellTypeAValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
     return this.listValues('cell-type-a', queryParams);
   }
@@ -73,13 +77,18 @@ export class InteractionsService {
   public listDiseaseValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
     return this.listValues('disease', queryParams);
   }
-
   public listOrganismValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
     return this.listValues('organism', queryParams);
   }
 
   public listSignatureSourceDbValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
     return this.listValues('signature-source-db', queryParams);
+  }
+
+  public listSignaturePubMedIdValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listMappedValues<number[]>('signature-pubmed-id', queryParams,
+      map(pubmedIds => pubmedIds.map(pubmedId => String(pubmedId)))
+    );
   }
 
   public listDrugSourceNameValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
@@ -103,5 +112,22 @@ export class InteractionsService {
 
     return this.http.get<string[]>(`${environment.dreimtUrl}/interactions/params/${resource}/values`, options)
       .pipe(DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.'));
+  }
+
+  private listMappedValues<A>(
+    resource: string, queryParams: DrugSignatureInteractionQueryParams,
+    mapper: OperatorFunction<A, string[]>
+  ): Observable<string[]> {
+    const options = {
+      params: new HttpParams({
+        fromObject: DrugSignatureInteractionQueryParams.toPlainObjectOnlyFilterFields(queryParams)
+      })
+    };
+
+    return this.http.get<A>(`${environment.dreimtUrl}/interactions/params/${resource}/values`, options)
+      .pipe(
+        mapper,
+        DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.')
+      );
   }
 }

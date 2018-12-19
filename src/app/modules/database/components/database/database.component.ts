@@ -27,7 +27,6 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {DrugSignatureInteractionQueryParams, ExperimentalDesign} from '../../models/drug-signature-interaction-query-params.model';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
-import {merge} from 'rxjs';
 import {SortDirection} from '../../models/sort-direction.model';
 import {DrugSignatureInteractionField} from '../../models/drug-signature-interaction-field.model';
 
@@ -46,11 +45,13 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
   public totalResultsSize: number;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
+  public readonly signatureNameFieldFilter: FieldFilterModel;
   public readonly cellTypeAFieldFilter: FieldFilterModel;
   public readonly cellTypeBFieldFilter: FieldFilterModel;
   public readonly diseaseFieldFilter: FieldFilterModel;
   public readonly organismFieldFilter: FieldFilterModel;
   public readonly signatureSourceDbFieldFilter: FieldFilterModel;
+  public readonly pubMedIdFieldFilter: FieldFilterModel;
   public readonly drugSourceNameFieldFilter: FieldFilterModel;
   public readonly drugSourceDbFieldFilter: FieldFilterModel;
   public readonly experimentalDesignFilter: FieldFilterModel;
@@ -76,11 +77,13 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
+    this.signatureNameFieldFilter = new FieldFilterModel();
     this.cellTypeAFieldFilter = new FieldFilterModel();
     this.cellTypeBFieldFilter = new FieldFilterModel();
     this.diseaseFieldFilter = new FieldFilterModel();
     this.organismFieldFilter = new FieldFilterModel();
     this.signatureSourceDbFieldFilter = new FieldFilterModel();
+    this.pubMedIdFieldFilter = new FieldFilterModel();
     this.drugSourceNameFieldFilter = new FieldFilterModel();
     this.drugSourceDbFieldFilter = new FieldFilterModel();
     this.experimentalDesignFilter = new FieldFilterModel();
@@ -141,11 +144,13 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
 
     this.updatePage(queryParams);
     this.loadDrugCommonNames(queryParams);
+    this.loadSignatureNames(queryParams);
     this.loadCellTypeAs(queryParams);
     this.loadCellTypeBs(queryParams);
     this.loadDiseases(queryParams);
     this.loadOrganisms(queryParams);
     this.loadSignatureSourceDbs(queryParams);
+    this.loadSignaturePubMedIds(queryParams);
     this.loadDrugSourceDbs(queryParams);
     this.loadDrugSourceNames(queryParams);
     this.loadExperimentalDesigns(queryParams);
@@ -154,6 +159,11 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
   private loadDrugCommonNames(queryParams: DrugSignatureInteractionQueryParams): void {
     this.service.listDrugCommonNameValues(queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
+  }
+
+  private loadSignatureNames(queryParams: DrugSignatureInteractionQueryParams): void {
+    this.service.listSignatureNameValues(queryParams)
+      .subscribe(values => this.signatureNameFieldFilter.update(values));
   }
 
   private loadCellTypeAs(queryParams: DrugSignatureInteractionQueryParams): void {
@@ -179,6 +189,11 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
   private loadSignatureSourceDbs(queryParams: DrugSignatureInteractionQueryParams): void {
     this.service.listSignatureSourceDbValues(queryParams)
       .subscribe(values => this.signatureSourceDbFieldFilter.update(values));
+  }
+
+  private loadSignaturePubMedIds(queryParams: DrugSignatureInteractionQueryParams): void {
+    this.service.listSignaturePubMedIdValues(queryParams)
+      .subscribe(values => this.pubMedIdFieldFilter.update(values));
   }
 
   private loadDrugSourceNames(queryParams: DrugSignatureInteractionQueryParams): void {
@@ -226,11 +241,13 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
       sortDirection: this.sortDirection(),
       orderField: this.orderField(),
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
+      signatureName: this.signatureNameFieldFilter.getClearedFilter(),
       cellTypeA: this.cellTypeAFieldFilter.getClearedFilter(),
       cellTypeB: this.cellTypeBFieldFilter.getClearedFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),
+      signaturePubMedId: this.pubMedIdFieldFilter.getClearedFilter(),
       drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
       drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter(),
       experimentalDesign: experimentalDesign,

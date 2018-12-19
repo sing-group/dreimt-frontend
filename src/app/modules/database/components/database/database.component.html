@@ -37,7 +37,15 @@
       </ng-container>
 
       <ng-container matColumnDef="signature">
-        <th mat-header-cell *matHeaderCellDef>Signature</th>
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="SIGNATURE_NAME">Signature</span>
+          <app-filter-field label="Filter"
+                            [options]="signatureNameFieldFilter.options"
+                            [(filter)]="signatureNameFieldFilter.filter"
+                            (filterChange)="updateInteractions()"
+                            [debounceTime]="debounceTime"
+                            [maxOptions]="maxOptions"></app-filter-field>
+        </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.signatureName}}</td>
       </ng-container>
 
@@ -166,6 +174,12 @@
       <ng-container matColumnDef="article">
         <th mat-header-cell *matHeaderCellDef>
           Article PubMedID
+          <app-filter-field label="Filter"
+                            [options]="pubMedIdFieldFilter.options"
+                            [(filter)]="pubMedIdFieldFilter.filter"
+                            (filterChange)="updateInteractions()"
+                            [debounceTime]="debounceTime"
+                            [maxOptions]="maxOptions"></app-filter-field>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.signature.articleTitle">
           {{interaction.signature.articlePubMedId}}

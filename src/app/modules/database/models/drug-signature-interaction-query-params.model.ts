@@ -27,11 +27,13 @@ export class DrugSignatureInteractionQueryParams {
   public readonly pageSize?: number;
   public readonly orderField?: DrugSignatureInteractionField;
   public readonly sortDirection?: SortDirection;
+  public readonly signatureName?: string;
   public readonly cellTypeA?: string;
   public readonly cellTypeB?: string;
   public readonly experimentalDesign?: ExperimentalDesign;
   public readonly disease?: string;
   public readonly organism?: string;
+  public readonly signaturePubMedId?: string;
   public readonly drugSourceName?: string;
   public readonly drugSourceDb?: string;
   public readonly drugCommonName?: string;
