@@ -136,13 +136,29 @@
       </ng-container>
 
       <ng-container matColumnDef="cellSubtypeA">
-        <th mat-header-cell *matHeaderCellDef>Cell Subtype A</th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeA}}</td>
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="CELL_SUBTYPE_A">Cell Subtype A</span>
+          <app-filter-field label="Filter"
+                            [options]="cellSubTypeAFieldFilter.options"
+                            [(filter)]="cellSubTypeAFieldFilter.filter"
+                            (filterChange)="updateInteractions()"
+                            [debounceTime]="debounceTime"
+                            [maxOptions]="maxOptions"></app-filter-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellSubTypeA}}</td>
       </ng-container>
 
       <ng-container matColumnDef="cellSubtypeB">
-        <th mat-header-cell *matHeaderCellDef>Cell Subtype B</th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeB}}</td>
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="CELL_SUBTYPE_B">Cell Subtype B</span>
+          <app-filter-field label="Filter"
+                            [options]="cellSubTypeBFieldFilter.options"
+                            [(filter)]="cellSubTypeBFieldFilter.filter"
+                            (filterChange)="updateInteractions()"
+                            [debounceTime]="debounceTime"
+                            [maxOptions]="maxOptions"></app-filter-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellSubTypeB}}</td>
       </ng-container>
 
       <ng-container matColumnDef="disease">

@@ -48,6 +48,8 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
   public readonly signatureNameFieldFilter: FieldFilterModel;
   public readonly cellTypeAFieldFilter: FieldFilterModel;
   public readonly cellTypeBFieldFilter: FieldFilterModel;
+  public readonly cellSubTypeAFieldFilter: FieldFilterModel;
+  public readonly cellSubTypeBFieldFilter: FieldFilterModel;
   public readonly diseaseFieldFilter: FieldFilterModel;
   public readonly organismFieldFilter: FieldFilterModel;
   public readonly signatureSourceDbFieldFilter: FieldFilterModel;
@@ -80,6 +82,8 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     this.signatureNameFieldFilter = new FieldFilterModel();
     this.cellTypeAFieldFilter = new FieldFilterModel();
     this.cellTypeBFieldFilter = new FieldFilterModel();
+    this.cellSubTypeAFieldFilter = new FieldFilterModel();
+    this.cellSubTypeBFieldFilter = new FieldFilterModel();
     this.diseaseFieldFilter = new FieldFilterModel();
     this.organismFieldFilter = new FieldFilterModel();
     this.signatureSourceDbFieldFilter = new FieldFilterModel();
@@ -147,6 +151,8 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     this.loadSignatureNames(queryParams);
     this.loadCellTypeAs(queryParams);
     this.loadCellTypeBs(queryParams);
+    this.loadCellSubTypeAs(queryParams);
+    this.loadCellSubTypeBs(queryParams);
     this.loadDiseases(queryParams);
     this.loadOrganisms(queryParams);
     this.loadSignatureSourceDbs(queryParams);
@@ -174,6 +180,16 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
   private loadCellTypeBs(queryParams: DrugSignatureInteractionQueryParams): void {
     this.service.listCellTypeBValues(queryParams)
       .subscribe(values => this.cellTypeBFieldFilter.update(values));
+  }
+
+  private loadCellSubTypeAs(queryParams: DrugSignatureInteractionQueryParams): void {
+    this.service.listCellSubTypeAValues(queryParams)
+      .subscribe(values => this.cellSubTypeAFieldFilter.update(values));
+  }
+
+  private loadCellSubTypeBs(queryParams: DrugSignatureInteractionQueryParams): void {
+    this.service.listCellSubTypeBValues(queryParams)
+      .subscribe(values => this.cellSubTypeBFieldFilter.update(values));
   }
 
   private loadDiseases(queryParams: DrugSignatureInteractionQueryParams): void {
@@ -244,6 +260,8 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
       signatureName: this.signatureNameFieldFilter.getClearedFilter(),
       cellTypeA: this.cellTypeAFieldFilter.getClearedFilter(),
       cellTypeB: this.cellTypeBFieldFilter.getClearedFilter(),
+      cellSubTypeA: this.cellSubTypeAFieldFilter.getClearedFilter(),
+      cellSubTypeB: this.cellSubTypeBFieldFilter.getClearedFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),

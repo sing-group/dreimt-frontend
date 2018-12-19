@@ -30,6 +30,8 @@ export class DrugSignatureInteractionQueryParams {
   public readonly signatureName?: string;
   public readonly cellTypeA?: string;
   public readonly cellTypeB?: string;
+  public readonly cellSubTypeA?: string;
+  public readonly cellSubTypeB?: string;
   public readonly experimentalDesign?: ExperimentalDesign;
   public readonly disease?: string;
   public readonly organism?: string;

@@ -74,6 +74,14 @@ export class InteractionsService {
     return this.listValues('cell-type-b', queryParams);
   }
 
+  public listCellSubTypeAValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('cell-subtype-a', queryParams);
+  }
+
+  public listCellSubTypeBValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+    return this.listValues('cell-subtype-b', queryParams);
+  }
+
   public listDiseaseValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
     return this.listValues('disease', queryParams);
   }
