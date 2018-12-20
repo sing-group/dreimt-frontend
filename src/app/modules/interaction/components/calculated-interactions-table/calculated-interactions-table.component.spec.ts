@@ -19,19 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteraction} from '../../models/drug-signature-interaction.model';
-import {DrugSignatureInteractionQueryParams} from '../../models/drug-signature-interaction-query-params.model';
-import {InteractionsService} from '../../services/interactions.service';
-import {PartialDataSource} from '../../../../utils/partial-data-source';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-export class DatabaseDataSource extends PartialDataSource<DrugSignatureInteraction> {
-  constructor(
-    private service: InteractionsService
-  ) {
-    super();
-  }
+import { CalculatedInteractionsTableComponent } from './calculated-interactions-table.component';
 
-  list(queryParams: DrugSignatureInteractionQueryParams): void {
-    this.update(this.service.list(queryParams));
-  }
-}
+describe('CalculatedInteractionsTableComponent', () => {
+  let component: CalculatedInteractionsTableComponent;
+  let fixture: ComponentFixture<CalculatedInteractionsTableComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ CalculatedInteractionsTableComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CalculatedInteractionsTableComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -21,7 +21,7 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DatabaseComponent} from './components/database/database.component';
+import {DatabaseTableComponent} from './components/database-table/database-table.component';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -42,7 +42,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
-  declarations: [DatabaseComponent, SignatureTypeIconPipe],
+  declarations: [
+    DatabaseTableComponent,
+    SignatureTypeIconPipe
+  ],
   imports: [
     CommonModule,
     DatabaseRoutingModule,

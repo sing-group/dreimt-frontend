@@ -19,20 +19,19 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
-import {DatabaseTableComponent} from './components/database-table/database-table.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: DatabaseTableComponent
-  }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DatabaseRoutingModule {
+export class CellSignature {
+  public readonly signatureName: string;
+  public readonly cellTypeA: string[];
+  public readonly cellSubTypeA: string[];
+  public readonly cellTypeB: string[];
+  public readonly cellSubTypeB: string[];
+  public readonly sourceDb: string;
+  public readonly experimentalDesign: string;
+  public readonly organism: string;
+  public readonly disease: string;
+  public readonly articlePubMedId: number;
+  public readonly articleTitle: string;
+  public readonly signatureType: string;
+  public readonly signatureGenesUri: string;
+  public readonly signatureMetadataUri: string;
 }

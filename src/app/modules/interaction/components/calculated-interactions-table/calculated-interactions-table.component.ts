@@ -21,15 +21,15 @@
 
 import {Component, OnInit} from '@angular/core';
 import {QueryService} from '../../services/query.service';
-import {DrugCellInteractionModel} from '../../models/drug-cell-interaction.model';
+import {CalculatedInterationQueryResult} from '../../../../models/query/calculated-interation-query-result.model';
 
 @Component({
   selector: 'app-drug-cell-interactions-table',
-  templateUrl: './drug-cell-interactions-table.component.html',
-  styleUrls: ['./drug-cell-interactions-table.component.scss']
+  templateUrl: './calculated-interactions-table.component.html',
+  styleUrls: ['./calculated-interactions-table.component.scss']
 })
-export class DrugCellInteractionsTableComponent implements OnInit {
-  public interactions: DrugCellInteractionModel[];
+export class CalculatedInteractionsTableComponent implements OnInit {
+  public interactions: CalculatedInterationQueryResult[];
 
   public displayedColumns: string[];
 

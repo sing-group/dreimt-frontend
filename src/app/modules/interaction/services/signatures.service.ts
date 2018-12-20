@@ -21,58 +21,62 @@
 
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {DrugSignatureInteractionQueryParams} from '../../database/models/drug-signature-interaction-query-params.model';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
-import {JaccardSignatureQueryParams} from '../models/signature-query-params.model';
+import {JaccardCalculateInteractionsQueryParams} from '../../../models/query/jaccard-calculate-interactions-query-params.model';
+import {toPlainObject} from '../../../utils/types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignaturesService {
 
-  constructor(
+  public constructor(
     private http: HttpClient
   ) {
   }
 
-  public listCellTypeAValues(queryParams: JaccardSignatureQueryParams): Observable<string[]> {
+  public listCellTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('cell-type-a', queryParams);
   }
 
-  public listCellTypeBValues(queryParams: JaccardSignatureQueryParams): Observable<string[]> {
+  public listCellTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('cell-type-b', queryParams);
   }
 
-  public listDiseaseValues(queryParams: JaccardSignatureQueryParams): Observable<string[]> {
+  public listDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('disease', queryParams);
   }
 
-  public listOrganismValues(queryParams: JaccardSignatureQueryParams): Observable<string[]> {
+  public listOrganismValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('organism', queryParams);
   }
 
-  public listSignatureSourceDbValues(queryParams: JaccardSignatureQueryParams): Observable<string[]> {
+  public listSignatureSourceDbValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('signature-source-db', queryParams);
   }
 
-  public listExperimentalDesignValues(queryParams: JaccardSignatureQueryParams): Observable<string[]> {
+  public listExperimentalDesignValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('experimental-design', queryParams);
   }
 
-  public listSignatureTypeValues(queryParams: JaccardSignatureQueryParams): Observable<string[]> {
+  public listSignatureTypeValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('signature-type', queryParams);
   }
 
-  private listValues(resource: string, queryParams: JaccardSignatureQueryParams): Observable<string[]> {
+  private listValues(resource: string, queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     const options = {
       params: new HttpParams({
-        fromObject: JaccardSignatureQueryParams.toPlainObject(queryParams)
+        fromObject: toPlainObject(queryParams)
       })
     };
 
     return this.http.get<string[]>(`${environment.dreimtUrl}/signature/params/${resource}/values`, options)
-      .pipe(DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.'));
+      .pipe(
+        DreimtError.throwOnError(
+          'Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.'
+        )
+      );
   }
 }

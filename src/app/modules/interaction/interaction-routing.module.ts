@@ -20,7 +20,9 @@
  */
 
 import {RouterModule, Routes} from '@angular/router';
-import {InteractionsQueryComponent} from './components/interactions-query/interactions-query.component';
+import {
+  CalculatedInteractionsQueryPanelComponent
+} from './components/calculated-interactions-query-panel/calculated-interactions-query-panel.component';
 import {NgModule} from '@angular/core';
 
 const routes: Routes = [
@@ -31,7 +33,7 @@ const routes: Routes = [
   },
   {
     path: 'query',
-    component: InteractionsQueryComponent
+    component: CalculatedInteractionsQueryPanelComponent
   }
 ];
 

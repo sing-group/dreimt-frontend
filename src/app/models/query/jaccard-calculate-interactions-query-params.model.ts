@@ -19,19 +19,17 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class Signature {
-  public readonly signatureName: string;
-  public readonly cellTypeA: string[];
-  public readonly cellSubTypeA: string[];
-  public readonly cellTypeB: string[];
-  public readonly cellSubTypeB: string[];
-  public readonly sourceDb: string;
-  public readonly experimentalDesign: string;
-  public readonly organism: string;
-  public readonly disease: string;
-  public readonly articlePubMedId: number;
-  public readonly articleTitle: string;
-  public readonly signatureType: string;
-  public readonly signatureGenesUri: string;
-  public readonly signatureMetadataUri: string;
+
+import {ExperimentalDesign} from '../experimental-design.enum';
+import {SignatureType} from '../signature-type.enum';
+
+export class JaccardCalculateInteractionsQueryParams {
+  public readonly cellTypeA?: string;
+  public readonly cellTypeB?: string;
+  public readonly experimentalDesign?: ExperimentalDesign;
+  public readonly disease?: string;
+  public readonly organism?: string;
+  public readonly signatureSourceDb?: string;
+  public readonly signatureType?: SignatureType;
+  public readonly onlyUniverseGenes?: boolean;
 }

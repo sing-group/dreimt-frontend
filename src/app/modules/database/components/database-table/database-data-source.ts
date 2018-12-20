@@ -19,20 +19,19 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
-import {DatabaseTableComponent} from './components/database-table/database-table.component';
+import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
+import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
+import {InteractionsService} from '../../services/interactions.service';
+import {PartialDataSource} from '../../../../utils/partial-data-source';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: DatabaseTableComponent
+export class DatabaseDataSource extends PartialDataSource<DrugCellDatabaseInteraction> {
+  public constructor(
+    private service: InteractionsService
+  ) {
+    super();
   }
-];
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DatabaseRoutingModule {
+  public list(queryParams: DatabaseQueryParams): void {
+    this.update(this.service.list(queryParams));
+  }
 }

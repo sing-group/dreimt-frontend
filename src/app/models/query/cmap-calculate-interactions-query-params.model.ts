@@ -19,20 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
-import {DatabaseTableComponent} from './components/database-table/database-table.component';
+export class CmapCalculateInteractionsQueryParams {
+  public readonly numPerm: number;
+  public readonly maxPvalue: number;
 
-const routes: Routes = [
-  {
-    path: '',
-    component: DatabaseTableComponent
+  public static isA(object: any): object is CmapCalculateInteractionsQueryParams {
+    return object.numPerm !== undefined && object.maxPvalue !== undefined;
   }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DatabaseRoutingModule {
 }

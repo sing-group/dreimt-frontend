@@ -21,21 +21,21 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatabaseComponent } from './database.component';
+import { DatabaseTableComponent } from './database-table.component';
 
-describe('DatabaseComponent', () => {
-  let component: DatabaseComponent;
-  let fixture: ComponentFixture<DatabaseComponent>;
+describe('DatabaseTableComponent', () => {
+  let component: DatabaseTableComponent;
+  let fixture: ComponentFixture<DatabaseTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DatabaseComponent ]
+      declarations: [ DatabaseTableComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DatabaseComponent);
+    fixture = TestBed.createComponent(DatabaseTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

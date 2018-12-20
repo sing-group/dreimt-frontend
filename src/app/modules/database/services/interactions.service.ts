@@ -21,13 +21,14 @@
 
 import {Injectable} from '@angular/core';
 import {Observable, OperatorFunction} from 'rxjs';
-import {DrugSignatureInteractionQueryParams} from '../models/drug-signature-interaction-query-params.model';
+import {DatabaseQueryParams} from '../../../models/database/database-query-params.model';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
 import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
-import {DrugSignatureInteraction} from '../models/drug-signature-interaction.model';
-import {DrugSignatureInteractionQueryResult} from '../models/drug-signature-interaction-query-result.model';
+import {DrugCellDatabaseInteraction} from '../../../models/database/drug-cell-database-interaction.model';
+import {DatabaseQueryResult} from '../../../models/database/database-query-result.model';
 import {map} from 'rxjs/operators';
+import {toPlainObject} from '../../../utils/types';
 
 @Injectable({
   providedIn: 'root'
@@ -39,96 +40,89 @@ export class InteractionsService {
   ) {
   }
 
-  public list(queryParams: DrugSignatureInteractionQueryParams): Observable<DrugSignatureInteractionQueryResult> {
+  public list(queryParams: DatabaseQueryParams): Observable<DatabaseQueryResult> {
     const options = {
       params: new HttpParams({
-        fromObject: DrugSignatureInteractionQueryParams.toPlainObject(queryParams)
+        fromObject: toPlainObject(queryParams)
       }),
       observe: 'response' as 'response'
     };
 
-    return this.http.get<DrugSignatureInteraction[]>(
+    return this.http.get<DrugCellDatabaseInteraction[]>(
       `${environment.dreimtUrl}/interactions`, options
     ).pipe(
       DreimtError.throwOnError('Drug-Cell error', 'Drug-cell interactions could not be retrieved.'),
-      map((response: HttpResponse<DrugSignatureInteraction[]>) => ({
+      map((response: HttpResponse<DrugCellDatabaseInteraction[]>) => ({
         result: response.body,
         count: Number(response.headers.get('X-Count'))
       }))
     );
   }
 
-  public listDrugCommonNameValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listDrugCommonNameValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('drug-common-name', queryParams);
   }
 
-  public listSignatureNameValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listSignatureNameValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('signature-name', queryParams);
   }
 
-  public listCellTypeAValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listCellTypeAValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('cell-type-a', queryParams);
   }
 
-  public listCellTypeBValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listCellTypeBValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('cell-type-b', queryParams);
   }
 
-  public listCellSubTypeAValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listCellSubTypeAValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('cell-subtype-a', queryParams);
   }
 
-  public listCellSubTypeBValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listCellSubTypeBValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('cell-subtype-b', queryParams);
   }
 
-  public listDiseaseValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listDiseaseValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('disease', queryParams);
   }
-  public listOrganismValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listOrganismValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('organism', queryParams);
   }
 
-  public listSignatureSourceDbValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listSignatureSourceDbValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('signature-source-db', queryParams);
   }
 
-  public listSignaturePubMedIdValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listSignaturePubMedIdValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listMappedValues<number[]>('signature-pubmed-id', queryParams,
       map(pubmedIds => pubmedIds.map(pubmedId => String(pubmedId)))
     );
   }
 
-  public listDrugSourceNameValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listDrugSourceNameValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('drug-source-name', queryParams);
   }
 
-  public listDrugSourceDbValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listDrugSourceDbValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('drug-source-db', queryParams);
   }
 
-  public listExperimentalDesignValues(queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
+  public listExperimentalDesignValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('experimental-design', queryParams);
   }
 
-  private listValues(resource: string, queryParams: DrugSignatureInteractionQueryParams): Observable<string[]> {
-    const options = {
-      params: new HttpParams({
-        fromObject: DrugSignatureInteractionQueryParams.toPlainObjectOnlyFilterFields(queryParams)
-      })
-    };
-
-    return this.http.get<string[]>(`${environment.dreimtUrl}/interactions/params/${resource}/values`, options)
-      .pipe(DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.'));
+  private listValues(resource: string, queryParams: DatabaseQueryParams): Observable<string[]> {
+    return this.listMappedValues<string[]>(resource, queryParams, map(values => values));
   }
 
   private listMappedValues<A>(
-    resource: string, queryParams: DrugSignatureInteractionQueryParams,
+    resource: string, queryParams: DatabaseQueryParams,
     mapper: OperatorFunction<A, string[]>
   ): Observable<string[]> {
     const options = {
       params: new HttpParams({
-        fromObject: DrugSignatureInteractionQueryParams.toPlainObjectOnlyFilterFields(queryParams)
+        fromObject: toPlainObject(queryParams, DatabaseQueryParams.MANIPULATION_FIELDS)
       })
     };
 

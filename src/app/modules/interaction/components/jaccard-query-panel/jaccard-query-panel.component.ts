@@ -20,10 +20,10 @@
  */
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {JaccardSignatureQueryParams} from '../../models/signature-query-params.model';
+import {JaccardCalculateInteractionsQueryParams} from '../../../../models/query/jaccard-calculate-interactions-query-params.model';
 import {SignaturesService} from '../../services/signatures.service';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
-import {ExperimentalDesign} from '../../../database/models/drug-signature-interaction-query-params.model';
+import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
 
 @Component({
   selector: 'app-jaccard-query-panel',
@@ -40,7 +40,7 @@ export class JaccardQueryPanelComponent implements OnInit {
   @Input() public readonly debounceTime: number;
   @Input() public readonly maxOptions: number;
 
-  @Output() public readonly configurationChanged: EventEmitter<JaccardSignatureQueryParams>;
+  @Output() public readonly configurationChanged: EventEmitter<JaccardCalculateInteractionsQueryParams>;
 
   public readonly cellTypeAFieldFilter: FieldFilterModel;
   public readonly cellTypeBFieldFilter: FieldFilterModel;
@@ -57,7 +57,7 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.debounceTime = JaccardQueryPanelComponent.DEFAULT_VALUES.debounceTime;
     this.maxOptions = JaccardQueryPanelComponent.DEFAULT_VALUES.maxOptions;
 
-    this.configurationChanged = new EventEmitter<JaccardSignatureQueryParams>();
+    this.configurationChanged = new EventEmitter<JaccardCalculateInteractionsQueryParams>();
 
     this.cellTypeAFieldFilter = new FieldFilterModel();
     this.cellTypeBFieldFilter = new FieldFilterModel();
@@ -86,37 +86,37 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.configurationChanged.emit(queryParams);
   }
 
-  private loadCellTypeAValues(queryParams: JaccardSignatureQueryParams): void {
+  private loadCellTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listCellTypeAValues(queryParams)
       .subscribe(values => this.cellTypeAFieldFilter.update(values));
   }
 
-  private loadCellTypeBValues(queryParams: JaccardSignatureQueryParams): void {
+  private loadCellTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listCellTypeBValues(queryParams)
       .subscribe(values => this.cellTypeBFieldFilter.update(values));
   }
 
-  private loadDiseaseValues(queryParams: JaccardSignatureQueryParams): void {
+  private loadDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listDiseaseValues(queryParams)
       .subscribe(values => this.diseaseFieldFilter.update(values));
   }
 
-  private loadExperimentalDesignValues(queryParams: JaccardSignatureQueryParams): void {
+  private loadExperimentalDesignValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listExperimentalDesignValues(queryParams)
       .subscribe(values => this.experimentalDesignFieldFilter.update(values));
   }
 
-  private loadOrganismValues(queryParams: JaccardSignatureQueryParams): void {
+  private loadOrganismValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listOrganismValues(queryParams)
       .subscribe(values => this.organismFieldFilter.update(values));
   }
 
-  private loadSignatureSourceDbValues(queryParams: JaccardSignatureQueryParams): void {
+  private loadSignatureSourceDbValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listSignatureSourceDbValues(queryParams)
       .subscribe(values => this.signatureSourceDbFieldFilter.update(values));
   }
 
-  private createQueryParameters(): JaccardSignatureQueryParams {
+  private createQueryParameters(): JaccardCalculateInteractionsQueryParams {
     const experimentalDesign = this.experimentalDesignFieldFilter.hasValue()
       ? ExperimentalDesign[this.experimentalDesignFieldFilter.getClearedFilter()]
       : undefined;

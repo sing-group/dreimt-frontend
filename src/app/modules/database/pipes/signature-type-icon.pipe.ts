@@ -20,7 +20,7 @@
  */
 
 import {Pipe, PipeTransform} from '@angular/core';
-import {SignatureType} from '../models/drug-signature-interaction-query-params.model';
+import {SignatureType} from '../../../models/signature-type.enum';
 
 @Pipe({
   name: 'signatureTypeIcon'

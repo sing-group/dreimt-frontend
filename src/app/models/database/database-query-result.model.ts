@@ -19,13 +19,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Drug} from './drug.model';
-import {Signature} from './signature.model';
+import {DrugCellDatabaseInteraction} from './drug-cell-database-interaction.model';
+import {PartialResult} from '../../utils/partial-data-source';
 
-export class DrugSignatureInteraction {
-  public readonly drug: Drug;
-  public readonly signature: Signature;
-  public readonly tes: number;
-  public readonly pValue: number;
-  public readonly fdr: number;
+export class DatabaseQueryResult extends PartialResult<DrugCellDatabaseInteraction> {
 }

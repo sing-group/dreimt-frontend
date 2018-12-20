@@ -19,28 +19,13 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {isStringArray} from '../../utils/types';
 
-import { InteractionsQueryComponent } from './interactions-query.component';
+export class UpDownGenes {
+  public readonly upGenes: string[];
+  public readonly downGenes: string[];
 
-describe('InteractionsQueryComponent', () => {
-  let component: InteractionsQueryComponent;
-  let fixture: ComponentFixture<InteractionsQueryComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ InteractionsQueryComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(InteractionsQueryComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  public static isA(object: any): object is UpDownGenes {
+    return isStringArray(object.upGenes) && isStringArray(object.downGenes);
+  }
+}

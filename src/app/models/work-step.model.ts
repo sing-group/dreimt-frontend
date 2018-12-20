@@ -19,20 +19,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
-import {DatabaseTableComponent} from './components/database-table/database-table.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: DatabaseTableComponent
-  }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DatabaseRoutingModule {
+export class WorkStep {
+  public readonly order: number;
+  public readonly description: string;
+  public readonly progress: number;
 }

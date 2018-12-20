@@ -25,17 +25,18 @@ import {DatabaseDataSource} from './database-data-source';
 import {MatPaginator, MatSort} from '@angular/material';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
-import {DrugSignatureInteractionQueryParams, ExperimentalDesign} from '../../models/drug-signature-interaction-query-params.model';
+import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
-import {SortDirection} from '../../models/sort-direction.model';
-import {DrugSignatureInteractionField} from '../../models/drug-signature-interaction-field.model';
+import {SortDirection} from '../../../../models/sort-direction.enum';
+import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
+import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
 
 @Component({
   selector: 'app-database',
-  templateUrl: './database.component.html',
-  styleUrls: ['./database.component.scss']
+  templateUrl: './database-table.component.html',
+  styleUrls: ['./database-table.component.scss']
 })
-export class DatabaseComponent implements AfterViewInit, OnInit {
+export class DatabaseTableComponent implements AfterViewInit, OnInit {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -141,7 +142,7 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     this.dataSource.list(queryParams);
   }
 
-  public updateInteractions(resetPage = true): void {
+  public updateInteractions(): void {
     this.resetPage();
 
     const queryParams = this.createQueryParameters();
@@ -162,67 +163,67 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     this.loadExperimentalDesigns(queryParams);
   }
 
-  private loadDrugCommonNames(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadDrugCommonNames(queryParams: DatabaseQueryParams): void {
     this.service.listDrugCommonNameValues(queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
 
-  private loadSignatureNames(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadSignatureNames(queryParams: DatabaseQueryParams): void {
     this.service.listSignatureNameValues(queryParams)
       .subscribe(values => this.signatureNameFieldFilter.update(values));
   }
 
-  private loadCellTypeAs(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadCellTypeAs(queryParams: DatabaseQueryParams): void {
     this.service.listCellTypeAValues(queryParams)
       .subscribe(values => this.cellTypeAFieldFilter.update(values));
   }
 
-  private loadCellTypeBs(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadCellTypeBs(queryParams: DatabaseQueryParams): void {
     this.service.listCellTypeBValues(queryParams)
       .subscribe(values => this.cellTypeBFieldFilter.update(values));
   }
 
-  private loadCellSubTypeAs(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadCellSubTypeAs(queryParams: DatabaseQueryParams): void {
     this.service.listCellSubTypeAValues(queryParams)
       .subscribe(values => this.cellSubTypeAFieldFilter.update(values));
   }
 
-  private loadCellSubTypeBs(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadCellSubTypeBs(queryParams: DatabaseQueryParams): void {
     this.service.listCellSubTypeBValues(queryParams)
       .subscribe(values => this.cellSubTypeBFieldFilter.update(values));
   }
 
-  private loadDiseases(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadDiseases(queryParams: DatabaseQueryParams): void {
     this.service.listDiseaseValues(queryParams)
       .subscribe(values => this.diseaseFieldFilter.update(values));
   }
 
-  private loadOrganisms(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadOrganisms(queryParams: DatabaseQueryParams): void {
     this.service.listOrganismValues(queryParams)
       .subscribe(values => this.organismFieldFilter.update(values));
   }
 
-  private loadSignatureSourceDbs(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadSignatureSourceDbs(queryParams: DatabaseQueryParams): void {
     this.service.listSignatureSourceDbValues(queryParams)
       .subscribe(values => this.signatureSourceDbFieldFilter.update(values));
   }
 
-  private loadSignaturePubMedIds(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadSignaturePubMedIds(queryParams: DatabaseQueryParams): void {
     this.service.listSignaturePubMedIdValues(queryParams)
       .subscribe(values => this.pubMedIdFieldFilter.update(values));
   }
 
-  private loadDrugSourceNames(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadDrugSourceNames(queryParams: DatabaseQueryParams): void {
     this.service.listDrugSourceNameValues(queryParams)
       .subscribe(values => this.drugSourceNameFieldFilter.update(values));
   }
 
-  private loadDrugSourceDbs(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadDrugSourceDbs(queryParams: DatabaseQueryParams): void {
     this.service.listDrugSourceDbValues(queryParams)
       .subscribe(values => this.drugSourceDbFieldFilter.update(values));
   }
 
-  private loadExperimentalDesigns(queryParams: DrugSignatureInteractionQueryParams): void {
+  private loadExperimentalDesigns(queryParams: DatabaseQueryParams): void {
     this.service.listExperimentalDesignValues(queryParams)
       .subscribe(values => this.experimentalDesignFilter.update(values));
   }
@@ -246,7 +247,7 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     }
   }
 
-  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): DrugSignatureInteractionQueryParams {
+  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): DatabaseQueryParams {
     const experimentalDesign = this.experimentalDesignFilter.hasValue()
       ? ExperimentalDesign[this.experimentalDesignFilter.getClearedFilter()]
       : undefined;

@@ -19,20 +19,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
-import {DatabaseTableComponent} from './components/database-table/database-table.component';
+import {JaccardCalculateInteractionsQueryParams} from './jaccard-calculate-interactions-query-params.model';
+import {CmapCalculateInteractionsQueryParams} from './cmap-calculate-interactions-query-params.model';
+import {UpDownGenes} from './up-down-gene-set.model';
+import {GeneSet} from './gene-set.model';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: DatabaseTableComponent
-  }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DatabaseRoutingModule {
+export class CalculateInteractionsQueryParamsModel {
+  public readonly params: JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams;
+  public readonly genes: UpDownGenes | GeneSet;
 }

@@ -21,7 +21,7 @@
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CmapSignatureQueryParams} from '../../models/signature-query-params.model';
+import {CmapCalculateInteractionsQueryParams} from '../../../../models/query/cmap-calculate-interactions-query-params.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
@@ -38,14 +38,14 @@ export class CmapQueryPanelComponent implements OnInit {
 
   @Input() public readonly debounceTime: number;
 
-  @Output() public readonly configurationChanged: EventEmitter<CmapSignatureQueryParams>;
+  @Output() public readonly configurationChanged: EventEmitter<CmapCalculateInteractionsQueryParams>;
 
   public readonly formCmapQuery: FormGroup;
 
   public constructor(private formBuilder: FormBuilder) {
     this.debounceTime = CmapQueryPanelComponent.DEFAULT_VALUES.debounceTime;
 
-    this.configurationChanged = new EventEmitter<CmapSignatureQueryParams>();
+    this.configurationChanged = new EventEmitter<CmapCalculateInteractionsQueryParams>();
 
     this.formCmapQuery = this.formBuilder.group({
       'numPerm': [

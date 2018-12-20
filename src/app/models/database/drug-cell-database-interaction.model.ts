@@ -19,28 +19,13 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {Drug} from './drug.model';
+import {CellSignature} from './cell-signature.model';
 
-import { DrugCellInteractionsTableComponent } from './drug-cell-interactions-table.component';
-
-describe('DrugCellInteractionsTableComponent', () => {
-  let component: DrugCellInteractionsTableComponent;
-  let fixture: ComponentFixture<DrugCellInteractionsTableComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ DrugCellInteractionsTableComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DrugCellInteractionsTableComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+export class DrugCellDatabaseInteraction {
+  public readonly drug: Drug;
+  public readonly signature: CellSignature;
+  public readonly tes: number;
+  public readonly pValue: number;
+  public readonly fdr: number;
+}

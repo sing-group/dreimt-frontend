@@ -19,20 +19,25 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
-import {DatabaseTableComponent} from './components/database-table/database-table.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: DatabaseTableComponent
-  }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DatabaseRoutingModule {
+export class CalculatedInterationQueryResult {
+  public readonly id: number;
+  public readonly signatureName: string;
+  public readonly studyId: string;
+  public readonly source: string;
+  public readonly article: string;
+  public readonly articleAbstract: string;
+  public readonly authors: string;
+  public readonly pubMedId: number;
+  public readonly signatureInfo: string;
+  public readonly organism: string;
+  public readonly cellTypeA: string;
+  public readonly cellTypeB: string;
+  public readonly experimentalDesign: string;
+  public readonly tissueType: string;
+  public readonly disease: string;
+  public readonly drugName: string;
+  public readonly drugSystematicName: number;
+  public readonly nes: number;
+  public readonly pValue: number;
+  public readonly fdr: number;
 }

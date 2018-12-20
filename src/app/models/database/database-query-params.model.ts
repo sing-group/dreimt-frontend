@@ -19,10 +19,14 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortDirection} from './sort-direction.model';
-import {DrugSignatureInteractionField} from './drug-signature-interaction-field.model';
+import {SortDirection} from '../sort-direction.enum';
+import {DrugSignatureInteractionField} from '../drug-signature-interaction-field.enum';
+import {ExperimentalDesign} from '../experimental-design.enum';
+import {SignatureType} from '../signature-type.enum';
 
-export class DrugSignatureInteractionQueryParams {
+export class DatabaseQueryParams {
+  public static readonly MANIPULATION_FIELDS = ['page', 'pageSize', 'orderField', 'sortDirection'];
+
   public readonly page?: number;
   public readonly pageSize?: number;
   public readonly orderField?: DrugSignatureInteractionField;
@@ -45,44 +49,5 @@ export class DrugSignatureInteractionQueryParams {
   public readonly minTes?: number;
   public readonly maxTes?: number;
   public readonly maxFdr?: number;
-
-  public static toPlainObject(params: DrugSignatureInteractionQueryParams): {
-    [param: string]: string | string[];
-  } {
-    return Object.keys(params).reduce((acc, key) => {
-      if (params[key] !== undefined && params[key] !== null) {
-        acc[key] = String(params[key]);
-      }
-
-      return acc;
-    }, {});
-  }
-
-  public static toPlainObjectOnlyFilterFields(params: DrugSignatureInteractionQueryParams): {
-    [param: string]: string | string[];
-  } {
-    const fieldsToIgnore = [ 'page', 'pageSize', 'orderField', 'sortDirection'];
-
-    return Object.keys(params).reduce((acc, key) => {
-      if (!fieldsToIgnore.includes(key) && params[key] !== undefined && params[key] !== null) {
-        acc[key] = String(params[key]);
-      }
-
-      return acc;
-    }, {});
-  }
 }
 
-export enum ExperimentalDesign {
-  IN_VIVO = 'IN_VIVO',
-  EX_VIVO = 'EX_VIVO',
-  IN_VITRO = 'IN_VITRO',
-  IN_SILICO = 'IN_SILICO',
-  PATIENT = 'PATIENT',
-  TRANSFECTION = 'TRANSFECTION',
-  UNKNOWN = 'UNKNOWN'
-}
-
-export enum SignatureType {
-  GENESET = 'GENESET', UPDOWN = 'UPDOWN'
-}

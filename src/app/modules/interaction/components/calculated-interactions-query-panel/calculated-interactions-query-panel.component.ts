@@ -19,27 +19,25 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {QueryService} from '../../services/query.service';
-import {
-  CmapSignatureQueryParams,
-  GeneSet,
-  JaccardSignatureQueryParams,
-  QueryParams,
-  UpDownGenes
-} from '../../models/signature-query-params.model';
+import {CalculateInteractionsQueryParamsModel} from '../../../../models/query/calculate-interactions-query.params.model';
+import {JaccardCalculateInteractionsQueryParams} from '../../../../models/query/jaccard-calculate-interactions-query-params.model';
+import {CmapCalculateInteractionsQueryParams} from '../../../../models/query/cmap-calculate-interactions-query-params.model';
+import {UpDownGenes} from '../../../../models/query/up-down-gene-set.model';
+import {GeneSet} from '../../../../models/query/gene-set.model';
 
 @Component({
   selector: 'app-interactions-query',
-  templateUrl: './interactions-query.component.html',
-  styleUrls: ['./interactions-query.component.scss']
+  templateUrl: './calculated-interactions-query-panel.component.html',
+  styleUrls: ['./calculated-interactions-query-panel.component.scss']
 })
-export class InteractionsQueryComponent {
+export class CalculatedInteractionsQueryPanelComponent {
   private selectedTab: number;
   private upGenes: string[];
   private downGenes: string[];
-  private jaccardConfiguration: JaccardSignatureQueryParams;
-  private cmapConfiguration: CmapSignatureQueryParams;
+  private jaccardConfiguration: JaccardCalculateInteractionsQueryParams;
+  private cmapConfiguration: CmapCalculateInteractionsQueryParams;
 
   private static cleanAndFilterGenes(genes: string): string[] {
     return genes.split(/\s+/)
@@ -54,11 +52,11 @@ export class InteractionsQueryComponent {
   }
 
   public onUpGenesChanged(genes: string): void {
-    this.upGenes = InteractionsQueryComponent.cleanAndFilterGenes(genes);
+    this.upGenes = CalculatedInteractionsQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 
   public onDownUpGenesChanged(genes: string): void {
-    this.downGenes = InteractionsQueryComponent.cleanAndFilterGenes(genes);
+    this.downGenes = CalculatedInteractionsQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 
   public onJaccardConfigurationChanged(event): void {
@@ -86,7 +84,7 @@ export class InteractionsQueryComponent {
       };
     }
 
-    const queryParams: QueryParams = {
+    const queryParams: CalculateInteractionsQueryParamsModel = {
       params: this.getQueryConfiguration(),
       genes: genes
     };
@@ -95,8 +93,8 @@ export class InteractionsQueryComponent {
       .subscribe(work => console.log(work)); // Forces execution
   }
 
-  private getQueryConfiguration(): JaccardSignatureQueryParams | CmapSignatureQueryParams {
-    let configuration: JaccardSignatureQueryParams | CmapSignatureQueryParams;
+  private getQueryConfiguration(): JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams {
+    let configuration: JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams;
 
     if (this.selectedTab === 0) {
       configuration = this.jaccardConfiguration;

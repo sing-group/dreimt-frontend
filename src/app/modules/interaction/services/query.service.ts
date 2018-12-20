@@ -20,13 +20,17 @@
  */
 
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {DrugCellInteractionModel} from '../models/drug-cell-interaction.model';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {CalculatedInterationQueryResult} from '../../../models/query/calculated-interation-query-result.model';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
-import {CmapSignatureQueryParams, GeneSet, QueryParams, UpDownGenes} from '../models/signature-query-params.model';
-import {WorkModel} from '../models/work.model';
+import {CalculateInteractionsQueryParamsModel} from '../../../models/query/calculate-interactions-query.params.model';
+import {WorkModel} from '../../../models/work/work.model';
+import {CmapCalculateInteractionsQueryParams} from '../../../models/query/cmap-calculate-interactions-query-params.model';
+import {UpDownGenes} from '../../../models/query/up-down-gene-set.model';
+import {GeneSet} from '../../../models/query/gene-set.model';
+import {toPlainObject} from '../../../utils/types';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +41,8 @@ export class QueryService {
   ) {
   }
 
-  public list(): Observable<DrugCellInteractionModel[]> {
-    return this.http.get<DrugCellInteractionModel[]>(
+  public list(): Observable<CalculatedInterationQueryResult[]> {
+    return this.http.get<CalculatedInterationQueryResult[]>(
       `${environment.dreimtUrl}/interaction`
     ).pipe(
       DreimtError.throwOnError('Drug-Cell error', 'Drug-cell interactions could not be retrieved.')
@@ -48,20 +52,20 @@ export class QueryService {
   /*
    * TODO: this method should return something like an Observable<Work>
    */
-  public launchQuery(queryParams: QueryParams): Observable<WorkModel> {
+  public launchQuery(queryParams: CalculateInteractionsQueryParamsModel): Observable<WorkModel> {
     let body: {
       upGenes: string[];
       downGenes?: string[];
     };
 
-    if (UpDownGenes.isUpDownGenes(queryParams.genes)) {
+    if (UpDownGenes.isA(queryParams.genes)) {
       body = {upGenes: queryParams.genes.upGenes, downGenes: queryParams.genes.downGenes};
-    } else if (GeneSet.isGeneSet(queryParams.genes)) {
+    } else if (GeneSet.isA(queryParams.genes)) {
       body = {upGenes: queryParams.genes.genes};
     }
 
     let analysisResource: string;
-    if (CmapSignatureQueryParams.isCmapSignatureQueryParams(queryParams.params)) {
+    if (CmapCalculateInteractionsQueryParams.isA(queryParams.params)) {
       analysisResource = 'cmap';
     } else {
       analysisResource = 'jaccard';
@@ -69,7 +73,7 @@ export class QueryService {
 
     const options = {
       params: new HttpParams({
-        fromObject: QueryParams.toPlainObject(queryParams.params)
+        fromObject: toPlainObject(queryParams.params)
       })
     };
 

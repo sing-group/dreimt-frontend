@@ -19,20 +19,20 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
-import {DatabaseTableComponent} from './components/database-table/database-table.component';
+export function isStringArray(object: any): object is string[] {
+  return Array.isArray(object) && object.every(item => typeof item === 'string');
+}
 
-const routes: Routes = [
-  {
-    path: '',
-    component: DatabaseTableComponent
-  }
-];
+export function toPlainObject(params: object, fieldsToIgnore: string[] = []): {
+  [param: string]: string;
+} {
+  return Object.keys(params).reduce((acc, key) => {
+    const value = params[key];
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DatabaseRoutingModule {
+    if (value !== undefined && value !== null && !fieldsToIgnore.includes(key)) {
+      acc[key] = String(value);
+    }
+
+    return acc;
+  }, {});
 }

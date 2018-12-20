@@ -19,10 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteraction} from './drug-signature-interaction.model';
-import {PartialResult} from '../../../utils/partial-data-source';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-export class DrugSignatureInteractionQueryResult implements PartialResult<DrugSignatureInteraction> {
-  public readonly result: DrugSignatureInteraction[];
-  public readonly count: number;
-}
+import { CalculatedInteractionsQueryPanelComponent } from './calculated-interactions-query-panel.component';
+
+describe('CalculatedInteractionsQueryPanelComponent', () => {
+  let component: CalculatedInteractionsQueryPanelComponent;
+  let fixture: ComponentFixture<CalculatedInteractionsQueryPanelComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ CalculatedInteractionsQueryPanelComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CalculatedInteractionsQueryPanelComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

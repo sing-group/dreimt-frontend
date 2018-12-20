@@ -19,25 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface DrugCellInteractionModel {
-  readonly id: number;
-  readonly signatureName: string;
-  readonly studyId: string;
-  readonly source: string;
-  readonly article: string;
-  readonly articleAbstract: string;
-  readonly authors: string;
-  readonly pubMedId: number;
-  readonly signatureInfo: string;
-  readonly organism: string;
-  readonly cellTypeA: string;
-  readonly cellTypeB: string;
-  readonly experimentalDesign: string;
-  readonly tissueType: string;
-  readonly disease: string;
-  readonly drugName: string;
-  readonly drugSystematicName: number;
-  readonly nes: number;
-  readonly pValue: number;
-  readonly fdr: number;
+export class IdAndUri {
+  public readonly id: string;
+  public readonly uri: string;
 }

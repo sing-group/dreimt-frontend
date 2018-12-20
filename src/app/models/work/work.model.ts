@@ -19,22 +19,18 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {IdAndUri} from '../id-and-uri.model';
+import {WorkStep} from '../work-step.model';
+
 export class WorkModel {
-  id: {
-    id: string,
-    uri: string
-  };
-  name: string;
-  description: string;
-  creationDateTime: Date;
-  schedulingDateTime: Date;
-  startingDateTime: Date;
-  finishingDateTime: Date;
-  resultReference: string;
-  status: string;
-  steps: {
-    order: number;
-    description: string;
-    progress: number;
-  }[];
+  public readonly id: IdAndUri;
+  public readonly name: string;
+  public readonly description: string;
+  public readonly creationDateTime: Date;
+  public readonly schedulingDateTime?: Date;
+  public readonly startingDateTime?: Date;
+  public readonly finishingDateTime?: Date;
+  public readonly resultReference: string;
+  public readonly status: string;
+  public readonly steps: WorkStep[];
 }
