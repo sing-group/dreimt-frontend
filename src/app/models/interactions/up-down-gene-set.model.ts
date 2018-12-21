@@ -19,13 +19,13 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {isStringArray} from '../../utils/types';
+import {isArrayOfStrings} from '../../utils/types';
 
 export class UpDownGenes {
   public readonly upGenes: string[];
   public readonly downGenes: string[];
 
   public static isA(object: any): object is UpDownGenes {
-    return isStringArray(object.upGenes) && isStringArray(object.downGenes);
+    return isArrayOfStrings(object.upGenes) && isArrayOfStrings(object.downGenes);
   }
 }

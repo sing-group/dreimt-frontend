@@ -19,8 +19,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function isStringArray(object: any): object is string[] {
+export function isArrayOfStrings(object: any): object is string[] {
   return Array.isArray(object) && object.every(item => typeof item === 'string');
+}
+
+export function isArrayOf<T>(object: any, checkItem: ((any) => boolean)): object is T[] {
+  return Array.isArray(object) && object.every(checkItem);
 }
 
 export function toPlainObject(params: object, fieldsToIgnore: string[] = []): {

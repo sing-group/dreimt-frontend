@@ -19,12 +19,14 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {isArrayOfStrings} from '../../utils/types';
+import {CmapDrugInteraction} from './cmap-drug-interaction.model';
+import {isArrayOf} from '../../../utils/types';
 
-export class GeneSet {
-  public readonly genes: string[];
+export class CmapDrugInteractionResults {
+  public readonly interactions: CmapDrugInteraction[];
 
-  public static isA(object: any): object is GeneSet {
-    return isArrayOfStrings(object.genes);
+  public static isA(object: any): object is CmapDrugInteraction {
+    return object !== undefined && object !== null
+      && isArrayOf(object.interactions, CmapDrugInteraction.isA);
   }
 }

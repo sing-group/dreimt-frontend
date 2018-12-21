@@ -27,8 +27,8 @@ import {Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import {Work} from '../../../../models/work/work.model';
 import {ExecutionStatus} from '../../../../models/work/execution-status.enum';
-import {CmapDrugInteraction} from '../../../../models/interactions/cmap/cmap-drug-interaction.model';
-import {GeneOverlap} from '../../../../models/interactions/jaccard/gene-overlap.model';
+import {GeneOverlapResults} from '../../../../models/interactions/jaccard/gene-overlap-results.model';
+import {CmapDrugInteractionResults} from '../../../../models/interactions/cmap/cmap-drug-interaction-results.model';
 
 @Component({
   selector: 'app-drug-cell-interactions-table',
@@ -36,7 +36,7 @@ import {GeneOverlap} from '../../../../models/interactions/jaccard/gene-overlap.
   styleUrls: ['./calculated-interactions-table.component.scss']
 })
 export class CalculatedInteractionsTableComponent implements OnInit {
-  public interactions: GeneOverlap[] | CmapDrugInteraction[];
+  public results: GeneOverlapResults | CmapDrugInteractionResults;
 
   public uuid: string;
   public work: Work;
@@ -50,11 +50,10 @@ export class CalculatedInteractionsTableComponent implements OnInit {
     private workService: WorkService,
     private queryService: QueryService
   ) {
+    this.displayedColumns = ['pValue', 'fdr'];
   }
 
   public ngOnInit(): void {
-    this.displayedColumns = ['pValue', 'fdr'];
-
     this.route.params.subscribe(params => {
       this.uuid = params['uuid'];
       this.watchWork();
@@ -62,7 +61,7 @@ export class CalculatedInteractionsTableComponent implements OnInit {
   }
 
   public isLoading(): boolean {
-    return this.work === undefined && this.interactions === undefined;
+    return this.work === undefined && this.results === undefined;
   }
 
   public isFinished(): boolean {
@@ -79,12 +78,12 @@ export class CalculatedInteractionsTableComponent implements OnInit {
     }
   }
 
-  public getInterctionsType(): string {
-    if (this.interactions === undefined) {
+  public getInteractionsType(): string {
+    if (this.results === undefined) {
       return '';
     } else {
       // TODO: not the best way to do it, as an empty array will be always Jaccard.
-      return CmapDrugInteraction.isA(this.interactions[0]) ? 'Cmap' : 'Jaccard';
+      return CmapDrugInteractionResults.isA(this.results) ? 'Cmap' : 'Jaccard';
     }
   }
 
@@ -101,7 +100,7 @@ export class CalculatedInteractionsTableComponent implements OnInit {
 
     if (work.status === ExecutionStatus.COMPLETED) {
       this.queryService.getWorkResult(work)
-        .subscribe(interactions => this.interactions = interactions);
+        .subscribe(results => this.results = results);
 
       this.workSubscription.unsubscribe();
       this.workSubscription = null;

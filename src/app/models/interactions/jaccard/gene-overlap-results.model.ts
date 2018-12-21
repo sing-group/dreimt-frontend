@@ -19,12 +19,14 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {isArrayOfStrings} from '../../utils/types';
+import {isArrayOf} from '../../../utils/types';
+import {GeneOverlap} from './gene-overlap.model';
 
-export class GeneSet {
-  public readonly genes: string[];
+export class GeneOverlapResults {
+  public readonly interactions: GeneOverlap[];
 
-  public static isA(object: any): object is GeneSet {
-    return isArrayOfStrings(object.genes);
+  public static isA(object: any): object is GeneOverlapResults {
+    return object !== undefined && object !== null
+      && isArrayOf(object.interactions, GeneOverlap.isA);
   }
 }

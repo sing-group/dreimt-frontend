@@ -21,7 +21,7 @@
 
 <mat-card>
   <mat-card-header *ngIf="isFinished()">
-    <mat-card-title>Calculated interactions ({{getInterctionsType()}})</mat-card-title>
+    <mat-card-title>Calculated interactions ({{getInteractionsType()}})</mat-card-title>
     <mat-card-subtitle>{{uuid}}</mat-card-subtitle>
   </mat-card-header>
 
@@ -40,7 +40,7 @@
     </ng-container>
 
     <ng-container *ngIf="isFinished()">
-      <table mat-table [dataSource]="interactions">
+      <table mat-table [dataSource]="results?.interactions">
         <ng-container matColumnDef="pValue">
           <th mat-header-cell *matHeaderCellDef>p-value</th>
           <td mat-cell *matCellDef="let interaction">{{interaction.pvalue}}</td>

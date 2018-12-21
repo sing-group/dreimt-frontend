@@ -51,7 +51,7 @@ export class InteractionsService {
     return this.http.get<DrugCellDatabaseInteraction[]>(
       `${environment.dreimtUrl}/interactions`, options
     ).pipe(
-      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell interactions could not be retrieved.'),
+      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.'),
       map((response: HttpResponse<DrugCellDatabaseInteraction[]>) => ({
         result: response.body,
         count: Number(response.headers.get('X-Count'))

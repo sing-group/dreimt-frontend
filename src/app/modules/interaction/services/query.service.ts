@@ -31,8 +31,8 @@ import {CmapCalculateInteractionsQueryParams} from '../../../models/interactions
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {toPlainObject} from '../../../utils/types';
-import {CmapDrugInteraction} from '../../../models/interactions/cmap/cmap-drug-interaction.model';
-import {GeneOverlap} from '../../../models/interactions/jaccard/gene-overlap.model';
+import {GeneOverlapResults} from '../../../models/interactions/jaccard/gene-overlap-results.model';
+import {CmapDrugInteractionResults} from '../../../models/interactions/cmap/cmap-drug-interaction-results.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +47,7 @@ export class QueryService {
     return this.http.get<CalculatedInterationQueryResult[]>(
       `${environment.dreimtUrl}/interaction`
     ).pipe(
-      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell interactions could not be retrieved.')
+      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.')
     );
   }
 
@@ -79,12 +79,12 @@ export class QueryService {
     return this.http.post<Work>(
       `${environment.dreimtUrl}/interactions/query/${analysisResource}`, body, options
     ).pipe(
-      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell interactions could not be retrieved.')
+      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.')
     );
   }
 
-  public getWorkResult(work: Work): Observable<GeneOverlap[] | CmapDrugInteraction[]> {
-    return this.http.get<GeneOverlap[] | CmapDrugInteraction[]>(work.resultReference)
+  public getWorkResult(work: Work): Observable<GeneOverlapResults | CmapDrugInteractionResults> {
+    return this.http.get<GeneOverlapResults | CmapDrugInteractionResults>(work.resultReference)
       .pipe(
         DreimtError.throwOnError(
           'Error retrieving results', 'Results could not be retrieved from the backend.'
