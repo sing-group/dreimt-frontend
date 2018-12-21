@@ -21,12 +21,26 @@
 
 <div class="jaccard-form">
 
-  <!-- TODO: layout and fields for Cell Subtypes (A and B) -->
-
   <app-filter-field
     label="Cell type A"
     [options]="cellTypeAFieldFilter.options"
     [(filter)]="cellTypeAFieldFilter.filter"
+    (filterChange)="updateFieldValues()"
+    [debounceTime]="debounceTime"
+    [maxOptions]="maxOptions"></app-filter-field>
+
+  <app-filter-field
+    label="Cell subtype A"
+    [options]="cellSubTypeAFieldFilter.options"
+    [(filter)]="cellSubTypeAFieldFilter.filter"
+    (filterChange)="updateFieldValues()"
+    [debounceTime]="debounceTime"
+    [maxOptions]="maxOptions"></app-filter-field>
+
+  <app-filter-field
+    label="Organism"
+    [options]="organismFieldFilter.options"
+    [(filter)]="organismFieldFilter.filter"
     (filterChange)="updateFieldValues()"
     [debounceTime]="debounceTime"
     [maxOptions]="maxOptions"></app-filter-field>
@@ -40,12 +54,13 @@
     [maxOptions]="maxOptions"></app-filter-field>
 
   <app-filter-field
-    label="Organism"
-    [options]="organismFieldFilter.options"
-    [(filter)]="organismFieldFilter.filter"
+    label="Cell subtype B"
+    [options]="cellSubTypeBFieldFilter.options"
+    [(filter)]="cellSubTypeBFieldFilter.filter"
     (filterChange)="updateFieldValues()"
     [debounceTime]="debounceTime"
     [maxOptions]="maxOptions"></app-filter-field>
+
 
   <app-filter-field
     label="Disease"

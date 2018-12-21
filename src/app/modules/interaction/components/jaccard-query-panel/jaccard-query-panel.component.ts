@@ -43,7 +43,9 @@ export class JaccardQueryPanelComponent implements OnInit {
   @Output() public readonly configurationChanged: EventEmitter<JaccardCalculateInteractionsQueryParams>;
 
   public readonly cellTypeAFieldFilter: FieldFilterModel;
+  public readonly cellSubTypeAFieldFilter: FieldFilterModel;
   public readonly cellTypeBFieldFilter: FieldFilterModel;
+  public readonly cellSubTypeBFieldFilter: FieldFilterModel;
   public readonly experimentalDesignFieldFilter: FieldFilterModel;
   public readonly organismFieldFilter: FieldFilterModel;
   public readonly diseaseFieldFilter: FieldFilterModel;
@@ -60,7 +62,9 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.configurationChanged = new EventEmitter<JaccardCalculateInteractionsQueryParams>();
 
     this.cellTypeAFieldFilter = new FieldFilterModel();
+    this.cellSubTypeAFieldFilter = new FieldFilterModel();
     this.cellTypeBFieldFilter = new FieldFilterModel();
+    this.cellSubTypeBFieldFilter = new FieldFilterModel();
     this.experimentalDesignFieldFilter = new FieldFilterModel();
     this.organismFieldFilter = new FieldFilterModel();
     this.diseaseFieldFilter = new FieldFilterModel();
@@ -77,7 +81,9 @@ export class JaccardQueryPanelComponent implements OnInit {
     const queryParams = this.createQueryParameters();
 
     this.loadCellTypeAValues(queryParams);
+    this.loadCellSubTypeAValues(queryParams);
     this.loadCellTypeBValues(queryParams);
+    this.loadCellSubTypeBValues(queryParams);
     this.loadExperimentalDesignValues(queryParams);
     this.loadOrganismValues(queryParams);
     this.loadDiseaseValues(queryParams);
@@ -91,9 +97,18 @@ export class JaccardQueryPanelComponent implements OnInit {
       .subscribe(values => this.cellTypeAFieldFilter.update(values));
   }
 
+  private loadCellSubTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
+    this.service.listCellSubTypeAValues(queryParams)
+      .subscribe(values => this.cellSubTypeAFieldFilter.update(values));
+  }
   private loadCellTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listCellTypeBValues(queryParams)
       .subscribe(values => this.cellTypeBFieldFilter.update(values));
+  }
+
+  private loadCellSubTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
+    this.service.listCellSubTypeBValues(queryParams)
+      .subscribe(values => this.cellSubTypeBFieldFilter.update(values));
   }
 
   private loadDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
@@ -123,7 +138,9 @@ export class JaccardQueryPanelComponent implements OnInit {
 
     return {
       cellTypeA: this.cellTypeAFieldFilter.getClearedFilter(),
+      cellSubTypeA: this.cellSubTypeAFieldFilter.getClearedFilter(),
       cellTypeB: this.cellTypeBFieldFilter.getClearedFilter(),
+      cellSubTypeB: this.cellSubTypeBFieldFilter.getClearedFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       experimentalDesign: experimentalDesign,
       organism: this.organismFieldFilter.getClearedFilter(),

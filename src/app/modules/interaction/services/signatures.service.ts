@@ -41,8 +41,16 @@ export class SignaturesService {
     return this.listValues('cell-type-a', queryParams);
   }
 
+  public listCellSubTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
+    return this.listValues('cell-subtype-a', queryParams);
+  }
   public listCellTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('cell-type-b', queryParams);
+  }
+
+
+  public listCellSubTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
+    return this.listValues('cell-subtype-b', queryParams);
   }
 
   public listDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
