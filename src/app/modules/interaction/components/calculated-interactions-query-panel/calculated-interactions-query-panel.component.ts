@@ -21,11 +21,14 @@
 
 import {Component} from '@angular/core';
 import {QueryService} from '../../services/query.service';
-import {CalculateInteractionsQueryParamsModel} from '../../../../models/query/calculate-interactions-query.params.model';
-import {JaccardCalculateInteractionsQueryParams} from '../../../../models/query/jaccard-calculate-interactions-query-params.model';
-import {CmapCalculateInteractionsQueryParams} from '../../../../models/query/cmap-calculate-interactions-query-params.model';
-import {UpDownGenes} from '../../../../models/query/up-down-gene-set.model';
-import {GeneSet} from '../../../../models/query/gene-set.model';
+import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
+import {
+  JaccardCalculateInteractionsQueryParams
+} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
+import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
+import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
+import {GeneSet} from '../../../../models/interactions/gene-set.model';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-interactions-query',
@@ -33,11 +36,12 @@ import {GeneSet} from '../../../../models/query/gene-set.model';
   styleUrls: ['./calculated-interactions-query-panel.component.scss']
 })
 export class CalculatedInteractionsQueryPanelComponent {
-  private selectedTab: number;
   private upGenes: string[];
   private downGenes: string[];
   private jaccardConfiguration: JaccardCalculateInteractionsQueryParams;
   private cmapConfiguration: CmapCalculateInteractionsQueryParams;
+
+  private selectedTab: number;
 
   private static cleanAndFilterGenes(genes: string): string[] {
     return genes.split(/\s+/)
@@ -45,7 +49,11 @@ export class CalculatedInteractionsQueryPanelComponent {
       .filter(gene => gene.length > 0);
   }
 
-  public constructor(private interactionsService: QueryService) {
+  public constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private interactionsService: QueryService
+  ) {
     this.selectedTab = 0;
     this.upGenes = [];
     this.downGenes = [];
@@ -90,18 +98,12 @@ export class CalculatedInteractionsQueryPanelComponent {
     };
 
     this.interactionsService.launchQuery(queryParams)
-      .subscribe(work => console.log(work)); // Forces execution
+      .subscribe(work => {
+        this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
+      });
   }
 
   private getQueryConfiguration(): JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams {
-    let configuration: JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams;
-
-    if (this.selectedTab === 0) {
-      configuration = this.jaccardConfiguration;
-    } else {
-      configuration = this.cmapConfiguration;
-    }
-
-    return configuration;
+    return this.selectedTab === 0 ? this.jaccardConfiguration : this.cmapConfiguration;
   }
 }

@@ -19,19 +19,19 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Drug} from '../../drug.model';
 
-import {ExperimentalDesign} from '../experimental-design.enum';
-import {SignatureType} from '../signature-type.enum';
+export class CmapDrugInteraction {
+  public readonly drug: Drug;
+  public readonly tes: number;
+  public readonly pvalue: number;
+  public readonly fdr: number;
 
-export class JaccardCalculateInteractionsQueryParams {
-  public readonly cellTypeA?: string;
-  public readonly cellSubTypeA?: string;
-  public readonly cellTypeB?: string;
-  public readonly cellSubTypeB?: string;
-  public readonly experimentalDesign?: ExperimentalDesign;
-  public readonly disease?: string;
-  public readonly organism?: string;
-  public readonly signatureSourceDb?: string;
-  public readonly signatureType?: SignatureType;
-  public readonly onlyUniverseGenes?: boolean;
+  public static isA(object: any): object is CmapDrugInteraction {
+    return object !== undefined && object !== null
+      && Drug.isA(object.drug)
+      && typeof object.tes === 'number'
+      && typeof object.pvalue === 'number'
+      && typeof object.fdr === 'number';
+  }
 }

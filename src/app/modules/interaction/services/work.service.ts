@@ -19,19 +19,26 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {IdAndUri} from '../id-and-uri.model';
-import {WorkStep} from './work-step.model';
-import {ExecutionStatus} from './execution-status.enum';
+import { Injectable } from '@angular/core';
+import {Observable} from 'rxjs';
+import {Work} from '../../../models/work/work.model';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../environments/environment';
+import {DreimtError} from '../../notification/entities';
 
-export class Work {
-  public readonly id: IdAndUri;
-  public readonly name: string;
-  public readonly description: string;
-  public readonly creationDateTime: Date;
-  public readonly schedulingDateTime?: Date;
-  public readonly startingDateTime?: Date;
-  public readonly finishingDateTime?: Date;
-  public readonly resultReference: string;
-  public readonly status: ExecutionStatus;
-  public readonly steps: WorkStep[];
+@Injectable({
+  providedIn: 'root'
+})
+export class WorkService {
+
+  public constructor(
+    private http: HttpClient
+  ) { }
+
+  public getWork(uuid: string): Observable<Work> {
+    return this.http.get<Work>(`${environment.dreimtUrl}/work/${uuid}`)
+      .pipe(
+        DreimtError.throwOnError('Error retrieving work', `Work with UUID ${uuid} could not be retrieved`)
+      );
+  }
 }

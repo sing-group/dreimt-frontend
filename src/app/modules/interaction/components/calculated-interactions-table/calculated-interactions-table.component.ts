@@ -21,7 +21,14 @@
 
 import {Component, OnInit} from '@angular/core';
 import {QueryService} from '../../services/query.service';
-import {CalculatedInterationQueryResult} from '../../../../models/query/calculated-interation-query-result.model';
+import {ActivatedRoute} from '@angular/router';
+import {WorkService} from '../../services/work.service';
+import {Subscription, timer} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
+import {Work} from '../../../../models/work/work.model';
+import {ExecutionStatus} from '../../../../models/work/execution-status.enum';
+import {CmapDrugInteraction} from '../../../../models/interactions/cmap/cmap-drug-interaction.model';
+import {GeneOverlap} from '../../../../models/interactions/jaccard/gene-overlap.model';
 
 @Component({
   selector: 'app-drug-cell-interactions-table',
@@ -29,20 +36,76 @@ import {CalculatedInterationQueryResult} from '../../../../models/query/calculat
   styleUrls: ['./calculated-interactions-table.component.scss']
 })
 export class CalculatedInteractionsTableComponent implements OnInit {
-  public interactions: CalculatedInterationQueryResult[];
+  public interactions: GeneOverlap[] | CmapDrugInteraction[];
+
+  public uuid: string;
+  public work: Work;
 
   public displayedColumns: string[];
 
-  constructor(
-    private interactionsService: QueryService
+  private workSubscription: Subscription;
+
+  public constructor(
+    private route: ActivatedRoute,
+    private workService: WorkService,
+    private queryService: QueryService
   ) {
   }
 
-  ngOnInit() {
-    this.displayedColumns = ['drugName', 'cellTypeA', 'cellTypeB'];
+  public ngOnInit(): void {
+    this.displayedColumns = ['pValue', 'fdr'];
 
-    this.interactionsService.list()
-      .subscribe(interactions => this.interactions = interactions);
+    this.route.params.subscribe(params => {
+      this.uuid = params['uuid'];
+      this.watchWork();
+    });
+  }
+
+  public isLoading(): boolean {
+    return this.work === undefined && this.interactions === undefined;
+  }
+
+  public isFinished(): boolean {
+    return !this.isLoading() && this.work.status === ExecutionStatus.COMPLETED;
+  }
+
+  public currentProgress(): number {
+    if (this.work === undefined) {
+      return 0;
+    } else {
+      return 100 * this.work.steps
+        .map(step => step.progress)
+        .reduce((prev, curr) => Math.max(prev, curr), 0);
+    }
+  }
+
+  public getInterctionsType(): string {
+    if (this.interactions === undefined) {
+      return '';
+    } else {
+      // TODO: not the best way to do it, as an empty array will be always Jaccard.
+      return CmapDrugInteraction.isA(this.interactions[0]) ? 'Cmap' : 'Jaccard';
+    }
+  }
+
+  private watchWork(): void {
+    this.workSubscription = timer(0, 2000)
+      .pipe(
+        mergeMap(() => this.workService.getWork(this.uuid))
+      )
+      .subscribe(work => this.updateWork(work));
+  }
+
+  private updateWork(work: Work): void {
+    this.work = work;
+
+    if (work.status === ExecutionStatus.COMPLETED) {
+      this.queryService.getWorkResult(work)
+        .subscribe(interactions => this.interactions = interactions);
+
+      this.workSubscription.unsubscribe();
+      this.workSubscription = null;
+    }
   }
 
 }

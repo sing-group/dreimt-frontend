@@ -19,12 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {JaccardCalculateInteractionsQueryParams} from './jaccard-calculate-interactions-query-params.model';
-import {CmapCalculateInteractionsQueryParams} from './cmap-calculate-interactions-query-params.model';
-import {UpDownGenes} from './up-down-gene-set.model';
-import {GeneSet} from './gene-set.model';
+export class Drug {
+  public readonly commonName: string;
+  public readonly sourceName: string;
+  public readonly sourceDb: string;
 
-export class CalculateInteractionsQueryParamsModel {
-  public readonly params: JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams;
-  public readonly genes: UpDownGenes | GeneSet;
+  public static isA(object: any): object is Drug {
+    return object !== undefined && object !== null
+      && typeof object.commonName === 'string'
+      && typeof object.sourceName === 'string'
+      && typeof object.sourceDb === 'string';
+  }
 }

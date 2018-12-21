@@ -21,7 +21,7 @@
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CmapCalculateInteractionsQueryParams} from '../../../../models/query/cmap-calculate-interactions-query-params.model';
+import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
@@ -40,14 +40,14 @@ export class CmapQueryPanelComponent implements OnInit {
 
   @Output() public readonly configurationChanged: EventEmitter<CmapCalculateInteractionsQueryParams>;
 
-  public readonly formCmapQuery: FormGroup;
+  public readonly formGroup: FormGroup;
 
   public constructor(private formBuilder: FormBuilder) {
     this.debounceTime = CmapQueryPanelComponent.DEFAULT_VALUES.debounceTime;
 
     this.configurationChanged = new EventEmitter<CmapCalculateInteractionsQueryParams>();
 
-    this.formCmapQuery = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       'numPerm': [
         CmapQueryPanelComponent.DEFAULT_VALUES.numPerm,
         [Validators.required, Validators.min(1), Validators.max(1000)]
@@ -60,20 +60,35 @@ export class CmapQueryPanelComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.formCmapQuery.valueChanges
+    this.formGroup.valueChanges
       .pipe(
         debounceTime(this.debounceTime),
         distinctUntilChanged()
       )
     .subscribe(val => {
-      if (this.formCmapQuery.valid) {
-        this.configurationChanged.emit({
-          numPerm: val.numPerm,
-          maxPvalue: val.maxPvalue
-        });
+      if (this.formGroup.valid) {
+        this.emitConfiguration(val);
       } else {
-        this.configurationChanged.emit(undefined);
+        this.emitConfiguration();
       }
     });
+
+    this.emitConfiguration(this.formGroup.value);
+  }
+
+  private emitConfiguration(val?: {
+    numPerm: number;
+    maxPvalue: number;
+  }) {
+    let params: CmapCalculateInteractionsQueryParams;
+
+    if (val !== undefined) {
+      params = {
+        numPerm: val.numPerm,
+        maxPvalue: val.maxPvalue
+      };
+    }
+
+    this.configurationChanged.emit(params);
   }
 }

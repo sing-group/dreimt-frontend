@@ -23,8 +23,7 @@
   <mat-card-title>Interactions Query</mat-card-title>
 
   <mat-card-content class="query-container">
-    <mat-tab-group class="query-configuration" [(selectedIndex)]="selectedTab"
-                   (selectedTabChange)="selectedTabChanged()">
+    <mat-tab-group class="query-configuration" [(selectedIndex)]="selectedTab">
       <mat-tab label="Jaccard">
         <div class="tab-content">
           <app-jaccard-query-panel

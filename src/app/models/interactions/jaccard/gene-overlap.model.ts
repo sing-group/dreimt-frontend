@@ -19,19 +19,23 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {IdAndUri} from '../id-and-uri.model';
-import {WorkStep} from './work-step.model';
-import {ExecutionStatus} from './execution-status.enum';
+import {JaccardComparisonType} from './jaccard-comparison-type.enum';
+import {SignatureSummary} from './signature-summary.model';
 
-export class Work {
-  public readonly id: IdAndUri;
-  public readonly name: string;
-  public readonly description: string;
-  public readonly creationDateTime: Date;
-  public readonly schedulingDateTime?: Date;
-  public readonly startingDateTime?: Date;
-  public readonly finishingDateTime?: Date;
-  public readonly resultReference: string;
-  public readonly status: ExecutionStatus;
-  public readonly steps: WorkStep[];
+export class GeneOverlap {
+  public readonly sourceComparisonType: JaccardComparisonType;
+  public readonly targetSignatureData: SignatureSummary;
+  public readonly targetComparisonType: JaccardComparisonType;
+  public readonly jaccard: number;
+  public readonly pvalue: number;
+  public readonly fdr: number;
+
+  public static isA(object: any): object is GeneOverlap {
+    return object !== undefined && object !== null
+      && SignatureSummary.isA(object.targetSignatureData)
+      // TODO: check comparison type
+      && typeof object.jaccard === 'number'
+      && typeof object.pvalue === 'number'
+      && typeof object.fdr === 'number';
+  }
 }

@@ -21,16 +21,18 @@
 
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {CalculatedInterationQueryResult} from '../../../models/query/calculated-interation-query-result.model';
+import {CalculatedInterationQueryResult} from '../../../models/interactions/calculated-interation-query-result.model';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
-import {CalculateInteractionsQueryParamsModel} from '../../../models/query/calculate-interactions-query.params.model';
-import {WorkModel} from '../../../models/work/work.model';
-import {CmapCalculateInteractionsQueryParams} from '../../../models/query/cmap-calculate-interactions-query-params.model';
-import {UpDownGenes} from '../../../models/query/up-down-gene-set.model';
-import {GeneSet} from '../../../models/query/gene-set.model';
+import {CalculateInteractionsQueryParamsModel} from '../../../models/interactions/calculate-interactions-query.params.model';
+import {Work} from '../../../models/work/work.model';
+import {CmapCalculateInteractionsQueryParams} from '../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
+import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
+import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {toPlainObject} from '../../../utils/types';
+import {CmapDrugInteraction} from '../../../models/interactions/cmap/cmap-drug-interaction.model';
+import {GeneOverlap} from '../../../models/interactions/jaccard/gene-overlap.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,10 +51,7 @@ export class QueryService {
     );
   }
 
-  /*
-   * TODO: this method should return something like an Observable<Work>
-   */
-  public launchQuery(queryParams: CalculateInteractionsQueryParamsModel): Observable<WorkModel> {
+  public launchQuery(queryParams: CalculateInteractionsQueryParamsModel): Observable<Work> {
     let body: {
       upGenes: string[];
       downGenes?: string[];
@@ -77,10 +76,19 @@ export class QueryService {
       })
     };
 
-    return this.http.post<WorkModel>(
+    return this.http.post<Work>(
       `${environment.dreimtUrl}/interactions/query/${analysisResource}`, body, options
     ).pipe(
       DreimtError.throwOnError('Drug-Cell error', 'Drug-cell interactions could not be retrieved.')
     );
+  }
+
+  public getWorkResult(work: Work): Observable<GeneOverlap[] | CmapDrugInteraction[]> {
+    return this.http.get<GeneOverlap[] | CmapDrugInteraction[]>(work.resultReference)
+      .pipe(
+        DreimtError.throwOnError(
+          'Error retrieving results', 'Results could not be retrieved from the backend.'
+        )
+      );
   }
 }

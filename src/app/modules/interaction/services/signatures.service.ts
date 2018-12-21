@@ -24,7 +24,9 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
-import {JaccardCalculateInteractionsQueryParams} from '../../../models/query/jaccard-calculate-interactions-query-params.model';
+import {
+  JaccardCalculateInteractionsQueryParams
+} from '../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {toPlainObject} from '../../../utils/types';
 
 @Injectable({

@@ -19,19 +19,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {IdAndUri} from '../id-and-uri.model';
-import {WorkStep} from './work-step.model';
-import {ExecutionStatus} from './execution-status.enum';
+import {JaccardCalculateInteractionsQueryParams} from './jaccard/jaccard-calculate-interactions-query-params.model';
+import {CmapCalculateInteractionsQueryParams} from './cmap/cmap-calculate-interactions-query-params.model';
+import {UpDownGenes} from './up-down-gene-set.model';
+import {GeneSet} from './gene-set.model';
 
-export class Work {
-  public readonly id: IdAndUri;
-  public readonly name: string;
-  public readonly description: string;
-  public readonly creationDateTime: Date;
-  public readonly schedulingDateTime?: Date;
-  public readonly startingDateTime?: Date;
-  public readonly finishingDateTime?: Date;
-  public readonly resultReference: string;
-  public readonly status: ExecutionStatus;
-  public readonly steps: WorkStep[];
+export class CalculateInteractionsQueryParamsModel {
+  public readonly params: JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams;
+  public readonly genes: UpDownGenes | GeneSet;
 }

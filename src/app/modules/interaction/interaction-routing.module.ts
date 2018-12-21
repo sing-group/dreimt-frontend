@@ -24,6 +24,7 @@ import {
   CalculatedInteractionsQueryPanelComponent
 } from './components/calculated-interactions-query-panel/calculated-interactions-query-panel.component';
 import {NgModule} from '@angular/core';
+import {CalculatedInteractionsTableComponent} from './components/calculated-interactions-table/calculated-interactions-table.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: 'query',
     component: CalculatedInteractionsQueryPanelComponent
+  },
+  {
+    path: 'calculated/:uuid',
+    component: CalculatedInteractionsTableComponent
   }
 ];
 

@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Drug} from './drug.model';
+import {Drug} from '../drug.model';
 import {CellSignature} from './cell-signature.model';
 
 export class DrugCellDatabaseInteraction {

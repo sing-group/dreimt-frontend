@@ -19,19 +19,19 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {IdAndUri} from '../id-and-uri.model';
-import {WorkStep} from './work-step.model';
-import {ExecutionStatus} from './execution-status.enum';
 
-export class Work {
-  public readonly id: IdAndUri;
-  public readonly name: string;
-  public readonly description: string;
-  public readonly creationDateTime: Date;
-  public readonly schedulingDateTime?: Date;
-  public readonly startingDateTime?: Date;
-  public readonly finishingDateTime?: Date;
-  public readonly resultReference: string;
-  public readonly status: ExecutionStatus;
-  public readonly steps: WorkStep[];
+import {ExperimentalDesign} from '../../experimental-design.enum';
+import {SignatureType} from '../../signature-type.enum';
+
+export class JaccardCalculateInteractionsQueryParams {
+  public readonly cellTypeA?: string;
+  public readonly cellSubTypeA?: string;
+  public readonly cellTypeB?: string;
+  public readonly cellSubTypeB?: string;
+  public readonly experimentalDesign?: ExperimentalDesign;
+  public readonly disease?: string;
+  public readonly organism?: string;
+  public readonly signatureSourceDb?: string;
+  public readonly signatureType?: SignatureType;
+  public readonly onlyUniverseGenes?: boolean;
 }

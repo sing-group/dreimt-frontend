@@ -19,8 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class Drug {
-  public readonly commonName: string;
-  public readonly sourceName: string;
-  public readonly sourceDb: string;
-}
+import { TestBed } from '@angular/core/testing';
+
+import { WorkService } from './work.service';
+
+describe('WorkService', () => {
+  beforeEach(() => TestBed.configureTestingModule({}));
+
+  it('should be created', () => {
+    const service: WorkService = TestBed.get(WorkService);
+    expect(service).toBeTruthy();
+  });
+});

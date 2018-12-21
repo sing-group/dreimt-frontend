@@ -29,7 +29,7 @@ import {Router} from '@angular/router';
 })
 export class MainComponent {
 
-  constructor(private router: Router) {
+  public constructor(private router: Router) {
   }
 
   public onNavigateToDatabase(): void {

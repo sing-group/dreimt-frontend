@@ -20,7 +20,9 @@
  */
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {JaccardCalculateInteractionsQueryParams} from '../../../../models/query/jaccard-calculate-interactions-query-params.model';
+import {
+  JaccardCalculateInteractionsQueryParams
+} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {SignaturesService} from '../../services/signatures.service';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';

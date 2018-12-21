@@ -19,19 +19,6 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {IdAndUri} from '../id-and-uri.model';
-import {WorkStep} from './work-step.model';
-import {ExecutionStatus} from './execution-status.enum';
-
-export class Work {
-  public readonly id: IdAndUri;
-  public readonly name: string;
-  public readonly description: string;
-  public readonly creationDateTime: Date;
-  public readonly schedulingDateTime?: Date;
-  public readonly startingDateTime?: Date;
-  public readonly finishingDateTime?: Date;
-  public readonly resultReference: string;
-  public readonly status: ExecutionStatus;
-  public readonly steps: WorkStep[];
+export enum JaccardComparisonType {
+  GENESET, SIGNATURE_UP, SIGNATURE_DOWN
 }

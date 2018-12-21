@@ -19,19 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {IdAndUri} from '../id-and-uri.model';
-import {WorkStep} from './work-step.model';
-import {ExecutionStatus} from './execution-status.enum';
+export class SignatureSummary {
+  public readonly signatureName: string;
+  public readonly signatureGenesUri: string;
+  public readonly articleMetadataUri: string;
 
-export class Work {
-  public readonly id: IdAndUri;
-  public readonly name: string;
-  public readonly description: string;
-  public readonly creationDateTime: Date;
-  public readonly schedulingDateTime?: Date;
-  public readonly startingDateTime?: Date;
-  public readonly finishingDateTime?: Date;
-  public readonly resultReference: string;
-  public readonly status: ExecutionStatus;
-  public readonly steps: WorkStep[];
+  public static isA(object: any): object is SignatureSummary {
+    return object !== undefined && object !== null
+      && typeof object.signatureName === 'string'
+      && typeof object.signatureGenesUri === 'string'
+      && typeof object.articleMetadataUri === 'string';
+  }
 }
