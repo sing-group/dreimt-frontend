@@ -29,6 +29,9 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
   styleUrls: ['./number-field.component.scss']
 })
 export class NumberFieldComponent implements OnInit {
+  @Input() public step: string;
+  @Input() public max: string;
+  @Input() public min: string;
   @Input() public label: string;
   @Input() public debounceTime: number;
 
