@@ -32,7 +32,9 @@ import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {toPlainObject} from '../../../utils/types';
 import {GeneOverlapResults} from '../../../models/interactions/jaccard/gene-overlap-results.model';
-import {CmapDrugInteractionResults} from '../../../models/interactions/cmap/cmap-drug-interaction-results.model';
+import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
+import {CmapDrugInteractionResults} from '../../../models/interactions/cmap/cmap-drug-interaction-results';
+import {CmapQueryResultsMetadata} from '../../../models/interactions/cmap/cmap-query-results-metadata';
 
 @Injectable({
   providedIn: 'root'
@@ -83,8 +85,10 @@ export class QueryService {
     );
   }
 
-  public getWorkResult(work: Work): Observable<GeneOverlapResults | CmapDrugInteractionResults> {
-    return this.http.get<GeneOverlapResults | CmapDrugInteractionResults>(work.resultReference)
+  public getWorkResult(work: Work): Observable<JaccardQueryResultMetadata | CmapQueryResultsMetadata> {
+    return this.http.get<JaccardQueryResultMetadata | CmapQueryResultsMetadata>(
+      work.resultReference
+    )
       .pipe(
         DreimtError.throwOnError(
           'Error retrieving results', 'Results could not be retrieved from the backend.'

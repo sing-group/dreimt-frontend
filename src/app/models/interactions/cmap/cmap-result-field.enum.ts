@@ -1,0 +1,9 @@
+export enum CmapResultField {
+  NONE = 'NONE',
+  DRUG_SOURCE_NAME = 'DRUG_SOURCE_NAME',
+  DRUG_SOURCE_DB = 'DRUG_SOURCE_DB',
+  DRUG_COMMON_NAME = 'DRUG_COMMON_NAME',
+  TES = 'TES',
+  P_VALUE = 'P_VALUE',
+  FDR = 'FDR',
+}

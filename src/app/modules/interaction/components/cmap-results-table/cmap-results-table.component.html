@@ -1,0 +1,131 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Cmap results</mat-card-title>
+    <mat-card-subtitle>{{resultId}}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <mat-expansion-panel *ngIf="isMetadataAvailable()">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Query parameters
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-list>
+        <mat-list-item> Maximum p-value: {{cmapResultMetadata.maxPvalue}}</mat-list-item>
+        <mat-list-item> Number of GSEA permutations: {{cmapResultMetadata.numPerm}}</mat-list-item>
+
+        <mat-list-item> Query {{getUpGenesLabel()}} genes: {{cmapResultMetadata.upGenesCount}}</mat-list-item>
+        <mat-list-item> Query {{getUpGenesLabel()}} genes in universe: {{cmapResultMetadata.upUniverseGenesCount}}
+        </mat-list-item>
+
+
+        <mat-list-item *ngIf="cmapResultMetadata.downGenesCount"> Query down genes:
+          {{cmapResultMetadata.downGenesCount}}
+        </mat-list-item>
+        <mat-list-item *ngIf="cmapResultMetadata.downUniverseGenesCount"> Query down genes in
+          universe: {{cmapResultMetadata.downUniverseGenesCount}}
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="tes">
+        <th id="tes" mat-header-cell *matHeaderCellDef>
+          <span id="tesHead" mat-sort-header="TES">TES</span>
+
+          <app-number-field id="tesMin" label="Min." [debounceTime]="debounceTime" [min]="-10" [max]="10" [step]="0.1"
+                            (valueChange)="minTesFilter.setValue($event)"></app-number-field>
+
+          <app-number-field id="tesMax" label="Max." [debounceTime]="debounceTime" [min]="-10" [max]="10" [step]="0.1"
+                            (valueChange)="maxTesFilter.setValue($event)"></app-number-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.tes | number : '1.4'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="pValue">
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="P_VALUE">p-value</span>
+
+          <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
+                            (valueChange)="maxPvalueFilter.setValue($event)"></app-number-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.pvalue | number : '1.4'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="fdr">
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="FDR">FDR</span>
+
+          <app-number-field [initialValue]="DEFAULT_FDR" label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1"
+                            [step]="0.05"
+                            (valueChange)="maxFdrFilter.setValue($event)"></app-number-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.fdr | number : '1.4'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="drugSourceName">
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="DRUG_SOURCE_NAME">Drug Source Name</span>
+
+          <app-filter-field label="Filter"
+                            [options]="drugSourceNameFieldFilter.options"
+                            [(filter)]="drugSourceNameFieldFilter.filter"
+                            (filterChange)="updateResults()"
+                            [debounceTime]="debounceTime"
+                            [maxOptions]="maxOptions"></app-filter-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.drug.sourceName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="drugCommonName">
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="DRUG_COMMON_NAME">Drug Common Name</span>
+
+          <app-filter-field label="Filter"
+                            [options]="drugCommonNameFieldFilter.options"
+                            [(filter)]="drugCommonNameFieldFilter.filter"
+                            (filterChange)="updateResults()"
+                            [debounceTime]="debounceTime"
+                            [maxOptions]="maxOptions"></app-filter-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.drug.commonName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="drugSourceDb">
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="DRUG_SOURCE_DB">Drug Source DB</span>
+
+          <app-filter-field label="Filter"
+                            [options]="drugSourceDbFieldFilter.options"
+                            [(filter)]="drugSourceDbFieldFilter.filter"
+                            (filterChange)="updateResults()"
+                            [debounceTime]="debounceTime"
+                            [maxOptions]="maxOptions"></app-filter-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.drug.sourceDb}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+    </table>
+
+    <mat-toolbar>
+      <mat-toolbar-row id="pagination-container">
+        <div id="loading" *ngIf="dataSource.loading$ | async">
+          <mat-spinner [diameter]="30" [strokeWidth]="10"></mat-spinner>
+          <mat-label>Loading...</mat-label>
+        </div>
+        <mat-paginator id="paginator" [length]="totalResultsSize" [pageSize]="10" [pageSizeOptions]="[10, 20, 50, 100]"
+                       showFirstLastButtons="true">
+        </mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button (click)="downloadCsv()">Download as CSV</button>
+  </mat-card-actions>
+</mat-card>

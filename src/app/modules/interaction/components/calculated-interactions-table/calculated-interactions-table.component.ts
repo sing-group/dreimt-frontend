@@ -27,8 +27,8 @@ import {Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import {Work} from '../../../../models/work/work.model';
 import {ExecutionStatus} from '../../../../models/work/execution-status.enum';
-import {GeneOverlapResults} from '../../../../models/interactions/jaccard/gene-overlap-results.model';
-import {CmapDrugInteractionResults} from '../../../../models/interactions/cmap/cmap-drug-interaction-results.model';
+import {JaccardQueryResultMetadata} from '../../../../models/interactions/jaccard/jaccard-query-result-metadata';
+import {CmapQueryResultsMetadata} from '../../../../models/interactions/cmap/cmap-query-results-metadata';
 
 @Component({
   selector: 'app-drug-cell-interactions-table',
@@ -36,12 +36,10 @@ import {CmapDrugInteractionResults} from '../../../../models/interactions/cmap/c
   styleUrls: ['./calculated-interactions-table.component.scss']
 })
 export class CalculatedInteractionsTableComponent implements OnInit {
-  public results: GeneOverlapResults | CmapDrugInteractionResults;
+  public results: JaccardQueryResultMetadata | CmapQueryResultsMetadata;
 
   public uuid: string;
   public work: Work;
-
-  public displayedColumns: string[];
 
   private workSubscription: Subscription;
 
@@ -50,7 +48,6 @@ export class CalculatedInteractionsTableComponent implements OnInit {
     private workService: WorkService,
     private queryService: QueryService
   ) {
-    this.displayedColumns = ['pValue', 'fdr'];
   }
 
   public ngOnInit(): void {
@@ -78,13 +75,16 @@ export class CalculatedInteractionsTableComponent implements OnInit {
     }
   }
 
-  public getInteractionsType(): string {
-    if (this.results === undefined) {
-      return '';
-    } else {
-      // TODO: not the best way to do it, as an empty array will be always Jaccard.
-      return CmapDrugInteractionResults.isA(this.results) ? 'Cmap' : 'Jaccard';
-    }
+  public getResultId(): string {
+    return this.work.id.id;
+  }
+
+  public isJaccard(): boolean {
+    return JaccardQueryResultMetadata.isA(this.results);
+  }
+
+  public isCmap(): boolean {
+    return CmapQueryResultsMetadata.isA(this.results);
   }
 
   private watchWork(): void {
@@ -106,5 +106,4 @@ export class CalculatedInteractionsTableComponent implements OnInit {
       this.workSubscription = null;
     }
   }
-
 }

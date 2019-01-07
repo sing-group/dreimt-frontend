@@ -29,6 +29,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
   styleUrls: ['./number-field.component.scss']
 })
 export class NumberFieldComponent implements OnInit {
+  @Input() public initialValue: number;
   @Input() public step: string;
   @Input() public max: string;
   @Input() public min: string;
@@ -45,6 +46,9 @@ export class NumberFieldComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    if (this.initialValue !== undefined) {
+      this.formControl.setValue(this.initialValue);
+    }
     this.formControl.valueChanges
       .pipe(
         debounceTime(this.debounceTime),

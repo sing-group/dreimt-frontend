@@ -19,14 +19,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {isArrayOf} from '../../../utils/types';
 import {GeneOverlap} from './gene-overlap.model';
+import {PartialResult} from '../../../utils/partial-data-source';
 
-export class GeneOverlapResults {
-  public readonly interactions: GeneOverlap[];
-
-  public static isA(object: any): object is GeneOverlapResults {
-    return object !== undefined && object !== null
-      && isArrayOf(object.interactions, GeneOverlap.isA);
-  }
+export class GeneOverlapResults extends PartialResult<GeneOverlap> {
 }

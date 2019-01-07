@@ -19,41 +19,25 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<mat-card>
-  <mat-card-header *ngIf="isFinished()">
-    <mat-card-title>Calculated interactions ({{getInteractionsType()}})</mat-card-title>
-    <mat-card-subtitle>{{uuid}}</mat-card-subtitle>
-  </mat-card-header>
 
-  <mat-card-content>
-    <ng-container *ngIf="isLoading()">
-      <p>Loading results...</p>
-      <mat-spinner diameter="100"></mat-spinner>
-    </ng-container>
+<ng-container *ngIf="!isFinished()">
+  <p>
+    We are comparing your signature with our database.<br/>
+    This may take some time, so, please, be patient...
+  </p>
+  <mat-spinner diameter="100"></mat-spinner>
+</ng-container>
 
-    <ng-container *ngIf="!isFinished()">
-      <p>
-        We are comparing your signature with our database.<br/>
-        This may take some time, so, please, be patient...
-      </p>
-      <mat-spinner diameter="100"></mat-spinner>
-    </ng-container>
+<ng-container *ngIf="isFinished()">
+  <ng-container *ngIf="isLoading()">
+    <p>Loading results...</p>
+    <mat-spinner diameter="100"></mat-spinner>
+  </ng-container>
 
-    <ng-container *ngIf="isFinished()">
-      <table mat-table [dataSource]="results?.interactions">
-        <ng-container matColumnDef="pValue">
-          <th mat-header-cell *matHeaderCellDef>p-value</th>
-          <td mat-cell *matCellDef="let interaction">{{interaction.pvalue}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="fdr">
-          <th mat-header-cell *matHeaderCellDef>FDR</th>
-          <td mat-cell *matCellDef="let interaction">{{interaction.fdr}}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </ng-container>
-  </mat-card-content>
-</mat-card>
+  <ng-container *ngIf="!isLoading()">
+    <app-jaccard-results-table *ngIf="isJaccard()" [jaccardResultMetadata]="results"
+                               [resultId]="getResultId()"></app-jaccard-results-table>
+    <app-cmap-results-table *ngIf="isCmap()" [cmapResultMetadata]="results"
+                            [resultId]="getResultId()"></app-cmap-results-table>
+  </ng-container>
+</ng-container>

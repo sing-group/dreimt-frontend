@@ -26,14 +26,19 @@ import {
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatInputModule,
+  MatListModule,
+  MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSliderModule,
+  MatSortModule,
   MatTableModule,
-  MatTabsModule
+  MatTabsModule,
+  MatToolbarModule
 } from '@angular/material';
 import {QueryService} from './services/query.service';
 import {HttpClientModule} from '@angular/common/http';
@@ -43,9 +48,9 @@ import {CmapQueryPanelComponent} from './components/cmap-query-panel/cmap-query-
 import {GeneListComponent} from './components/gene-list/gene-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
-import {
-  CalculatedInteractionsQueryPanelComponent
-} from './components/calculated-interactions-query-panel/calculated-interactions-query-panel.component';
+import {CalculatedInteractionsQueryPanelComponent} from './components/calculated-interactions-query-panel/calculated-interactions-query-panel.component';
+import {JaccardResultsTableComponent} from './components/jaccard-results-table/jaccard-results-table.component';
+import {CmapResultsTableComponent} from './components/cmap-results-table/cmap-results-table.component';
 
 
 @NgModule({
@@ -57,14 +62,19 @@ import {
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
+    MatListModule,
     MatProgressBarModule,
     MatSelectModule,
     MatSliderModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
     MatTableModule,
     MatTabsModule,
+    MatToolbarModule,
+    MatSortModule,
     ReactiveFormsModule,
     SharedModule
   ],
@@ -73,7 +83,9 @@ import {
     CalculatedInteractionsTableComponent,
     CmapQueryPanelComponent,
     GeneListComponent,
-    JaccardQueryPanelComponent
+    JaccardQueryPanelComponent,
+    JaccardResultsTableComponent,
+    CmapResultsTableComponent
   ],
   providers: [
     QueryService

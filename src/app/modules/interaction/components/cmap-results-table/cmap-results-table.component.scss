@@ -1,0 +1,43 @@
+table {
+  width: 100%;
+}
+
+#pagination-container {
+  display: grid;
+  grid-template-areas: 'loading paginator';
+  grid-template-columns: 1fr 1fr;
+}
+
+#loading {
+  grid-area: loading;
+  justify-self: start;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 10px;
+  place-content: center / start;
+}
+
+#paginator {
+  grid-area: paginator;
+  justify-self: end;
+  background-color: transparent;
+}
+
+#tes {
+  display: grid;
+  grid-template-areas: 'tesHead tesHead' 'tesMin tesMax';
+  grid-template-columns: 80px 80px;
+  grid-column-gap: 8px;
+}
+
+#tesHead {
+  grid-area: tesHead;
+}
+
+#tesMin {
+  grid-area: tesMin;
+}
+
+#tesMax {
+  grid-area: tesMax;
+}
