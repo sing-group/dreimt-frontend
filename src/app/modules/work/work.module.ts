@@ -19,30 +19,32 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function isArrayOfStrings(object: any): object is string[] {
-  return Array.isArray(object) && object.every(item => typeof item === 'string');
-}
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatButtonModule, MatIconModule, MatListModule, MatTableModule, MatTooltipModule} from '@angular/material';
+import {WorkListComponent} from './components/work-list/work-list.component';
+import {WorkService} from './services/work.service';
+import {ExecutionStatusIconPipe} from './pipes/execution-status-icon.pipe';
 
-export function isArrayOf<T>(object: any, checkItem: ((any) => boolean)): object is T[] {
-  return Array.isArray(object) && object.every(checkItem);
-}
-
-export function toPlainObject(params: object, fieldsToIgnore: string[] = []): {
-  [param: string]: string;
-} {
-  return Object.keys(params).reduce((acc, key) => {
-    const value = params[key];
-
-    if (value !== undefined && value !== null && !fieldsToIgnore.includes(key)) {
-      acc[key] = String(value);
-    }
-
-    return acc;
-  }, {});
-}
-
-export function compareStrings(s1: string, s2: string): number {
-  if (s1 < s2) { return -1; }
-  if (s1 > s2) { return 1; }
-  return 0;
+@NgModule({
+  declarations: [
+    WorkListComponent,
+    ExecutionStatusIconPipe
+  ],
+  exports: [
+    WorkListComponent
+  ],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatTableModule,
+    MatTooltipModule
+  ],
+  providers: [
+    WorkService
+  ]
+})
+export class WorkModule {
 }

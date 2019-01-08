@@ -19,33 +19,31 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div class="container">
-  <header>
-    <div class="header-left mat-title">
-      <a routerLink="/"><img id="logo" src="assets/logo.svg" [alt]="title"></a>
-    </div>
-    <div class="header-right">
-      <button mat-button [matBadge]="workCount" matBadgePosition="before" matBadgeColor="accent"
-              (click)="queriesList.toggle()">
-        Queries
+<ng-container *ngIf="works.length === 0">
+  No results found.
+</ng-container>
+
+<table mat-table [dataSource]="works">
+  <ng-container matColumnDef="status">
+    <td class="status" mat-cell *matCellDef="let work" [matTooltip]="work.status">
+      <mat-icon>{{work.status | executionStatusIcon}}</mat-icon>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="info">
+    <td mat-cell *matCellDef="let work">
+      {{work.id.id}}<br/>
+      Created on {{work.creationDateTime | date}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <td mat-cell *matCellDef="let work">
+      <button mat-icon-button (click)="goToWork(work.id.id)" matTooltip="Open">
+        <mat-icon>open_in_new</mat-icon>
       </button>
-    </div>
-  </header>
+    </td>
+  </ng-container>
 
-  <main>
-    <mat-sidenav-container id="main-container">
-      <mat-sidenav #queriesList mode="side" position="end">
-        <app-work-list></app-work-list>
-      </mat-sidenav>
-      <mat-sidenav-content id="main-content">
-        <router-outlet></router-outlet>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-  </main>
-
-  <footer>
-    <div class="footer-right">&copy;SING</div>
-  </footer>
-</div>
-
-<simple-notifications></simple-notifications>
+  <tr mat-row *matRowDef="let work; columns: ['status', 'info', 'actions'];"></tr>
+</table>

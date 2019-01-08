@@ -22,13 +22,13 @@
 import {Component, OnInit} from '@angular/core';
 import {QueryService} from '../../services/query.service';
 import {ActivatedRoute} from '@angular/router';
-import {WorkService} from '../../services/work.service';
 import {Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import {Work} from '../../../../models/work/work.model';
 import {ExecutionStatus} from '../../../../models/work/execution-status.enum';
 import {JaccardQueryResultMetadata} from '../../../../models/interactions/jaccard/jaccard-query-result-metadata';
 import {CmapQueryResultsMetadata} from '../../../../models/interactions/cmap/cmap-query-results-metadata';
+import {WorkService} from '../../../work/services/work.service';
 
 @Component({
   selector: 'app-drug-cell-interactions-table',

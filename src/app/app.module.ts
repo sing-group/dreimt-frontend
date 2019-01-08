@@ -32,6 +32,7 @@ import {MainModule} from './modules/main/main.module';
 import {DatabaseModule} from './modules/database/database.module';
 import {MatBadgeModule, MatButtonModule, MatListModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 import {AppRoutingModule} from './app-routing.module';
+import {WorkModule} from './modules/work/work.module';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {AppRoutingModule} from './app-routing.module';
     SimpleNotificationsModule.forRoot({
       timeOut: 5000,
       preventDuplicates: true
-    })
+    }),
+    WorkModule
   ],
   providers: [
     {

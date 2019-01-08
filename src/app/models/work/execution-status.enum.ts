@@ -26,3 +26,9 @@ export enum ExecutionStatus {
   SCHEDULED = 'SCHEDULED',
   CREATE = 'CREATED'
 }
+
+export function isActiveExecution(status: ExecutionStatus): boolean {
+  return status === ExecutionStatus.CREATE
+    || status === ExecutionStatus.RUNNING
+    || status === ExecutionStatus.SCHEDULED;
+}

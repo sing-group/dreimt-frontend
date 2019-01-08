@@ -19,30 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function isArrayOfStrings(object: any): object is string[] {
-  return Array.isArray(object) && object.every(item => typeof item === 'string');
-}
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-export function isArrayOf<T>(object: any, checkItem: ((any) => boolean)): object is T[] {
-  return Array.isArray(object) && object.every(checkItem);
-}
+import { WorkListComponent } from './work-list.component';
 
-export function toPlainObject(params: object, fieldsToIgnore: string[] = []): {
-  [param: string]: string;
-} {
-  return Object.keys(params).reduce((acc, key) => {
-    const value = params[key];
+describe('WorkListComponent', () => {
+  let component: WorkListComponent;
+  let fixture: ComponentFixture<WorkListComponent>;
 
-    if (value !== undefined && value !== null && !fieldsToIgnore.includes(key)) {
-      acc[key] = String(value);
-    }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ WorkListComponent ]
+    })
+    .compileComponents();
+  }));
 
-    return acc;
-  }, {});
-}
+  beforeEach(() => {
+    fixture = TestBed.createComponent(WorkListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-export function compareStrings(s1: string, s2: string): number {
-  if (s1 < s2) { return -1; }
-  if (s1 > s2) { return 1; }
-  return 0;
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

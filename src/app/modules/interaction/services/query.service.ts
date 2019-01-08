@@ -31,17 +31,18 @@ import {CmapCalculateInteractionsQueryParams} from '../../../models/interactions
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {toPlainObject} from '../../../utils/types';
-import {GeneOverlapResults} from '../../../models/interactions/jaccard/gene-overlap-results.model';
 import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
-import {CmapDrugInteractionResults} from '../../../models/interactions/cmap/cmap-drug-interaction-results';
 import {CmapQueryResultsMetadata} from '../../../models/interactions/cmap/cmap-query-results-metadata';
+import {tap} from 'rxjs/operators';
+import {WorkService} from '../../work/services/work.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QueryService {
   public constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private workService: WorkService
   ) {
   }
 
@@ -81,6 +82,7 @@ export class QueryService {
     return this.http.post<Work>(
       `${environment.dreimtUrl}/interactions/query/${analysisResource}`, body, options
     ).pipe(
+      tap(work => this.workService.addUserWork(work.id.id)),
       DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.')
     );
   }

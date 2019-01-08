@@ -19,26 +19,29 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
-import {Work} from '../../../models/work/work.model';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../../environments/environment';
-import {DreimtError} from '../../notification/entities';
+import {Pipe, PipeTransform} from '@angular/core';
+import {ExecutionStatus} from '../../../models/work/execution-status.enum';
 
-@Injectable({
-  providedIn: 'root'
+@Pipe({
+  name: 'executionStatusIcon'
 })
-export class WorkService {
+export class ExecutionStatusIconPipe implements PipeTransform {
 
-  public constructor(
-    private http: HttpClient
-  ) { }
-
-  public getWork(uuid: string): Observable<Work> {
-    return this.http.get<Work>(`${environment.dreimtUrl}/work/${uuid}`)
-      .pipe(
-        DreimtError.throwOnError('Error retrieving work', `Work with UUID ${uuid} could not be retrieved`)
-      );
+  transform(value: string | ExecutionStatus): string {
+    switch (value) {
+      case ExecutionStatus.CREATE:
+        return 'add_circle_outline';
+      case ExecutionStatus.SCHEDULED:
+        return 'schedule';
+      case ExecutionStatus.RUNNING:
+        return 'play_circle_outline';
+      case ExecutionStatus.COMPLETED:
+        return 'check_circle_outline';
+      case ExecutionStatus.FAILED:
+        return 'error_outline';
+      default:
+        return '';
+    }
   }
+
 }

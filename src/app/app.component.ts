@@ -23,6 +23,7 @@ import {Component, OnInit} from '@angular/core';
 import {NotificationService} from './modules/notification/services/notification.service';
 import {NotificationsService as ToastService} from 'angular2-notifications';
 import {Severity} from './modules/notification/entities';
+import {WorkService} from './modules/work/services/work.service';
 
 @Component({
   selector: 'app-root',
@@ -32,13 +33,20 @@ import {Severity} from './modules/notification/entities';
 export class AppComponent implements OnInit {
   public readonly title = 'DREIMT';
 
-  constructor(
+  public workCount: number;
+
+  public constructor(
+    private workService: WorkService,
     private notificationService: NotificationService,
-    private toastService: ToastService
+    private toastService: ToastService,
   ) {
+    this.workCount = 0;
   }
 
   public ngOnInit(): void {
+    this.workService.listUserWorks()
+      .subscribe(works => this.workCount = works.length);
+
     this.notificationService.getMessages().subscribe(
       message => {
         switch (message.severity) {

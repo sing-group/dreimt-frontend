@@ -48,7 +48,9 @@ import {CmapQueryPanelComponent} from './components/cmap-query-panel/cmap-query-
 import {GeneListComponent} from './components/gene-list/gene-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
-import {CalculatedInteractionsQueryPanelComponent} from './components/calculated-interactions-query-panel/calculated-interactions-query-panel.component';
+import {
+  CalculatedInteractionsQueryPanelComponent
+} from './components/calculated-interactions-query-panel/calculated-interactions-query-panel.component';
 import {JaccardResultsTableComponent} from './components/jaccard-results-table/jaccard-results-table.component';
 import {CmapResultsTableComponent} from './components/cmap-results-table/cmap-results-table.component';
 
@@ -91,5 +93,4 @@ import {CmapResultsTableComponent} from './components/cmap-results-table/cmap-re
     QueryService
   ]
 })
-export class InteractionModule {
-}
+export class InteractionModule {}
