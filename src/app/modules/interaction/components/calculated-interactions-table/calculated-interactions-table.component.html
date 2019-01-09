@@ -20,19 +20,19 @@
   -->
 
 
-<ng-container *ngIf="!isFinished()">
+<div *ngIf="!isFinished()">
   <p>
     We are comparing your signature with our database.<br/>
     This may take some time, so, please, be patient...
   </p>
   <mat-spinner diameter="100"></mat-spinner>
-</ng-container>
+</div>
 
 <ng-container *ngIf="isFinished()">
-  <ng-container *ngIf="isLoading()">
+  <div *ngIf="isLoading()">
     <p>Loading results...</p>
     <mat-spinner diameter="100"></mat-spinner>
-  </ng-container>
+  </div>
 
   <ng-container *ngIf="!isLoading()">
     <app-jaccard-results-table *ngIf="isJaccard()" [jaccardResultMetadata]="results"
