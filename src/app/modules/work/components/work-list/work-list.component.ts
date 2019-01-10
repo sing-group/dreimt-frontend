@@ -27,6 +27,8 @@ import {mergeMap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {isActiveExecution} from '../../../../models/work/execution-status.enum';
 import {compareDates} from '../../../../utils/types';
+import {MatDialog} from '@angular/material';
+import {ConfirmDeletionDialogComponent} from './confirm-deletion-dialog.component';
 
 @Component({
   selector: 'app-work-list',
@@ -39,8 +41,9 @@ export class WorkListComponent implements OnInit {
   private updater: Subscription;
 
   public constructor(
-    private router: Router,
-    private workService: WorkService
+    private confirmDialog: MatDialog,
+    private workService: WorkService,
+    private router: Router
   ) {
     this.works = [];
     this.updater = null;
@@ -56,6 +59,15 @@ export class WorkListComponent implements OnInit {
 
   public goToWork(uuid: string): void {
     this.router.navigate(['calculated', uuid]);
+  }
+
+  public deleteWork(uuid: string): void {
+    this.confirmDialog.open(ConfirmDeletionDialogComponent, {
+      data: {workUuid: uuid}
+    })
+    .afterClosed().subscribe(workUuid => {
+      this.workService.removeUserWork(workUuid);
+    });
   }
 
   private updateWorks(works: Work[], merge: boolean = false): void {

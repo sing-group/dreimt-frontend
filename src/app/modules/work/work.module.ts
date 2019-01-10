@@ -21,15 +21,20 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MatButtonModule, MatIconModule, MatListModule, MatTableModule, MatTooltipModule} from '@angular/material';
+import {MatButtonModule, MatDialogModule, MatIconModule, MatListModule, MatTableModule, MatTooltipModule} from '@angular/material';
 import {WorkListComponent} from './components/work-list/work-list.component';
 import {WorkService} from './services/work.service';
 import {ExecutionStatusIconPipe} from './pipes/execution-status-icon.pipe';
+import {ConfirmDeletionDialogComponent} from './components/work-list/confirm-deletion-dialog.component';
 
 @NgModule({
   declarations: [
-    WorkListComponent,
-    ExecutionStatusIconPipe
+    ConfirmDeletionDialogComponent,
+    ExecutionStatusIconPipe,
+    WorkListComponent
+  ],
+  entryComponents: [
+    ConfirmDeletionDialogComponent
   ],
   exports: [
     WorkListComponent
@@ -37,6 +42,7 @@ import {ExecutionStatusIconPipe} from './pipes/execution-status-icon.pipe';
   imports: [
     CommonModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
     MatListModule,
     MatTableModule,
