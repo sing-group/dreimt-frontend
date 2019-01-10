@@ -22,9 +22,7 @@
 import {Component} from '@angular/core';
 import {QueryService} from '../../services/query.service';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
-import {
-  JaccardCalculateInteractionsQueryParams
-} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
+import {JaccardCalculateInteractionsQueryParams} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
@@ -36,6 +34,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./calculated-interactions-query-panel.component.scss']
 })
 export class CalculatedInteractionsQueryPanelComponent {
+  private queryTitle: string;
   private upGenes: string[];
   private downGenes: string[];
   private jaccardConfiguration: JaccardCalculateInteractionsQueryParams;
@@ -54,6 +53,7 @@ export class CalculatedInteractionsQueryPanelComponent {
     private activatedRoute: ActivatedRoute,
     private interactionsService: QueryService
   ) {
+    this.queryTitle = '';
     this.selectedTab = 0;
     this.upGenes = [];
     this.downGenes = [];
@@ -104,6 +104,20 @@ export class CalculatedInteractionsQueryPanelComponent {
   }
 
   private getQueryConfiguration(): JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams {
-    return this.selectedTab === 0 ? this.jaccardConfiguration : this.cmapConfiguration;
+    return this.selectedTab === 0 ? this.getJaccardConfiguration() : this.getCmapConfiguration();
+  }
+
+  private getJaccardConfiguration(): JaccardCalculateInteractionsQueryParams {
+    return {
+      queryTitle: this.queryTitle,
+      ...this.jaccardConfiguration
+    };
+  }
+
+  private getCmapConfiguration(): CmapCalculateInteractionsQueryParams {
+    return {
+      queryTitle: this.queryTitle,
+      ...this.cmapConfiguration
+    };
   }
 }

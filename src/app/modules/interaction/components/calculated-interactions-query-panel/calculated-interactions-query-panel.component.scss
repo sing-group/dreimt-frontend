@@ -30,20 +30,25 @@ mat-card {
   grid-template-rows: auto;
   grid-template-areas:
     "query-row-1 query-row-1"
-    "query-row-2-col-1 query-row-2-col-2";
+    "query-row-2 query-row-2"
+    "query-row-3-col-1 query-row-3-col-2";
   grid-column-gap: 40px;
 }
 
-.query-configuration {
+.query-title {
   grid-area: query-row-1;
 }
 
+.query-configuration {
+  grid-area: query-row-2;
+}
+
 .query-up-genes {
-  grid-area: query-row-2-col-1;
+  grid-area: query-row-3-col-1;
 }
 
 .query-down-genes {
-  grid-area: query-row-2-col-2;
+  grid-area: query-row-3-col-2;
 }
 
 .tab-content {

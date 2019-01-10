@@ -28,6 +28,7 @@ import {
   MatCheckboxModule,
   MatExpansionModule,
   MatFormFieldModule,
+  MatIconModule,
   MatInputModule,
   MatListModule,
   MatPaginatorModule,
@@ -38,7 +39,7 @@ import {
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import {QueryService} from './services/query.service';
 import {HttpClientModule} from '@angular/common/http';
@@ -53,10 +54,11 @@ import {
 } from './components/calculated-interactions-query-panel/calculated-interactions-query-panel.component';
 import {JaccardResultsTableComponent} from './components/jaccard-results-table/jaccard-results-table.component';
 import {CmapResultsTableComponent} from './components/cmap-results-table/cmap-results-table.component';
-
+import {ClipboardModule} from 'ngx-clipboard';
 
 @NgModule({
   imports: [
+    ClipboardModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
@@ -66,6 +68,7 @@ import {CmapResultsTableComponent} from './components/cmap-results-table/cmap-re
     MatCheckboxModule,
     MatExpansionModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatListModule,
     MatProgressBarModule,
@@ -76,6 +79,7 @@ import {CmapResultsTableComponent} from './components/cmap-results-table/cmap-re
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
+    MatTooltipModule,
     MatSortModule,
     ReactiveFormsModule,
     SharedModule

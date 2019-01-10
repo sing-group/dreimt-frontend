@@ -20,6 +20,7 @@
  */
 
 export class CmapCalculateInteractionsQueryParams {
+  public readonly queryTitle?: string;
   public readonly numPerm: number;
   public readonly maxPvalue: number;
 

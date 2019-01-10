@@ -23,6 +23,10 @@
   <mat-card-title>Interactions Query</mat-card-title>
 
   <mat-card-content class="query-container">
+    <mat-form-field class="query-title">
+      <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
+    </mat-form-field>
+
     <mat-tab-group class="query-configuration" [(selectedIndex)]="selectedTab">
       <mat-tab label="Jaccard">
         <div class="tab-content">

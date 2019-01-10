@@ -22,6 +22,7 @@
 import {ExperimentalDesign} from '../../experimental-design.enum';
 
 export class JaccardQueryResultMetadata {
+  public readonly queryTitle: string;
   public readonly onlyUniverseGenes: boolean;
   public readonly cellTypeA?: string;
   public readonly cellSubTypeA?: string;

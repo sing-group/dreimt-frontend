@@ -29,6 +29,8 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {GeneOverlapField} from '../../../../models/interactions/jaccard/gene-overlap-field.enum';
 import {JaccardQueryResultMetadata} from '../../../../models/interactions/jaccard/jaccard-query-result-metadata';
 import {FormControl} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-jaccard-results-table',
@@ -54,9 +56,13 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit {
   public readonly maxPvalueFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
+  private routeUrl: string;
+
   constructor(
     private service: JaccardResultsService
   ) {
+    this.routeUrl = window.location.href;
+
     this.debounceTime = 500;
     this.maxOptions = 100;
 
@@ -170,5 +176,9 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit {
     } else {
       return object.toString();
     }
+  }
+
+  public getResultsUrl(): string {
+    return this.routeUrl;
   }
 }

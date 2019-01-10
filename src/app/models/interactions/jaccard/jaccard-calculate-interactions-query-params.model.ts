@@ -24,6 +24,7 @@ import {ExperimentalDesign} from '../../experimental-design.enum';
 import {SignatureType} from '../../signature-type.enum';
 
 export class JaccardCalculateInteractionsQueryParams {
+  public readonly queryTitle?: string;
   public readonly cellTypeA?: string;
   public readonly cellSubTypeA?: string;
   public readonly cellTypeB?: string;

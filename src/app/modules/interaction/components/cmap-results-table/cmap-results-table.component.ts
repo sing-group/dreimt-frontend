@@ -62,9 +62,13 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit {
   public readonly maxPvalueFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
+  private routeUrl: string;
+
   constructor(
     private service: CmapResultsService
   ) {
+    this.routeUrl = window.location.href;
+
     this.debounceTime = 500;
     this.maxOptions = 100;
 
@@ -197,5 +201,9 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit {
     } else {
       return 'up';
     }
+  }
+
+  public getResultsUrl(): string {
+    return this.routeUrl;
   }
 }

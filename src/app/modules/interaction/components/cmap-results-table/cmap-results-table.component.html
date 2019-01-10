@@ -21,8 +21,16 @@
 
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Cmap results</mat-card-title>
-    <mat-card-subtitle>{{resultId}}</mat-card-subtitle>
+    <mat-card-title *ngIf="!isMetadataAvailable()">Cmap results</mat-card-title>
+    <mat-card-title *ngIf="isMetadataAvailable()">{{cmapResultMetadata.queryTitle}}</mat-card-title>
+    <mat-card-subtitle>{{resultId}}
+      <button mat-icon-button ngxClipboard [cbContent]="getResultsUrl()"
+              matTooltip="Copy the results URL to the clipboard">
+        <mat-icon aria-label="Copy the results URL to the clipboard">
+          link
+        </mat-icon>
+      </button>
+    </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
@@ -147,6 +155,6 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-button (click)="downloadCsv()">Download as CSV</button>
+    <button mat-button (click)="downloadCsv()"><mat-icon>save_alt</mat-icon> Download as CSV</button>
   </mat-card-actions>
 </mat-card>
