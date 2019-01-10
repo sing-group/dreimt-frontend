@@ -41,7 +41,7 @@ export function toPlainObject(params: object, fieldsToIgnore: string[] = []): {
   }, {});
 }
 
-export function compareStrings(s1: string, s2: string): number {
+export function compareDates(s1: Date, s2: Date): number {
   if (s1 < s2) { return -1; }
   if (s1 > s2) { return 1; }
   return 0;

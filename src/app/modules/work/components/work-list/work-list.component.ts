@@ -26,7 +26,7 @@ import {Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {isActiveExecution} from '../../../../models/work/execution-status.enum';
-import {compareStrings} from '../../../../utils/types';
+import {compareDates} from '../../../../utils/types';
 
 @Component({
   selector: 'app-work-list',
@@ -73,7 +73,7 @@ export class WorkListComponent implements OnInit {
       this.works = works;
     }
 
-    this.works.sort((w1, w2) => compareStrings(w1.id.id, w2.id.id));
+    this.works.sort((w1, w2) => compareDates(w1.creationDateTime, w2.creationDateTime));
 
     this.checkWorksForUpdate();
   }

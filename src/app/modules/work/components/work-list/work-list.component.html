@@ -33,7 +33,7 @@
   <ng-container matColumnDef="info">
     <td mat-cell *matCellDef="let work">
       {{work.id.id}}<br/>
-      Created on {{work.creationDateTime | date}}
+      Created on {{work.creationDateTime | date : 'medium'}}
     </td>
   </ng-container>
 
