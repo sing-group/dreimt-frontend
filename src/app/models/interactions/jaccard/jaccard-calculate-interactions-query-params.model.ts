@@ -33,6 +33,5 @@ export class JaccardCalculateInteractionsQueryParams {
   public readonly disease?: string;
   public readonly organism?: string;
   public readonly signatureSourceDb?: string;
-  public readonly signatureType?: SignatureType;
   public readonly onlyUniverseGenes?: boolean;
 }

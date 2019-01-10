@@ -147,7 +147,6 @@ export class JaccardQueryPanelComponent implements OnInit {
       experimentalDesign: experimentalDesign,
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),
-      signatureType: null,
       onlyUniverseGenes: this.considerOnlyUniverseGenes
     };
   }

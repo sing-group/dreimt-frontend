@@ -20,7 +20,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {CalculatedInterationQueryResult} from '../../../models/interactions/calculated-interation-query-result.model';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
@@ -30,7 +30,6 @@ import {Work} from '../../../models/work/work.model';
 import {CmapCalculateInteractionsQueryParams} from '../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
-import {toPlainObject} from '../../../utils/types';
 import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
 import {CmapQueryResultsMetadata} from '../../../models/interactions/cmap/cmap-query-results-metadata';
 import {tap} from 'rxjs/operators';
@@ -73,14 +72,10 @@ export class QueryService {
       analysisResource = 'jaccard';
     }
 
-    const options = {
-      params: new HttpParams({
-        fromObject: toPlainObject(queryParams.params)
-      })
-    };
+    Object.assign(body, body, queryParams.params);
 
     return this.http.post<Work>(
-      `${environment.dreimtUrl}/interactions/query/${analysisResource}`, body, options
+      `${environment.dreimtUrl}/interactions/query/${analysisResource}`, body
     ).pipe(
       tap(work => this.workService.addUserWork(work.id.id)),
       DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.')
