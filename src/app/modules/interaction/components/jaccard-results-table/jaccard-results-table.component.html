@@ -22,7 +22,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title *ngIf="!isMetadataAvailable()">Jaccard results</mat-card-title>
-    <mat-card-title *ngIf="isMetadataAvailable()">{{jaccardResultMetadata.queryTitle}}</mat-card-title>
+    <mat-card-title *ngIf="isMetadataAvailable()">{{metadata.queryTitle}}</mat-card-title>
     <mat-card-subtitle>{{resultId}}
       <button mat-icon-button ngxClipboard [cbContent]="getResultsUrl()"
               matTooltip="Copy the results URL to the clipboard">
@@ -41,18 +41,18 @@
       </mat-expansion-panel-header>
 
       <mat-list>
-        <mat-list-item> Only Universe Genes: {{jaccardResultMetadata.onlyUniverseGenes}}</mat-list-item>
+        <mat-list-item> Only Universe Genes: {{metadata.onlyUniverseGenes}}</mat-list-item>
 
-        <mat-list-item> Query {{getUpGenesLabel()}} genes: {{jaccardResultMetadata.upGenesCount}}</mat-list-item>
-        <mat-list-item> Query {{getUpGenesLabel()}} genes in universe: {{jaccardResultMetadata.upUniverseGenesCount}}
+        <mat-list-item> Query {{getUpGenesLabel()}} genes: {{metadata.upGenesCount}}</mat-list-item>
+        <mat-list-item> Query {{getUpGenesLabel()}} genes in universe: {{metadata.upUniverseGenesCount}}
         </mat-list-item>
 
 
-        <mat-list-item *ngIf="jaccardResultMetadata.downGenesCount"> Query down genes:
-          {{jaccardResultMetadata.downGenesCount}}
+        <mat-list-item *ngIf="metadata.downGenesCount"> Query down genes:
+          {{metadata.downGenesCount}}
         </mat-list-item>
-        <mat-list-item *ngIf="jaccardResultMetadata.downUniverseGenesCount"> Query down genes in
-          universe: {{jaccardResultMetadata.downUniverseGenesCount}}
+        <mat-list-item *ngIf="metadata.downUniverseGenesCount"> Query down genes in
+          universe: {{metadata.downUniverseGenesCount}}
         </mat-list-item>
       </mat-list>
 
@@ -62,15 +62,15 @@
         </mat-expansion-panel-header>
 
         <mat-list style="margin-left:30px;">
-          <mat-list-item> Cell Type A: {{formatQueryParameter(jaccardResultMetadata.cellTypeA)}}</mat-list-item>
-          <mat-list-item> Cell Subtype A: {{formatQueryParameter(jaccardResultMetadata.cellSubTypeA)}}</mat-list-item>
-          <mat-list-item> Cell Type B: {{formatQueryParameter(jaccardResultMetadata.cellTypeB)}}</mat-list-item>
-          <mat-list-item> Cell Subtype B: {{formatQueryParameter(jaccardResultMetadata.cellSubTypeB)}}</mat-list-item>
-          <mat-list-item> Experimental Design: {{formatQueryParameter(jaccardResultMetadata.experimentalDesign)}}
+          <mat-list-item> Cell Type A: {{formatQueryParameter(metadata.cellTypeA)}}</mat-list-item>
+          <mat-list-item> Cell Subtype A: {{formatQueryParameter(metadata.cellSubTypeA)}}</mat-list-item>
+          <mat-list-item> Cell Type B: {{formatQueryParameter(metadata.cellTypeB)}}</mat-list-item>
+          <mat-list-item> Cell Subtype B: {{formatQueryParameter(metadata.cellSubTypeB)}}</mat-list-item>
+          <mat-list-item> Experimental Design: {{formatQueryParameter(metadata.experimentalDesign)}}
           </mat-list-item>
-          <mat-list-item> Organism: {{formatQueryParameter(jaccardResultMetadata.organism)}}</mat-list-item>
-          <mat-list-item> Disease: {{formatQueryParameter(jaccardResultMetadata.disease)}}</mat-list-item>
-          <mat-list-item> Signature Source DB: {{formatQueryParameter(jaccardResultMetadata.signatureSourceDb)}}
+          <mat-list-item> Organism: {{formatQueryParameter(metadata.organism)}}</mat-list-item>
+          <mat-list-item> Disease: {{formatQueryParameter(metadata.disease)}}</mat-list-item>
+          <mat-list-item> Signature Source DB: {{formatQueryParameter(metadata.signatureSourceDb)}}
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>

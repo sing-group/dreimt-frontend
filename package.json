@@ -1,7 +1,7 @@
 {
   "name": "@dreimt/frontend",
   "description": "DREIMT - Drug REpositioning for IMmuno Transcriptomics",
-  "version": "0.1.0-alpha.30",
+  "version": "0.1.0-alpha.31",
   "license": "GPL-3.0",
   "author": {
     "name": "Hugo López-Fernández",

@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {JaccardResultsDataSource} from './jaccard-results-data-source';
 import {JaccardResultsService} from '../../services/jaccard-results.service';
 import {MatPaginator, MatSort} from '@angular/material';
@@ -37,12 +37,11 @@ import {environment} from '../../../../../environments/environment';
   templateUrl: './jaccard-results-table.component.html',
   styleUrls: ['./jaccard-results-table.component.scss']
 })
-export class JaccardResultsTableComponent implements OnInit, AfterViewInit {
+export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnChanges {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
-  @Input('resultId') resultId: string;
-  @Input('jaccardResultMetadata') jaccardResultMetadata: JaccardQueryResultMetadata;
+  @Input() public metadata: JaccardQueryResultMetadata;
 
   public readonly columns: string[];
   public readonly dataSource: JaccardResultsDataSource;
@@ -56,9 +55,9 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit {
   public readonly maxPvalueFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
-  private routeUrl: string;
+  private readonly routeUrl: string;
 
-  constructor(
+  public constructor(
     private service: JaccardResultsService
   ) {
     this.routeUrl = window.location.href;
@@ -83,6 +82,14 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit {
     this.watchForChanges(this.maxFdrFilter);
   }
 
+  public ngOnChanges(changes: SimpleChanges): void {
+    this.maxJaccardFilter.setValue(null);
+    this.maxPvalueFilter.setValue(null);
+    this.maxFdrFilter.setValue(null);
+    this.resetPage();
+    this.updateResults();
+  }
+
   private watchForChanges(field: FormControl): void {
     field.valueChanges
       .pipe(
@@ -98,7 +105,7 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit {
   }
 
   private updatePage(queryParams = this.createQueryParameters()): void {
-    this.dataSource.list(this.resultId, queryParams);
+    this.dataSource.list(this.metadata.id, queryParams);
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
   }
 
@@ -155,15 +162,15 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit {
   }
 
   public downloadCsv() {
-    this.service.downloadCsv(this.resultId, this.createQueryParameters());
+    this.service.downloadCsv(this.metadata.id, this.createQueryParameters());
   }
 
   public isMetadataAvailable(): boolean {
-    return this.jaccardResultMetadata !== undefined;
+    return this.metadata !== undefined;
   }
 
   public getUpGenesLabel(): string {
-    if (this.jaccardResultMetadata.downGenesCount === null || this.jaccardResultMetadata.downGenesCount === undefined) {
+    if (this.metadata.downGenesCount === null || this.metadata.downGenesCount === undefined) {
       return 'geneset';
     } else {
       return 'up';

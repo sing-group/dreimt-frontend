@@ -32,7 +32,7 @@ import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
 import {CmapQueryResultsMetadata} from '../../../models/interactions/cmap/cmap-query-results-metadata';
-import {tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {WorkService} from '../../work/services/work.service';
 
 @Injectable({
@@ -87,6 +87,7 @@ export class QueryService {
       work.resultReference
     )
       .pipe(
+        tap(result => result.id = work.id.id),
         DreimtError.throwOnError(
           'Error retrieving results', 'Results could not be retrieved from the backend.'
         )

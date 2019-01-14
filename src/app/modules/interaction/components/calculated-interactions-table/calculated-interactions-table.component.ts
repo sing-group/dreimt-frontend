@@ -38,8 +38,8 @@ import {WorkService} from '../../../work/services/work.service';
 export class CalculatedInteractionsTableComponent implements OnInit {
   public results: JaccardQueryResultMetadata | CmapQueryResultsMetadata;
 
-  public uuid: string;
-  public work: Work;
+  private uuid: string;
+  private work: Work;
 
   private workSubscription: Subscription;
 
@@ -48,6 +48,7 @@ export class CalculatedInteractionsTableComponent implements OnInit {
     private workService: WorkService,
     private queryService: QueryService
   ) {
+    this.workSubscription = null;
   }
 
   public ngOnInit(): void {
@@ -75,10 +76,6 @@ export class CalculatedInteractionsTableComponent implements OnInit {
     }
   }
 
-  public getResultId(): string {
-    return this.work.id.id;
-  }
-
   public isJaccard(): boolean {
     return JaccardQueryResultMetadata.isA(this.results);
   }
@@ -88,6 +85,11 @@ export class CalculatedInteractionsTableComponent implements OnInit {
   }
 
   private watchWork(): void {
+    if (this.workSubscription !== null) {
+      this.workSubscription.unsubscribe();
+      this.workSubscription = null;
+    }
+
     this.workSubscription = timer(0, 2000)
       .pipe(
         mergeMap(() => this.workService.getWork(this.uuid))
@@ -102,8 +104,10 @@ export class CalculatedInteractionsTableComponent implements OnInit {
       this.queryService.getWorkResult(work)
         .subscribe(results => this.results = results);
 
-      this.workSubscription.unsubscribe();
-      this.workSubscription = null;
+      if (this.workSubscription !== null) {
+        this.workSubscription.unsubscribe();
+        this.workSubscription = null;
+      }
     }
   }
 }

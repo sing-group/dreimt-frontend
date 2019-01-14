@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort} from '@angular/material';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
@@ -37,14 +37,13 @@ import {FieldFilterModel} from '../../../shared/components/filter-field/field-fi
   templateUrl: './cmap-results-table.component.html',
   styleUrls: ['./cmap-results-table.component.scss']
 })
-export class CmapResultsTableComponent implements OnInit, AfterViewInit {
-  public readonly DEFAULT_FDR = 0.05;
+export class CmapResultsTableComponent implements OnInit, AfterViewInit, OnChanges {
+  public static readonly DEFAULT_FDR = 0.05;
 
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
-  @Input('resultId') resultId: string;
-  @Input('cmapResultMetadata') cmapResultMetadata: CmapQueryResultsMetadata;
+  @Input() public metadata: CmapQueryResultsMetadata;
 
   public readonly columns: string[];
   public readonly dataSource: CmapResultsDataSource;
@@ -62,7 +61,7 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit {
   public readonly maxPvalueFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
-  private routeUrl: string;
+  private readonly routeUrl: string;
 
   constructor(
     private service: CmapResultsService
@@ -84,7 +83,7 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit {
     this.maxTesFilter = new FormControl();
     this.maxPvalueFilter = new FormControl();
     this.maxFdrFilter = new FormControl();
-    this.maxFdrFilter.setValue(this.DEFAULT_FDR);
+    this.maxFdrFilter.setValue(CmapResultsTableComponent.DEFAULT_FDR);
   }
 
   public ngOnInit(): void {
@@ -93,6 +92,15 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit {
     this.watchForChanges(this.maxTesFilter);
     this.watchForChanges(this.maxPvalueFilter);
     this.watchForChanges(this.maxFdrFilter);
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    this.minTesFilter.setValue(null);
+    this.maxTesFilter.setValue(null);
+    this.maxPvalueFilter.setValue(null);
+    this.maxFdrFilter.setValue(CmapResultsTableComponent.DEFAULT_FDR);
+    this.resetPage();
+    this.updateResults();
   }
 
   private watchForChanges(field: FormControl): void {
@@ -109,7 +117,7 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit {
   }
 
   private updatePage(queryParams = this.createQueryParameters()): void {
-    this.dataSource.list(this.resultId, queryParams);
+    this.dataSource.list(this.metadata.id, queryParams);
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
   }
 
@@ -157,17 +165,17 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit {
   }
 
   private loadDrugSourceNames(queryParams: CmapDrugInteractionResultsQueryParams): void {
-    this.service.listDrugSourceNameValues(this.resultId, queryParams)
+    this.service.listDrugSourceNameValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugSourceNameFieldFilter.update(values));
   }
 
   private loadDrugSourceDbs(queryParams: CmapDrugInteractionResultsQueryParams): void {
-    this.service.listDrugSourceDbValues(this.resultId, queryParams)
+    this.service.listDrugSourceDbValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugSourceDbFieldFilter.update(values));
   }
 
   private loadDrugCommonNames(queryParams: CmapDrugInteractionResultsQueryParams): void {
-    this.service.listDrugCommonNameValues(this.resultId, queryParams)
+    this.service.listDrugCommonNameValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
 
@@ -188,15 +196,15 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit {
   }
 
   public downloadCsv() {
-    this.service.downloadCsv(this.resultId, this.createQueryParameters());
+    this.service.downloadCsv(this.metadata.id, this.createQueryParameters());
   }
 
   public isMetadataAvailable(): boolean {
-    return this.cmapResultMetadata !== undefined;
+    return this.metadata !== undefined;
   }
 
   public getUpGenesLabel(): string {
-    if (this.cmapResultMetadata.downGenesCount === null || this.cmapResultMetadata.downGenesCount === undefined) {
+    if (this.metadata.downGenesCount === null || this.metadata.downGenesCount === undefined) {
       return 'geneset';
     } else {
       return 'up';

@@ -22,6 +22,7 @@
 import {ExperimentalDesign} from '../../experimental-design.enum';
 
 export class JaccardQueryResultMetadata {
+  private resultId: string;
   public readonly queryTitle: string;
   public readonly onlyUniverseGenes: boolean;
   public readonly cellTypeA?: string;
@@ -36,6 +37,18 @@ export class JaccardQueryResultMetadata {
   public readonly upUniverseGenesCount?: number;
   public readonly downGenesCount?: number;
   public readonly downUniverseGenesCount?: number;
+
+  public set id(id: string) {
+    if (this.resultId === undefined) {
+      this.resultId = id;
+    } else {
+      throw Error('id already has a value');
+    }
+  }
+
+  public get id(): string {
+    return this.resultId;
+  }
 
   public static isA(object: any): object is JaccardQueryResultMetadata {
     return object !== undefined && object !== null && object.onlyUniverseGenes !== undefined;

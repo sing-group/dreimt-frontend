@@ -22,7 +22,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title *ngIf="!isMetadataAvailable()">Cmap results</mat-card-title>
-    <mat-card-title *ngIf="isMetadataAvailable()">{{cmapResultMetadata.queryTitle}}</mat-card-title>
+    <mat-card-title *ngIf="isMetadataAvailable()">{{metadata.queryTitle}}</mat-card-title>
     <mat-card-subtitle>{{resultId}}
       <button mat-icon-button ngxClipboard [cbContent]="getResultsUrl()"
               matTooltip="Copy the results URL to the clipboard">
@@ -43,19 +43,19 @@
       </mat-expansion-panel-header>
 
       <mat-list>
-        <mat-list-item> Maximum p-value: {{cmapResultMetadata.maxPvalue}}</mat-list-item>
-        <mat-list-item> Number of GSEA permutations: {{cmapResultMetadata.numPerm}}</mat-list-item>
+        <mat-list-item> Maximum p-value: {{metadata.maxPvalue}}</mat-list-item>
+        <mat-list-item> Number of GSEA permutations: {{metadata.numPerm}}</mat-list-item>
 
-        <mat-list-item> Query {{getUpGenesLabel()}} genes: {{cmapResultMetadata.upGenesCount}}</mat-list-item>
-        <mat-list-item> Query {{getUpGenesLabel()}} genes in universe: {{cmapResultMetadata.upUniverseGenesCount}}
+        <mat-list-item> Query {{getUpGenesLabel()}} genes: {{metadata.upGenesCount}}</mat-list-item>
+        <mat-list-item> Query {{getUpGenesLabel()}} genes in universe: {{metadata.upUniverseGenesCount}}
         </mat-list-item>
 
 
-        <mat-list-item *ngIf="cmapResultMetadata.downGenesCount"> Query down genes:
-          {{cmapResultMetadata.downGenesCount}}
+        <mat-list-item *ngIf="metadata.downGenesCount"> Query down genes:
+          {{metadata.downGenesCount}}
         </mat-list-item>
-        <mat-list-item *ngIf="cmapResultMetadata.downUniverseGenesCount"> Query down genes in
-          universe: {{cmapResultMetadata.downUniverseGenesCount}}
+        <mat-list-item *ngIf="metadata.downUniverseGenesCount"> Query down genes in
+          universe: {{metadata.downUniverseGenesCount}}
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
