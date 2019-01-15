@@ -34,13 +34,13 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./calculated-interactions-query-panel.component.scss']
 })
 export class CalculatedInteractionsQueryPanelComponent {
-  private queryTitle: string;
+  public queryTitle: string;
   private upGenes: string[];
   private downGenes: string[];
   private jaccardConfiguration: JaccardCalculateInteractionsQueryParams;
   private cmapConfiguration: CmapCalculateInteractionsQueryParams;
 
-  private selectedTab: number;
+  public selectedTab: number;
 
   private static cleanAndFilterGenes(genes: string): string[] {
     return genes.split(/\s+/)

@@ -53,7 +53,7 @@ export class JaccardQueryPanelComponent implements OnInit {
   public readonly diseaseFieldFilter: FieldFilterModel;
   public readonly signatureSourceDbFieldFilter: FieldFilterModel;
 
-  private considerOnlyUniverseGenes: boolean;
+  public considerOnlyUniverseGenes: boolean;
 
   constructor(
     private service: SignaturesService

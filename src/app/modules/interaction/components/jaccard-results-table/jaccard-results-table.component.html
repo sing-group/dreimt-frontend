@@ -23,7 +23,7 @@
   <mat-card-header>
     <mat-card-title *ngIf="!isMetadataAvailable()">Jaccard results</mat-card-title>
     <mat-card-title *ngIf="isMetadataAvailable()">{{metadata.queryTitle}}</mat-card-title>
-    <mat-card-subtitle>{{resultId}}
+    <mat-card-subtitle>{{metadata.id}}
       <button mat-icon-button ngxClipboard [cbContent]="getResultsUrl()"
               matTooltip="Copy the results URL to the clipboard">
         <mat-icon aria-label="Copy the results URL to the clipboard">

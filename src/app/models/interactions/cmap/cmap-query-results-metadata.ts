@@ -21,6 +21,7 @@
 
 export class CmapQueryResultsMetadata {
   private resultId: string;
+  public readonly queryTitle: string;
   public readonly maxPvalue: number;
   public readonly numPerm: number;
   public readonly upGenesCount?: number;
