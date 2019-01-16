@@ -34,4 +34,5 @@ import {MainRoutingModule} from './main-routing.module';
     MainRoutingModule
   ]
 })
-export class MainModule { }
+export class MainModule {
+}

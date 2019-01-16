@@ -26,10 +26,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
-import {InteractionModule} from './modules/interaction/interaction.module';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
-import {MainModule} from './modules/main/main.module';
-import {DatabaseModule} from './modules/database/database.module';
 import {MatBadgeModule, MatButtonModule, MatListModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 import {AppRoutingModule} from './app-routing.module';
 import {WorkModule} from './modules/work/work.module';
@@ -42,9 +39,6 @@ import {WorkModule} from './modules/work/work.module';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    DatabaseModule,
-    InteractionModule,
-    MainModule,
     MatBadgeModule,
     MatButtonModule,
     MatListModule,

@@ -22,22 +22,19 @@
 
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {MainModule} from './modules/main/main.module';
-import {DatabaseModule} from './modules/database/database.module';
-import {InteractionModule} from './modules/interaction/interaction.module';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => MainModule
+    loadChildren: './modules/main/main.module#MainModule'
   },
   {
     path: 'database',
-    loadChildren: () => DatabaseModule
+    loadChildren: './modules/database/database.module#DatabaseModule'
   },
   {
     path: 'interactions',
-    loadChildren: () => InteractionModule
+    loadChildren: './modules/interaction/interaction.module#InteractionModule'
   }
 ];
 
