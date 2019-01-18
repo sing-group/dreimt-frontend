@@ -214,4 +214,8 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit, OnChang
   public getResultsUrl(): string {
     return this.routeUrl;
   }
+
+  public getInitialFdrValue(): number {
+    return CmapResultsTableComponent.DEFAULT_FDR;
+  }
 }
