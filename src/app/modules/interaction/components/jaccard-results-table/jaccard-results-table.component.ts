@@ -67,7 +67,7 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
 
     this.dataSource = new JaccardResultsDataSource(this.service);
     this.columns = [
-      'jaccard', 'pValue', 'fdr', 'sourceComparisonType', 'targetComparisonType', 'targetSignature'
+      'sourceComparisonType', 'targetComparisonType', 'targetSignature', 'jaccard', 'pValue', 'fdr'
     ];
 
     this.maxJaccardFilter = new FormControl();

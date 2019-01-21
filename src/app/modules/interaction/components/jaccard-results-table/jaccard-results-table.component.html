@@ -78,6 +78,27 @@
     </mat-expansion-panel>
 
     <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="sourceComparisonType">
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="SOURCE_COMPARISON_TYPE">Source Comparison Type</span>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.sourceComparisonType}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="targetComparisonType">
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="TARGET_COMPARISON_TYPE">Target Comparison Type</span>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.targetComparisonType}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="targetSignature">
+        <th mat-header-cell *matHeaderCellDef>
+          <span mat-sort-header="TARGET_SIGNATURE">Target Signature</span>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.targetSignatureData.signatureName}}</td>
+      </ng-container>
+
       <ng-container matColumnDef="jaccard">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="JACCARD">Jaccard</span>
@@ -106,27 +127,6 @@
                             (valueChange)="maxFdrFilter.setValue($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.fdr | number : '1.4'}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="sourceComparisonType">
-        <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="SOURCE_COMPARISON_TYPE">Source Comparison Type</span>
-        </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.sourceComparisonType}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="targetComparisonType">
-        <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="TARGET_COMPARISON_TYPE">Target Comparison Type</span>
-        </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.targetComparisonType}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="targetSignature">
-        <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="TARGET_SIGNATURE">Target Signature</span>
-        </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.targetSignatureData.signatureName}}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="columns"></tr>
