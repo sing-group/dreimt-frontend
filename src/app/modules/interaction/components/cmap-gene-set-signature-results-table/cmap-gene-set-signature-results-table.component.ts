@@ -23,30 +23,29 @@ import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewC
 import {MatPaginator, MatSort} from '@angular/material';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
-import {GeneOverlapField} from '../../../../models/interactions/jaccard/gene-overlap-field.enum';
-import {CmapDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap/cmap-drug-interaction-results-query-params';
-import {CmapResultsDataSource} from './cmap-results-data-source';
-import {CmapResultsService} from '../../services/cmap-results.service';
-import {CmapResultField} from '../../../../models/interactions/cmap/cmap-result-field.enum';
-import {CmapQueryResultsMetadata} from '../../../../models/interactions/cmap/cmap-query-results-metadata';
 import {FormControl} from '@angular/forms';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
+import {CmapQueryGeneSetSignatureResultsMetadata} from '../../../../models/interactions/cmap-gene-set/cmap-query-gene-set-down-signature-results-metadata';
+import {CmapGeneSetSignatureResultsDataSource} from './cmap-gene-set-signature-results-data-source';
+import {CmapGeneSetResultsService} from '../../services/cmap-gene-set-results.service';
+import {CmapGeneSetSignatureResultField} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-result-field.enum';
+import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
 
 @Component({
-  selector: 'app-cmap-results-table',
-  templateUrl: './cmap-results-table.component.html',
-  styleUrls: ['./cmap-results-table.component.scss']
+  selector: 'app-cmap-gene-set-signature-results-table',
+  templateUrl: './cmap-gene-set-signature-results-table.component.html',
+  styleUrls: ['./cmap-gene-set-signature-results-table.component.scss']
 })
-export class CmapResultsTableComponent implements OnInit, AfterViewInit, OnChanges {
+export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterViewInit, OnChanges {
   public static readonly DEFAULT_FDR = 0.05;
 
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
-  @Input() public metadata: CmapQueryResultsMetadata;
+  @Input() public metadata: CmapQueryGeneSetSignatureResultsMetadata;
 
   public readonly columns: string[];
-  public readonly dataSource: CmapResultsDataSource;
+  public readonly dataSource: CmapGeneSetSignatureResultsDataSource;
 
   public totalResultsSize: number;
 
@@ -56,49 +55,41 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit, OnChang
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugSourceNameFieldFilter: FieldFilterModel;
   public readonly drugSourceDbFieldFilter: FieldFilterModel;
-  public readonly minTesFilter: FormControl;
-  public readonly maxTesFilter: FormControl;
-  public readonly maxPvalueFilter: FormControl;
+  public readonly minTauFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
   private readonly routeUrl: string;
 
   constructor(
-    private service: CmapResultsService
+    private service: CmapGeneSetResultsService
   ) {
     this.routeUrl = window.location.href;
 
     this.debounceTime = 500;
     this.maxOptions = 100;
 
-    this.dataSource = new CmapResultsDataSource(this.service);
+    this.dataSource = new CmapGeneSetSignatureResultsDataSource(this.service);
     this.columns = [
-      'tes', 'pValue', 'fdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
+      'tau', 'fdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
     this.drugSourceNameFieldFilter = new FieldFilterModel();
     this.drugSourceDbFieldFilter = new FieldFilterModel();
-    this.minTesFilter = new FormControl();
-    this.maxTesFilter = new FormControl();
-    this.maxPvalueFilter = new FormControl();
+    this.minTauFilter = new FormControl();
     this.maxFdrFilter = new FormControl();
-    this.maxFdrFilter.setValue(CmapResultsTableComponent.DEFAULT_FDR);
+    this.maxFdrFilter.setValue(CmapGeneSetSignatureResultsTableComponent.DEFAULT_FDR);
   }
 
   public ngOnInit(): void {
     this.updateResults();
-    this.watchForChanges(this.minTesFilter);
-    this.watchForChanges(this.maxTesFilter);
-    this.watchForChanges(this.maxPvalueFilter);
+    this.watchForChanges(this.minTauFilter);
     this.watchForChanges(this.maxFdrFilter);
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    this.minTesFilter.setValue(null);
-    this.maxTesFilter.setValue(null);
-    this.maxPvalueFilter.setValue(null);
-    this.maxFdrFilter.setValue(CmapResultsTableComponent.DEFAULT_FDR);
+    this.minTauFilter.setValue(null);
+    this.maxFdrFilter.setValue(CmapGeneSetSignatureResultsTableComponent.DEFAULT_FDR);
     this.resetPage();
     this.updateResults();
   }
@@ -156,38 +147,36 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit, OnChang
     }
   }
 
-  private orderField(): GeneOverlapField {
+  private orderField(): CmapGeneSetSignatureResultField {
     if (this.sortDirection() !== undefined) {
-      return CmapResultField[this.sort.active];
+      return CmapGeneSetSignatureResultField[this.sort.active];
     } else {
       return undefined;
     }
   }
 
-  private loadDrugSourceNames(queryParams: CmapDrugInteractionResultsQueryParams): void {
+  private loadDrugSourceNames(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugSourceNameValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugSourceNameFieldFilter.update(values));
   }
 
-  private loadDrugSourceDbs(queryParams: CmapDrugInteractionResultsQueryParams): void {
+  private loadDrugSourceDbs(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugSourceDbValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugSourceDbFieldFilter.update(values));
   }
 
-  private loadDrugCommonNames(queryParams: CmapDrugInteractionResultsQueryParams): void {
+  private loadDrugCommonNames(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugCommonNameValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
 
-  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): CmapDrugInteractionResultsQueryParams {
+  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): CmapGeneSetSignatureDrugInteractionResultsQueryParams {
     return {
       page: this.paginator.pageIndex || defaultPageIndex,
       pageSize: this.paginator.pageSize || defaultPageSize,
       sortDirection: this.sortDirection(),
       orderField: this.orderField(),
-      minTes: this.minTesFilter.value,
-      maxTes: this.maxTesFilter.value,
-      maxPvalue: this.maxPvalueFilter.value,
+      minTau: this.minTauFilter.value,
       maxFdr: this.maxFdrFilter.value,
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
@@ -203,19 +192,11 @@ export class CmapResultsTableComponent implements OnInit, AfterViewInit, OnChang
     return this.metadata !== undefined;
   }
 
-  public getUpGenesLabel(): string {
-    if (this.metadata.downGenesCount === null || this.metadata.downGenesCount === undefined) {
-      return 'geneset';
-    } else {
-      return 'up';
-    }
-  }
-
   public getResultsUrl(): string {
     return this.routeUrl;
   }
 
   public getInitialFdrValue(): number {
-    return CmapResultsTableComponent.DEFAULT_FDR;
+    return CmapGeneSetSignatureResultsTableComponent.DEFAULT_FDR;
   }
 }

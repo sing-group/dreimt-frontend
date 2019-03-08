@@ -30,6 +30,7 @@ import {FieldFilterModel} from '../../../shared/components/filter-field/field-fi
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
+import {InteractionType} from '../../../../models/interaction-type.enum';
 
 @Component({
   selector: 'app-database',
@@ -58,10 +59,10 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   public readonly drugSourceNameFieldFilter: FieldFilterModel;
   public readonly drugSourceDbFieldFilter: FieldFilterModel;
   public readonly experimentalDesignFilter: FieldFilterModel;
-  public readonly minTesFilter: FormControl;
-  public readonly maxTesFilter: FormControl;
-  public readonly maxPvalueFilter: FormControl;
-  public readonly maxFdrFilter: FormControl;
+  public readonly interactionTypeFilter: FieldFilterModel;
+  public readonly minTauFilter: FormControl;
+  public readonly maxUpFdrFilter: FormControl;
+  public readonly maxDownFdrFilter: FormControl;
 
   @ViewChild(MatPaginator) private paginator: MatPaginator;
   @ViewChild(MatSort) private sort: MatSort;
@@ -74,8 +75,8 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
 
     this.dataSource = new DatabaseDataSource(this.service);
     this.columns = [
-      'drug', 'signature', 'tes', 'pValue', 'fdr',
-      'signatureType', 'experimentalDesign', 'cellTypeA', 'cellTypeB', 'cellSubtypeA', 'cellSubtypeB',
+      'drug', 'signature', 'tau', 'upFdr', 'downFdr',
+      'interactionType', 'experimentalDesign', 'cellTypeA', 'cellTypeB', 'cellSubtypeA', 'cellSubtypeB',
       'disease', 'organism', 'article', 'signatureSourceDb', 'drugSourceName', 'drugSourceDb'
     ];
 
@@ -92,18 +93,17 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     this.drugSourceNameFieldFilter = new FieldFilterModel();
     this.drugSourceDbFieldFilter = new FieldFilterModel();
     this.experimentalDesignFilter = new FieldFilterModel();
-    this.minTesFilter = new FormControl();
-    this.maxTesFilter = new FormControl();
-    this.maxPvalueFilter = new FormControl();
-    this.maxFdrFilter = new FormControl();
+    this.interactionTypeFilter = new FieldFilterModel();
+    this.minTauFilter = new FormControl();
+    this.maxUpFdrFilter = new FormControl();
+    this.maxDownFdrFilter = new FormControl();
   }
 
   public ngOnInit(): void {
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
-    this.watchForChanges(this.minTesFilter);
-    this.watchForChanges(this.maxTesFilter);
-    this.watchForChanges(this.maxPvalueFilter);
-    this.watchForChanges(this.maxFdrFilter);
+    this.watchForChanges(this.minTauFilter);
+    this.watchForChanges(this.maxUpFdrFilter);
+    this.watchForChanges(this.maxDownFdrFilter);
     this.updateInteractions();
   }
 
@@ -161,6 +161,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     this.loadDrugSourceDbs(queryParams);
     this.loadDrugSourceNames(queryParams);
     this.loadExperimentalDesigns(queryParams);
+    this.loadInteractionTypes(queryParams);
   }
 
   private loadDrugCommonNames(queryParams: DatabaseQueryParams): void {
@@ -228,6 +229,11 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
       .subscribe(values => this.experimentalDesignFilter.update(values));
   }
 
+  private loadInteractionTypes(queryParams: DatabaseQueryParams): void {
+    this.service.listInteractionTypes(queryParams)
+      .subscribe(values => this.interactionTypeFilter.update(values));
+  }
+
   private sortDirection(): SortDirection {
     switch (this.sort.direction) {
       case 'asc':
@@ -252,6 +258,10 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
       ? ExperimentalDesign[this.experimentalDesignFilter.getClearedFilter()]
       : undefined;
 
+    const interactionType = this.interactionTypeFilter.hasValue()
+      ? InteractionType[this.interactionTypeFilter.getClearedFilter()]
+      : undefined;
+
     return {
       page: this.paginator.pageIndex || defaultPageIndex,
       pageSize: this.paginator.pageSize || defaultPageSize,
@@ -270,10 +280,10 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
       drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
       drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter(),
       experimentalDesign: experimentalDesign,
-      minTes: this.minTesFilter.value,
-      maxTes: this.maxTesFilter.value,
-      maxPvalue: this.maxPvalueFilter.value,
-      maxFdr: this.maxFdrFilter.value
+      interactionType: interactionType,
+      minTau: this.minTauFilter.value,
+      maxUpFdr: this.maxUpFdrFilter.value,
+      maxDownFdr: this.maxDownFdrFilter.value,
     };
   }
 }

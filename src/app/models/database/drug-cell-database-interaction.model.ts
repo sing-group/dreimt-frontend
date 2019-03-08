@@ -25,7 +25,7 @@ import {CellSignature} from './cell-signature.model';
 export class DrugCellDatabaseInteraction {
   public readonly drug: Drug;
   public readonly signature: CellSignature;
-  public readonly tes: number;
-  public readonly pValue: number;
-  public readonly fdr: number;
+  public readonly tau: number;
+  public readonly upFdr: number;
+  public readonly downFdr: number;
 }

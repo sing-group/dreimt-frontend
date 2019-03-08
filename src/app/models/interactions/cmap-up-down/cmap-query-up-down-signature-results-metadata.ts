@@ -19,11 +19,30 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class CmapCalculateInteractionsQueryParams {
-  public readonly queryTitle?: string;
+export class CmapQueryUpDownSignatureResultsMetadata {
+  private resultId: string;
+  public readonly queryTitle: string;
   public readonly numPerm: number;
+  public readonly upGenesCount: number;
+  public readonly upUniverseGenesCount: number;
+  public readonly downGenesCount: number;
+  public readonly downUniverseGenesCount: number;
 
-  public static isA(object: any): object is CmapCalculateInteractionsQueryParams {
-    return object.numPerm !== undefined;
+  public set id(id: string) {
+    if (this.resultId === undefined) {
+      this.resultId = id;
+    } else {
+      throw Error('id already has a value');
+    }
+  }
+
+  public get id(): string {
+    return this.resultId;
+  }
+
+  public static isA(object: any): object is CmapQueryUpDownSignatureResultsMetadata {
+    return object !== undefined && object !== null && object.numPerm !== undefined &&
+      object.upGenesCount !== undefined && object.upUniverseGenesCount !== undefined &&
+      object.downGenesCount !== undefined && object.downUniverseGenesCount !== undefined;
   }
 }

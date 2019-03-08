@@ -20,21 +20,24 @@
  */
 
 import {Pipe, PipeTransform} from '@angular/core';
-import {SignatureType} from '../../../models/signature-type.enum';
+import {InteractionType} from '../../../models/interaction-type.enum';
 
 @Pipe({
-  name: 'signatureTypeIcon'
+  name: 'interactionTypeIcon'
 })
-export class SignatureTypeIconPipe implements PipeTransform {
+export class InteractionTypeIconPipe implements PipeTransform {
 
-  transform(value: string | SignatureType): string {
+  transform(value: string | InteractionType): string {
     switch (value) {
       case 'GENESET':
-      case SignatureType.GENESET:
+      case InteractionType.GENESET:
         return 'grain';
-      case 'UPDOWN':
-      case SignatureType.UPDOWN:
+      case InteractionType.SIGNATURE:
         return 'swap_vert';
+      case InteractionType.SIGNATURE_UP:
+        return 'arrow_upward';
+      case InteractionType.SIGNATURE_DOWN:
+        return 'arrow_downward';
       default:
         return '';
     }

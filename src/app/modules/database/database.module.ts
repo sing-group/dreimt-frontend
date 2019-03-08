@@ -37,14 +37,14 @@ import {
   MatTooltipModule
 } from '@angular/material';
 import {DatabaseRoutingModule} from './database-routing.module';
-import {SignatureTypeIconPipe} from './pipes/signature-type-icon.pipe';
+import {InteractionTypeIconPipe} from './pipes/interaction-type-icon.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   declarations: [
     DatabaseTableComponent,
-    SignatureTypeIconPipe
+    InteractionTypeIconPipe
   ],
   imports: [
     CommonModule,

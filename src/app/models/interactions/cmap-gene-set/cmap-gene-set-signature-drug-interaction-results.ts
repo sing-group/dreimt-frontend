@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -20,7 +20,7 @@
  */
 
 import {PartialResult} from '../../../utils/partial-data-source';
-import {CmapDrugInteraction} from './cmap-drug-interaction.model';
+import {CmapGeneSetSignatureDrugInteraction} from './cmap-gene-set-signature-drug-interaction.model';
 
-export class CmapDrugInteractionResults extends PartialResult<CmapDrugInteraction> {
+export class CmapGeneSetSignatureDrugInteractionResults extends PartialResult<CmapGeneSetSignatureDrugInteraction> {
 }

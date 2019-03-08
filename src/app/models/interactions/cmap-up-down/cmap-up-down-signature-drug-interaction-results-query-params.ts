@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,12 +19,20 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export enum CmapResultField {
-  NONE = 'NONE',
-  DRUG_SOURCE_NAME = 'DRUG_SOURCE_NAME',
-  DRUG_SOURCE_DB = 'DRUG_SOURCE_DB',
-  DRUG_COMMON_NAME = 'DRUG_COMMON_NAME',
-  TES = 'TES',
-  P_VALUE = 'P_VALUE',
-  FDR = 'FDR',
+import {SortDirection} from '../../sort-direction.enum';
+import {CmapUpDownSignatureResultField} from './cmap-up-down-signature-result-field.enum';
+
+export class CmapUpDownSignatureDrugInteractionResultsQueryParams {
+  public static readonly MANIPULATION_FIELDS = ['page', 'pageSize', 'orderField', 'sortDirection', 'resultId'];
+
+  public readonly page?: number;
+  public readonly pageSize?: number;
+  public readonly orderField?: CmapUpDownSignatureResultField;
+  public readonly sortDirection?: SortDirection;
+  public readonly minTau?: number;
+  public readonly maxUpFdr?: number;
+  public readonly maxDownFdr?: number;
+  public readonly drugSourceName?: string;
+  public readonly drugSourceDb?: string;
+  public readonly drugCommonName?: string;
 }

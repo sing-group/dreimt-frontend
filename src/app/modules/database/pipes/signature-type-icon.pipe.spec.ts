@@ -19,11 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { SignatureTypeIconPipe } from './signature-type-icon.pipe';
+import { InteractionTypeIconPipe } from './interaction-type-icon.pipe';
 
-describe('SignatureTypeIconPipe', () => {
+describe('InteractionTypeIconPipe', () => {
   it('create an instance', () => {
-    const pipe = new SignatureTypeIconPipe();
+    const pipe = new InteractionTypeIconPipe();
     expect(pipe).toBeTruthy();
   });
 });

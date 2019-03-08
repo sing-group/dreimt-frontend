@@ -51,7 +51,7 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
   @ViewChild(MatPaginator) private paginator: MatPaginator;
   @ViewChild(MatSort) private sort: MatSort;
 
-  public readonly maxJaccardFilter: FormControl;
+  public readonly minJaccardFilter: FormControl;
   public readonly maxPvalueFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
@@ -70,20 +70,20 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
       'sourceComparisonType', 'targetComparisonType', 'targetSignature', 'jaccard', 'pValue', 'fdr'
     ];
 
-    this.maxJaccardFilter = new FormControl();
+    this.minJaccardFilter = new FormControl();
     this.maxPvalueFilter = new FormControl();
     this.maxFdrFilter = new FormControl();
   }
 
   public ngOnInit(): void {
     this.updateResults();
-    this.watchForChanges(this.maxJaccardFilter);
+    this.watchForChanges(this.minJaccardFilter);
     this.watchForChanges(this.maxPvalueFilter);
     this.watchForChanges(this.maxFdrFilter);
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    this.maxJaccardFilter.setValue(null);
+    this.minJaccardFilter.setValue(null);
     this.maxPvalueFilter.setValue(null);
     this.maxFdrFilter.setValue(null);
     this.resetPage();
@@ -98,7 +98,6 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
       )
       .subscribe(() => this.updateResults());
   }
-
 
   private resetPage(): void {
     this.paginator.pageIndex = 0;
@@ -155,7 +154,7 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
       pageSize: this.paginator.pageSize || defaultPageSize,
       sortDirection: this.sortDirection(),
       orderField: this.orderField(),
-      maxJaccard: this.maxJaccardFilter.value,
+      minJaccard: this.minJaccardFilter.value,
       maxPvalue: this.maxPvalueFilter.value,
       maxFdr: this.maxFdrFilter.value,
     };

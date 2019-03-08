@@ -1,7 +1,7 @@
-/*!
+/*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,46 +19,27 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-table {
-  width: 100%;
-}
+export class CmapQueryGeneSetSignatureResultsMetadata {
+  private resultId: string;
+  public readonly queryTitle: string;
+  public readonly numPerm: number;
+  public readonly genesCount: number;
+  public readonly universeGenesCount: number;
 
-#pagination-container {
-  display: grid;
-  grid-template-areas: 'loading paginator';
-  grid-template-columns: 1fr 1fr;
-}
+  public set id(id: string) {
+    if (this.resultId === undefined) {
+      this.resultId = id;
+    } else {
+      throw Error('id already has a value');
+    }
+  }
 
-#loading {
-  grid-area: loading;
-  justify-self: start;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-column-gap: 10px;
-  place-content: center / start;
-}
+  public get id(): string {
+    return this.resultId;
+  }
 
-#paginator {
-  grid-area: paginator;
-  justify-self: end;
-  background-color: transparent;
-}
-
-#tes {
-  display: grid;
-  grid-template-areas: 'tesHead tesHead' 'tesMin tesMax';
-  grid-template-columns: 80px 80px;
-  grid-column-gap: 8px;
-}
-
-#tesHead {
-  grid-area: tesHead;
-}
-
-#tesMin {
-  grid-area: tesMin;
-}
-
-#tesMax {
-  grid-area: tesMax;
+  public static isA(object: any): object is CmapQueryGeneSetSignatureResultsMetadata {
+    return object !== undefined && object !== null && object.numPerm !== undefined &&
+      object.genesCount !== undefined && object.universeGenesCount !== undefined;
+  }
 }

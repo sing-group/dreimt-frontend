@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,11 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class CmapCalculateInteractionsQueryParams {
-  public readonly queryTitle?: string;
-  public readonly numPerm: number;
-
-  public static isA(object: any): object is CmapCalculateInteractionsQueryParams {
-    return object.numPerm !== undefined;
-  }
+export enum CmapGeneSetSignatureResultField {
+  NONE = 'NONE',
+  DRUG_SOURCE_NAME = 'DRUG_SOURCE_NAME',
+  DRUG_SOURCE_DB = 'DRUG_SOURCE_DB',
+  DRUG_COMMON_NAME = 'DRUG_COMMON_NAME',
+  TAU = 'TAU',
+  FDR = 'FDR',
 }

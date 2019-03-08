@@ -20,10 +20,6 @@
   -->
 
 <form [formGroup]="formGroup">
-  <mat-form-field class="pValueField">
-    <input type="number" matInput placeholder="Maximum p-value" [min]="0" [step]="0.01" [max]="1"
-           [value]="formGroup.value.maxPvalue" formControlName="maxPvalue">
-  </mat-form-field>
   <mat-form-field class="permutationField">
     <input type="number" matInput placeholder="Number of GSEA permutations" [min]="0" [max]="1000" [step]="1"
            [value]="formGroup.value.numPerm" formControlName="numPerm">

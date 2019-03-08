@@ -36,6 +36,9 @@
 
   <ng-container *ngIf="!isLoading()">
     <app-jaccard-results-table *ngIf="isJaccard()" [metadata]="results"></app-jaccard-results-table>
-    <app-cmap-results-table *ngIf="isCmap()" [metadata]="results"></app-cmap-results-table>
+    <app-cmap-up-down-signature-results-table *ngIf="isCmapUpDownSignature()"
+                                              [metadata]="results"></app-cmap-up-down-signature-results-table>
+    <app-cmap-gene-set-signature-results-table *ngIf="isCmapGeneSetSignature()"
+                                               [metadata]="results"></app-cmap-gene-set-signature-results-table>
   </ng-container>
 </ng-container>

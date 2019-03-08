@@ -19,11 +19,19 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class CmapCalculateInteractionsQueryParams {
-  public readonly queryTitle?: string;
-  public readonly numPerm: number;
+import {PartialDataSource} from '../../../../utils/partial-data-source';
+import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
+import {CmapResultsService} from '../../services/cmap-results.service';
 
-  public static isA(object: any): object is CmapCalculateInteractionsQueryParams {
-    return object.numPerm !== undefined;
+export class CmapUpDownSignatureResultsDataSource extends PartialDataSource<CmapUpDownSignatureDrugInteraction> {
+  public constructor(
+    private service: CmapResultsService
+  ) {
+    super();
+  }
+
+  public list(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
+    this.update(this.service.list(resultId, queryParams));
   }
 }

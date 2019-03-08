@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -20,18 +20,18 @@
  */
 
 import {PartialDataSource} from '../../../../utils/partial-data-source';
-import {CmapDrugInteraction} from '../../../../models/interactions/cmap/cmap-drug-interaction.model';
-import {CmapDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap/cmap-drug-interaction-results-query-params';
-import {CmapResultsService} from '../../services/cmap-results.service';
+import {CmapGeneSetSignatureDrugInteraction} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
+import {CmapGeneSetResultsService} from '../../services/cmap-gene-set-results.service';
+import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
 
-export class CmapResultsDataSource extends PartialDataSource<CmapDrugInteraction> {
+export class CmapGeneSetSignatureResultsDataSource extends PartialDataSource<CmapGeneSetSignatureDrugInteraction> {
   public constructor(
-    private service: CmapResultsService
+    private service: CmapGeneSetResultsService
   ) {
     super();
   }
 
-  public list(resultId: string, queryParams: CmapDrugInteractionResultsQueryParams): void {
+  public list(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
     this.update(this.service.list(resultId, queryParams));
   }
 }

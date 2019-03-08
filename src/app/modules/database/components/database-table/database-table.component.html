@@ -49,49 +49,53 @@
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.signatureName}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="tes">
-        <th id="tes" mat-header-cell *matHeaderCellDef>
-          <span id="tesHead" mat-sort-header="TES">TES</span>
+      <ng-container matColumnDef="tau">
+        <th id="tau" mat-header-cell *matHeaderCellDef>
+          <span id="tauHead" mat-sort-header="TAU">TAU</span>
 
-          <app-number-field id="tesMin" label="Min." [debounceTime]="debounceTime" [min]="-10" [max]="10" [step]="0.1"
-                            (valueChange)="minTesFilter.setValue($event)"></app-number-field>
-
-          <app-number-field id="tesMax" label="Max." [debounceTime]="debounceTime" [min]="-10" [max]="10" [step]="0.1"
-                            (valueChange)="maxTesFilter.setValue($event)"></app-number-field>
+          <app-number-field id="tauMin" label="Min." [debounceTime]="debounceTime" [min]="-100" [max]="100" [step]="1"
+                            (valueChange)="minTauFilter.setValue($event)"></app-number-field>
         </th>
-        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.tes">
-          {{interaction.tes | number : '1.4'}}
+        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.tau">
+          {{interaction.tau | number : '1.4'}}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="pValue">
+      <ng-container matColumnDef="upFdr">
         <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="P_VALUE">p-value</span>
+          <span mat-sort-header="UP_FDR">UP FDR</span>
           <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
-                            (valueChange)="maxPvalueFilter.setValue($event)"></app-number-field>
+                            (valueChange)="maxUpFdrFilter.setValue($event)"></app-number-field>
         </th>
-        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.pValue">
-          {{interaction.pValue | number : '1.4'}}
+        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.upFdr">
+          {{interaction.upFdr | number : '1.4'}}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="fdr">
+      <ng-container matColumnDef="downFdr">
         <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="FDR">FDR</span>
+          <span mat-sort-header="DOWN_FDR">DOWN FDR</span>
           <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
-                            (valueChange)="maxFdrFilter.setValue($event)"></app-number-field>
+                            (valueChange)="maxDownFdrFilter.setValue($event)"></app-number-field>
         </th>
-        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.fdr">
-          {{interaction.fdr | number : '1.4'}}
+        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.downFdr">
+          {{interaction.downFdr | number : '1.4'}}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="signatureType">
+      <ng-container matColumnDef="interactionType">
         <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="SIGNATURE_TYPE">Signature Type</span>
+          <span mat-sort-header="INTERACTION_TYPE">Interaction Type</span>
+          <app-filter-field label="Filter"
+                            [options]="interactionTypeFilter.options"
+                            [(filter)]="interactionTypeFilter.filter"
+                            fixedValues="true"
+                            (filterChange)="updateInteractions()"
+                            [debounceTime]="debounceTime"
+                            [maxOptions]="maxOptions"></app-filter-field>
         </th>
-        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.signature.signatureType">
-          <mat-icon>{{interaction.signature.signatureType | signatureTypeIcon}}</mat-icon>
+        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.interactionType">
+          <mat-icon>{{interaction.interactionType | interactionTypeIcon}}</mat-icon>
         </td>
       </ng-container>
 
@@ -163,7 +167,7 @@
 
       <ng-container matColumnDef="disease">
         <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="DISEASE">Disease</span>
+          <span>Disease</span>
           <app-filter-field label="Filter"
                             [options]="diseaseFieldFilter.options"
                             [(filter)]="diseaseFieldFilter.filter"

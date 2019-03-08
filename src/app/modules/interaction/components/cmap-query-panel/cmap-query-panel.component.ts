@@ -33,7 +33,6 @@ export class CmapQueryPanelComponent implements OnInit {
   private static readonly DEFAULT_VALUES = {
     debounceTime: 500,
     numPerm: 1000,
-    maxPvalue: 0.05
   };
 
   @Input() public readonly debounceTime: number;
@@ -51,11 +50,7 @@ export class CmapQueryPanelComponent implements OnInit {
       'numPerm': [
         CmapQueryPanelComponent.DEFAULT_VALUES.numPerm,
         [Validators.required, Validators.min(1), Validators.max(1000)]
-      ],
-      'maxPvalue': [
-        CmapQueryPanelComponent.DEFAULT_VALUES.maxPvalue,
-        [Validators.required, Validators.min(0), Validators.max(1)]
-      ],
+      ]
     });
   }
 
@@ -65,27 +60,25 @@ export class CmapQueryPanelComponent implements OnInit {
         debounceTime(this.debounceTime),
         distinctUntilChanged()
       )
-    .subscribe(val => {
-      if (this.formGroup.valid) {
-        this.emitConfiguration(val);
-      } else {
-        this.emitConfiguration();
-      }
-    });
+      .subscribe(val => {
+        if (this.formGroup.valid) {
+          this.emitConfiguration(val);
+        } else {
+          this.emitConfiguration();
+        }
+      });
 
     this.emitConfiguration(this.formGroup.value);
   }
 
   private emitConfiguration(val?: {
     numPerm: number;
-    maxPvalue: number;
   }) {
     let params: CmapCalculateInteractionsQueryParams;
 
     if (val !== undefined) {
       params = {
         numPerm: val.numPerm,
-        maxPvalue: val.maxPvalue
       };
     }
 

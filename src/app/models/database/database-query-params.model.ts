@@ -23,6 +23,7 @@ import {SortDirection} from '../sort-direction.enum';
 import {DrugSignatureInteractionField} from '../drug-signature-interaction-field.enum';
 import {ExperimentalDesign} from '../experimental-design.enum';
 import {SignatureType} from '../signature-type.enum';
+import {InteractionType} from '../interaction-type.enum';
 
 export class DatabaseQueryParams {
   public static readonly MANIPULATION_FIELDS = ['page', 'pageSize', 'orderField', 'sortDirection'];
@@ -44,10 +45,9 @@ export class DatabaseQueryParams {
   public readonly drugSourceDb?: string;
   public readonly drugCommonName?: string;
   public readonly signatureSourceDb?: string;
-  public readonly signatureType?: SignatureType;
-  public readonly maxPvalue?: number;
-  public readonly minTes?: number;
-  public readonly maxTes?: number;
-  public readonly maxFdr?: number;
+  public readonly interactionType?: InteractionType;
+  public readonly minTau?: number;
+  public readonly maxUpFdr?: number;
+  public readonly maxDownFdr?: number;
 }
 

@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,18 +19,20 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteractionField} from '../../drug-signature-interaction-field.enum';
+import {GeneOverlapField} from '../jaccard/gene-overlap-field.enum';
 import {SortDirection} from '../../sort-direction.enum';
-import {GeneOverlapField} from './gene-overlap-field.enum';
+import {CmapGeneSetSignatureResultField} from './cmap-gene-set-signature-result-field.enum';
 
-export class JaccardOverlapsQueryParams {
-  public static readonly MANIPULATION_FIELDS = ['page', 'pageSize', 'orderField', 'sortDirection'];
+export class CmapGeneSetSignatureDrugInteractionResultsQueryParams {
+  public static readonly MANIPULATION_FIELDS = ['page', 'pageSize', 'orderField', 'sortDirection', 'resultId'];
 
   public readonly page?: number;
   public readonly pageSize?: number;
-  public readonly orderField?: GeneOverlapField;
+  public readonly orderField?: CmapGeneSetSignatureResultField;
   public readonly sortDirection?: SortDirection;
-  public readonly minJaccard?: number;
-  public readonly maxPvalue?: number;
+  public readonly minTau?: number;
   public readonly maxFdr?: number;
+  public readonly drugSourceName?: string;
+  public readonly drugSourceDb?: string;
+  public readonly drugCommonName?: string;
 }

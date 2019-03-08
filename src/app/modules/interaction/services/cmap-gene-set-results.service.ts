@@ -26,22 +26,22 @@ import {toPlainObject} from '../../../utils/types';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
 import {map} from 'rxjs/operators';
-import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
-import {CmapUpDownSignatureDrugInteractionResults} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results';
 import saveAs from 'file-saver';
-import {CmapUpDownSignatureDrugInteraction} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
+import {CmapGeneSetSignatureDrugInteractionResults} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results';
+import {CmapGeneSetSignatureDrugInteraction} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CmapResultsService {
+export class CmapGeneSetResultsService {
 
   constructor(
     private http: HttpClient
   ) {
   }
 
-  public list(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): Observable<CmapUpDownSignatureDrugInteractionResults> {
+  public list(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<CmapGeneSetSignatureDrugInteractionResults> {
     const options = {
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
@@ -52,11 +52,11 @@ export class CmapResultsService {
       })
     };
 
-    return this.http.get<CmapUpDownSignatureDrugInteraction[]>(
-      `${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, options
+    return this.http.get<CmapGeneSetSignatureDrugInteraction[]>(
+      `${environment.dreimtUrl}/results/cmap/geneset/` + resultId + `/interactions`, options
     ).pipe(
       DreimtError.throwOnError('Cmap results error', 'Cmap analysis results could not be retrieved.'),
-      map((response: HttpResponse<CmapUpDownSignatureDrugInteraction[]>) => ({
+      map((response: HttpResponse<CmapGeneSetSignatureDrugInteraction[]>) => ({
         result: response.body,
         count: Number(response.headers.get('X-Count'))
       }))
@@ -64,8 +64,8 @@ export class CmapResultsService {
   }
 
 
-  public downloadCsv(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams) {
-    this.http.get(`${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, {
+  public downloadCsv(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams) {
+    this.http.get(`${environment.dreimtUrl}/results/cmap/geneset/` + resultId + `/interactions`, {
       headers: new HttpHeaders({
         'Accept': 'text/csv'
       }), responseType: 'blob'
@@ -83,33 +83,33 @@ export class CmapResultsService {
   }
 
 
-  public listDrugCommonNameValues(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
+  public listDrugCommonNameValues(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
     return this.listValues('drug-common-name', resultId, queryParams);
   }
 
-  public listDrugSourceNameValues(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
+  public listDrugSourceNameValues(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
     return this.listValues('drug-source-name', resultId, queryParams);
   }
 
-  public listDrugSourceDbValues(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
+  public listDrugSourceDbValues(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
     return this.listValues('drug-source-db', resultId, queryParams);
   }
 
-  private listValues(resource: string, resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
+  private listValues(resource: string, resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
     return this.listMappedValues<string[]>(resource, queryParams, resultId, map(values => values));
   }
 
   private listMappedValues<A>(
-    resource: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams, resultId: string,
+    resource: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams, resultId: string,
     mapper: OperatorFunction<A, string[]>
   ): Observable<string[]> {
     const options = {
       params: new HttpParams({
-        fromObject: toPlainObject(queryParams, CmapUpDownSignatureDrugInteractionResultsQueryParams.MANIPULATION_FIELDS)
+        fromObject: toPlainObject(queryParams, CmapGeneSetSignatureDrugInteractionResultsQueryParams.MANIPULATION_FIELDS)
       })
     };
 
-    return this.http.get<A>(`${environment.dreimtUrl}/results/cmap/signature/params/${resultId}/${resource}/values`, options)
+    return this.http.get<A>(`${environment.dreimtUrl}/results/cmap/geneset/params/${resultId}/${resource}/values`, options)
       .pipe(
         mapper,
         DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.')

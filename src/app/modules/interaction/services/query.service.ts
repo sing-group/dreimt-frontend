@@ -31,7 +31,7 @@ import {CmapCalculateInteractionsQueryParams} from '../../../models/interactions
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
-import {CmapQueryResultsMetadata} from '../../../models/interactions/cmap/cmap-query-results-metadata';
+import {CmapQueryUpDownSignatureResultsMetadata} from '../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
 import {map, tap} from 'rxjs/operators';
 import {WorkService} from '../../work/services/work.service';
 
@@ -82,8 +82,8 @@ export class QueryService {
     );
   }
 
-  public getWorkResult(work: Work): Observable<JaccardQueryResultMetadata | CmapQueryResultsMetadata> {
-    return this.http.get<JaccardQueryResultMetadata | CmapQueryResultsMetadata>(
+  public getWorkResult(work: Work): Observable<JaccardQueryResultMetadata | CmapQueryUpDownSignatureResultsMetadata> {
+    return this.http.get<JaccardQueryResultMetadata | CmapQueryUpDownSignatureResultsMetadata>(
       work.resultReference
     )
       .pipe(

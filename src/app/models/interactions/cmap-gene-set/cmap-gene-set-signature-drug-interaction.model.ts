@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,28 +19,17 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {Drug} from '../../drug.model';
 
-import { CmapResultsTableComponent } from './cmap-results-table.component';
+export class CmapGeneSetSignatureDrugInteraction {
+  public readonly drug: Drug;
+  public readonly tau: number;
+  public readonly fdr: number;
 
-describe('CmapResultsTableComponent', () => {
-  let component: CmapResultsTableComponent;
-  let fixture: ComponentFixture<CmapResultsTableComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CmapResultsTableComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CmapResultsTableComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  public static isA(object: any): object is CmapGeneSetSignatureDrugInteraction {
+    return object !== undefined && object !== null
+      && Drug.isA(object.drug)
+      && typeof object.tau === 'number'
+      && typeof object.fdr === 'number';
+  }
+}

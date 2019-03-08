@@ -19,21 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {GeneOverlapField} from '../jaccard/gene-overlap-field.enum';
-import {SortDirection} from '../../sort-direction.enum';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-export class CmapDrugInteractionResultsQueryParams {
-  public static readonly MANIPULATION_FIELDS = ['page', 'pageSize', 'orderField', 'sortDirection', 'resultId'];
+import {CmapUpDownSignatureResultsTableComponent} from './cmap-up-down-signature-results-table.component';
 
-  public readonly page?: number;
-  public readonly pageSize?: number;
-  public readonly orderField?: GeneOverlapField;
-  public readonly sortDirection?: SortDirection;
-  public readonly maxPvalue?: number;
-  public readonly minTes?: number;
-  public readonly maxTes?: number;
-  public readonly maxFdr?: number;
-  public readonly drugSourceName?: string;
-  public readonly drugSourceDb?: string;
-  public readonly drugCommonName?: string;
-}
+describe('CmapUpDownSignatureResultsTableComponent', () => {
+  let component: CmapUpDownSignatureResultsTableComponent;
+  let fixture: ComponentFixture<CmapUpDownSignatureResultsTableComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [CmapUpDownSignatureResultsTableComponent]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CmapUpDownSignatureResultsTableComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
