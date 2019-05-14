@@ -28,7 +28,7 @@
   <mat-spinner diameter="100"></mat-spinner>
 </div>
 
-<ng-container *ngIf="isFinished()">
+<ng-container *ngIf="!isFailed()">
   <div *ngIf="isLoading()">
     <p>Loading results...</p>
     <mat-spinner diameter="100"></mat-spinner>
@@ -42,3 +42,13 @@
                                                [metadata]="results"></app-cmap-gene-set-signature-results-table>
   </ng-container>
 </ng-container>
+
+<div *ngIf="isFailed()">
+  <i class="material-icons md-48">warning</i>
+  <p>
+    Sorry, work execution has failed.<br/>
+    {{work.id.id}}<br/><br/>
+    Please, repeat your query and contact us if the query fails again.<br/>
+
+  </p>
+</div>

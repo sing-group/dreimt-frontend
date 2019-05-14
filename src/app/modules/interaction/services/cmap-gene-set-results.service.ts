@@ -64,7 +64,7 @@ export class CmapGeneSetResultsService {
   }
 
 
-  public downloadCsv(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams) {
+  public downloadCsv(resultId: string, queryTitle: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams) {
     this.http.get(`${environment.dreimtUrl}/results/cmap/geneset/` + resultId + `/interactions`, {
       headers: new HttpHeaders({
         'Accept': 'text/csv'
@@ -77,8 +77,15 @@ export class CmapGeneSetResultsService {
         )
       )
       .subscribe(res => {
+        var fileName = '';
+        if (!queryTitle) {
+          fileName = 'Cmap_' + resultId + '.csv';
+        } else {
+          fileName = queryTitle.replace(/\s/g, '_') + '.csv';
+        }
+
         const blob = new Blob([res], {type: 'text/csv'});
-        saveAs(blob, 'Cmap_' + resultId + '.csv');
+        saveAs(blob, fileName);
       });
   }
 

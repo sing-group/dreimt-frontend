@@ -30,6 +30,7 @@ import {JaccardQueryResultMetadata} from '../../../../models/interactions/jaccar
 import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
 import {WorkService} from '../../../work/services/work.service';
 import {CmapQueryGeneSetSignatureResultsMetadata} from '../../../../models/interactions/cmap-gene-set/cmap-query-gene-set-down-signature-results-metadata';
+import {ExecutionStatusIconPipe} from '../../../work/pipes/execution-status-icon.pipe';
 
 @Component({
   selector: 'app-drug-cell-interactions-table',
@@ -64,7 +65,11 @@ export class CalculatedInteractionsTableComponent implements OnInit {
   }
 
   public isFinished(): boolean {
-    return !this.isLoading() && this.work.status === ExecutionStatus.COMPLETED;
+    return !this.isLoading() && (this.work.status === ExecutionStatus.COMPLETED || this.work.status === ExecutionStatus.FAILED);
+  }
+
+  public isFailed(): boolean {
+    return !this.isLoading() && this.work.status === ExecutionStatus.FAILED;
   }
 
   public currentProgress(): number {

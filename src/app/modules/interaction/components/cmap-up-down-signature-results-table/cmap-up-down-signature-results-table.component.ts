@@ -188,10 +188,11 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
       drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
       drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter()
     };
+
   }
 
   public downloadCsv() {
-    this.service.downloadCsv(this.metadata.id, this.createQueryParameters());
+    this.service.downloadCsv(this.metadata.id, this.metadata.queryTitle, this.createQueryParameters());
   }
 
   public isMetadataAvailable(): boolean {

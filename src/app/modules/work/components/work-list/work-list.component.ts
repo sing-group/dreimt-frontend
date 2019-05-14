@@ -114,4 +114,12 @@ export class WorkListComponent implements OnInit {
       }
     }
   }
+
+  public displayWorkName(work: Work): string {
+    if (!work.name) {
+      return work.id.id;
+    } else {
+      return work.name;
+    }
+  }
 }

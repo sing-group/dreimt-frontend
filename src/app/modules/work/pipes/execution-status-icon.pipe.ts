@@ -43,5 +43,4 @@ export class ExecutionStatusIconPipe implements PipeTransform {
         return '';
     }
   }
-
 }

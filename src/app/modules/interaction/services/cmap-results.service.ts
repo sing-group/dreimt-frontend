@@ -64,7 +64,7 @@ export class CmapResultsService {
   }
 
 
-  public downloadCsv(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams) {
+  public downloadCsv(resultId: string, queryTitle: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams) {
     this.http.get(`${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, {
       headers: new HttpHeaders({
         'Accept': 'text/csv'
@@ -77,8 +77,15 @@ export class CmapResultsService {
         )
       )
       .subscribe(res => {
+        var fileName = '';
+        if (!queryTitle) {
+          fileName = 'Cmap_' + resultId + '.csv';
+        } else {
+          fileName = queryTitle.replace(/\s/g, '_') + '.csv';
+        }
+
         const blob = new Blob([res], {type: 'text/csv'});
-        saveAs(blob, 'Cmap_' + resultId + '.csv');
+        saveAs(blob, fileName);
       });
   }
 

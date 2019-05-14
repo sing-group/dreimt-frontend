@@ -63,7 +63,7 @@ export class JaccardResultsService {
     );
   }
 
-  public downloadCsv(resultId: string, queryParams: JaccardOverlapsQueryParams) {
+  public downloadCsv(resultId: string, queryTitle: string, queryParams: JaccardOverlapsQueryParams) {
     this.http.get(`${environment.dreimtUrl}/results/jaccard/` + resultId + `/overlaps`, {
       headers: new HttpHeaders({
         'Accept': 'text/csv'
@@ -76,8 +76,15 @@ export class JaccardResultsService {
         )
       )
       .subscribe(res => {
+        var fileName = '';
+        if (!queryTitle) {
+          fileName = 'Jaccard_' + resultId + '.csv';
+        } else {
+          fileName = queryTitle.replace(/\s/g, '_') + '.csv';
+        }
+
         const blob = new Blob([res], {type: 'text/csv'});
-        saveAs(blob, 'Jaccard_' + resultId + '.csv');
+        saveAs(blob, fileName);
       });
   }
 }

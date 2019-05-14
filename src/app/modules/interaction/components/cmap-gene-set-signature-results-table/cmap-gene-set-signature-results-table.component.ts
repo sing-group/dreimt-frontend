@@ -185,7 +185,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
   }
 
   public downloadCsv() {
-    this.service.downloadCsv(this.metadata.id, this.createQueryParameters());
+    this.service.downloadCsv(this.metadata.id, this.metadata.queryTitle, this.createQueryParameters());
   }
 
   public isMetadataAvailable(): boolean {
