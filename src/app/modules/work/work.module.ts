@@ -26,7 +26,7 @@ import {WorkListComponent} from './components/work-list/work-list.component';
 import {WorkService} from './services/work.service';
 import {ExecutionStatusIconPipe} from './pipes/execution-status-icon.pipe';
 import {ConfirmDeletionDialogComponent} from './components/work-list/confirm-deletion-dialog.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from 'ngx-http-client';
 import {BrowserModule} from '@angular/platform-browser';
 
 @NgModule({

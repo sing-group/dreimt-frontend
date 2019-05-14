@@ -40,6 +40,7 @@ import {DatabaseRoutingModule} from './database-routing.module';
 import {InteractionTypeIconPipe} from './pipes/interaction-type-icon.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
+import {HttpClientModule} from 'ngx-http-client';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {SharedModule} from '../shared/shared.module';
     CommonModule,
     DatabaseRoutingModule,
     FormsModule,
+    HttpClientModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,

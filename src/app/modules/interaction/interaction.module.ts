@@ -43,7 +43,7 @@ import {
   MatTooltipModule
 } from '@angular/material';
 import {QueryService} from './services/query.service';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from 'ngx-http-client';
 import {InteractionRoutingModule} from './interaction-routing.module';
 import {JaccardQueryPanelComponent} from './components/jaccard-query-panel/jaccard-query-panel.component';
 import {CmapQueryPanelComponent} from './components/cmap-query-panel/cmap-query-panel.component';
