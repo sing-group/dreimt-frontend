@@ -26,6 +26,12 @@ import {
 import {SignaturesService} from '../../services/signatures.service';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
+import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
+import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
+import {GeneSet} from '../../../../models/interactions/gene-set.model';
+import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
+import {ActivatedRoute, Router} from '@angular/router';
+import {QueryService} from '../../services/query.service';
 
 @Component({
   selector: 'app-jaccard-query-panel',
@@ -39,10 +45,12 @@ export class JaccardQueryPanelComponent implements OnInit {
     considerOnlyUniverseGenes: false
   };
 
-  @Input() public readonly debounceTime: number;
-  @Input() public readonly maxOptions: number;
+  public queryTitle: string;
+  private upGenes: string[];
+  private downGenes: string[];
 
-  @Output() public readonly configurationChanged: EventEmitter<JaccardCalculateInteractionsQueryParams>;
+  public readonly debounceTime: number;
+  public readonly maxOptions: number;
 
   public readonly cellTypeAFieldFilter: FieldFilterModel;
   public readonly cellSubTypeAFieldFilter: FieldFilterModel;
@@ -56,12 +64,17 @@ export class JaccardQueryPanelComponent implements OnInit {
   public considerOnlyUniverseGenes: boolean;
 
   constructor(
-    private service: SignaturesService
+    private service: SignaturesService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private interactionsService: QueryService
   ) {
     this.debounceTime = JaccardQueryPanelComponent.DEFAULT_VALUES.debounceTime;
     this.maxOptions = JaccardQueryPanelComponent.DEFAULT_VALUES.maxOptions;
 
-    this.configurationChanged = new EventEmitter<JaccardCalculateInteractionsQueryParams>();
+    this.queryTitle = '';
+    this.upGenes = [];
+    this.downGenes = [];
 
     this.cellTypeAFieldFilter = new FieldFilterModel();
     this.cellSubTypeAFieldFilter = new FieldFilterModel();
@@ -73,6 +86,20 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.signatureSourceDbFieldFilter = new FieldFilterModel();
 
     this.considerOnlyUniverseGenes = JaccardQueryPanelComponent.DEFAULT_VALUES.considerOnlyUniverseGenes;
+  }
+
+  private static cleanAndFilterGenes(genes: string): string[] {
+    return genes.split(/\s+/)
+      .map(gene => gene.trim())
+      .filter(gene => gene.length > 0);
+  }
+
+  public onUpGenesChanged(genes: string): void {
+    this.upGenes = JaccardQueryPanelComponent.cleanAndFilterGenes(genes);
+  }
+
+  public onDownUpGenesChanged(genes: string): void {
+    this.downGenes = JaccardQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 
   public ngOnInit(): void {
@@ -90,8 +117,6 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.loadOrganismValues(queryParams);
     this.loadDiseaseValues(queryParams);
     this.loadSignatureSourceDbValues(queryParams);
-
-    this.configurationChanged.emit(queryParams);
   }
 
   private loadCellTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
@@ -103,6 +128,7 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.service.listCellSubTypeAValues(queryParams)
       .subscribe(values => this.cellSubTypeAFieldFilter.update(values));
   }
+
   private loadCellTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listCellTypeBValues(queryParams)
       .subscribe(values => this.cellTypeBFieldFilter.update(values));
@@ -149,5 +175,40 @@ export class JaccardQueryPanelComponent implements OnInit {
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),
       onlyUniverseGenes: this.considerOnlyUniverseGenes
     };
+  }
+
+  public isValid(): boolean {
+    return this.upGenes.length > 0 && this.getQueryConfiguration() !== undefined;
+  }
+
+  private getQueryConfiguration(): JaccardCalculateInteractionsQueryParams {
+    return {
+      queryTitle: this.queryTitle,
+      ...this.createQueryParameters()
+    };
+  }
+
+  public launchQuery(): void {
+    let genes: UpDownGenes | GeneSet;
+    if (this.downGenes.length === 0) {
+      genes = {
+        genes: this.upGenes
+      };
+    } else {
+      genes = {
+        upGenes: this.upGenes,
+        downGenes: this.downGenes
+      };
+    }
+
+    const queryParams: CalculateInteractionsQueryParamsModel = {
+      params: this.getQueryConfiguration(),
+      genes: genes
+    };
+
+    this.interactionsService.launchQuery(queryParams)
+      .subscribe(work => {
+        this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
+      });
   }
 }

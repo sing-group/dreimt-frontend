@@ -22,7 +22,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MainComponent} from './components/main/main.component';
-import {MatButtonModule, MatCardModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatTooltipModule} from '@angular/material';
 import {MainRoutingModule} from './main-routing.module';
 
 @NgModule({
@@ -31,7 +31,8 @@ import {MainRoutingModule} from './main-routing.module';
     CommonModule,
     MatCardModule,
     MatButtonModule,
-    MainRoutingModule
+    MainRoutingModule,
+    MatTooltipModule
   ]
 })
 export class MainModule {

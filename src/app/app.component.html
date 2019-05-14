@@ -26,7 +26,8 @@
     </div>
     <div class="header-right">
       <button mat-button routerLink="/database">Database</button>
-      <button mat-button routerLink="/interactions">Interactions</button>
+      <button mat-button routerLink="/interactions/predict">Predict</button>
+      <button mat-button routerLink="/interactions/jaccard">Similar signatures</button>
       <button mat-button [matBadge]="workCount" matBadgePosition="after" matBadgeColor="accent"
               (click)="queriesList.toggle()">
         Queries

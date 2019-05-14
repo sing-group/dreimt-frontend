@@ -19,75 +19,96 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div class="jaccard-form">
+<mat-card>
+  <mat-card-title>Similar Signatures Query</mat-card-title>
 
-  <app-filter-field
-    label="Cell type A"
-    [options]="cellTypeAFieldFilter.options"
-    [(filter)]="cellTypeAFieldFilter.filter"
-    (filterChange)="updateFieldValues()"
-    [debounceTime]="debounceTime"
-    [maxOptions]="maxOptions"></app-filter-field>
+  <mat-card-content class="query-container">
+    <mat-form-field class="query-title">
+      <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
+    </mat-form-field>
 
-  <app-filter-field
-    label="Cell subtype A"
-    [options]="cellSubTypeAFieldFilter.options"
-    [(filter)]="cellSubTypeAFieldFilter.filter"
-    (filterChange)="updateFieldValues()"
-    [debounceTime]="debounceTime"
-    [maxOptions]="maxOptions"></app-filter-field>
+    <div class="query-configuration">
 
-  <app-filter-field
-    label="Organism"
-    [options]="organismFieldFilter.options"
-    [(filter)]="organismFieldFilter.filter"
-    (filterChange)="updateFieldValues()"
-    [debounceTime]="debounceTime"
-    [maxOptions]="maxOptions"></app-filter-field>
+      <div class="jaccard-form">
 
-  <app-filter-field
-    label="Cell type B"
-    [options]="cellTypeBFieldFilter.options"
-    [(filter)]="cellTypeBFieldFilter.filter"
-    (filterChange)="updateFieldValues()"
-    [debounceTime]="debounceTime"
-    [maxOptions]="maxOptions"></app-filter-field>
+        <app-filter-field
+          label="Cell type A"
+          [options]="cellTypeAFieldFilter.options"
+          [(filter)]="cellTypeAFieldFilter.filter"
+          (filterChange)="updateFieldValues()"
+          [debounceTime]="debounceTime"
+          [maxOptions]="maxOptions"></app-filter-field>
 
-  <app-filter-field
-    label="Cell subtype B"
-    [options]="cellSubTypeBFieldFilter.options"
-    [(filter)]="cellSubTypeBFieldFilter.filter"
-    (filterChange)="updateFieldValues()"
-    [debounceTime]="debounceTime"
-    [maxOptions]="maxOptions"></app-filter-field>
+        <app-filter-field
+          label="Cell subtype A"
+          [options]="cellSubTypeAFieldFilter.options"
+          [(filter)]="cellSubTypeAFieldFilter.filter"
+          (filterChange)="updateFieldValues()"
+          [debounceTime]="debounceTime"
+          [maxOptions]="maxOptions"></app-filter-field>
 
+        <app-filter-field
+          label="Organism"
+          [options]="organismFieldFilter.options"
+          [(filter)]="organismFieldFilter.filter"
+          (filterChange)="updateFieldValues()"
+          [debounceTime]="debounceTime"
+          [maxOptions]="maxOptions"></app-filter-field>
 
-  <app-filter-field
-    label="Disease"
-    [options]="diseaseFieldFilter.options"
-    [(filter)]="diseaseFieldFilter.filter"
-    (filterChange)="updateFieldValues()"
-    [debounceTime]="debounceTime"
-    [maxOptions]="maxOptions"></app-filter-field>
+        <app-filter-field
+          label="Cell type B"
+          [options]="cellTypeBFieldFilter.options"
+          [(filter)]="cellTypeBFieldFilter.filter"
+          (filterChange)="updateFieldValues()"
+          [debounceTime]="debounceTime"
+          [maxOptions]="maxOptions"></app-filter-field>
 
-  <app-filter-field
-    label="Signature source DB"
-    [options]="signatureSourceDbFieldFilter.options"
-    [(filter)]="signatureSourceDbFieldFilter.filter"
-    (filterChange)="updateFieldValues()"
-    [debounceTime]="debounceTime"
-    [maxOptions]="maxOptions"></app-filter-field>
+        <app-filter-field
+          label="Cell subtype B"
+          [options]="cellSubTypeBFieldFilter.options"
+          [(filter)]="cellSubTypeBFieldFilter.filter"
+          (filterChange)="updateFieldValues()"
+          [debounceTime]="debounceTime"
+          [maxOptions]="maxOptions"></app-filter-field>
 
-  <app-filter-field
-    label="Experimental design"
-    [options]="experimentalDesignFieldFilter.options"
-    [(filter)]="experimentalDesignFieldFilter.filter"
-    fixedValues="true"
-    (filterChange)="updateFieldValues()"
-    [debounceTime]="debounceTime"
-    [maxOptions]="maxOptions"></app-filter-field>
+        <app-filter-field
+          label="Disease"
+          [options]="diseaseFieldFilter.options"
+          [(filter)]="diseaseFieldFilter.filter"
+          (filterChange)="updateFieldValues()"
+          [debounceTime]="debounceTime"
+          [maxOptions]="maxOptions"></app-filter-field>
 
-  <mat-checkbox [(ngModel)]="considerOnlyUniverseGenes" (change)="updateFieldValues()">
-    Consider only universe genes
-  </mat-checkbox>
-</div>
+        <app-filter-field
+          label="Signature source DB"
+          [options]="signatureSourceDbFieldFilter.options"
+          [(filter)]="signatureSourceDbFieldFilter.filter"
+          (filterChange)="updateFieldValues()"
+          [debounceTime]="debounceTime"
+          [maxOptions]="maxOptions"></app-filter-field>
+
+        <app-filter-field
+          label="Experimental design"
+          [options]="experimentalDesignFieldFilter.options"
+          [(filter)]="experimentalDesignFieldFilter.filter"
+          fixedValues="true"
+          (filterChange)="updateFieldValues()"
+          [debounceTime]="debounceTime"
+          [maxOptions]="maxOptions"></app-filter-field>
+
+        <mat-checkbox [(ngModel)]="considerOnlyUniverseGenes" (change)="updateFieldValues()">
+          Consider only universe genes
+        </mat-checkbox>
+      </div>
+    </div>
+
+    <app-gene-list class="query-up-genes" title="Up genes / Geneset"
+                   (genesChanged)="onUpGenesChanged($event)"></app-gene-list>
+    <app-gene-list class="query-down-genes" title="Down genes"
+                   (genesChanged)="onDownUpGenesChanged($event)"></app-gene-list>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button (click)="launchQuery()" [disabled]="!isValid()">Launch query</button>
+  </mat-card-actions>
+</mat-card>

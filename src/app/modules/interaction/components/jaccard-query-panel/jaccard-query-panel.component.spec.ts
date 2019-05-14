@@ -19,9 +19,9 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { JaccardQueryPanelComponent } from './jaccard-query-panel.component';
+import {JaccardQueryPanelComponent} from './jaccard-query-panel.component';
 
 describe('JaccardQueryPanelComponent', () => {
   let component: JaccardQueryPanelComponent;
@@ -29,9 +29,9 @@ describe('JaccardQueryPanelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JaccardQueryPanelComponent ]
+      declarations: [JaccardQueryPanelComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -19,12 +19,35 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<form [formGroup]="formGroup">
-  <mat-form-field class="permutationField">
-    <input type="number" matInput placeholder="Number of GSEA permutations" [min]="0" [max]="1000" [step]="1"
-           [value]="formGroup.value.numPerm" formControlName="numPerm">
-  </mat-form-field>
-  <mat-slider class="permutationSlider" thumbLabel tickInterval="1" [min]="0" [max]="1000" [step]="1"
-              [value]="formGroup.value.numPerm"
-              formControlName="numPerm"></mat-slider>
-</form>
+
+<mat-card>
+  <mat-card-title>Predictions Query</mat-card-title>
+
+  <mat-card-content class="query-container">
+    <mat-form-field class="query-title">
+      <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
+    </mat-form-field>
+
+    <div class="query-configuration">
+      <form [formGroup]="formGroup">
+        <mat-form-field class="permutationField">
+          <input type="number" matInput placeholder="Number of GSEA permutations" [min]="0" [max]="1000" [step]="1"
+                 [value]="formGroup.value.numPerm" formControlName="numPerm">
+        </mat-form-field>
+        <mat-slider class="permutationSlider" thumbLabel tickInterval="1" [min]="0" [max]="1000" [step]="1"
+                    [value]="formGroup.value.numPerm"
+                    formControlName="numPerm"></mat-slider>
+      </form>
+    </div>
+
+    <app-gene-list class="query-up-genes" title="Up genes / Geneset"
+                   (genesChanged)="onUpGenesChanged($event)"></app-gene-list>
+    <app-gene-list class="query-down-genes" title="Down genes"
+                   (genesChanged)="onDownUpGenesChanged($event)"></app-gene-list>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button (click)="launchQuery()" [disabled]="!isValid()">Launch query</button>
+  </mat-card-actions>
+</mat-card>
+

@@ -20,7 +20,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {CalculatedInterationQueryResult} from '../../../models/interactions/calculated-interation-query-result.model';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
@@ -78,7 +78,7 @@ export class QueryService {
       `${environment.dreimtUrl}/interactions/query/${analysisResource}`, body
     ).pipe(
       tap(work => this.workService.addUserWork(work.id.id)),
-      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.')
+      DreimtError.throwOnError('Query error', (error: HttpErrorResponse) => 'Query could not be launched due to the following error: ' + error.error)
     );
   }
 

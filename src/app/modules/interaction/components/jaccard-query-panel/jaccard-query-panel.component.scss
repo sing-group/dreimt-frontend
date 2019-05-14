@@ -19,6 +19,43 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+mat-card {
+  max-width: 960px;
+  width: 960px;
+}
+
+.query-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "query-row-1 query-row-1"
+    "query-row-2 query-row-2"
+    "query-row-3-col-1 query-row-3-col-2";
+  grid-column-gap: 40px;
+}
+
+.query-title {
+  grid-area: query-row-1;
+}
+
+.query-configuration {
+  grid-area: query-row-2;
+}
+
+.query-up-genes {
+  grid-area: query-row-3-col-1;
+}
+
+.query-down-genes {
+  grid-area: query-row-3-col-2;
+}
+
+app-gene-list {
+  width: 100%;
+}
+
 .jaccard-form {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

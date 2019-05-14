@@ -29,7 +29,15 @@
     quis, vehicula condimentum tortor.
   </mat-card-content>
   <mat-card-actions class="actions">
-    <button mat-button (click)="onNavigateToDatabase()">Database</button>
-    <button mat-button (click)="onNavigateToInteractions()">Interactions</button>
+    <button mat-button (click)="onNavigateToDatabase()"
+            matTooltip="Opens the view to explore the database of calculated predictions.">Database
+    </button>
+    <button mat-button (click)="onNavigateToPredict()"
+            matTooltip="Opens a query panel to get drug predictions for a custom signature or gene set.">Predict
+    </button>
+    <button mat-button (click)="onNavigateToJaccard()"
+            matTooltip="Opens a query panel to find similar signatures or gene set in the database to a custom signature or gene set by calculating the Jaccard index.">
+      Similar signatures
+    </button>
   </mat-card-actions>
 </mat-card>

@@ -46,10 +46,10 @@ export class SignaturesService {
   public listCellSubTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('cell-subtype-a', queryParams);
   }
+
   public listCellTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('cell-type-b', queryParams);
   }
-
 
   public listCellSubTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
     return this.listValues('cell-subtype-b', queryParams);

@@ -20,21 +20,19 @@
  */
 
 import {RouterModule, Routes} from '@angular/router';
-import {
-  CalculatedInteractionsQueryPanelComponent
-} from './components/calculated-interactions-query-panel/calculated-interactions-query-panel.component';
 import {NgModule} from '@angular/core';
 import {CalculatedInteractionsTableComponent} from './components/calculated-interactions-table/calculated-interactions-table.component';
+import {CmapQueryPanelComponent} from './components/cmap-query-panel/cmap-query-panel.component';
+import {JaccardQueryPanelComponent} from './components/jaccard-query-panel/jaccard-query-panel.component';
 
 const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'query'
+    path: 'predict',
+    component: CmapQueryPanelComponent
   },
   {
-    path: 'query',
-    component: CalculatedInteractionsQueryPanelComponent
+    path: 'jaccard',
+    component: JaccardQueryPanelComponent
   },
   {
     path: 'calculated/:uuid',

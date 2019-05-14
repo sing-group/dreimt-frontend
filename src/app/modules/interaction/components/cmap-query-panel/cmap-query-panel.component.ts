@@ -23,6 +23,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
+import {GeneSet} from '../../../../models/interactions/gene-set.model';
+import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
+import {QueryService} from '../../services/query.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-cmap-query-panel',
@@ -35,16 +40,27 @@ export class CmapQueryPanelComponent implements OnInit {
     numPerm: 1000,
   };
 
-  @Input() public readonly debounceTime: number;
+  public queryTitle: string;
+  private upGenes: string[];
+  private downGenes: string[];
 
-  @Output() public readonly configurationChanged: EventEmitter<CmapCalculateInteractionsQueryParams>;
+  public readonly debounceTime: number;
+
+  private cmapQueryConfiguration: CmapCalculateInteractionsQueryParams;
 
   public readonly formGroup: FormGroup;
 
-  public constructor(private formBuilder: FormBuilder) {
+  public constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private interactionsService: QueryService
+  ) {
     this.debounceTime = CmapQueryPanelComponent.DEFAULT_VALUES.debounceTime;
 
-    this.configurationChanged = new EventEmitter<CmapCalculateInteractionsQueryParams>();
+    this.queryTitle = '';
+    this.upGenes = [];
+    this.downGenes = [];
 
     this.formGroup = this.formBuilder.group({
       'numPerm': [
@@ -52,6 +68,20 @@ export class CmapQueryPanelComponent implements OnInit {
         [Validators.required, Validators.min(1), Validators.max(1000)]
       ]
     });
+  }
+
+  private static cleanAndFilterGenes(genes: string): string[] {
+    return genes.split(/\s+/)
+      .map(gene => gene.trim())
+      .filter(gene => gene.length > 0);
+  }
+
+  public onUpGenesChanged(genes: string): void {
+    this.upGenes = CmapQueryPanelComponent.cleanAndFilterGenes(genes);
+  }
+
+  public onDownUpGenesChanged(genes: string): void {
+    this.downGenes = CmapQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 
   public ngOnInit(): void {
@@ -62,16 +92,16 @@ export class CmapQueryPanelComponent implements OnInit {
       )
       .subscribe(val => {
         if (this.formGroup.valid) {
-          this.emitConfiguration(val);
+          this.changeFormConfiguration(val);
         } else {
-          this.emitConfiguration();
+          this.changeFormConfiguration();
         }
       });
 
-    this.emitConfiguration(this.formGroup.value);
+    this.changeFormConfiguration(this.formGroup.value);
   }
 
-  private emitConfiguration(val?: {
+  private changeFormConfiguration(val?: {
     numPerm: number;
   }) {
     let params: CmapCalculateInteractionsQueryParams;
@@ -79,9 +109,44 @@ export class CmapQueryPanelComponent implements OnInit {
     if (val !== undefined) {
       params = {
         numPerm: val.numPerm,
+        queryTitle: this.queryTitle
+      };
+
+      this.cmapQueryConfiguration = params;
+    } else {
+      this.cmapQueryConfiguration = undefined;
+    }
+  }
+
+  public isValid(): boolean {
+    return this.upGenes.length > 0 && this.getQueryConfiguration() !== undefined;
+  }
+
+  private getQueryConfiguration(): CmapCalculateInteractionsQueryParams {
+    return this.cmapQueryConfiguration;
+  }
+
+  public launchQuery(): void {
+    let genes: UpDownGenes | GeneSet;
+    if (this.downGenes.length === 0) {
+      genes = {
+        genes: this.upGenes
+      };
+    } else {
+      genes = {
+        upGenes: this.upGenes,
+        downGenes: this.downGenes
       };
     }
 
-    this.configurationChanged.emit(params);
+    const queryParams: CalculateInteractionsQueryParamsModel = {
+      params: this.getQueryConfiguration(),
+      genes: genes
+    };
+
+    this.interactionsService.launchQuery(queryParams)
+      .subscribe(work => {
+        this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
+      });
   }
 }

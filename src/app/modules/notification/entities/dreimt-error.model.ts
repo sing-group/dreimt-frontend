@@ -28,9 +28,19 @@ export class DreimtError extends Error {
   public readonly detail: string;
   public readonly cause?: Error;
 
-  static throwOnError<T>(summary: string, detail: string): MonoTypeOperatorFunction<T> {
+  static throwOnError<T>(summary: string | ((Error) => string), detail: string | ((Error) => string)): MonoTypeOperatorFunction<T> {
     return catchError(
-      (error: Error) => throwError(new DreimtError(summary, detail, error))
+      (error: Error) => {
+        if (typeof summary !== 'string') {
+          summary = summary(error);
+        }
+
+        if (typeof detail !== 'string') {
+          detail = detail(error);
+        }
+
+        return throwError(new DreimtError(summary, detail, error));
+      }
     );
   }
 

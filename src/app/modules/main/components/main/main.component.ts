@@ -36,7 +36,11 @@ export class MainComponent {
     this.router.navigateByUrl('/database');
   }
 
-  public onNavigateToInteractions(): void {
-    this.router.navigateByUrl('/interactions');
+  public onNavigateToPredict(): void {
+    this.router.navigateByUrl('/interactions/predict');
+  }
+
+  public onNavigateToJaccard(): void {
+    this.router.navigateByUrl('/interactions/jaccard');
   }
 }
