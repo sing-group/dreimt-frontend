@@ -22,15 +22,20 @@
 import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {JaccardResultsDataSource} from './jaccard-results-data-source';
 import {JaccardResultsService} from '../../services/jaccard-results.service';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort} from '@angular/material';
 import {JaccardOverlapsQueryParams} from '../../../../models/interactions/jaccard/jaccard-overlaps-query-params';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {GeneOverlapField} from '../../../../models/interactions/jaccard/gene-overlap-field.enum';
 import {JaccardQueryResultMetadata} from '../../../../models/interactions/jaccard/jaccard-query-result-metadata';
 import {FormControl} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {environment} from '../../../../../environments/environment';
+import saveAs from 'file-saver';
+import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
+import {GeneSet} from '../../../../models/interactions/gene-set.model';
+import {ExportGenesDialogComponent} from '../export-genes-dialog/export-genes-dialog.component';
+import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
+import {Router} from '@angular/router';
+import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 
 @Component({
   selector: 'app-jaccard-results-table',
@@ -55,10 +60,16 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
   public readonly maxPvalueFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
+  @ViewChild('jaccardMin') minJaccardFilterComponent: NumberFieldComponent;
+  @ViewChild('maxPvalue') maxPvalueFilterComponent: NumberFieldComponent;
+  @ViewChild('maxFdr') maxFdrFilterComponent: NumberFieldComponent;
+
   private readonly routeUrl: string;
 
   public constructor(
-    private service: JaccardResultsService
+    private service: JaccardResultsService,
+    public dialog: MatDialog,
+    private router: Router
   ) {
     this.routeUrl = window.location.href;
 
@@ -83,11 +94,30 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    this.clearColumnModifiers();
+    this.resetPage();
+    this.updateResults();
+  }
+
+  private clearColumnModifiers(): void {
+    if (this.minJaccardFilterComponent) {
+      this.minJaccardFilterComponent.clearValue();
+    }
+    if (this.maxFdrFilterComponent) {
+      this.maxFdrFilterComponent.clearValue();
+    }
+    if (this.maxPvalueFilterComponent) {
+      this.maxPvalueFilterComponent.clearValue();
+    }
+
+    this.sort.direction = '';
+    this.sort.active = '';
+    this.sort.sortChange.emit();
+    this.sort._stateChanges.next();
+
     this.minJaccardFilter.setValue(null);
     this.maxPvalueFilter.setValue(null);
     this.maxFdrFilter.setValue(null);
-    this.resetPage();
-    this.updateResults();
   }
 
   private watchForChanges(field: FormControl): void {
@@ -186,5 +216,44 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
 
   public getResultsUrl(): string {
     return this.routeUrl;
+  }
+
+  openDownloadGenesDialog(): void {
+    const dialogRef = this.dialog.open(ExportGenesDialogComponent, {
+      width: '380px',
+      data: {
+        onlyUniverseGenes: false,
+        fileFormats: [FileFormat.GMT, FileFormat.GMX],
+        fileFormat: FileFormat.GMT
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.downloadGenes(result.onlyUniverseGenes, result.fileFormat);
+      }
+    });
+  }
+
+  private downloadGenes(onlyUniverseGenes: boolean, fileFormat: FileFormat) {
+    this.service.listGenes(this.metadata.id, onlyUniverseGenes).subscribe(result => {
+      this.saveGenes(result, fileFormat);
+    });
+  }
+
+  private saveGenes(genes: UpDownGenes | GeneSet, fileFormat: FileFormat) {
+    let fileName = '';
+    const fileExtension = FileFormat.getFileExtension(fileFormat);
+    const queryTitle = this.metadata.queryTitle;
+    if (!queryTitle) {
+      fileName = 'Jaccard_Genes_' + this.metadata.id + '.' + fileExtension;
+    } else {
+      fileName = queryTitle.replace(/\s/g, '_') + '.' + fileExtension;
+    }
+
+    const fileContents = GenesHelper.formatGenes(genes, fileFormat);
+
+    const blob = new Blob([fileContents], {type: 'text/plain'});
+    saveAs(blob, fileName);
   }
 }

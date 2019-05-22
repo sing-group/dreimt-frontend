@@ -22,10 +22,10 @@
 import {isArrayOfStrings} from '../../utils/types';
 
 export class UpDownGenes {
-  public readonly upGenes: string[];
-  public readonly downGenes: string[];
+  public readonly up: string[];
+  public readonly down: string[];
 
   public static isA(object: any): object is UpDownGenes {
-    return isArrayOfStrings(object.upGenes) && isArrayOfStrings(object.downGenes);
+    return isArrayOfStrings(object.up) && isArrayOfStrings(object.down);
   }
 }

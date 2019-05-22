@@ -19,28 +19,29 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {FileFormat} from '../../../../models/helpers/genes.helper';
 
-import {CmapGeneSetSignatureResultsTableComponent} from './cmap-gene-set-signature-results-table.component';
+@Component({
+  selector: 'app-export-genes-dialog',
+  templateUrl: './export-genes-dialog.component.html',
+  styleUrls: ['./export-genes-dialog.component.scss']
+})
+export class ExportGenesDialogComponent {
 
-describe('CmapGeneSetSignatureResultsTableComponent', () => {
-  let component: CmapGeneSetSignatureResultsTableComponent;
-  let fixture: ComponentFixture<CmapGeneSetSignatureResultsTableComponent>;
+  constructor(
+    public dialogRef: MatDialogRef<ExportGenesDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CmapGeneSetSignatureResultsTableComponent]
-    })
-      .compileComponents();
-  }));
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+}
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CmapGeneSetSignatureResultsTableComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+export interface DialogData {
+  onlyUniverseGenes: boolean;
+  fileFormats: FileFormat[];
+  fileFormat: FileFormat;
+}

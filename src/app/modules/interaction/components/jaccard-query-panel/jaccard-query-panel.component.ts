@@ -19,14 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {
-  JaccardCalculateInteractionsQueryParams
-} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
+import {Component, OnInit} from '@angular/core';
+import {JaccardCalculateInteractionsQueryParams} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {SignaturesService} from '../../services/signatures.service';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
-import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
@@ -196,8 +193,8 @@ export class JaccardQueryPanelComponent implements OnInit {
       };
     } else {
       genes = {
-        upGenes: this.upGenes,
-        downGenes: this.downGenes
+        up: this.upGenes,
+        down: this.downGenes
       };
     }
 

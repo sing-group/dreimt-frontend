@@ -30,6 +30,8 @@ import saveAs from 'file-saver';
 import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
 import {CmapGeneSetSignatureDrugInteractionResults} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
+import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
+import {GeneSet} from '../../../models/interactions/gene-set.model';
 
 @Injectable({
   providedIn: 'root'
@@ -121,5 +123,22 @@ export class CmapGeneSetResultsService {
         mapper,
         DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.')
       );
+  }
+
+  public listGenes(resultId: string, onlyUniverseGenes: boolean): Observable<GeneSet> {
+    const options = {
+      params: new HttpParams().set('onlyUniverseGenes', String(onlyUniverseGenes)),
+      observe: 'response' as 'response',
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+
+    return this.http.get<GeneSet>(
+      `${environment.dreimtUrl}/results/cmap/geneset/` + resultId + `/genes`, options
+    ).pipe(
+      DreimtError.throwOnError('Predictions query results error', 'Predictions query query genes could not be retrieved.'),
+      map((response: HttpResponse<GeneSet>) => (response.body))
+    );
   }
 }

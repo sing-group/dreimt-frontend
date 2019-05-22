@@ -30,6 +30,8 @@ import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../mod
 import {CmapUpDownSignatureDrugInteractionResults} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results';
 import saveAs from 'file-saver';
 import {CmapUpDownSignatureDrugInteraction} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import {GeneSet} from '../../../models/interactions/gene-set.model';
+import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 
 @Injectable({
   providedIn: 'root'
@@ -121,5 +123,22 @@ export class CmapResultsService {
         mapper,
         DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.')
       );
+  }
+
+  public listGenes(resultId: string, onlyUniverseGenes: boolean): Observable<UpDownGenes> {
+    const options = {
+      params: new HttpParams().set('onlyUniverseGenes', String(onlyUniverseGenes)),
+      observe: 'response' as 'response',
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+
+    return this.http.get<UpDownGenes>(
+      `${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/genes`, options
+    ).pipe(
+      DreimtError.throwOnError('Predictions query results error', 'Predictions query query genes could not be retrieved.'),
+      map((response: HttpResponse<UpDownGenes>) => (response.body))
+    );
   }
 }

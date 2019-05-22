@@ -20,7 +20,7 @@
  */
 
 import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort} from '@angular/material';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
@@ -30,6 +30,11 @@ import {CmapUpDownSignatureResultField} from '../../../../models/interactions/cm
 import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
 import {FormControl} from '@angular/forms';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
+import {ExportGenesDialogComponent} from '../export-genes-dialog/export-genes-dialog.component';
+import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
+import saveAs from 'file-saver';
+import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
+import {GeneSet} from '../../../../models/interactions/gene-set.model';
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-table',
@@ -62,7 +67,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
   private readonly routeUrl: string;
 
   constructor(
-    private service: CmapResultsService
+    private service: CmapResultsService,
+    public dialog: MatDialog
   ) {
     this.routeUrl = window.location.href;
 
@@ -205,5 +211,44 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
 
   public getInitialFdrValue(): number {
     return CmapUpDownSignatureResultsTableComponent.DEFAULT_FDR;
+  }
+
+  openDownloadGenesDialog(): void {
+    const dialogRef = this.dialog.open(ExportGenesDialogComponent, {
+      width: '380px',
+      data: {
+        onlyUniverseGenes: false,
+        fileFormats: [FileFormat.GMT, FileFormat.GMX],
+        fileFormat: FileFormat.GMT
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.downloadGenes(result.onlyUniverseGenes, result.fileFormat);
+      }
+    });
+  }
+
+  private downloadGenes(onlyUniverseGenes: boolean, fileFormat: FileFormat) {
+    this.service.listGenes(this.metadata.id, onlyUniverseGenes).subscribe(result => {
+      this.saveGenes(result, fileFormat);
+    });
+  }
+
+  private saveGenes(genes: UpDownGenes | GeneSet, fileFormat: FileFormat) {
+    let fileName = '';
+    const fileExtension = FileFormat.getFileExtension(fileFormat);
+    const queryTitle = this.metadata.queryTitle;
+    if (!queryTitle) {
+      fileName = 'Predictions_Query_Genes_' + this.metadata.id + '.' + fileExtension;
+    } else {
+      fileName = queryTitle.replace(/\s/g, '_') + '.' + fileExtension;
+    }
+
+    const fileContents = GenesHelper.formatGenes(genes, fileFormat);
+
+    const blob = new Blob([fileContents], {type: 'text/plain'});
+    saveAs(blob, fileName);
   }
 }

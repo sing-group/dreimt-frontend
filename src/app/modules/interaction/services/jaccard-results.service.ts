@@ -30,6 +30,8 @@ import {JaccardOverlapsQueryParams} from '../../../models/interactions/jaccard/j
 import {GeneOverlapResults} from '../../../models/interactions/jaccard/gene-overlap-results.model';
 import saveAs from 'file-saver';
 import {GeneOverlap} from '../../../models/interactions/jaccard/gene-overlap.model';
+import {GeneSet} from '../../../models/interactions/gene-set.model';
+import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 
 @Injectable({
   providedIn: 'root'
@@ -86,5 +88,22 @@ export class JaccardResultsService {
         const blob = new Blob([res], {type: 'text/csv'});
         saveAs(blob, fileName);
       });
+  }
+
+  public listGenes(resultId: string, onlyUniverseGenes: boolean): Observable<UpDownGenes | GeneSet> {
+    const options = {
+      params: new HttpParams().set('onlyUniverseGenes', String(onlyUniverseGenes)),
+      observe: 'response' as 'response',
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+
+    return this.http.get<UpDownGenes>(
+      `${environment.dreimtUrl}/results/jaccard/` + resultId + `/genes`, options
+    ).pipe(
+      DreimtError.throwOnError('Jaccard results error', 'Jaccard query genes could not be retrieved.'),
+      map((response: HttpResponse<UpDownGenes>) => (response.body.down.length > 0 ? response.body : {genes: response.body.up}))
+    );
   }
 }

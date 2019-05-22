@@ -1,4 +1,4 @@
-/*
+/*!
  * DREIMT Frontend
  *
  *  Copyright (C) 2018-2019 - Hugo López-Fernández,
@@ -19,28 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+#toggle {
+  margin-top: 10px;
+}
 
-import {CmapGeneSetSignatureResultsTableComponent} from './cmap-gene-set-signature-results-table.component';
-
-describe('CmapGeneSetSignatureResultsTableComponent', () => {
-  let component: CmapGeneSetSignatureResultsTableComponent;
-  let fixture: ComponentFixture<CmapGeneSetSignatureResultsTableComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CmapGeneSetSignatureResultsTableComponent]
-    })
-      .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CmapGeneSetSignatureResultsTableComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+.file-format-radio-button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

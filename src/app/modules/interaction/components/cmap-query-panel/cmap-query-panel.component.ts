@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
@@ -134,8 +134,8 @@ export class CmapQueryPanelComponent implements OnInit {
       };
     } else {
       genes = {
-        upGenes: this.upGenes,
-        downGenes: this.downGenes
+        up: this.upGenes,
+        down: this.downGenes
       };
     }
 

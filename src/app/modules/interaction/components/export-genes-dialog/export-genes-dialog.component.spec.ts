@@ -21,21 +21,21 @@
 
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {CmapGeneSetSignatureResultsTableComponent} from './cmap-gene-set-signature-results-table.component';
+import {ExportGenesDialogComponent} from './export-genes-dialog.component';
 
-describe('CmapGeneSetSignatureResultsTableComponent', () => {
-  let component: CmapGeneSetSignatureResultsTableComponent;
-  let fixture: ComponentFixture<CmapGeneSetSignatureResultsTableComponent>;
+describe('ExportGenesDialogComponent', () => {
+  let component: ExportGenesDialogComponent;
+  let fixture: ComponentFixture<ExportGenesDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CmapGeneSetSignatureResultsTableComponent]
+      declarations: [ExportGenesDialogComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CmapGeneSetSignatureResultsTableComponent);
+    fixture = TestBed.createComponent(ExportGenesDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

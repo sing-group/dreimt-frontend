@@ -60,7 +60,7 @@ export class QueryService {
     };
 
     if (UpDownGenes.isA(queryParams.genes)) {
-      body = {upGenes: queryParams.genes.upGenes, downGenes: queryParams.genes.downGenes};
+      body = {upGenes: queryParams.genes.up, downGenes: queryParams.genes.down};
     } else if (GeneSet.isA(queryParams.genes)) {
       body = {upGenes: queryParams.genes.genes};
     }

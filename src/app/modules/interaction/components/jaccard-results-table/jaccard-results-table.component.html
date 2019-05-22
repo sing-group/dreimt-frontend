@@ -103,7 +103,7 @@
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="JACCARD">Jaccard</span>
 
-          <app-number-field label="Min." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
+          <app-number-field #jaccardMin label="Min." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
                             (valueChange)="minJaccardFilter.setValue($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.jaccard | number : '1.4'}}</td>
@@ -113,7 +113,7 @@
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="P_VALUE">p-value</span>
 
-          <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
+          <app-number-field #maxPvalue label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
                             (valueChange)="maxPvalueFilter.setValue($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.pvalue | number : '1.4'}}</td>
@@ -123,14 +123,14 @@
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="FDR">FDR</span>
 
-          <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
+          <app-number-field #maxFdr label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
                             (valueChange)="maxFdrFilter.setValue($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.fdr | number : '1.4'}}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="columns"></tr>
-      <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+      <tr mat-row *matRowDef="let row; let even = even; columns: columns;" [ngClass]="{gray: even}"></tr>
     </table>
 
     <mat-toolbar>
@@ -150,6 +150,10 @@
     <button mat-button (click)="downloadCsv()">
       <mat-icon>save_alt</mat-icon>
       Download as CSV
+    </button>
+    <button mat-button (click)="openDownloadGenesDialog()">
+      <mat-icon>save_alt</mat-icon>
+      Download Query Genes
     </button>
   </mat-card-actions>
 </mat-card>

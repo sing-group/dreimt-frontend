@@ -26,6 +26,7 @@ import {
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
+  MatDialogModule,
   MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
@@ -34,8 +35,10 @@ import {
   MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
+  MatRadioModule,
   MatSelectModule,
   MatSliderModule,
+  MatSlideToggleModule,
   MatSortModule,
   MatTableModule,
   MatTabsModule,
@@ -54,6 +57,7 @@ import {JaccardResultsTableComponent} from './components/jaccard-results-table/j
 import {CmapUpDownSignatureResultsTableComponent} from './components/cmap-up-down-signature-results-table/cmap-up-down-signature-results-table.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import {CmapGeneSetSignatureResultsTableComponent} from './components/cmap-gene-set-signature-results-table/cmap-gene-set-signature-results-table.component';
+import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
 
 @NgModule({
   imports: [
@@ -65,14 +69,17 @@ import {CmapGeneSetSignatureResultsTableComponent} from './components/cmap-gene-
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDialogModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
     MatProgressBarModule,
+    MatRadioModule,
     MatSelectModule,
     MatSliderModule,
+    MatSlideToggleModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatTableModule,
@@ -86,14 +93,19 @@ import {CmapGeneSetSignatureResultsTableComponent} from './components/cmap-gene-
   declarations: [
     CalculatedInteractionsTableComponent,
     CmapQueryPanelComponent,
+    ExportGenesDialogComponent,
     GeneListComponent,
     JaccardQueryPanelComponent,
     JaccardResultsTableComponent,
     CmapUpDownSignatureResultsTableComponent,
-    CmapGeneSetSignatureResultsTableComponent
+    CmapGeneSetSignatureResultsTableComponent,
+    ExportGenesDialogComponent
   ],
   providers: [
     QueryService
+  ],
+  entryComponents: [
+    ExportGenesDialogComponent
   ]
 })
 export class InteractionModule {

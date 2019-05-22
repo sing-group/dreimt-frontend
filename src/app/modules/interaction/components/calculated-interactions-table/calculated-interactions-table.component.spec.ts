@@ -19,9 +19,9 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CalculatedInteractionsTableComponent } from './calculated-interactions-table.component';
+import {CalculatedInteractionsTableComponent} from './calculated-interactions-table.component';
 
 describe('CalculatedInteractionsTableComponent', () => {
   let component: CalculatedInteractionsTableComponent;
@@ -29,9 +29,9 @@ describe('CalculatedInteractionsTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalculatedInteractionsTableComponent ]
+      declarations: [CalculatedInteractionsTableComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
