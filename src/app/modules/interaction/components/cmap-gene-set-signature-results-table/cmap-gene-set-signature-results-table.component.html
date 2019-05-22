@@ -74,7 +74,7 @@
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="FDR">FDR</span>
 
-          <app-number-field [initialValue]="getInitialFdrValue()" label="Max." [debounceTime]="debounceTime" [min]="0"
+          <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0"
                             [max]="1" [step]="0.05"
                             (valueChange)="maxFdrFilter.setValue($event)"></app-number-field>
         </th>

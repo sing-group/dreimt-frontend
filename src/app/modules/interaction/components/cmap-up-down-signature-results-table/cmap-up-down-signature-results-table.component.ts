@@ -42,8 +42,6 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
   styleUrls: ['./cmap-up-down-signature-results-table.component.scss']
 })
 export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterViewInit, OnChanges {
-  public static readonly DEFAULT_FDR = 0.05;
-
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -85,9 +83,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
     this.drugSourceDbFieldFilter = new FieldFilterModel();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
-    this.maxUpFdrFilter.setValue(CmapUpDownSignatureResultsTableComponent.DEFAULT_FDR);
     this.maxDownFdrFilter = new FormControl();
-    this.maxDownFdrFilter.setValue(CmapUpDownSignatureResultsTableComponent.DEFAULT_FDR);
   }
 
   public ngOnInit(): void {
@@ -99,8 +95,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
 
   public ngOnChanges(changes: SimpleChanges): void {
     this.minTauFilter.setValue(null);
-    this.maxUpFdrFilter.setValue(CmapUpDownSignatureResultsTableComponent.DEFAULT_FDR);
-    this.maxDownFdrFilter.setValue(CmapUpDownSignatureResultsTableComponent.DEFAULT_FDR);
+    this.maxUpFdrFilter.setValue(null);
+    this.maxDownFdrFilter.setValue(null);
     this.resetPage();
     this.updateResults();
   }
@@ -207,10 +203,6 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
 
   public getResultsUrl(): string {
     return this.routeUrl;
-  }
-
-  public getInitialFdrValue(): number {
-    return CmapUpDownSignatureResultsTableComponent.DEFAULT_FDR;
   }
 
   openDownloadGenesDialog(): void {

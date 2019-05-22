@@ -42,7 +42,6 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
   styleUrls: ['./cmap-gene-set-signature-results-table.component.scss']
 })
 export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterViewInit, OnChanges {
-  public static readonly DEFAULT_FDR = 0.05;
 
   public readonly debounceTime: number;
   public readonly maxOptions: number;
@@ -84,7 +83,6 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
     this.drugSourceDbFieldFilter = new FieldFilterModel();
     this.minTauFilter = new FormControl();
     this.maxFdrFilter = new FormControl();
-    this.maxFdrFilter.setValue(CmapGeneSetSignatureResultsTableComponent.DEFAULT_FDR);
   }
 
   public ngOnInit(): void {
@@ -95,7 +93,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
 
   public ngOnChanges(changes: SimpleChanges): void {
     this.minTauFilter.setValue(null);
-    this.maxFdrFilter.setValue(CmapGeneSetSignatureResultsTableComponent.DEFAULT_FDR);
+    this.maxFdrFilter.setValue(null);
     this.resetPage();
     this.updateResults();
   }
@@ -200,10 +198,6 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
 
   public getResultsUrl(): string {
     return this.routeUrl;
-  }
-
-  public getInitialFdrValue(): number {
-    return CmapGeneSetSignatureResultsTableComponent.DEFAULT_FDR;
   }
 
   openDownloadGenesDialog(): void {
