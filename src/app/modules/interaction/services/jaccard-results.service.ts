@@ -103,7 +103,7 @@ export class JaccardResultsService {
       `${environment.dreimtUrl}/results/jaccard/` + resultId + `/genes`, options
     ).pipe(
       DreimtError.throwOnError('Jaccard results error', 'Jaccard query genes could not be retrieved.'),
-      map((response: HttpResponse<UpDownGenes>) => (response.body.down.length > 0 ? response.body : {genes: response.body.up}))
+      map((response: HttpResponse<UpDownGenes>) => (response.body.down ? response.body : {genes: response.body.up}))
     );
   }
 }
