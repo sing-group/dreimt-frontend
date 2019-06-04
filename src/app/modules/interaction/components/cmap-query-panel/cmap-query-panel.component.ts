@@ -41,12 +41,11 @@ export class CmapQueryPanelComponent implements OnInit {
   };
 
   public queryTitle: string;
+  private numPerm: number;
   private upGenes: string[];
   private downGenes: string[];
 
   public readonly debounceTime: number;
-
-  private cmapQueryConfiguration: CmapCalculateInteractionsQueryParams;
 
   public readonly formGroup: FormGroup;
 
@@ -104,26 +103,22 @@ export class CmapQueryPanelComponent implements OnInit {
   private changeFormConfiguration(val?: {
     numPerm: number;
   }) {
-    let params: CmapCalculateInteractionsQueryParams;
-
     if (val !== undefined) {
-      params = {
-        numPerm: val.numPerm,
-        queryTitle: this.queryTitle
-      };
-
-      this.cmapQueryConfiguration = params;
+      this.numPerm = val.numPerm;
     } else {
-      this.cmapQueryConfiguration = undefined;
+      this.numPerm = undefined;
     }
   }
 
   public isValid(): boolean {
-    return this.upGenes.length > 0 && this.getQueryConfiguration() !== undefined;
+    return this.upGenes.length > 0 && this.numPerm !== undefined;
   }
 
   private getQueryConfiguration(): CmapCalculateInteractionsQueryParams {
-    return this.cmapQueryConfiguration;
+    return {
+      queryTitle: this.queryTitle,
+      numPerm: this.numPerm
+    };
   }
 
   public launchQuery(): void {
