@@ -19,27 +19,28 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Pipe, PipeTransform} from '@angular/core';
-import {InteractionType} from '../../../models/interaction-type.enum';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-@Pipe({
-  name: 'interactionTypeIcon'
-})
-export class InteractionTypeIconPipe implements PipeTransform {
+import {DatabaseTableFiltersComponent} from './database-table-filters.component';
 
-  transform(value: string | InteractionType): string {
-    switch (value) {
-      case 'GENESET':
-      case InteractionType.GENESET:
-        return 'grain';
-      case InteractionType.SIGNATURE:
-        return 'swap_vert';
-      case InteractionType.SIGNATURE_UP:
-        return 'arrow_upward';
-      case InteractionType.SIGNATURE_DOWN:
-        return 'arrow_downward';
-      default:
-        return '';
-    }
-  }
-}
+describe('DatabaseTableFiltersComponent', () => {
+  let component: DatabaseTableFiltersComponent;
+  let fixture: ComponentFixture<DatabaseTableFiltersComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [DatabaseTableFiltersComponent]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DatabaseTableFiltersComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

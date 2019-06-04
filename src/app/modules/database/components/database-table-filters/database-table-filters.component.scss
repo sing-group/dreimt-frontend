@@ -1,4 +1,4 @@
-/*
+/*!
  * DREIMT Frontend
  *
  *  Copyright (C) 2018-2019 - Hugo López-Fernández,
@@ -19,27 +19,19 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Pipe, PipeTransform} from '@angular/core';
-import {InteractionType} from '../../../models/interaction-type.enum';
+.full-width-field {
+  width: 100%;
+}
 
-@Pipe({
-  name: 'interactionTypeIcon'
-})
-export class InteractionTypeIconPipe implements PipeTransform {
+.filters-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 
-  transform(value: string | InteractionType): string {
-    switch (value) {
-      case 'GENESET':
-      case InteractionType.GENESET:
-        return 'grain';
-      case InteractionType.SIGNATURE:
-        return 'swap_vert';
-      case InteractionType.SIGNATURE_UP:
-        return 'arrow_upward';
-      case InteractionType.SIGNATURE_DOWN:
-        return 'arrow_downward';
-      default:
-        return '';
-    }
-  }
+app-number-field {
+  margin-right: 50px;
+}
+
+#clearAdvancedFiltersButton {
+  margin: 10px;
 }

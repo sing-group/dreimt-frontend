@@ -24,6 +24,7 @@ import {NotificationService} from './modules/notification/services/notification.
 import {NotificationsService as ToastService} from 'angular2-notifications';
 import {Severity} from './modules/notification/entities';
 import {WorkService} from './modules/work/services/work.service';
+import {CustomIconService} from './services/custom-icon.service';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
     private workService: WorkService,
     private notificationService: NotificationService,
     private toastService: ToastService,
+    private customIconService: CustomIconService
   ) {
     this.workCount = 0;
   }
@@ -65,5 +67,7 @@ export class AppComponent implements OnInit {
         }
       }
     );
+
+    this.customIconService.init();
   }
 }

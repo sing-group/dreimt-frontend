@@ -49,5 +49,6 @@ export class DatabaseQueryParams {
   public readonly minTau?: number;
   public readonly maxUpFdr?: number;
   public readonly maxDownFdr?: number;
+  public readonly freeText?: string;
 }
 

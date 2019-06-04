@@ -27,7 +27,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NotificationModule} from './modules/notification/notification.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {ErrorNotificationHandler} from './modules/notification/handlers/error-notification.handler';
-import {MatBadgeModule, MatButtonModule, MatListModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
+import {MatBadgeModule, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 import {AppRoutingModule} from './app-routing.module';
 import {WorkModule} from './modules/work/work.module';
 
@@ -41,6 +41,7 @@ import {WorkModule} from './modules/work/work.module';
     BrowserAnimationsModule,
     MatBadgeModule,
     MatButtonModule,
+    MatIconModule,
     MatListModule,
     MatSidenavModule,
     MatToolbarModule,

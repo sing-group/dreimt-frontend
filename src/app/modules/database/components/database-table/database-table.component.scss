@@ -25,8 +25,7 @@ table {
 
 #pagination-container {
   display: grid;
-  grid-template-areas:
-    'loading paginator';
+  grid-template-areas: 'loading paginator';
   grid-template-columns: 1fr 1fr;
 }
 
@@ -45,21 +44,53 @@ table {
   background-color: transparent;
 }
 
-#tes {
-  display: grid;
-  grid-template-areas: 'tesHead tesHead' 'tesMin tesMax';
-  grid-template-columns: 80px 80px;
-  grid-column-gap: 8px;
+::ng-deep .mat-tooltip {
+  white-space: pre-line;
+  word-wrap: break-word;
+  line-height: 1.5;
 }
 
-#tesHead {
-  grid-area: tesHead;
+.text-organism {
+  border-radius: 4px;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
+  text-decoration: none;
+  margin: 1px;
+  display: inline-block;
+  background-color: lightblue;
 }
 
-#tesMin {
-  grid-area: tesMin;
+.text-experimental-design {
+  border-radius: 4px;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
+  text-decoration: none;
+  margin: 1px;
+  display: inline-block;
+  background-color: lightyellow;
 }
 
-#tesMax {
-  grid-area: tesMax;
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.gray {
+  background-color: #FAFAFA
+}
+
+.mat-table .mat-icon {
+  vertical-align: middle;
+}
+
+.mat-column-cellTypeA, .mat-column-cellTypeB, .mat-column-cellSubtypeB, .mat-column-cellSubtypeA {
+  word-wrap: break-word;
+  max-width: 120px;
+}
+
+.mat-column-signature {
+  word-wrap: break-word;
+  max-width: 350px;
 }

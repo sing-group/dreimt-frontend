@@ -19,9 +19,9 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DatabaseTableComponent } from './database-table.component';
+import {DatabaseTableComponent} from './database-table.component';
 
 describe('DatabaseTableComponent', () => {
   let component: DatabaseTableComponent;
@@ -29,9 +29,9 @@ describe('DatabaseTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DatabaseTableComponent ]
+      declarations: [DatabaseTableComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

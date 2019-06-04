@@ -31,6 +31,7 @@ export class CellSignature {
   public readonly disease: string[];
   public readonly articlePubMedId: number;
   public readonly articleTitle: string;
+  public readonly articleAuthors: string;
   public readonly signatureType: string;
   public readonly signatureGenesUri: string;
   public readonly signatureMetadataUri: string;

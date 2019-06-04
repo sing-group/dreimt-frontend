@@ -22,106 +22,62 @@
 <mat-card>
   <mat-card-title>Database</mat-card-title>
   <mat-card-content>
+    <app-database-table-filters (applyDatabaseFilters)="applyDatabaseFilters($event)"></app-database-table-filters>
+
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="drug">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="DRUG_COMMON_NAME">Drug</span>
-          <app-filter-field label="Filter"
-                            [options]="drugCommonNameFieldFilter.options"
-                            [(filter)]="drugCommonNameFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.drug.commonName}}</td>
+        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.drug.sourceName">
+          {{interaction.drug.commonName}}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="signature">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="SIGNATURE_NAME">Signature</span>
-          <app-filter-field label="Filter"
-                            [options]="signatureNameFieldFilter.options"
-                            [(filter)]="signatureNameFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.signatureName}}</td>
+        <td mat-cell *matCellDef="let interaction"
+            [matTooltip]="signatureNameTooltip(interaction)"
+        >{{interaction.signature.signatureName}}
+          <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{interaction.signature.articlePubMedId}}" target="_blank">
+            <mat-icon svgIcon="pubmed"></mat-icon>
+          </a>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="tau">
         <th id="tau" mat-header-cell *matHeaderCellDef>
           <span id="tauHead" mat-sort-header="TAU">TAU</span>
-
-          <app-number-field id="tauMin" label="Min." [debounceTime]="debounceTime" [min]="-100" [max]="100" [step]="1"
-                            (valueChange)="minTauFilter.setValue($event)"></app-number-field>
         </th>
-        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.tau">
-          {{interaction.tau | number : '1.4'}}
+        <td mat-cell *matCellDef="let interaction" [matTooltip]="getTauTooltip(interaction)"
+            [style.color]="getTauStyleColor(interaction.tau)">
+          {{interaction.tau | number : '1.2-2'}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="upFdr">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="UP_FDR">UP FDR</span>
-          <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
-                            (valueChange)="maxUpFdrFilter.setValue($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.upFdr">
-          {{interaction.upFdr | number : '1.4'}}
+          {{interaction.upFdr | number : '1.3-3'}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="downFdr">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="DOWN_FDR">DOWN FDR</span>
-          <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
-                            (valueChange)="maxDownFdrFilter.setValue($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.downFdr">
-          {{interaction.downFdr | number : '1.4'}}
+          {{interaction.downFdr | number : '1.3-3'}}
         </td>
-      </ng-container>
-
-      <ng-container matColumnDef="interactionType">
-        <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="INTERACTION_TYPE">Interaction Type</span>
-          <app-filter-field label="Filter"
-                            [options]="interactionTypeFilter.options"
-                            [(filter)]="interactionTypeFilter.filter"
-                            fixedValues="true"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
-        </th>
-        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.interactionType">
-          <mat-icon>{{interaction.interactionType | interactionTypeIcon}}</mat-icon>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="experimentalDesign">
-        <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="EXPERIMENTAL_DESIGN">Experimental Design</span>
-          <app-filter-field label="Filter"
-                            [options]="experimentalDesignFilter.options"
-                            [(filter)]="experimentalDesignFilter.filter"
-                            fixedValues="true"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
-        </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.experimentalDesign}}</td>
       </ng-container>
 
       <ng-container matColumnDef="cellTypeA">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="CELL_TYPE_A">Cell Type A</span>
-          <app-filter-field label="Filter"
-                            [options]="cellTypeAFieldFilter.options"
-                            [(filter)]="cellTypeAFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeA}}</td>
       </ng-container>
@@ -129,12 +85,6 @@
       <ng-container matColumnDef="cellTypeB">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="CELL_TYPE_B">Cell Type B</span>
-          <app-filter-field label="Filter"
-                            [options]="cellTypeBFieldFilter.options"
-                            [(filter)]="cellTypeBFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeB}}</td>
       </ng-container>
@@ -142,12 +92,6 @@
       <ng-container matColumnDef="cellSubtypeA">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="CELL_SUBTYPE_A">Cell Subtype A</span>
-          <app-filter-field label="Filter"
-                            [options]="cellSubTypeAFieldFilter.options"
-                            [(filter)]="cellSubTypeAFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellSubTypeA}}</td>
       </ng-container>
@@ -155,98 +99,35 @@
       <ng-container matColumnDef="cellSubtypeB">
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="CELL_SUBTYPE_B">Cell Subtype B</span>
-          <app-filter-field label="Filter"
-                            [options]="cellSubTypeBFieldFilter.options"
-                            [(filter)]="cellSubTypeBFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellSubTypeB}}</td>
       </ng-container>
 
       <ng-container matColumnDef="disease">
         <th mat-header-cell *matHeaderCellDef>
-          <span>Disease</span>
-          <app-filter-field label="Filter"
-                            [options]="diseaseFieldFilter.options"
-                            [(filter)]="diseaseFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
+          <span>Condition</span>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.disease}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="organism">
+      <ng-container matColumnDef="additional-info">
         <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="ORGANISM">Organism</span>
-          <app-filter-field label="Filter"
-                            [options]="organismFieldFilter.options"
-                            [(filter)]="organismFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
+          <span>Additional Info.</span>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.organism}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="article">
-        <th mat-header-cell *matHeaderCellDef>
-          Article PubMedID
-          <app-filter-field label="Filter"
-                            [options]="pubMedIdFieldFilter.options"
-                            [(filter)]="pubMedIdFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
-        </th>
-        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.signature.articleTitle">
-          {{interaction.signature.articlePubMedId}}
+        <td mat-cell *matCellDef="let interaction">
+          <mat-icon [matTooltip]="interaction.signature.organism"
+                    svgIcon="{{interaction.signature.organism | organismIcon}}"></mat-icon>
+          <div class="text-experimental-design" [matTooltip]="interaction.signature.experimentalDesign">
+            {{getExperimentalDesignAcronym(interaction.signature.experimentalDesign)}}
+          </div>
+          <mat-icon [matTooltip]="interaction.interactionType">{{interaction.interactionType | interactionTypeIcon}}
+          </mat-icon>
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="signatureSourceDb">
-        <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="SIGNATURE_SOURCE_DB">Signature Source DB</span>
-          <app-filter-field label="Filter"
-                            [options]="signatureSourceDbFieldFilter.options"
-                            [(filter)]="signatureSourceDbFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
-        </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.sourceDb}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="drugSourceName">
-        <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="DRUG_SOURCE_NAME">Drug Source Name</span>
-          <app-filter-field label="Filter"
-                            [options]="drugSourceNameFieldFilter.options"
-                            [(filter)]="drugSourceNameFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
-        </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.drug.sourceName}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="drugSourceDb">
-        <th mat-header-cell *matHeaderCellDef>
-          <span mat-sort-header="DRUG_SOURCE_DB">Drug Source DB</span>
-          <app-filter-field label="Filter"
-                            [options]="drugSourceDbFieldFilter.options"
-                            [(filter)]="drugSourceDbFieldFilter.filter"
-                            (filterChange)="updateInteractions()"
-                            [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
-        </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.drug.sourceDb}}</td>
-      </ng-container>
-
       <tr mat-header-row *matHeaderRowDef="columns"></tr>
-      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+
+      <tr mat-row *matRowDef="let row; let even = even; columns: columns" [ngClass]="{gray: even}"></tr>
     </table>
 
     <mat-toolbar>

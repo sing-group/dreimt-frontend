@@ -22,10 +22,11 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DatabaseTableComponent} from './components/database-table/database-table.component';
+import {DatabaseTableFiltersComponent} from './components/database-table-filters/database-table-filters.component';
 import {
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
@@ -41,11 +42,14 @@ import {InteractionTypeIconPipe} from './pipes/interaction-type-icon.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
 import {HttpClientModule} from 'ngx-http-client';
+import { OrganismPipe } from './pipes/organism.pipe';
 
 @NgModule({
   declarations: [
     DatabaseTableComponent,
-    InteractionTypeIconPipe
+    InteractionTypeIconPipe,
+    DatabaseTableFiltersComponent,
+    OrganismPipe
   ],
   imports: [
     CommonModule,
@@ -55,6 +59,7 @@ import {HttpClientModule} from 'ngx-http-client';
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
