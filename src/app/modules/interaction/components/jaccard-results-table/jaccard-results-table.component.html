@@ -96,7 +96,11 @@
         <th mat-header-cell *matHeaderCellDef>
           <span mat-sort-header="TARGET_SIGNATURE">Target Signature</span>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.targetSignatureData.signatureName}}</td>
+        <td mat-cell *matCellDef="let interaction">
+          <a (click)="navigateToSignature(interaction.targetSignatureData.signatureName)" id="navigateSignatureButton">
+            {{interaction.targetSignatureData.signatureName}}
+          </a>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="jaccard">

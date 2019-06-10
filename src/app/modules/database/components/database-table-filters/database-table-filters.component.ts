@@ -28,6 +28,7 @@ import {InteractionType} from '../../../../models/interaction-type.enum';
 import {InteractionsService} from '../../services/interactions.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
+import {MatExpansionPanel} from '@angular/material';
 
 @Component({
   selector: 'app-database-table-filters',
@@ -61,6 +62,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   @ViewChild('tauMin') minTauFilterComponent: NumberFieldComponent;
   @ViewChild('maxUpFdr') maxUpFdrFilterComponent: NumberFieldComponent;
   @ViewChild('maxDownFdr') maxDownFdrFilterComponent: NumberFieldComponent;
+  @ViewChild(MatExpansionPanel) advancedFiltersPanelComponent: MatExpansionPanel;
 
   @Output() public readonly applyDatabaseFilters: EventEmitter<DatabaseQueryParams>;
 
@@ -258,5 +260,10 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public clearFreeTextFilterValue(): void {
     this.freeTextFilter = '';
+  }
+
+  public setSignatureFilter(signatureParam: string): void {
+    this.signatureNameFieldFilter.filter = signatureParam;
+    this.advancedFiltersPanelComponent.toggle();
   }
 }

@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {InteractionsService} from '../../services/interactions.service';
 import {DatabaseDataSource} from './database-data-source';
 import {MatPaginator, MatSort} from '@angular/material';
@@ -29,13 +29,16 @@ import {SortDirection} from '../../../../models/sort-direction.enum';
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
+import {ActivatedRoute} from '@angular/router';
+import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
+import {DatabaseTableFiltersComponent} from '../database-table-filters/database-table-filters.component';
 
 @Component({
   selector: 'app-database',
   templateUrl: './database-table.component.html',
   styleUrls: ['./database-table.component.scss']
 })
-export class DatabaseTableComponent implements AfterViewInit, OnInit {
+export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -46,6 +49,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) private paginator: MatPaginator;
   @ViewChild(MatSort) private sort: MatSort;
+  @ViewChild(DatabaseTableFiltersComponent) private databaseTableFiltersComponent: DatabaseTableFiltersComponent;
 
   private acronymsMap = new Map();
 
@@ -53,8 +57,11 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   private positiveTauColorMap;
   private negativeTauColorMap;
 
+  private routeSubscription;
+
   constructor(
-    private service: InteractionsService
+    private service: InteractionsService,
+    private route: ActivatedRoute
   ) {
     this.debounceTime = 500;
     this.maxOptions = 100;
@@ -75,7 +82,19 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
 
   public ngOnInit(): void {
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
-    this.updatePage();
+
+    this.routeSubscription = this.route
+      .paramMap
+      .subscribe(params => {
+        const signatureParam = params.get('signature');
+        if (signatureParam) {
+          this.filterParams = {signatureName: signatureParam};
+          this.databaseTableFiltersComponent.setSignatureFilter(signatureParam);
+          this.updatePage();
+        } else {
+          this.updatePage();
+        }
+      });
   }
 
   public ngAfterViewInit(): void {
@@ -187,5 +206,9 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     } else {
       return '';
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 }

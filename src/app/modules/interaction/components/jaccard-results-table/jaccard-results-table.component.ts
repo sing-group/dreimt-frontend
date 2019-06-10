@@ -256,4 +256,8 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
     const blob = new Blob([fileContents], {type: 'text/plain'});
     saveAs(blob, fileName);
   }
+
+  public navigateToSignature(signature: string): void {
+    this.router.navigate(['/database', {signature: signature}]);
+  }
 }
