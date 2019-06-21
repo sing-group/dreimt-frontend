@@ -25,6 +25,7 @@ import {NotificationsService as ToastService} from 'angular2-notifications';
 import {Severity} from './modules/notification/entities';
 import {WorkService} from './modules/work/services/work.service';
 import {CustomIconService} from './services/custom-icon.service';
+import {DatabaseVersionService} from './services/database-version.service';
 
 @Component({
   selector: 'app-root',
@@ -35,12 +36,14 @@ export class AppComponent implements OnInit {
   public readonly title = 'DREIMT';
 
   public workCount: number;
+  public currentDatabaseVersion = 'not available';
 
   public constructor(
     private workService: WorkService,
     private notificationService: NotificationService,
     private toastService: ToastService,
-    private customIconService: CustomIconService
+    private customIconService: CustomIconService,
+    private databaseVersionService: DatabaseVersionService
   ) {
     this.workCount = 0;
   }
@@ -48,6 +51,8 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     this.workService.listUserWorks()
       .subscribe(works => this.workCount = works.length);
+
+    this.databaseVersionService.getCurrentDatabaseVersion().subscribe(c => this.currentDatabaseVersion = c);
 
     this.notificationService.getMessages().subscribe(
       message => {
