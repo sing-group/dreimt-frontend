@@ -1,4 +1,4 @@
-/*!
+/*
  * DREIMT Frontend
  *
  *  Copyright (C) 2018-2019 - Hugo López-Fernández,
@@ -19,13 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-mat-form-field {
-  width: 100%;
-}
-
-.textarea-genes {
-  font-family: monospace, monospace;
-  font-size: 15px;
-  line-height: 1.3;
-  letter-spacing: 0.026em;
+export class IdAndUri {
+  public readonly id: string;
+  public readonly uri: string;
 }
