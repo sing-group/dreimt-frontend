@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
@@ -28,6 +28,9 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
 import {QueryService} from '../../services/query.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {DatabaseTableFiltersComponent} from '../../../database/components/database-table-filters/database-table-filters.component';
+import {GeneListComponent} from '../gene-list/gene-list.component';
+import {Examples} from '../../../../models/examples.model';
 
 @Component({
   selector: 'app-cmap-query-panel',
@@ -48,6 +51,9 @@ export class CmapQueryPanelComponent implements OnInit {
   public readonly debounceTime: number;
 
   public readonly formGroup: FormGroup;
+
+  @ViewChild('upGenes') private upGenesComponent: GeneListComponent;
+  @ViewChild('downGenes') private downGenesComponent: GeneListComponent;
 
   public constructor(
     private formBuilder: FormBuilder,
@@ -143,5 +149,28 @@ export class CmapQueryPanelComponent implements OnInit {
       .subscribe(work => {
         this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
       });
+  }
+
+  public getExampleTitle(index: number): string {
+    switch (index) {
+      case 1:
+        return Examples.EX_1_TITLE;
+      case 2:
+        return Examples.EX_2_TITLE;
+      default:
+        return '';
+    }
+  }
+
+  public loadExample1(): void {
+    this.upGenesComponent.updateGenes(Examples.EX_1_UP_GENES);
+    this.downGenesComponent.updateGenes(Examples.EX_1_DOWN_GENES);
+    this.queryTitle = 'Prediction Query: ' + Examples.EX_1_TITLE;
+  }
+
+  public loadExample2(): void {
+    this.upGenesComponent.updateGenes(Examples.EX_2_UP_GENES);
+    this.downGenesComponent.updateGenes(Examples.EX_2_DOWN_GENES);
+    this.queryTitle = 'Prediction Query: ' + Examples.EX_2_TITLE;
   }
 }

@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {JaccardCalculateInteractionsQueryParams} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {SignaturesService} from '../../services/signatures.service';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
@@ -29,6 +29,8 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QueryService} from '../../services/query.service';
+import {Examples} from '../../../../models/examples.model';
+import {GeneListComponent} from '../gene-list/gene-list.component';
 
 @Component({
   selector: 'app-jaccard-query-panel',
@@ -59,6 +61,9 @@ export class JaccardQueryPanelComponent implements OnInit {
   public readonly signatureSourceDbFieldFilter: FieldFilterModel;
 
   public considerOnlyUniverseGenes: boolean;
+
+  @ViewChild('upGenes') private upGenesComponent: GeneListComponent;
+  @ViewChild('downGenes') private downGenesComponent: GeneListComponent;
 
   constructor(
     private service: SignaturesService,
@@ -207,5 +212,28 @@ export class JaccardQueryPanelComponent implements OnInit {
       .subscribe(work => {
         this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
       });
+  }
+
+  public getExampleTitle(index: number): string {
+    switch (index) {
+      case 1:
+        return Examples.EX_1_TITLE;
+      case 2:
+        return Examples.EX_2_TITLE;
+      default:
+        return '';
+    }
+  }
+
+  public loadExample1(): void {
+    this.upGenesComponent.updateGenes(Examples.EX_1_UP_GENES);
+    this.downGenesComponent.updateGenes(Examples.EX_1_DOWN_GENES);
+    this.queryTitle = 'Prediction Query: ' + Examples.EX_1_TITLE;
+  }
+
+  public loadExample2(): void {
+    this.upGenesComponent.updateGenes(Examples.EX_2_UP_GENES);
+    this.downGenesComponent.updateGenes(Examples.EX_2_DOWN_GENES);
+    this.queryTitle = 'Prediction Query: ' + Examples.EX_2_TITLE;
   }
 }

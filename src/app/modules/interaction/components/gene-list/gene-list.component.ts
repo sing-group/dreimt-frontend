@@ -61,6 +61,6 @@ export class GeneListComponent implements OnInit {
   }
 
   public updateGenes(genes): void {
-    this.genesChanged.emit(genes);
+    this.formControl.setValue(genes);
   }
 }

@@ -31,7 +31,8 @@ mat-card {
   grid-template-areas:
     "query-row-1 query-row-1"
     "query-row-2 query-row-2"
-    "query-row-3-col-1 query-row-3-col-2";
+    "query-row-3-col-1 query-row-3-col-2"
+    "query-row-4 query-row-4";
   grid-column-gap: 40px;
 }
 
@@ -51,6 +52,10 @@ mat-card {
   grid-area: query-row-3-col-2;
 }
 
+.query-examples {
+  grid-area: query-row-4;
+}
+
 app-gene-list {
   width: 100%;
 }
@@ -68,4 +73,8 @@ form {
 
 .permutationSlider {
   grid-area: permutationsSlider;
+}
+
+.btn-load-genes {
+  margin-left: 10px;
 }
