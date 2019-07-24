@@ -33,12 +33,14 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HighlightPipe} from './pipes/highlight.pipe';
 import {FilterFieldComponent} from './components/filter-field/filter-field.component';
 import {NumberFieldComponent} from './components/number-field/number-field.component';
+import {PvalueNumberPipePipe} from './pipes/pvalue-number-pipe.pipe';
 
 @NgModule({
   declarations: [
     FilterFieldComponent,
     HighlightPipe,
-    NumberFieldComponent
+    NumberFieldComponent,
+    PvalueNumberPipePipe
   ],
   imports: [
     CommonModule,
@@ -52,7 +54,8 @@ import {NumberFieldComponent} from './components/number-field/number-field.compo
   ],
   exports: [
     FilterFieldComponent,
-    NumberFieldComponent
+    NumberFieldComponent,
+    PvalueNumberPipePipe
   ]
 })
 export class SharedModule {
