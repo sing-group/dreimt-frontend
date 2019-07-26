@@ -87,10 +87,16 @@ export class JaccardResultsTableComponent implements OnInit, AfterViewInit, OnCh
   }
 
   public ngOnInit(): void {
+    this.initSort();
     this.updateResults();
     this.watchForChanges(this.minJaccardFilter);
     this.watchForChanges(this.maxPvalueFilter);
     this.watchForChanges(this.maxFdrFilter);
+  }
+
+  public initSort(): void {
+    this.sort.active = 'JACCARD';
+    this.sort.direction = 'desc';
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

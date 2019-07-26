@@ -87,10 +87,16 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
   }
 
   public ngOnInit(): void {
+    this.initSort();
     this.updateResults();
     this.watchForChanges(this.minTauFilter);
     this.watchForChanges(this.maxUpFdrFilter);
     this.watchForChanges(this.maxDownFdrFilter);
+  }
+
+  public initSort(): void {
+    this.sort.active = 'TAU';
+    this.sort.direction = 'desc';
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

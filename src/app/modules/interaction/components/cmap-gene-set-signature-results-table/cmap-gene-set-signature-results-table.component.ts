@@ -86,9 +86,15 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
   }
 
   public ngOnInit(): void {
+    this.initSort();
     this.updateResults();
     this.watchForChanges(this.minTauFilter);
     this.watchForChanges(this.maxFdrFilter);
+  }
+
+  public initSort(): void {
+    this.sort.active = 'TAU';
+    this.sort.direction = 'desc';
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

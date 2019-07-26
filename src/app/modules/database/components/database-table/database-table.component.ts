@@ -81,6 +81,8 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
   }
 
   public ngOnInit(): void {
+    this.initSort();
+
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
 
     this.routeSubscription = this.route
@@ -95,6 +97,11 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
           this.updatePage();
         }
       });
+  }
+
+  public initSort(): void {
+    this.sort.active = 'TAU';
+    this.sort.direction = 'desc';
   }
 
   public ngAfterViewInit(): void {
