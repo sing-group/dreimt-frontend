@@ -62,6 +62,9 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
   public readonly minTauFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
+  private positiveTauColorMap;
+  private negativeTauColorMap;
+
   private readonly routeUrl: string;
 
   constructor(
@@ -83,6 +86,10 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
     this.drugSourceDbFieldFilter = new FieldFilterModel();
     this.minTauFilter = new FormControl();
     this.maxFdrFilter = new FormControl();
+
+    const interpolate = require('color-interpolate');
+    this.positiveTauColorMap = interpolate(['tomato', 'red']);
+    this.negativeTauColorMap = interpolate(['lightgreen', 'darkgreen']);
   }
 
   public ngOnInit(): void {
@@ -243,5 +250,15 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
 
     const blob = new Blob([fileContents], {type: 'text/plain'});
     saveAs(blob, fileName);
+  }
+
+  public getTauStyleColor(tau: number): string {
+    if (tau >= 90) {
+      return this.positiveTauColorMap((tau - 90) / 10);
+    } else if (tau <= -90) {
+      return this.negativeTauColorMap((Math.abs(tau) - 90) / 10);
+    } else {
+      return 'black';
+    }
   }
 }

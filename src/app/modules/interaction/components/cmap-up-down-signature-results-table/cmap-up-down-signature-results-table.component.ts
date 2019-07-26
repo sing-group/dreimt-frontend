@@ -62,6 +62,9 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
+  private positiveTauColorMap;
+  private negativeTauColorMap;
+
   private readonly routeUrl: string;
 
   constructor(
@@ -84,6 +87,10 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
     this.maxDownFdrFilter = new FormControl();
+
+    const interpolate = require('color-interpolate');
+    this.positiveTauColorMap = interpolate(['tomato', 'red']);
+    this.negativeTauColorMap = interpolate(['lightgreen', 'darkgreen']);
   }
 
   public ngOnInit(): void {
@@ -248,5 +255,15 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
 
     const blob = new Blob([fileContents], {type: 'text/plain'});
     saveAs(blob, fileName);
+  }
+
+  public getTauStyleColor(tau: number): string {
+    if (tau >= 90) {
+      return this.positiveTauColorMap((tau - 90) / 10);
+    } else if (tau <= -90) {
+      return this.negativeTauColorMap((Math.abs(tau) - 90) / 10);
+    } else {
+      return 'black';
+    }
   }
 }
