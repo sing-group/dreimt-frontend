@@ -25,7 +25,8 @@ import {Work} from '../../../models/work/work.model';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
-import {map, mergeMap} from 'rxjs/operators';
+import {catchError, map, mergeMap} from 'rxjs/operators';
+import {ExecutionStatus} from '../../../models/work/execution-status.enum';
 
 const CACHE_KEY = 'works';
 
@@ -61,7 +62,16 @@ export class WorkService {
 
     return workUuids
       .pipe(
-        map(uuids => uuids.map(uuid => this.getWork(uuid))),
+        map(uuids => uuids.map(uuid => this.getWork(uuid)
+          .pipe(catchError((error: Error) => of({
+            id: {
+              id: uuid,
+              uri: null
+            },
+            name: 'Query deleted from server (' + uuid + ')',
+            status: ExecutionStatus.DELETED
+          })))
+        )),
         mergeMap(works => forkJoin<Work>(...works))
       );
   }

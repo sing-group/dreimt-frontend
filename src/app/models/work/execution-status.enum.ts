@@ -24,7 +24,8 @@ export enum ExecutionStatus {
   FAILED = 'FAILED',
   RUNNING = 'RUNNING',
   SCHEDULED = 'SCHEDULED',
-  CREATE = 'CREATED'
+  CREATE = 'CREATED',
+  DELETED = 'DELETED'
 }
 
 export function isActiveExecution(status: ExecutionStatus): boolean {

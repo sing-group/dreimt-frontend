@@ -25,7 +25,7 @@ import {Work} from '../../../../models/work/work.model';
 import {Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {isActiveExecution} from '../../../../models/work/execution-status.enum';
+import {ExecutionStatus, isActiveExecution} from '../../../../models/work/execution-status.enum';
 import {compareDates} from '../../../../utils/types';
 import {MatDialog} from '@angular/material';
 import {ConfirmDeletionDialogComponent} from './confirm-deletion-dialog.component';
@@ -68,6 +68,10 @@ export class WorkListComponent implements OnInit {
     .afterClosed().subscribe(workUuid => {
       this.workService.removeUserWork(workUuid);
     });
+  }
+
+  public displayOpenAction(work: Work): boolean {
+    return work.status !== ExecutionStatus.DELETED;
   }
 
   private updateWorks(works: Work[], merge: boolean = false): void {

@@ -25,13 +25,13 @@ import {ExecutionStatus} from './execution-status.enum';
 
 export class Work {
   public readonly id: IdAndUri;
-  public readonly name: string;
-  public readonly description: string;
-  public readonly creationDateTime: Date;
+  public readonly name?: string;
+  public readonly description?: string;
+  public readonly creationDateTime?: Date;
   public readonly schedulingDateTime?: Date;
   public readonly startingDateTime?: Date;
   public readonly finishingDateTime?: Date;
-  public readonly resultReference: string;
+  public readonly resultReference?: string;
   public readonly status: ExecutionStatus;
-  public readonly steps: WorkStep[];
+  public readonly steps?: WorkStep[];
 }

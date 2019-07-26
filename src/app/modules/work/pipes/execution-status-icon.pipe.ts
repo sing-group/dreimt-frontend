@@ -39,6 +39,8 @@ export class ExecutionStatusIconPipe implements PipeTransform {
         return 'check_circle_outline';
       case ExecutionStatus.FAILED:
         return 'error_outline';
+      case ExecutionStatus.DELETED:
+        return 'warning';
       default:
         return '';
     }
