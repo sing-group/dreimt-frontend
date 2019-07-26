@@ -18,6 +18,10 @@ export class CustomIconService {
       this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/pubmed.svg')
     );
     this.matIconRegistry.addSvgIcon(
+      'pubchem',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/pubchem.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
       'homo-sapiens',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/homo-sapiens.svg')
     );
