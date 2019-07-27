@@ -27,7 +27,7 @@ import {JaccardQueryPanelComponent} from './components/jaccard-query-panel/jacca
 
 const routes: Routes = [
   {
-    path: 'predict',
+    path: 'drug-prioritization',
     component: CmapQueryPanelComponent
   },
   {

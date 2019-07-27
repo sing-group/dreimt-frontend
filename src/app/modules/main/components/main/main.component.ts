@@ -36,8 +36,8 @@ export class MainComponent {
     this.router.navigateByUrl('/database');
   }
 
-  public onNavigateToPredict(): void {
-    this.router.navigateByUrl('/interactions/predict');
+  public onNavigateToDrugPrioritization(): void {
+    this.router.navigateByUrl('/interactions/drug-prioritization');
   }
 
   public onNavigateToJaccard(): void {

@@ -137,7 +137,7 @@ export class CmapResultsService {
     return this.http.get<UpDownGenes>(
       `${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/genes`, options
     ).pipe(
-      DreimtError.throwOnError('Predictions query results error', 'Predictions query query genes could not be retrieved.'),
+      DreimtError.throwOnError('Drug prioritization query results error', 'Drug prioritization query genes could not be retrieved.'),
       map((response: HttpResponse<UpDownGenes>) => (response.body))
     );
   }

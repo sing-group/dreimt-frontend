@@ -137,7 +137,7 @@ export class CmapGeneSetResultsService {
     return this.http.get<GeneSet>(
       `${environment.dreimtUrl}/results/cmap/geneset/` + resultId + `/genes`, options
     ).pipe(
-      DreimtError.throwOnError('Predictions query results error', 'Predictions query query genes could not be retrieved.'),
+      DreimtError.throwOnError('Drug prioritization query results error', 'Drug prioritization query genes could not be retrieved.'),
       map((response: HttpResponse<GeneSet>) => (response.body))
     );
   }

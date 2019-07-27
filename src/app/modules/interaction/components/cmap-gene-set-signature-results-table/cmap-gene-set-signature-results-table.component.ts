@@ -241,7 +241,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
     const fileExtension = FileFormat.getFileExtension(fileFormat);
     const queryTitle = this.metadata.queryTitle;
     if (!queryTitle) {
-      fileName = 'Predictions_Query_Genes_' + this.metadata.id + '.' + fileExtension;
+      fileName = 'Drug_Prioritization_Query_Genes_' + this.metadata.id + '.' + fileExtension;
     } else {
       fileName = queryTitle.replace(/\s/g, '_') + '.' + fileExtension;
     }

@@ -228,12 +228,12 @@ export class JaccardQueryPanelComponent implements OnInit {
   public loadExample1(): void {
     this.upGenesComponent.updateGenes(Examples.EX_1_UP_GENES);
     this.downGenesComponent.updateGenes(Examples.EX_1_DOWN_GENES);
-    this.queryTitle = 'Prediction Query: ' + Examples.EX_1_TITLE;
+    this.queryTitle = 'Similar Signatures Query: ' + Examples.EX_1_TITLE;
   }
 
   public loadExample2(): void {
     this.upGenesComponent.updateGenes(Examples.EX_2_UP_GENES);
     this.downGenesComponent.updateGenes(Examples.EX_2_DOWN_GENES);
-    this.queryTitle = 'Prediction Query: ' + Examples.EX_2_TITLE;
+    this.queryTitle = 'Similar Signatures Query: ' + Examples.EX_2_TITLE;
   }
 }
