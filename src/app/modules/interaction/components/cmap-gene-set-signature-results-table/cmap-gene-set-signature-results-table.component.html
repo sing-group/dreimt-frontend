@@ -61,7 +61,7 @@
 
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="tau">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 100 to -100)">
           <span mat-sort-header="TAU">TAU</span>
 
           <app-number-field label="Min." [debounceTime]="debounceTime" [min]="-100" [max]="100" [step]="1.0"
@@ -73,7 +73,7 @@
       </ng-container>
 
       <ng-container matColumnDef="fdr">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the geneset">
           <span mat-sort-header="FDR">FDR</span>
 
           <app-number-field label="Max." [debounceTime]="debounceTime" [min]="0"
@@ -86,7 +86,7 @@
       </ng-container>
 
       <ng-container matColumnDef="drugSourceName">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Drug source name">
           <span mat-sort-header="DRUG_SOURCE_NAME">Drug Source Name</span>
 
           <app-filter-field label="Filter"
@@ -100,7 +100,7 @@
       </ng-container>
 
       <ng-container matColumnDef="drugCommonName">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Drug common name">
           <span mat-sort-header="DRUG_COMMON_NAME">Drug Common Name</span>
 
           <app-filter-field label="Filter"
@@ -114,7 +114,7 @@
       </ng-container>
 
       <ng-container matColumnDef="drugSourceDb">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Drug gene profile source">
           <span mat-sort-header="DRUG_SOURCE_DB">Drug Source DB</span>
 
           <app-filter-field label="Filter"

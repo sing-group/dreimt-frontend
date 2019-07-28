@@ -79,21 +79,21 @@
 
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="sourceComparisonType">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Query geneset tested">
           <span mat-sort-header="SOURCE_COMPARISON_TYPE">Source Comparison Type</span>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.sourceComparisonType}}</td>
       </ng-container>
 
       <ng-container matColumnDef="targetComparisonType">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Database geneset tested">
           <span mat-sort-header="TARGET_COMPARISON_TYPE">Target Comparison Type</span>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.targetComparisonType}}</td>
       </ng-container>
 
       <ng-container matColumnDef="targetSignature">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Database signature tested">
           <span mat-sort-header="TARGET_SIGNATURE">Target Signature</span>
         </th>
         <td mat-cell *matCellDef="let interaction">
@@ -104,7 +104,7 @@
       </ng-container>
 
       <ng-container matColumnDef="jaccard">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Jaccard index value (range 0 to 1)">
           <span mat-sort-header="JACCARD">Jaccard</span>
 
           <app-number-field #jaccardMin label="Min." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
@@ -114,7 +114,7 @@
       </ng-container>
 
       <ng-container matColumnDef="pValue">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Jaccard index p-value">
           <span mat-sort-header="P_VALUE">p-value</span>
 
           <app-number-field #maxPvalue label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
@@ -125,7 +125,7 @@
       </ng-container>
 
       <ng-container matColumnDef="fdr">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Jaccard index adjusted p-value">
           <span mat-sort-header="FDR">FDR</span>
 
           <app-number-field #maxFdr label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"

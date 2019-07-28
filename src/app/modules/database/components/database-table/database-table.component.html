@@ -26,7 +26,7 @@
 
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="drug">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Drug common name">
           <span mat-sort-header="DRUG_COMMON_NAME">Drug</span>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.drug.sourceName">
@@ -38,7 +38,7 @@
       </ng-container>
 
       <ng-container matColumnDef="signature">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Signature name">
           <span mat-sort-header="SIGNATURE_NAME">Signature</span>
         </th>
         <td mat-cell *matCellDef="let interaction"
@@ -51,7 +51,7 @@
       </ng-container>
 
       <ng-container matColumnDef="tau">
-        <th id="tau" mat-header-cell *matHeaderCellDef>
+        <th id="tau" mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 100 to -100)">
           <span id="tauHead" mat-sort-header="TAU">TAU</span>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="getTauTooltip(interaction)"
@@ -61,7 +61,7 @@
       </ng-container>
 
       <ng-container matColumnDef="upFdr">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the up-regulated geneset">
           <span mat-sort-header="UP_FDR">UP FDR</span>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.upFdr">
@@ -70,7 +70,7 @@
       </ng-container>
 
       <ng-container matColumnDef="downFdr">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the down-regulated geneset">
           <span mat-sort-header="DOWN_FDR">DOWN FDR</span>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.downFdr">
@@ -79,42 +79,42 @@
       </ng-container>
 
       <ng-container matColumnDef="cellTypeA">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Case cell type involved in the signature">
           <span mat-sort-header="CELL_TYPE_A">Cell Type A</span>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeA}}</td>
       </ng-container>
 
       <ng-container matColumnDef="cellTypeB">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Control cell type involved in the signature">
           <span mat-sort-header="CELL_TYPE_B">Cell Type B</span>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeB}}</td>
       </ng-container>
 
       <ng-container matColumnDef="cellSubtypeA">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Case cell-subtype involved in the signature">
           <span mat-sort-header="CELL_SUBTYPE_A">Cell Subtype A</span>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellSubTypeA}}</td>
       </ng-container>
 
       <ng-container matColumnDef="cellSubtypeB">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Control cell-subtype involved in the signature">
           <span mat-sort-header="CELL_SUBTYPE_B">Cell Subtype B</span>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellSubTypeB}}</td>
       </ng-container>
 
       <ng-container matColumnDef="disease">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Experimental perturbation and diseases">
           <span>Condition</span>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.signature.disease}}</td>
       </ng-container>
 
       <ng-container matColumnDef="additional-info">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Organism, experimental design information and signature type">
           <span>Additional Info.</span>
         </th>
         <td mat-cell *matCellDef="let interaction">
