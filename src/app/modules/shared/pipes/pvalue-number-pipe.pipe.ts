@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import {Pipe} from '@angular/core';
 import {DecimalPipe} from '@angular/common';
 
 @Pipe({
@@ -7,7 +7,9 @@ import {DecimalPipe} from '@angular/common';
 export class PvalueNumberPipePipe extends DecimalPipe {
 
   transform(value: number, args?: any): any {
-    if (value < 0.0000001) {
+    if (value === null || value === undefined) {
+      return super.transform(value, args);
+    } else if (value < 0.0000001) {
       return '< 10e-08';
     } else if (value < 0.000001) {
       return '< 10e-07';
