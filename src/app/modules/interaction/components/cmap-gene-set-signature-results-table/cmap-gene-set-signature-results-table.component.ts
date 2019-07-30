@@ -19,8 +19,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort} from '@angular/material';
+import {Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
+import {MatDialog, MatPaginator, MatSort, MatSortHeader} from '@angular/material';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {FormControl} from '@angular/forms';
@@ -35,13 +35,15 @@ import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
 import saveAs from 'file-saver';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
+import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-cmap-gene-set-signature-results-table',
   templateUrl: './cmap-gene-set-signature-results-table.component.html',
   styleUrls: ['./cmap-gene-set-signature-results-table.component.scss']
 })
-export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterViewInit, OnChanges {
+export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnChanges {
 
   public readonly debounceTime: number;
   public readonly maxOptions: number;
@@ -62,10 +64,15 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
   public readonly minTauFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
+  @ViewChild('tauMin') minTauFilterComponent: NumberFieldComponent;
+  @ViewChild('maxFdr') maxFdrFilterComponent: NumberFieldComponent;
+
   private positiveTauColorMap;
   private negativeTauColorMap;
 
   private readonly routeUrl: string;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private service: CmapGeneSetResultsService,
@@ -92,32 +99,91 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
     this.negativeTauColorMap = interpolate(['lightgreen', 'darkgreen']);
   }
 
-  public ngOnInit(): void {
-    this.initSort();
-    this.updateResults();
-    this.watchForChanges(this.minTauFilter);
-    this.watchForChanges(this.maxFdrFilter);
+  private updateSort(active: string, sortDirection): void {
+    this.sort.direction = sortDirection;
+    this.sort.active = active;
+    this.updateSortUI(active, sortDirection);
   }
 
-  public initSort(): void {
-    this.sort.active = 'TAU';
-    this.sort.direction = 'desc';
+  /*
+   * This function is a workaround to solve the bug in the sort header component that does not update its UI when the active sort and
+   * direction are changed programmatically. More information at: https://github.com/angular/components/issues/10242
+   */
+  private updateSortUI(active: string, sortDirection): void {
+    this.sort.sortChange.emit();
+    this.sort._stateChanges.next();
+
+    const _SortHeader = this.sort.sortables.get(active) as MatSortHeader;
+    if (_SortHeader !== undefined) {
+      _SortHeader['_setAnimationTransitionState']({
+        fromState: sortDirection,
+        toState: 'active',
+      });
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    this.minTauFilter.setValue(null);
-    this.maxFdrFilter.setValue(null);
+    this.cancelWatchForChanges();
+    this.clearColumnModifiers();
+    this.initSort();
     this.resetPage();
     this.updateResults();
+    this.initWatchForChanges();
+  }
+
+  private cancelWatchForChanges() {
+    this.subscriptions.forEach(function (value) {
+      value.unsubscribe();
+    });
+    this.subscriptions = [];
+  }
+
+  private clearColumnModifiers(): void {
+    if (this.minTauFilterComponent) {
+      this.minTauFilterComponent.clearValue();
+    }
+    if (this.maxFdrFilterComponent) {
+      this.maxFdrFilterComponent.clearValue();
+    }
+
+    this.minTauFilter.setValue(null);
+    this.maxFdrFilter.setValue(null);
+  }
+
+  private initSort(): void {
+    this.updateSort('TAU', 'desc');
+  }
+
+  private initWatchForChanges() {
+    this.watchForChanges(this.minTauFilter);
+    this.watchForChanges(this.maxFdrFilter);
+
+    this.subscriptions.push(
+      this.sort.sortChange.pipe(
+        debounceTime(this.debounceTime)
+      ).subscribe(() => {
+        this.resetPage();
+        this.updatePage();
+      }));
+
+    this.subscriptions.push(
+      this.paginator.page.pipe(
+        debounceTime(this.debounceTime)
+      ).subscribe(() => this.updatePage())
+    );
   }
 
   private watchForChanges(field: FormControl): void {
-    field.valueChanges
-      .pipe(
-        debounceTime(this.debounceTime),
-        distinctUntilChanged()
-      )
-      .subscribe(() => this.updateResults());
+    this.subscriptions.push(
+      field.valueChanges
+        .pipe(
+          debounceTime(this.debounceTime),
+          distinctUntilChanged()
+        )
+        .subscribe((value) => {
+          this.updateResults();
+        })
+    );
   }
 
   private resetPage(): void {
@@ -140,17 +206,8 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
     this.loadDrugSourceDbs(queryParams);
   }
 
-  public ngAfterViewInit(): void {
-    this.sort.sortChange.pipe(
-      debounceTime(this.debounceTime)
-    ).subscribe(() => {
-      this.resetPage();
-      this.updatePage();
-    });
-
-    this.paginator.page.pipe(
-      debounceTime(this.debounceTime)
-    ).subscribe(() => this.updatePage());
+  public ngOnDestroy(): void {
+    this.cancelWatchForChanges();
   }
 
   private sortDirection(): SortDirection {
@@ -259,6 +316,20 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnInit, AfterV
       return this.negativeTauColorMap((Math.abs(tau) - 90) / 10);
     } else {
       return 'black';
+    }
+  }
+
+  public minTauFilterChanged(event): void {
+    this.updateFilter(this.minTauFilter, event);
+  }
+
+  public maxFdrFilterChanged(event): void {
+    this.updateFilter(this.maxFdrFilter, event);
+  }
+
+  private updateFilter(filter: FormControl, event) {
+    if (filter.value !== undefined && filter.value !== event) {
+      filter.setValue(event);
     }
   }
 }

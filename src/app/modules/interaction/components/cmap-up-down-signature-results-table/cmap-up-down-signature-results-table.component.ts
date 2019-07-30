@@ -19,8 +19,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort} from '@angular/material';
+import {Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
+import {MatDialog, MatPaginator, MatSort, MatSortHeader} from '@angular/material';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
@@ -35,13 +35,15 @@ import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
 import saveAs from 'file-saver';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
+import {Subscription} from 'rxjs';
+import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-table',
   templateUrl: './cmap-up-down-signature-results-table.component.html',
   styleUrls: ['./cmap-up-down-signature-results-table.component.scss']
 })
-export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterViewInit, OnChanges {
+export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnChanges {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -62,10 +64,16 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
+  @ViewChild('tauMin') minTauFilterComponent: NumberFieldComponent;
+  @ViewChild('maxUpFdr') maxUpFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('maxDownFdr') maxDownFdrFilterComponent: NumberFieldComponent;
+
   private positiveTauColorMap;
   private negativeTauColorMap;
 
   private readonly routeUrl: string;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private service: CmapResultsService,
@@ -93,34 +101,96 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
     this.negativeTauColorMap = interpolate(['lightgreen', 'darkgreen']);
   }
 
-  public ngOnInit(): void {
-    this.initSort();
-    this.updateResults();
-    this.watchForChanges(this.minTauFilter);
-    this.watchForChanges(this.maxUpFdrFilter);
-    this.watchForChanges(this.maxDownFdrFilter);
+  private updateSort(active: string, sortDirection): void {
+    this.sort.direction = sortDirection;
+    this.sort.active = active;
+    this.updateSortUI(active, sortDirection);
   }
 
-  public initSort(): void {
-    this.sort.active = 'TAU';
-    this.sort.direction = 'desc';
+  /*
+   * This function is a workaround to solve the bug in the sort header component that does not update its UI when the active sort and
+   * direction are changed programmatically. More information at: https://github.com/angular/components/issues/10242
+   */
+  private updateSortUI(active: string, sortDirection): void {
+    this.sort.sortChange.emit();
+    this.sort._stateChanges.next();
+
+    const _SortHeader = this.sort.sortables.get(active) as MatSortHeader;
+    if (_SortHeader !== undefined) {
+      _SortHeader['_setAnimationTransitionState']({
+        fromState: sortDirection,
+        toState: 'active',
+      });
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    this.cancelWatchForChanges();
+    this.clearColumnModifiers();
+    this.initSort();
+    this.resetPage();
+    this.updateResults();
+    this.initWatchForChanges();
+  }
+
+  private cancelWatchForChanges() {
+    this.subscriptions.forEach(function (value) {
+      value.unsubscribe();
+    });
+    this.subscriptions = [];
+  }
+
+  private clearColumnModifiers(): void {
+    if (this.minTauFilterComponent) {
+      this.minTauFilterComponent.clearValue();
+    }
+    if (this.maxUpFdrFilterComponent) {
+      this.maxUpFdrFilterComponent.clearValue();
+    }
+    if (this.maxDownFdrFilterComponent) {
+      this.maxDownFdrFilterComponent.clearValue();
+    }
+
     this.minTauFilter.setValue(null);
     this.maxUpFdrFilter.setValue(null);
     this.maxDownFdrFilter.setValue(null);
-    this.resetPage();
-    this.updateResults();
+  }
+
+  private initSort(): void {
+    this.updateSort('TAU', 'desc');
+  }
+
+  private initWatchForChanges() {
+    this.watchForChanges(this.minTauFilter);
+    this.watchForChanges(this.maxUpFdrFilter);
+    this.watchForChanges(this.maxDownFdrFilter);
+
+    this.subscriptions.push(
+      this.sort.sortChange.pipe(
+        debounceTime(this.debounceTime)
+      ).subscribe(() => {
+        this.resetPage();
+        this.updatePage();
+      }));
+
+    this.subscriptions.push(
+      this.paginator.page.pipe(
+        debounceTime(this.debounceTime)
+      ).subscribe(() => this.updatePage())
+    );
   }
 
   private watchForChanges(field: FormControl): void {
-    field.valueChanges
-      .pipe(
-        debounceTime(this.debounceTime),
-        distinctUntilChanged()
-      )
-      .subscribe(() => this.updateResults());
+    this.subscriptions.push(
+      field.valueChanges
+        .pipe(
+          debounceTime(this.debounceTime),
+          distinctUntilChanged()
+        )
+        .subscribe((value) => {
+          this.updateResults();
+        })
+    );
   }
 
   private resetPage(): void {
@@ -143,17 +213,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
     this.loadDrugSourceDbs(queryParams);
   }
 
-  public ngAfterViewInit(): void {
-    this.sort.sortChange.pipe(
-      debounceTime(this.debounceTime)
-    ).subscribe(() => {
-      this.resetPage();
-      this.updatePage();
-    });
-
-    this.paginator.page.pipe(
-      debounceTime(this.debounceTime)
-    ).subscribe(() => this.updatePage());
+  public ngOnDestroy(): void {
+    this.cancelWatchForChanges();
   }
 
   private sortDirection(): SortDirection {
@@ -203,7 +264,6 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
       drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
       drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter()
     };
-
   }
 
   public downloadCsv() {
@@ -264,6 +324,24 @@ export class CmapUpDownSignatureResultsTableComponent implements OnInit, AfterVi
       return this.negativeTauColorMap((Math.abs(tau) - 90) / 10);
     } else {
       return 'black';
+    }
+  }
+
+  public minTauFilterChanged(event): void {
+    this.updateFilter(this.minTauFilter, event);
+  }
+
+  public maxUpFdrFilterChanged(event): void {
+    this.updateFilter(this.maxUpFdrFilter, event);
+  }
+
+  public maxDownFdrFilterChanged(event): void {
+    this.updateFilter(this.maxDownFdrFilter, event);
+  }
+
+  private updateFilter(filter: FormControl, event) {
+    if (filter.value !== undefined && filter.value !== event) {
+      filter.setValue(event);
     }
   }
 }
