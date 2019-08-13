@@ -107,17 +107,14 @@
     <app-gene-list #downGenes class="query-down-genes" title="Down genes"
                    (genesChanged)="onDownUpGenesChanged($event)"></app-gene-list>
 
-    <mat-expansion-panel class="query-examples">
+    <mat-expansion-panel class="query-examples" *ngIf="hasPrecalculatedExamples()">
       <mat-expansion-panel-header>
-        <mat-panel-title>Use an example</mat-panel-title>
+        <mat-panel-title>Load an example</mat-panel-title>
       </mat-expansion-panel-header>
 
       <mat-list>
-        <mat-list-item>{{ this.getExampleTitle(1) }}
-          <button mat-button class="btn-load-genes" (click)="loadExample1()">Load genes</button>
-        </mat-list-item>
-        <mat-list-item>{{ this.getExampleTitle(2) }}
-          <button mat-button class="btn-load-genes" (click)="loadExample2()">Load genes</button>
+        <mat-list-item *ngFor="let example of precalculatedExamples">{{ example.name }}
+          <button mat-button class="btn-load-genes" (click)="loadPrecalculatedExample(example)">Load example</button>
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>

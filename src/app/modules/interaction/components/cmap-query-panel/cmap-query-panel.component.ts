@@ -28,9 +28,10 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
 import {QueryService} from '../../services/query.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DatabaseTableFiltersComponent} from '../../../database/components/database-table-filters/database-table-filters.component';
 import {GeneListComponent} from '../gene-list/gene-list.component';
-import {Examples} from '../../../../models/examples.model';
+import {PrecalculatedExampleService} from '../../services/precalculated-example.service';
+import {PrecalculatedExample} from '../../../../models/interactions/precalculated-example.model';
+import {Work} from '../../../../models/work/work.model';
 
 @Component({
   selector: 'app-cmap-query-panel',
@@ -52,6 +53,8 @@ export class CmapQueryPanelComponent implements OnInit {
 
   public readonly formGroup: FormGroup;
 
+  private precalculatedExamples: PrecalculatedExample[];
+
   @ViewChild('upGenes') private upGenesComponent: GeneListComponent;
   @ViewChild('downGenes') private downGenesComponent: GeneListComponent;
 
@@ -59,7 +62,8 @@ export class CmapQueryPanelComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private interactionsService: QueryService
+    private interactionsService: QueryService,
+    private precalculatedExampleService: PrecalculatedExampleService
   ) {
     this.debounceTime = CmapQueryPanelComponent.DEFAULT_VALUES.debounceTime;
 
@@ -73,6 +77,9 @@ export class CmapQueryPanelComponent implements OnInit {
         [Validators.required, Validators.min(1), Validators.max(1000)]
       ]
     });
+
+    this.precalculatedExampleService.listCmapPrecalculatedExamples()
+      .subscribe(examples => this.precalculatedExamples = examples);
   }
 
   private static cleanAndFilterGenes(genes: string): string[] {
@@ -147,30 +154,19 @@ export class CmapQueryPanelComponent implements OnInit {
 
     this.interactionsService.launchQuery(queryParams)
       .subscribe(work => {
-        this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
+        this.navigateToWork(work);
       });
   }
 
-  public getExampleTitle(index: number): string {
-    switch (index) {
-      case 1:
-        return Examples.EX_1_TITLE;
-      case 2:
-        return Examples.EX_2_TITLE;
-      default:
-        return '';
-    }
+  public hasPrecalculatedExamples(): boolean {
+    return this.precalculatedExamples !== undefined && this.precalculatedExamples.length > 0;
   }
 
-  public loadExample1(): void {
-    this.upGenesComponent.updateGenes(Examples.EX_1_UP_GENES);
-    this.downGenesComponent.updateGenes(Examples.EX_1_DOWN_GENES);
-    this.queryTitle = 'Drug Prioritization Query: ' + Examples.EX_1_TITLE;
+  public loadPrecalculatedExample(example: PrecalculatedExample) {
+    this.navigateToWork(example.workData);
   }
 
-  public loadExample2(): void {
-    this.upGenesComponent.updateGenes(Examples.EX_2_UP_GENES);
-    this.downGenesComponent.updateGenes(Examples.EX_2_DOWN_GENES);
-    this.queryTitle = 'Drug Prioritization Query: ' + Examples.EX_2_TITLE;
+  private navigateToWork(work: Work): void {
+    this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
   }
 }
