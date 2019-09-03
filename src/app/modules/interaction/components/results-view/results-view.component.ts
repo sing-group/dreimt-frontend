@@ -33,11 +33,11 @@ import {CmapQueryGeneSetSignatureResultsMetadata} from '../../../../models/inter
 import {ExecutionStatusIconPipe} from '../../../work/pipes/execution-status-icon.pipe';
 
 @Component({
-  selector: 'app-drug-cell-interactions-table',
-  templateUrl: './calculated-interactions-table.component.html',
-  styleUrls: ['./calculated-interactions-table.component.scss']
+  selector: 'app-results-view',
+  templateUrl: './results-view.component.html',
+  styleUrls: ['./results-view.component.scss']
 })
-export class CalculatedInteractionsTableComponent implements OnInit {
+export class ResultsViewComponent implements OnInit {
   public results: JaccardQueryResultMetadata | CmapQueryUpDownSignatureResultsMetadata | CmapQueryGeneSetSignatureResultsMetadata;
 
   private uuid: string;

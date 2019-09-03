@@ -21,7 +21,7 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {CalculatedInteractionsTableComponent} from './components/calculated-interactions-table/calculated-interactions-table.component';
+import {ResultsViewComponent} from './components/results-view/results-view.component';
 import {
   MatButtonModule,
   MatCardModule,
@@ -58,6 +58,10 @@ import {CmapUpDownSignatureResultsTableComponent} from './components/cmap-up-dow
 import {ClipboardModule} from 'ngx-clipboard';
 import {CmapGeneSetSignatureResultsTableComponent} from './components/cmap-gene-set-signature-results-table/cmap-gene-set-signature-results-table.component';
 import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
+import {CmapUpDownSignatureResultsGraphComponent} from './components/cmap-up-down-signature-results-graph/cmap-up-down-signature-results-graph.component';
+import { CmapUpDownSignatureResultsViewComponent } from './components/cmap-up-down-signature-results-view/cmap-up-down-signature-results-view.component';
+import { CmapGeneSetSignatureResultsViewComponent } from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
+import { CmapGeneSetSignatureResultsGraphComponent } from './components/cmap-gene-set-signature-results-graph/cmap-gene-set-signature-results-graph.component';
 
 @NgModule({
   imports: [
@@ -91,7 +95,7 @@ import {ExportGenesDialogComponent} from './components/export-genes-dialog/expor
     SharedModule
   ],
   declarations: [
-    CalculatedInteractionsTableComponent,
+    ResultsViewComponent,
     CmapQueryPanelComponent,
     ExportGenesDialogComponent,
     GeneListComponent,
@@ -99,7 +103,11 @@ import {ExportGenesDialogComponent} from './components/export-genes-dialog/expor
     JaccardResultsTableComponent,
     CmapUpDownSignatureResultsTableComponent,
     CmapGeneSetSignatureResultsTableComponent,
-    ExportGenesDialogComponent
+    ExportGenesDialogComponent,
+    CmapUpDownSignatureResultsGraphComponent,
+    CmapUpDownSignatureResultsViewComponent,
+    CmapGeneSetSignatureResultsViewComponent,
+    CmapGeneSetSignatureResultsGraphComponent
   ],
   providers: [
     QueryService

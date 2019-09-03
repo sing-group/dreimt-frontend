@@ -21,21 +21,21 @@
 
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {CalculatedInteractionsTableComponent} from './calculated-interactions-table.component';
+import {ResultsViewComponent} from './results-view.component';
 
-describe('CalculatedInteractionsTableComponent', () => {
-  let component: CalculatedInteractionsTableComponent;
-  let fixture: ComponentFixture<CalculatedInteractionsTableComponent>;
+describe('ResultsViewComponent', () => {
+  let component: ResultsViewComponent;
+  let fixture: ComponentFixture<ResultsViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CalculatedInteractionsTableComponent]
+      declarations: [ResultsViewComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CalculatedInteractionsTableComponent);
+    fixture = TestBed.createComponent(ResultsViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

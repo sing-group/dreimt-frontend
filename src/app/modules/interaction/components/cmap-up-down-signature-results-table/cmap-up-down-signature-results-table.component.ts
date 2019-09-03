@@ -24,7 +24,7 @@ import {MatDialog, MatPaginator, MatSort, MatSortHeader} from '@angular/material
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
-import {CmapUpDownSignatureResultsDataSource} from './cmap-up-down-signature-results-data-source';
+import {CmapUpDownSignatureResultsDataSource} from '../cmap-up-down-signature-results-view/cmap-up-down-signature-results-data-source';
 import {CmapResultsService} from '../../services/cmap-results.service';
 import {CmapUpDownSignatureResultField} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-result-field.enum';
 import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
@@ -50,7 +50,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   @Input() public metadata: CmapQueryUpDownSignatureResultsMetadata;
 
   public readonly columns: string[];
-  public readonly dataSource: CmapUpDownSignatureResultsDataSource;
+  @Input() public dataSource: CmapUpDownSignatureResultsDataSource;
 
   public totalResultsSize: number;
 
@@ -84,7 +84,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     this.debounceTime = 500;
     this.maxOptions = 100;
 
-    this.dataSource = new CmapUpDownSignatureResultsDataSource(this.service);
+    // this.dataSource = new CmapUpDownSignatureResultsDataSource(this.service);
     this.columns = [
       'tau', 'upFdr', 'downFdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
     ];

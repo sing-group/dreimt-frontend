@@ -28,6 +28,8 @@
 
 @import "app/app.component.scss";
 
+@import "../node_modules/c3/c3.min.css";
+
 @mixin custom-component-theme($theme) {
   @include app-component-theme($theme);
 }

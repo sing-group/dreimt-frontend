@@ -21,7 +21,7 @@
 
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {CalculatedInteractionsTableComponent} from './components/calculated-interactions-table/calculated-interactions-table.component';
+import {ResultsViewComponent} from './components/results-view/results-view.component';
 import {CmapQueryPanelComponent} from './components/cmap-query-panel/cmap-query-panel.component';
 import {JaccardQueryPanelComponent} from './components/jaccard-query-panel/jaccard-query-panel.component';
 
@@ -36,7 +36,7 @@ const routes: Routes = [
   },
   {
     path: 'calculated/:uuid',
-    component: CalculatedInteractionsTableComponent
+    component: ResultsViewComponent
   }
 ];
 

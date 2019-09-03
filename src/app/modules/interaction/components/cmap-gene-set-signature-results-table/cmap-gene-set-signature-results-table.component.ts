@@ -26,7 +26,7 @@ import {SortDirection} from '../../../../models/sort-direction.enum';
 import {FormControl} from '@angular/forms';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {CmapQueryGeneSetSignatureResultsMetadata} from '../../../../models/interactions/cmap-gene-set/cmap-query-gene-set-down-signature-results-metadata';
-import {CmapGeneSetSignatureResultsDataSource} from './cmap-gene-set-signature-results-data-source';
+import {CmapGeneSetSignatureResultsDataSource} from '../cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-data-source';
 import {CmapGeneSetResultsService} from '../../services/cmap-gene-set-results.service';
 import {CmapGeneSetSignatureResultField} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-result-field.enum';
 import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
@@ -51,7 +51,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
   @Input() public metadata: CmapQueryGeneSetSignatureResultsMetadata;
 
   public readonly columns: string[];
-  public readonly dataSource: CmapGeneSetSignatureResultsDataSource;
+  @Input() public dataSource: CmapGeneSetSignatureResultsDataSource;
 
   public totalResultsSize: number;
 
@@ -83,7 +83,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     this.debounceTime = 500;
     this.maxOptions = 100;
 
-    this.dataSource = new CmapGeneSetSignatureResultsDataSource(this.service);
+    // this.dataSource = new CmapGeneSetSignatureResultsDataSource(this.service);
     this.columns = [
       'tau', 'fdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
     ];
