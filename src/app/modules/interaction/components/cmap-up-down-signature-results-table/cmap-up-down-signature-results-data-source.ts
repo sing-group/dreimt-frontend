@@ -19,12 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {PartialDataSource} from '../../../../utils/partial-data-source';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
 import {CmapResultsService} from '../../services/cmap-results.service';
+import {PaginatedDataSource} from '../../../../models/data-source/paginated-data-source';
+import {Pagination} from '../../../../models/data-source/pagination';
 
-export class CmapUpDownSignatureResultsDataSource extends PartialDataSource<CmapUpDownSignatureDrugInteraction> {
+export class CmapUpDownSignatureResultsDataSource extends PaginatedDataSource<CmapUpDownSignatureDrugInteraction> {
+  private queryParams?: CmapUpDownSignatureDrugInteractionResultsQueryParams;
+
   public constructor(
     private service: CmapResultsService
   ) {
@@ -32,6 +35,44 @@ export class CmapUpDownSignatureResultsDataSource extends PartialDataSource<Cmap
   }
 
   public list(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.update(this.service.list(resultId, queryParams));
+    if (this.haveFiltersChanged(queryParams)) {
+      const pagination = new Pagination(queryParams.page, queryParams.pageSize);
+
+      const unpaginatedQueryParams = {...queryParams};
+      unpaginatedQueryParams.page = undefined;
+      unpaginatedQueryParams.pageSize = undefined;
+
+      this.queryParams = queryParams;
+      this.update(this.service.listAll(resultId, unpaginatedQueryParams), pagination);
+    } else if (this.hasPaginationChanged(queryParams)) {
+      const pagination = new Pagination(queryParams.page, queryParams.pageSize);
+
+      this.queryParams = queryParams;
+      this.updatePage(pagination);
+    }
+  }
+
+  private hasPaginationChanged(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): boolean {
+    if (this.queryParams === undefined) {
+      return queryParams !== undefined;
+    } else {
+      return this.queryParams.page !== queryParams.page
+        || this.queryParams.pageSize !== queryParams.pageSize;
+    }
+  }
+
+  private haveFiltersChanged(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): boolean {
+    if (this.queryParams === undefined) {
+      return queryParams !== undefined;
+    } else {
+      return this.queryParams.orderField !== queryParams.orderField
+        || this.queryParams.sortDirection !== queryParams.sortDirection
+        || this.queryParams.minTau !== queryParams.minTau
+        || this.queryParams.maxDownFdr !== queryParams.maxDownFdr
+        || this.queryParams.maxUpFdr !== queryParams.maxUpFdr
+        || this.queryParams.drugSourceName !== queryParams.drugSourceName
+        || this.queryParams.drugSourceDb !== queryParams.drugSourceDb
+        || this.queryParams.drugCommonName !== queryParams.drugCommonName;
+    }
   }
 }

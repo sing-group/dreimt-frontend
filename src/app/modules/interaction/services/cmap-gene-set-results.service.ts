@@ -28,9 +28,7 @@ import {DreimtError} from '../../notification/entities';
 import {map} from 'rxjs/operators';
 import saveAs from 'file-saver';
 import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
-import {CmapGeneSetSignatureDrugInteractionResults} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
-import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 
 @Injectable({
@@ -43,12 +41,16 @@ export class CmapGeneSetResultsService {
   ) {
   }
 
-  public list(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<CmapGeneSetSignatureDrugInteractionResults> {
+  public listAll(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams)
+  : Observable<CmapGeneSetSignatureDrugInteraction[]> {
+    if (queryParams.page !== undefined || queryParams.pageSize !== undefined) {
+      throw new TypeError('page and pageSize values not supported in queryParams');
+    }
+
     const options = {
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
       }),
-      observe: 'response' as 'response',
       headers: new HttpHeaders({
         'Accept': 'application/json'
       })
@@ -57,14 +59,9 @@ export class CmapGeneSetResultsService {
     return this.http.get<CmapGeneSetSignatureDrugInteraction[]>(
       `${environment.dreimtUrl}/results/cmap/geneset/` + resultId + `/interactions`, options
     ).pipe(
-      DreimtError.throwOnError('Cmap results error', 'Cmap analysis results could not be retrieved.'),
-      map((response: HttpResponse<CmapGeneSetSignatureDrugInteraction[]>) => ({
-        result: response.body,
-        count: Number(response.headers.get('X-Count'))
-      }))
+      DreimtError.throwOnError('Cmap results error', 'Cmap analysis results could not be retrieved.')
     );
   }
-
 
   public downloadCsv(resultId: string, queryTitle: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams) {
     this.http.get(`${environment.dreimtUrl}/results/cmap/geneset/` + resultId + `/interactions`, {

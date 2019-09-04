@@ -22,7 +22,7 @@
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {InteractionsService} from '../../services/interactions.service';
-import {PartialDataSource} from '../../../../utils/partial-data-source';
+import {PartialDataSource} from '../../../../models/data-source/partial-data-source';
 
 export class DatabaseDataSource extends PartialDataSource<DrugCellDatabaseInteraction> {
   public constructor(

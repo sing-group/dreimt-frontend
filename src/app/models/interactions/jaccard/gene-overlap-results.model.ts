@@ -20,7 +20,7 @@
  */
 
 import {GeneOverlap} from './gene-overlap.model';
-import {PartialResult} from '../../../utils/partial-data-source';
+import {PartialResult} from '../../data-source/partial-result';
 
 export class GeneOverlapResults extends PartialResult<GeneOverlap> {
 }

@@ -20,7 +20,7 @@
  */
 
 import {DrugCellDatabaseInteraction} from './drug-cell-database-interaction.model';
-import {PartialResult} from '../../utils/partial-data-source';
+import {PartialResult} from '../data-source/partial-result';
 
 export class DatabaseQueryResult extends PartialResult<DrugCellDatabaseInteraction> {
 }

@@ -23,6 +23,7 @@ import {DataSource} from '@angular/cdk/table';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {CollectionViewer} from '@angular/cdk/collections';
 import {catchError, finalize} from 'rxjs/operators';
+import {PartialResult} from './partial-result';
 
 export abstract class PartialDataSource<T> extends DataSource<T> {
   private readonly dataSubject: BehaviorSubject<T[]>;
@@ -33,7 +34,7 @@ export abstract class PartialDataSource<T> extends DataSource<T> {
   public readonly count$: Observable<number>;
   public readonly loading$: Observable<boolean>;
 
-  constructor() {
+  protected constructor() {
     super();
 
     this.dataSubject = new BehaviorSubject([]);
@@ -45,17 +46,17 @@ export abstract class PartialDataSource<T> extends DataSource<T> {
     this.loading$ = this.loadingSubject.asObservable();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<T[]> {
+  public connect(collectionViewer: CollectionViewer): Observable<T[]> {
     return this.dataSubject.asObservable();
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {
+  public disconnect(collectionViewer: CollectionViewer): void {
     this.dataSubject.complete();
     this.countSubject.complete();
     this.loadingSubject.complete();
   }
 
-  update(newData: Observable<PartialResult<T>>): void {
+  public update(newData: Observable<PartialResult<T>>): void {
     this.loadingSubject.next(true);
 
     newData.pipe(
@@ -72,7 +73,3 @@ export abstract class PartialDataSource<T> extends DataSource<T> {
   }
 }
 
-export class PartialResult<T> {
-  public readonly count: number;
-  public readonly result: T[];
-}

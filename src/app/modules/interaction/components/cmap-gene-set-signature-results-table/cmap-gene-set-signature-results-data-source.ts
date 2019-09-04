@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,12 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {PartialDataSource} from '../../../../utils/partial-data-source';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
 import {CmapGeneSetResultsService} from '../../services/cmap-gene-set-results.service';
 import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
+import {PaginatedDataSource} from '../../../../models/data-source/paginated-data-source';
+import {Pagination} from '../../../../models/data-source/pagination';
 
-export class CmapGeneSetSignatureResultsDataSource extends PartialDataSource<CmapGeneSetSignatureDrugInteraction> {
+export class CmapGeneSetSignatureResultsDataSource extends PaginatedDataSource<CmapGeneSetSignatureDrugInteraction> {
+  private queryParams?: CmapGeneSetSignatureDrugInteractionResultsQueryParams;
+
   public constructor(
     private service: CmapGeneSetResultsService
   ) {
@@ -32,6 +35,43 @@ export class CmapGeneSetSignatureResultsDataSource extends PartialDataSource<Cma
   }
 
   public list(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
-    this.update(this.service.list(resultId, queryParams));
+    if (this.haveFiltersChanged(queryParams)) {
+      const pagination = new Pagination(queryParams.page, queryParams.pageSize);
+
+      const unpaginatedQueryParams = {...queryParams};
+      unpaginatedQueryParams.page = undefined;
+      unpaginatedQueryParams.pageSize = undefined;
+
+      this.queryParams = queryParams;
+      this.update(this.service.listAll(resultId, unpaginatedQueryParams), pagination);
+    } else if (this.hasPaginationChanged(queryParams)) {
+      const pagination = new Pagination(queryParams.page, queryParams.pageSize);
+
+      this.queryParams = queryParams;
+      this.updatePage(pagination);
+    }
+  }
+
+  private hasPaginationChanged(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): boolean {
+    if (this.queryParams === undefined) {
+      return queryParams !== undefined;
+    } else {
+      return this.queryParams.page !== queryParams.page
+        || this.queryParams.pageSize !== queryParams.pageSize;
+    }
+  }
+
+  private haveFiltersChanged(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): boolean {
+    if (this.queryParams === undefined) {
+      return queryParams !== undefined;
+    } else {
+      return this.queryParams.orderField !== queryParams.orderField
+        || this.queryParams.sortDirection !== queryParams.sortDirection
+        || this.queryParams.minTau !== queryParams.minTau
+        || this.queryParams.maxFdr !== queryParams.maxFdr
+        || this.queryParams.drugSourceName !== queryParams.drugSourceName
+        || this.queryParams.drugSourceDb !== queryParams.drugSourceDb
+        || this.queryParams.drugCommonName !== queryParams.drugCommonName;
+    }
   }
 }

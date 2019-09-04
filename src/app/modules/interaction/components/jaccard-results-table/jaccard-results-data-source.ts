@@ -20,7 +20,7 @@
  */
 
 import {JaccardOverlapsQueryParams} from '../../../../models/interactions/jaccard/jaccard-overlaps-query-params';
-import {PartialDataSource} from '../../../../utils/partial-data-source';
+import {PartialDataSource} from '../../../../models/data-source/partial-data-source';
 import {GeneOverlap} from '../../../../models/interactions/jaccard/gene-overlap.model';
 import {JaccardResultsService} from '../../services/jaccard-results.service';
 

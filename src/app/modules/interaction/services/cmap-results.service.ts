@@ -27,10 +27,8 @@ import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
 import {map} from 'rxjs/operators';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
-import {CmapUpDownSignatureDrugInteractionResults} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results';
 import saveAs from 'file-saver';
 import {CmapUpDownSignatureDrugInteraction} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
-import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 
 @Injectable({
@@ -43,12 +41,17 @@ export class CmapResultsService {
   ) {
   }
 
-  public list(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): Observable<CmapUpDownSignatureDrugInteractionResults> {
+  public listAll(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams)
+    : Observable<CmapUpDownSignatureDrugInteraction[]>
+  {
+    if (queryParams.page !== undefined || queryParams.pageSize !== undefined) {
+      throw new TypeError('page and pageSize values not supported in queryParams');
+    }
+
     const options = {
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
       }),
-      observe: 'response' as 'response',
       headers: new HttpHeaders({
         'Accept': 'application/json'
       })
@@ -57,14 +60,9 @@ export class CmapResultsService {
     return this.http.get<CmapUpDownSignatureDrugInteraction[]>(
       `${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, options
     ).pipe(
-      DreimtError.throwOnError('Cmap results error', 'Cmap analysis results could not be retrieved.'),
-      map((response: HttpResponse<CmapUpDownSignatureDrugInteraction[]>) => ({
-        result: response.body,
-        count: Number(response.headers.get('X-Count'))
-      }))
+      DreimtError.throwOnError('Cmap results error', 'Cmap analysis results could not be retrieved.')
     );
   }
-
 
   public downloadCsv(resultId: string, queryTitle: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams) {
     this.http.get(`${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, {

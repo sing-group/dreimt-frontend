@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,8 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {PartialResult} from '../../../utils/partial-data-source';
-import {CmapUpDownSignatureDrugInteraction} from './cmap-up-down-signature-drug-interaction.model';
-
-export class CmapUpDownSignatureDrugInteractionResults extends PartialResult<CmapUpDownSignatureDrugInteraction> {
+export class PartialResult<T> {
+  public readonly count: number;
+  public readonly result: T[];
 }
