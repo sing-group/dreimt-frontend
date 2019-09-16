@@ -85,6 +85,8 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
               show: false
             },
             x: {
+              min: -100,
+              max: 100,
               tick: {
                 values: [-100, -95, -90, -75, -50, 0, 50, 75, 90, 95, 100]
               },
