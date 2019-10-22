@@ -94,3 +94,43 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   word-wrap: break-word;
   max-width: 350px;
 }
+
+.text-tag-tau-revert {
+  border-radius: 4px;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
+  text-decoration: none;
+  margin: 1px;
+  display: inline-block;
+  background-color: lightgreen;
+}
+
+.text-tag-tau-boost {
+  border-radius: 4px;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
+  text-decoration: none;
+  margin: 1px;
+  display: inline-block;
+  background-color: lightcoral;
+}
+
+.text-tag-tau-revert .material-icons {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+  color: green;
+}
+
+.text-tag-tau-boost .material-icons {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  color: red;
+}

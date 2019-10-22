@@ -54,7 +54,7 @@ export class ColorHelper {
     let red = parseInt((xr + ((pos * (yr - xr)) / (n - 1))).toFixed(0));
     let green = parseInt((xg + ((pos * (yg - xg)) / (n - 1))).toFixed(0));
     let blue = parseInt((xb + ((pos * (yb - xb)) / (n - 1))).toFixed(0));
-    console.log(red + '\t' + green + '\t' + blue);
+
     return RgbColor.rgbColor(red, green, blue);
   }
 }

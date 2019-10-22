@@ -149,12 +149,12 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
     }
   }
 
-  public applyDatabaseFilters(newFilterParams: DatabaseQueryParams, defaultPageIndex = 0, defaultPageSize = 10): void {
+  public applyDatabaseFilters(newFilterParams: DatabaseQueryParams, defaultPageIndex = 0, defaultPageSize = 50): void {
     this.filterParams = newFilterParams;
     this.updatePage(this.createQueryParameters());
   }
 
-  public createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): DatabaseQueryParams {
+  public createQueryParameters(defaultPageIndex = 0, defaultPageSize = 50): DatabaseQueryParams {
     return {
       page: this.paginator.pageIndex || defaultPageIndex,
       pageSize: this.paginator.pageSize || defaultPageSize,
@@ -192,6 +192,49 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
       return this.negativeTauColorMap((Math.abs(tau) - 90) / 10);
     } else {
       return 'black';
+    }
+  }
+
+  public getTauTagCssClass(interaction: DrugCellDatabaseInteraction, targetCell: string): string {
+    let boost;
+    let revert;
+    let signatureType = interaction.signature.signatureType;
+
+    if (signatureType === 'UPDOWN') {
+      if (!interaction.downFdr) {
+        signatureType = 'UP';
+      } else if (!interaction.upFdr) {
+        signatureType = 'DOWN';
+      }
+    }
+
+    switch (signatureType) {
+      case 'UPDOWN':
+      case 'UP':
+      case 'GENESET':
+        if (interaction.tau >= 90) {
+          boost = 'A';
+          revert = 'B';
+        } else if (interaction.tau <= -90) {
+          boost = 'B';
+          revert = 'A';
+        }
+        break;
+      case 'DOWN':
+        if (interaction.tau >= 90) {
+          boost = 'B';
+          revert = 'A';
+        } else if (interaction.tau <= -90) {
+          boost = 'A';
+          revert = 'B';
+        }
+        break;
+    }
+
+    if (targetCell === boost) {
+      return 'text-tag-tau-boost';
+    } else {
+      return 'text-tag-tau-revert';
     }
   }
 
