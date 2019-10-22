@@ -39,8 +39,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
-  public freeTextFilter: string;
-  public isAdvancedPanelOpened: boolean;
+  private previousDatabaseQueryParams: DatabaseQueryParams = undefined;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly signatureNameFieldFilter: FieldFilterModel;
@@ -109,19 +108,24 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public updateFilterValues(): void {
     const queryParams = this.createQueryParameters();
 
-    this.loadDrugCommonNames(queryParams);
-    this.loadSignatureNames(queryParams);
-    this.loadCellTypeAs(queryParams);
-    this.loadCellTypeBs(queryParams);
-    this.loadCellSubTypeAs(queryParams);
-    this.loadCellSubTypeBs(queryParams);
-    this.loadDiseases(queryParams);
-    this.loadOrganisms(queryParams);
-    this.loadSignatureSourceDbs(queryParams);
-    this.loadSignaturePubMedIds(queryParams);
-    this.loadDrugSourceNames(queryParams);
-    this.loadExperimentalDesigns(queryParams);
-    this.loadInteractionTypes(queryParams);
+    if (!DatabaseQueryParams.equals(queryParams, this.previousDatabaseQueryParams)) {
+      this.loadDrugCommonNames(queryParams);
+      this.loadSignatureNames(queryParams);
+      this.loadCellTypeAs(queryParams);
+      this.loadCellTypeBs(queryParams);
+      this.loadCellSubTypeAs(queryParams);
+      this.loadCellSubTypeBs(queryParams);
+      this.loadDiseases(queryParams);
+      this.loadOrganisms(queryParams);
+      this.loadSignatureSourceDbs(queryParams);
+      this.loadSignaturePubMedIds(queryParams);
+      this.loadDrugSourceNames(queryParams);
+      this.loadExperimentalDesigns(queryParams);
+      this.loadInteractionTypes(queryParams);
+
+      this.previousDatabaseQueryParams = queryParams;
+      this.applyDatabaseFilters.emit(queryParams);
+    }
   }
 
   private loadDrugCommonNames(queryParams: DatabaseQueryParams): void {
@@ -189,14 +193,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
       .subscribe(values => this.interactionTypeFilter.update(values));
   }
 
-  public applyFiltersAction(): void {
-    if (this.isAdvancedPanelOpened) {
-      this.applyDatabaseFilters.emit(this.createQueryParameters());
-    } else {
-      this.applyDatabaseFilters.emit({freeText: this.freeTextFilter});
-    }
-  }
-
   private createQueryParameters(): DatabaseQueryParams {
     const experimentalDesign = this.experimentalDesignFilter.hasValue()
       ? ExperimentalDesign[this.experimentalDesignFilter.getClearedFilter()]
@@ -226,18 +222,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
     };
   }
 
-  public applyFreeTextFilter(): void {
-    this.applyFiltersAction();
-  }
-
-  public advancedPanelOpened(): void {
-    this.isAdvancedPanelOpened = true;
-  }
-
-  public advancedPanelClosed(): void {
-    this.isAdvancedPanelOpened = false;
-  }
-
   public clearAdvancedFiltersAction(): void {
     this.drugCommonNameFieldFilter.filter = '';
     this.signatureNameFieldFilter.filter = '';
@@ -256,10 +240,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.minTauFilterComponent.clearValue();
     this.maxUpFdrFilterComponent.clearValue();
     this.maxDownFdrFilterComponent.clearValue();
-  }
-
-  public clearFreeTextFilterValue(): void {
-    this.freeTextFilter = '';
   }
 
   public setSignatureFilter(signatureParam: string): void {

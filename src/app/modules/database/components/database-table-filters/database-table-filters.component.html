@@ -1,127 +1,107 @@
 <mat-card>
   <mat-card-title>Filter Database Fields</mat-card-title>
   <mat-card-content>
-    <mat-form-field class="full-width-field">
-      <input matInput placeholder="Free Text Filter" [(ngModel)]="freeTextFilter" (keyup.enter)="applyFreeTextFilter()"
-             [disabled]="isAdvancedPanelOpened">
+    <div class="filters-form">
+      <app-filter-field label="Drug Source Name"
+                        [options]="drugCommonNameFieldFilter.options"
+                        [(filter)]="drugCommonNameFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-      <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="clearFreeTextFilterValue()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
+      <app-filter-field label="Signature Name"
+                        [options]="signatureNameFieldFilter.options"
+                        [(filter)]="signatureNameFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-    <mat-expansion-panel (opened)="advancedPanelOpened()" (closed)="advancedPanelClosed()">
-      <mat-expansion-panel-header>
-        <mat-panel-title>Advanced Filters</mat-panel-title>
-      </mat-expansion-panel-header>
+      <app-filter-field label="Signature Source DB"
+                        [options]="signatureSourceDbFieldFilter.options"
+                        [(filter)]="signatureSourceDbFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-      <div class="filters-form">
-        <app-filter-field label="Drug Source Name"
-                          [options]="drugCommonNameFieldFilter.options"
-                          [(filter)]="drugCommonNameFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="PubMed ID"
+                        [options]="pubMedIdFieldFilter.options"
+                        [(filter)]="pubMedIdFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Signature Name"
-                          [options]="signatureNameFieldFilter.options"
-                          [(filter)]="signatureNameFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="Experimental Design"
+                        [options]="experimentalDesignFilter.options"
+                        [(filter)]="experimentalDesignFilter.filter"
+                        fixedValues="true"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Signature Source DB"
-                          [options]="signatureSourceDbFieldFilter.options"
-                          [(filter)]="signatureSourceDbFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="Condition"
+                        [options]="diseaseFieldFilter.options"
+                        [(filter)]="diseaseFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="PubMed ID"
-                          [options]="pubMedIdFieldFilter.options"
-                          [(filter)]="pubMedIdFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="Organism"
+                        [options]="organismFieldFilter.options"
+                        [(filter)]="organismFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Experimental Design"
-                          [options]="experimentalDesignFilter.options"
-                          [(filter)]="experimentalDesignFilter.filter"
-                          fixedValues="true"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="Interaction Type"
+                        [options]="interactionTypeFilter.options"
+                        [(filter)]="interactionTypeFilter.filter"
+                        fixedValues="true"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Condition"
-                          [options]="diseaseFieldFilter.options"
-                          [(filter)]="diseaseFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="Cell Type A"
+                        [options]="cellTypeAFieldFilter.options"
+                        [(filter)]="cellTypeAFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Organism"
-                          [options]="organismFieldFilter.options"
-                          [(filter)]="organismFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="Cell Type B"
+                        [options]="cellTypeBFieldFilter.options"
+                        [(filter)]="cellTypeBFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Interaction Type"
-                          [options]="interactionTypeFilter.options"
-                          [(filter)]="interactionTypeFilter.filter"
-                          fixedValues="true"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="Cell Subtype A"
+                        [options]="cellSubTypeAFieldFilter.options"
+                        [(filter)]="cellSubTypeAFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Cell Type A"
-                          [options]="cellTypeAFieldFilter.options"
-                          [(filter)]="cellTypeAFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+      <app-filter-field label="Cell Subtype B"
+                        [options]="cellSubTypeBFieldFilter.options"
+                        [(filter)]="cellSubTypeBFieldFilter.filter"
+                        (filterChange)="updateFilterValues()"
+                        [debounceTime]="debounceTime"
+                        [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Cell Type B"
-                          [options]="cellTypeBFieldFilter.options"
-                          [(filter)]="cellTypeBFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
-
-        <app-filter-field label="Cell Subtype A"
-                          [options]="cellSubTypeAFieldFilter.options"
-                          [(filter)]="cellSubTypeAFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
-
-        <app-filter-field label="Cell Subtype B"
-                          [options]="cellSubTypeBFieldFilter.options"
-                          [(filter)]="cellSubTypeBFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
-
-        <app-number-field #tauMin label="Min. TAU" [debounceTime]="debounceTime" [min]="-100" [max]="100"
-                          [step]="1"
-                          (valueChange)="minTauFilter.setValue($event)"></app-number-field>
-        <app-number-field #maxUpFdr label="Max. Up FDR" [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
-                          (valueChange)="maxUpFdrFilter.setValue($event)"></app-number-field>
-        <app-number-field #maxDownFdr label="Max. Down FDR" [debounceTime]="debounceTime" [min]="0" [max]="1"
-                          [step]="0.05"
-                          (valueChange)="maxDownFdrFilter.setValue($event)"></app-number-field>
-
-        <button mat-button id="clearAdvancedFiltersButton" (click)="clearAdvancedFiltersAction()">
-          <mat-icon>delete_sweep</mat-icon>
-          Clear Advanced Filters
-        </button>
-      </div>
-    </mat-expansion-panel>
+      <app-number-field #tauMin label="Min. TAU" [debounceTime]="debounceTime" [min]="-100" [max]="100"
+                        [step]="1"
+                        (valueChange)="minTauFilter.setValue($event)"></app-number-field>
+      <app-number-field #maxUpFdr label="Max. Up FDR" [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
+                        (valueChange)="maxUpFdrFilter.setValue($event)"></app-number-field>
+      <app-number-field #maxDownFdr label="Max. Down FDR" [debounceTime]="debounceTime" [min]="0" [max]="1"
+                        [step]="0.05"
+                        (valueChange)="maxDownFdrFilter.setValue($event)"></app-number-field>
+    </div>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-button (click)="applyFiltersAction()">
-      <mat-icon>filter_list</mat-icon>
-      Apply Filters
+    <button mat-button id="clearAdvancedFiltersButton" (click)="clearAdvancedFiltersAction()">
+      <mat-icon>delete_sweep</mat-icon>
+      Clear Advanced Filters
     </button>
   </mat-card-actions>
 </mat-card>

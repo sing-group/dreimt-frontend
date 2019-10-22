@@ -22,8 +22,8 @@
 import {SortDirection} from '../sort-direction.enum';
 import {DrugSignatureInteractionField} from '../drug-signature-interaction-field.enum';
 import {ExperimentalDesign} from '../experimental-design.enum';
-import {SignatureType} from '../signature-type.enum';
 import {InteractionType} from '../interaction-type.enum';
+import {isNullOrUndefined} from 'util';
 
 export class DatabaseQueryParams {
   public static readonly MANIPULATION_FIELDS = ['page', 'pageSize', 'orderField', 'sortDirection'];
@@ -49,6 +49,34 @@ export class DatabaseQueryParams {
   public readonly minTau?: number;
   public readonly maxUpFdr?: number;
   public readonly maxDownFdr?: number;
-  public readonly freeText?: string;
+
+  public static equals(a: DatabaseQueryParams, b: DatabaseQueryParams): boolean {
+    if (isNullOrUndefined(a) || isNullOrUndefined(b)) {
+      return false;
+    } else if (isNullOrUndefined(a)) {
+      return true;
+    } else {
+      return a.page === b.page &&
+        a.pageSize === b.pageSize &&
+        a.orderField === b.orderField &&
+        a.sortDirection === b.sortDirection &&
+        a.signatureName === b.signatureName &&
+        a.cellTypeA === b.cellTypeA &&
+        a.cellTypeB === b.cellTypeB &&
+        a.cellSubTypeA === b.cellSubTypeA &&
+        a.cellSubTypeB === b.cellSubTypeB &&
+        a.experimentalDesign === b.experimentalDesign &&
+        a.disease === b.disease &&
+        a.organism === b.organism &&
+        a.signaturePubMedId === b.signaturePubMedId &&
+        a.drugSourceName === b.drugSourceName &&
+        a.drugSourceDb === b.drugSourceDb &&
+        a.drugCommonName === b.drugCommonName &&
+        a.signatureSourceDb === b.signatureSourceDb &&
+        a.interactionType === b.interactionType &&
+        a.minTau === b.minTau &&
+        a.maxUpFdr === b.maxUpFdr;
+    }
+  }
 }
 
