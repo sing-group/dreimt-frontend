@@ -30,7 +30,6 @@ import {DrugSignatureInteractionField} from '../../../../models/drug-signature-i
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {ActivatedRoute} from '@angular/router';
-import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {DatabaseTableFiltersComponent} from '../database-table-filters/database-table-filters.component';
 
 @Component({
@@ -218,6 +217,8 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
         } else if (interaction.tau <= -90) {
           boost = 'B';
           revert = 'A';
+        } else {
+          boost = 'NONE';
         }
         break;
       case 'DOWN':
@@ -227,14 +228,20 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
         } else if (interaction.tau <= -90) {
           boost = 'A';
           revert = 'B';
+        } else {
+          boost = 'NONE';
         }
         break;
     }
 
-    if (targetCell === boost) {
-      return 'text-tag-tau-boost';
+    if (boost !== 'NONE') {
+      if (targetCell === boost) {
+        return 'text-tag-tau-boost';
+      } else {
+        return 'text-tag-tau-revert';
+      }
     } else {
-      return 'text-tag-tau-revert';
+      return 'text-tag-tau-none';
     }
   }
 
