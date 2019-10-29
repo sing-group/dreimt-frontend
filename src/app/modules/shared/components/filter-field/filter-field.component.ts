@@ -126,4 +126,12 @@ export class FilterFieldComponent implements OnInit {
     this.filterInput.nativeElement.blur();
     this.autocomplete.closePanel();
   }
+
+  public enable(): void {
+    this.formControl.enable();
+  }
+
+  public disable(): void {
+    this.formControl.disable();
+  }
 }

@@ -33,6 +33,7 @@ import {GeneListComponent} from '../gene-list/gene-list.component';
 import {PrecalculatedExampleService} from '../../services/precalculated-example.service';
 import {PrecalculatedExample} from '../../../../models/interactions/precalculated-example.model';
 import {Work} from '../../../../models/work/work.model';
+import {FilterFieldComponent} from '../../../shared/components/filter-field/filter-field.component';
 
 @Component({
   selector: 'app-jaccard-query-panel',
@@ -50,13 +51,15 @@ export class JaccardQueryPanelComponent implements OnInit {
   private upGenes: string[];
   private downGenes: string[];
 
+  private previousQueryParams: JaccardCalculateInteractionsQueryParams;
+
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
-  public readonly cellTypeAFieldFilter: FieldFilterModel;
-  public readonly cellSubTypeAFieldFilter: FieldFilterModel;
-  public readonly cellTypeBFieldFilter: FieldFilterModel;
-  public readonly cellSubTypeBFieldFilter: FieldFilterModel;
+  public readonly cellType1FieldFilter: FieldFilterModel;
+  public readonly cellSubType1FieldFilter: FieldFilterModel;
+  public readonly cellType2FieldFilter: FieldFilterModel;
+  public readonly cellSubType2FieldFilter: FieldFilterModel;
   public readonly experimentalDesignFieldFilter: FieldFilterModel;
   public readonly organismFieldFilter: FieldFilterModel;
   public readonly diseaseFieldFilter: FieldFilterModel;
@@ -68,6 +71,9 @@ export class JaccardQueryPanelComponent implements OnInit {
 
   @ViewChild('upGenes') private upGenesComponent: GeneListComponent;
   @ViewChild('downGenes') private downGenesComponent: GeneListComponent;
+
+  @ViewChild('cellType2') private cellType2Component: FilterFieldComponent;
+  @ViewChild('cellSubType2') private cellSubType2Component: FilterFieldComponent;
 
   constructor(
     private service: SignaturesService,
@@ -83,10 +89,10 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.upGenes = [];
     this.downGenes = [];
 
-    this.cellTypeAFieldFilter = new FieldFilterModel();
-    this.cellSubTypeAFieldFilter = new FieldFilterModel();
-    this.cellTypeBFieldFilter = new FieldFilterModel();
-    this.cellSubTypeBFieldFilter = new FieldFilterModel();
+    this.cellType1FieldFilter = new FieldFilterModel();
+    this.cellSubType1FieldFilter = new FieldFilterModel();
+    this.cellType2FieldFilter = new FieldFilterModel();
+    this.cellSubType2FieldFilter = new FieldFilterModel();
     this.experimentalDesignFieldFilter = new FieldFilterModel();
     this.organismFieldFilter = new FieldFilterModel();
     this.diseaseFieldFilter = new FieldFilterModel();
@@ -117,36 +123,64 @@ export class JaccardQueryPanelComponent implements OnInit {
   }
 
   public updateFieldValues(): void {
+    this.checkCellTypeAndSubType2FiltersStatus();
+
     const queryParams = this.createQueryParameters();
 
-    this.loadCellTypeAValues(queryParams);
-    this.loadCellSubTypeAValues(queryParams);
-    this.loadCellTypeBValues(queryParams);
-    this.loadCellSubTypeBValues(queryParams);
-    this.loadExperimentalDesignValues(queryParams);
-    this.loadOrganismValues(queryParams);
-    this.loadDiseaseValues(queryParams);
-    this.loadSignatureSourceDbValues(queryParams);
+    if (!JaccardCalculateInteractionsQueryParams.equals(queryParams, this.previousQueryParams)) {
+      this.loadCellType1Values(queryParams);
+      this.loadCellSubType1Values(queryParams);
+      this.loadExperimentalDesignValues(queryParams);
+      this.loadOrganismValues(queryParams);
+      this.loadDiseaseValues(queryParams);
+      this.loadSignatureSourceDbValues(queryParams);
+
+      if (this.cellType1FieldFilter.getClearedFilter()) {
+        this.loadCellType2Values(queryParams);
+      }
+
+      if (this.cellSubType1FieldFilter.getClearedFilter()) {
+        this.loadCellSubType2Values(queryParams);
+      }
+
+      this.previousQueryParams = queryParams;
+    }
   }
 
-  private loadCellTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellTypeAValues(queryParams)
-      .subscribe(values => this.cellTypeAFieldFilter.update(values));
+  private checkCellTypeAndSubType2FiltersStatus(): void {
+    if (this.cellType1FieldFilter.getClearedFilter()) {
+      this.cellType2Component.enable();
+    } else {
+      this.cellType2FieldFilter.filter = '';
+      this.cellType2Component.disable();
+    }
+
+    if (this.cellSubType1FieldFilter.getClearedFilter()) {
+      this.cellSubType2Component.enable();
+    } else {
+      this.cellSubType2FieldFilter.filter = '';
+      this.cellSubType2Component.disable();
+    }
   }
 
-  private loadCellSubTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellSubTypeAValues(queryParams)
-      .subscribe(values => this.cellSubTypeAFieldFilter.update(values));
+  private loadCellType1Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
+    this.service.listCellType1Values(queryParams)
+      .subscribe(values => this.cellType1FieldFilter.update(values));
   }
 
-  private loadCellTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellTypeBValues(queryParams)
-      .subscribe(values => this.cellTypeBFieldFilter.update(values));
+  private loadCellSubType1Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
+    this.service.listCellSubType1Values(queryParams)
+      .subscribe(values => this.cellSubType1FieldFilter.update(values));
   }
 
-  private loadCellSubTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellSubTypeBValues(queryParams)
-      .subscribe(values => this.cellSubTypeBFieldFilter.update(values));
+  private loadCellType2Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
+    this.service.listCellType2Values(queryParams)
+      .subscribe(values => this.cellType2FieldFilter.update(values));
+  }
+
+  private loadCellSubType2Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
+    this.service.listCellSubType2Values(queryParams)
+      .subscribe(values => this.cellSubType2FieldFilter.update(values));
   }
 
   private loadDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
@@ -175,10 +209,10 @@ export class JaccardQueryPanelComponent implements OnInit {
       : undefined;
 
     return {
-      cellTypeA: this.cellTypeAFieldFilter.getClearedFilter(),
-      cellSubTypeA: this.cellSubTypeAFieldFilter.getClearedFilter(),
-      cellTypeB: this.cellTypeBFieldFilter.getClearedFilter(),
-      cellSubTypeB: this.cellSubTypeBFieldFilter.getClearedFilter(),
+      cellType1: this.cellType1FieldFilter.getClearedFilter(),
+      cellSubType1: this.cellSubType1FieldFilter.getClearedFilter(),
+      cellType2: this.cellType2FieldFilter.getClearedFilter(),
+      cellSubType2: this.cellSubType2FieldFilter.getClearedFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       experimentalDesign: experimentalDesign,
       organism: this.organismFieldFilter.getClearedFilter(),

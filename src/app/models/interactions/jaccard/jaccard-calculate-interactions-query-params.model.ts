@@ -21,17 +21,36 @@
 
 
 import {ExperimentalDesign} from '../../experimental-design.enum';
-import {SignatureType} from '../../signature-type.enum';
+import {isNullOrUndefined} from 'util';
 
 export class JaccardCalculateInteractionsQueryParams {
   public readonly queryTitle?: string;
-  public readonly cellTypeA?: string;
-  public readonly cellSubTypeA?: string;
-  public readonly cellTypeB?: string;
-  public readonly cellSubTypeB?: string;
+  public readonly cellType1?: string;
+  public readonly cellSubType1?: string;
+  public readonly cellType2?: string;
+  public readonly cellSubType2?: string;
   public readonly experimentalDesign?: ExperimentalDesign;
   public readonly disease?: string;
   public readonly organism?: string;
   public readonly signatureSourceDb?: string;
   public readonly onlyUniverseGenes?: boolean;
+
+  public static equals(a: JaccardCalculateInteractionsQueryParams, b: JaccardCalculateInteractionsQueryParams): boolean {
+    if (isNullOrUndefined(a) || isNullOrUndefined(b)) {
+      return false;
+    } else if (isNullOrUndefined(a)) {
+      return true;
+    } else {
+      return a.queryTitle === b.queryTitle &&
+        a.cellType1 === b.cellType1 &&
+        a.cellType2 === b.cellType2 &&
+        a.cellSubType1 === b.cellSubType1 &&
+        a.cellSubType2 === b.cellSubType2 &&
+        a.experimentalDesign === b.experimentalDesign &&
+        a.disease === b.disease &&
+        a.organism === b.organism &&
+        a.signatureSourceDb === b.signatureSourceDb &&
+        a.onlyUniverseGenes === b.onlyUniverseGenes;
+    }
+  }
 }

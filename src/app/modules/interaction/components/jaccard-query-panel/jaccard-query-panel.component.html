@@ -32,17 +32,17 @@
       <div class="jaccard-form">
 
         <app-filter-field
-          label="Cell type A"
-          [options]="cellTypeAFieldFilter.options"
-          [(filter)]="cellTypeAFieldFilter.filter"
+          label="Cell type 1"
+          [options]="cellType1FieldFilter.options"
+          [(filter)]="cellType1FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field
-          label="Cell subtype A"
-          [options]="cellSubTypeAFieldFilter.options"
-          [(filter)]="cellSubTypeAFieldFilter.filter"
+          label="Cell subtype 1"
+          [options]="cellSubType1FieldFilter.options"
+          [(filter)]="cellSubType1FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
@@ -56,17 +56,19 @@
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field
-          label="Cell type B"
-          [options]="cellTypeBFieldFilter.options"
-          [(filter)]="cellTypeBFieldFilter.filter"
+          #cellType2
+          label="Cell type 2"
+          [options]="cellType2FieldFilter.options"
+          [(filter)]="cellType2FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field
-          label="Cell subtype B"
-          [options]="cellSubTypeBFieldFilter.options"
-          [(filter)]="cellSubTypeBFieldFilter.filter"
+          #cellSubType2
+          label="Cell subtype 2"
+          [options]="cellSubType2FieldFilter.options"
+          [(filter)]="cellSubType2FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>

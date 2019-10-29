@@ -39,20 +39,20 @@ export class SignaturesService {
   ) {
   }
 
-  public listCellTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
-    return this.listValues('cell-type-a', queryParams);
+  public listCellType1Values(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
+    return this.listValues('cell-type-1', queryParams);
   }
 
-  public listCellSubTypeAValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
-    return this.listValues('cell-subtype-a', queryParams);
+  public listCellSubType1Values(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
+    return this.listValues('cell-subtype-1', queryParams);
   }
 
-  public listCellTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
-    return this.listValues('cell-type-b', queryParams);
+  public listCellType2Values(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
+    return this.listValues('cell-type-2', queryParams);
   }
 
-  public listCellSubTypeBValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
-    return this.listValues('cell-subtype-b', queryParams);
+  public listCellSubType2Values(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {
+    return this.listValues('cell-subtype-2', queryParams);
   }
 
   public listDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {

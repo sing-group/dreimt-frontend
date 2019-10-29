@@ -33,10 +33,10 @@ export class DatabaseQueryParams {
   public readonly orderField?: DrugSignatureInteractionField;
   public readonly sortDirection?: SortDirection;
   public readonly signatureName?: string;
-  public readonly cellTypeA?: string;
-  public readonly cellTypeB?: string;
-  public readonly cellSubTypeA?: string;
-  public readonly cellSubTypeB?: string;
+  public readonly cellType1?: string;
+  public readonly cellType2?: string;
+  public readonly cellSubType1?: string;
+  public readonly cellSubType2?: string;
   public readonly experimentalDesign?: ExperimentalDesign;
   public readonly disease?: string;
   public readonly organism?: string;
@@ -61,10 +61,10 @@ export class DatabaseQueryParams {
         a.orderField === b.orderField &&
         a.sortDirection === b.sortDirection &&
         a.signatureName === b.signatureName &&
-        a.cellTypeA === b.cellTypeA &&
-        a.cellTypeB === b.cellTypeB &&
-        a.cellSubTypeA === b.cellSubTypeA &&
-        a.cellSubTypeB === b.cellSubTypeB &&
+        a.cellType1 === b.cellType1 &&
+        a.cellType2 === b.cellType2 &&
+        a.cellSubType1 === b.cellSubType1 &&
+        a.cellSubType2 === b.cellSubType2 &&
         a.experimentalDesign === b.experimentalDesign &&
         a.disease === b.disease &&
         a.organism === b.organism &&

@@ -60,30 +60,32 @@
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
-      <app-filter-field label="Cell Type A"
-                        [options]="cellTypeAFieldFilter.options"
-                        [(filter)]="cellTypeAFieldFilter.filter"
+      <app-filter-field label="Cell Type 1"
+                        [options]="cellType1FieldFilter.options"
+                        [(filter)]="cellType1FieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
-      <app-filter-field label="Cell Type B"
-                        [options]="cellTypeBFieldFilter.options"
-                        [(filter)]="cellTypeBFieldFilter.filter"
+      <app-filter-field label="Cell Type 2"
+                        #cellType2
+                        [options]="cellType2FieldFilter.options"
+                        [(filter)]="cellType2FieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
-      <app-filter-field label="Cell Subtype A"
-                        [options]="cellSubTypeAFieldFilter.options"
-                        [(filter)]="cellSubTypeAFieldFilter.filter"
+      <app-filter-field label="Cell Subtype 1"
+                        [options]="cellSubType1FieldFilter.options"
+                        [(filter)]="cellSubType1FieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
-      <app-filter-field label="Cell Subtype B"
-                        [options]="cellSubTypeBFieldFilter.options"
-                        [(filter)]="cellSubTypeBFieldFilter.filter"
+      <app-filter-field label="Cell Subtype 2"
+                        #cellSubType2
+                        [options]="cellSubType2FieldFilter.options"
+                        [(filter)]="cellSubType2FieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
@@ -99,9 +101,9 @@
     </div>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-button id="clearAdvancedFiltersButton" (click)="clearAdvancedFiltersAction()">
+    <button mat-button id="clearFiltersButton" (click)="clearFiltersAction()">
       <mat-icon>delete_sweep</mat-icon>
-      Clear Advanced Filters
+      Clear Filters
     </button>
   </mat-card-actions>
 </mat-card>

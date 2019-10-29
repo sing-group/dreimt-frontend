@@ -29,6 +29,7 @@ import {InteractionsService} from '../../services/interactions.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {MatExpansionPanel} from '@angular/material';
+import {FilterFieldComponent} from '../../../shared/components/filter-field/filter-field.component';
 
 @Component({
   selector: 'app-database-table-filters',
@@ -43,10 +44,10 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly signatureNameFieldFilter: FieldFilterModel;
-  public readonly cellTypeAFieldFilter: FieldFilterModel;
-  public readonly cellTypeBFieldFilter: FieldFilterModel;
-  public readonly cellSubTypeAFieldFilter: FieldFilterModel;
-  public readonly cellSubTypeBFieldFilter: FieldFilterModel;
+  public readonly cellType1FieldFilter: FieldFilterModel;
+  public readonly cellType2FieldFilter: FieldFilterModel;
+  public readonly cellSubType1FieldFilter: FieldFilterModel;
+  public readonly cellSubType2FieldFilter: FieldFilterModel;
   public readonly diseaseFieldFilter: FieldFilterModel;
   public readonly organismFieldFilter: FieldFilterModel;
   public readonly signatureSourceDbFieldFilter: FieldFilterModel;
@@ -58,10 +59,11 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
+  @ViewChild('cellType2') private cellType2Component: FilterFieldComponent;
+  @ViewChild('cellSubType2') private cellSubType2Component: FilterFieldComponent;
   @ViewChild('tauMin') minTauFilterComponent: NumberFieldComponent;
   @ViewChild('maxUpFdr') maxUpFdrFilterComponent: NumberFieldComponent;
   @ViewChild('maxDownFdr') maxDownFdrFilterComponent: NumberFieldComponent;
-  @ViewChild(MatExpansionPanel) advancedFiltersPanelComponent: MatExpansionPanel;
 
   @Output() public readonly applyDatabaseFilters: EventEmitter<DatabaseQueryParams>;
 
@@ -71,10 +73,10 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
     this.signatureNameFieldFilter = new FieldFilterModel();
-    this.cellTypeAFieldFilter = new FieldFilterModel();
-    this.cellTypeBFieldFilter = new FieldFilterModel();
-    this.cellSubTypeAFieldFilter = new FieldFilterModel();
-    this.cellSubTypeBFieldFilter = new FieldFilterModel();
+    this.cellType1FieldFilter = new FieldFilterModel();
+    this.cellType2FieldFilter = new FieldFilterModel();
+    this.cellSubType1FieldFilter = new FieldFilterModel();
+    this.cellSubType2FieldFilter = new FieldFilterModel();
     this.diseaseFieldFilter = new FieldFilterModel();
     this.organismFieldFilter = new FieldFilterModel();
     this.signatureSourceDbFieldFilter = new FieldFilterModel();
@@ -106,15 +108,15 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   public updateFilterValues(): void {
+    this.checkCellTypeAndSubType2FiltersStatus();
+
     const queryParams = this.createQueryParameters();
 
     if (!DatabaseQueryParams.equals(queryParams, this.previousDatabaseQueryParams)) {
       this.loadDrugCommonNames(queryParams);
       this.loadSignatureNames(queryParams);
-      this.loadCellTypeAs(queryParams);
-      this.loadCellTypeBs(queryParams);
-      this.loadCellSubTypeAs(queryParams);
-      this.loadCellSubTypeBs(queryParams);
+      this.loadCellType1s(queryParams);
+      this.loadCellSubType1s(queryParams);
       this.loadDiseases(queryParams);
       this.loadOrganisms(queryParams);
       this.loadSignatureSourceDbs(queryParams);
@@ -123,8 +125,32 @@ export class DatabaseTableFiltersComponent implements OnInit {
       this.loadExperimentalDesigns(queryParams);
       this.loadInteractionTypes(queryParams);
 
+      if (this.cellType1FieldFilter.getClearedFilter()) {
+        this.loadCellType2s(queryParams);
+      }
+
+      if (this.cellSubType1FieldFilter.getClearedFilter()) {
+        this.loadCellSubType2s(queryParams);
+      }
+
       this.previousDatabaseQueryParams = queryParams;
       this.applyDatabaseFilters.emit(queryParams);
+    }
+  }
+
+  private checkCellTypeAndSubType2FiltersStatus(): void {
+    if (this.cellType1FieldFilter.getClearedFilter()) {
+      this.cellType2Component.enable();
+    } else {
+      this.cellType2FieldFilter.filter = '';
+      this.cellType2Component.disable();
+    }
+
+    if (this.cellSubType1FieldFilter.getClearedFilter()) {
+      this.cellSubType2Component.enable();
+    } else {
+      this.cellSubType2FieldFilter.filter = '';
+      this.cellSubType2Component.disable();
     }
   }
 
@@ -138,24 +164,24 @@ export class DatabaseTableFiltersComponent implements OnInit {
       .subscribe(values => this.signatureNameFieldFilter.update(values));
   }
 
-  private loadCellTypeAs(queryParams: DatabaseQueryParams): void {
-    this.service.listCellTypeAValues(queryParams)
-      .subscribe(values => this.cellTypeAFieldFilter.update(values));
+  private loadCellType1s(queryParams: DatabaseQueryParams): void {
+    this.service.listCellType1Values(queryParams)
+      .subscribe(values => this.cellType1FieldFilter.update(values));
   }
 
-  private loadCellTypeBs(queryParams: DatabaseQueryParams): void {
-    this.service.listCellTypeBValues(queryParams)
-      .subscribe(values => this.cellTypeBFieldFilter.update(values));
+  private loadCellType2s(queryParams: DatabaseQueryParams): void {
+    this.service.listCellType2Values(queryParams)
+      .subscribe(values => this.cellType2FieldFilter.update(values));
   }
 
-  private loadCellSubTypeAs(queryParams: DatabaseQueryParams): void {
-    this.service.listCellSubTypeAValues(queryParams)
-      .subscribe(values => this.cellSubTypeAFieldFilter.update(values));
+  private loadCellSubType1s(queryParams: DatabaseQueryParams): void {
+    this.service.listCellSubType1Values(queryParams)
+      .subscribe(values => this.cellSubType1FieldFilter.update(values));
   }
 
-  private loadCellSubTypeBs(queryParams: DatabaseQueryParams): void {
-    this.service.listCellSubTypeBValues(queryParams)
-      .subscribe(values => this.cellSubTypeBFieldFilter.update(values));
+  private loadCellSubType2s(queryParams: DatabaseQueryParams): void {
+    this.service.listCellSubType2Values(queryParams)
+      .subscribe(values => this.cellSubType2FieldFilter.update(values));
   }
 
   private loadDiseases(queryParams: DatabaseQueryParams): void {
@@ -205,10 +231,10 @@ export class DatabaseTableFiltersComponent implements OnInit {
     return {
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       signatureName: this.signatureNameFieldFilter.getClearedFilter(),
-      cellTypeA: this.cellTypeAFieldFilter.getClearedFilter(),
-      cellTypeB: this.cellTypeBFieldFilter.getClearedFilter(),
-      cellSubTypeA: this.cellSubTypeAFieldFilter.getClearedFilter(),
-      cellSubTypeB: this.cellSubTypeBFieldFilter.getClearedFilter(),
+      cellType1: this.cellType1FieldFilter.getClearedFilter(),
+      cellType2: this.cellType2FieldFilter.getClearedFilter(),
+      cellSubType1: this.cellSubType1FieldFilter.getClearedFilter(),
+      cellSubType2: this.cellSubType2FieldFilter.getClearedFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),
@@ -222,13 +248,13 @@ export class DatabaseTableFiltersComponent implements OnInit {
     };
   }
 
-  public clearAdvancedFiltersAction(): void {
+  public clearFiltersAction(): void {
     this.drugCommonNameFieldFilter.filter = '';
     this.signatureNameFieldFilter.filter = '';
-    this.cellTypeAFieldFilter.filter = '';
-    this.cellTypeBFieldFilter.filter = '';
-    this.cellSubTypeAFieldFilter.filter = '';
-    this.cellSubTypeBFieldFilter.filter = '';
+    this.cellType1FieldFilter.filter = '';
+    this.cellType2FieldFilter.filter = '';
+    this.cellSubType1FieldFilter.filter = '';
+    this.cellSubType2FieldFilter.filter = '';
     this.diseaseFieldFilter.filter = '';
     this.organismFieldFilter.filter = '';
     this.signatureSourceDbFieldFilter.filter = '';
@@ -244,6 +270,5 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public setSignatureFilter(signatureParam: string): void {
     this.signatureNameFieldFilter.filter = signatureParam;
-    this.advancedFiltersPanelComponent.toggle();
   }
 }
