@@ -73,8 +73,9 @@
       </ng-container>
 
       <ng-container matColumnDef="upFdr">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the up-regulated geneset">
-          <span mat-sort-header="UP_FDR">UP FDR</span>
+        <th mat-header-cell *matHeaderCellDef
+            matTooltip="Adjusted p-value for the up-regulated geneset tested vs. each drug profile">
+          <span mat-sort-header="UP_FDR">Up genes FDR</span>
 
           <app-number-field #maxUpFdr label="Max." [debounceTime]="debounceTime" [min]="0"
                             [max]="1" [step]="0.05"
@@ -86,8 +87,9 @@
       </ng-container>
 
       <ng-container matColumnDef="downFdr">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the down-regulated geneset">
-          <span mat-sort-header="DOWN_FDR">DOWN FDR</span>
+        <th mat-header-cell *matHeaderCellDef
+            matTooltip="Adjusted p-value for the down-regulated geneset tested vs. each drug profile">
+          <span mat-sort-header="DOWN_FDR">Down genes FDR</span>
 
           <app-number-field maxDownFdr label="Max." [debounceTime]="debounceTime" [min]="0"
                             [max]="1"

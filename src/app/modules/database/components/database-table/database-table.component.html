@@ -30,16 +30,16 @@
           <span mat-sort-header="DRUG_COMMON_NAME">Drug</span>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.drug.sourceName">
-          {{interaction.drug.commonName}}
           <a href="https://www.ncbi.nlm.nih.gov/pccompound?term={{interaction.drug.commonName}}" target="_blank">
             <mat-icon svgIcon="pubchem"></mat-icon>
           </a>
+          {{interaction.drug.commonName}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="signature">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Signature name">
-          <span mat-sort-header="SIGNATURE_NAME">Signature</span>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Signature/Geneset name">
+          <span mat-sort-header="SIGNATURE_NAME">Signature/Geneset name</span>
         </th>
         <td mat-cell *matCellDef="let interaction"
             [matTooltip]="signatureNameTooltip(interaction)"
@@ -61,8 +61,9 @@
       </ng-container>
 
       <ng-container matColumnDef="upFdr">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the up-regulated geneset">
-          <span mat-sort-header="UP_FDR">UP FDR</span>
+        <th mat-header-cell *matHeaderCellDef
+            matTooltip="Adjusted p-value for the up-regulated geneset tested vs. each drug profile">
+          <span mat-sort-header="UP_FDR">Up genes FDR</span>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.upFdr">
           {{interaction.upFdr | pvalueNumberPipe : '1.3-3'}}
@@ -70,8 +71,9 @@
       </ng-container>
 
       <ng-container matColumnDef="downFdr">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the down-regulated geneset">
-          <span mat-sort-header="DOWN_FDR">DOWN FDR</span>
+        <th mat-header-cell *matHeaderCellDef
+            matTooltip="Adjusted p-value for the down-regulated geneset tested vs. each drug profile">
+          <span mat-sort-header="DOWN_FDR">Down genes FDR</span>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.downFdr">
           {{interaction.downFdr | pvalueNumberPipe : '1.3-3'}}

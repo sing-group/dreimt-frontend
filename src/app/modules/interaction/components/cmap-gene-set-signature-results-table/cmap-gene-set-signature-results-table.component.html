@@ -73,7 +73,7 @@
       </ng-container>
 
       <ng-container matColumnDef="fdr">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the geneset">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Adjusted p-value for the geneset tested vs. each drug profile">
           <span mat-sort-header="FDR">FDR</span>
 
           <app-number-field #maxFdr label="Max." [debounceTime]="debounceTime" [min]="0"

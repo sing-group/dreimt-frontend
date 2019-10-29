@@ -9,14 +9,14 @@
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
-      <app-filter-field label="Signature Name"
+      <app-filter-field label="Signature/Geneset Name"
                         [options]="signatureNameFieldFilter.options"
                         [(filter)]="signatureNameFieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
-      <app-filter-field label="Signature Source DB"
+      <app-filter-field label="Signature/Geneset Source DB"
                         [options]="signatureSourceDbFieldFilter.options"
                         [(filter)]="signatureSourceDbFieldFilter.filter"
                         (filterChange)="updateFilterValues()"
@@ -93,9 +93,9 @@
       <app-number-field #tauMin label="Min. TAU" [debounceTime]="debounceTime" [min]="-100" [max]="100"
                         [step]="1"
                         (valueChange)="minTauFilter.setValue($event)"></app-number-field>
-      <app-number-field #maxUpFdr label="Max. Up FDR" [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
+      <app-number-field #maxUpFdr label="Max. Up genes FDR" [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
                         (valueChange)="maxUpFdrFilter.setValue($event)"></app-number-field>
-      <app-number-field #maxDownFdr label="Max. Down FDR" [debounceTime]="debounceTime" [min]="0" [max]="1"
+      <app-number-field #maxDownFdr label="Max. Down genes FDR" [debounceTime]="debounceTime" [min]="0" [max]="1"
                         [step]="0.05"
                         (valueChange)="maxDownFdrFilter.setValue($event)"></app-number-field>
     </div>
