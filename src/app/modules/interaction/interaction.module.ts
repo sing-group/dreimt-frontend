@@ -59,9 +59,9 @@ import {ClipboardModule} from 'ngx-clipboard';
 import {CmapGeneSetSignatureResultsTableComponent} from './components/cmap-gene-set-signature-results-table/cmap-gene-set-signature-results-table.component';
 import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
 import {CmapUpDownSignatureResultsGraphComponent} from './components/cmap-up-down-signature-results-graph/cmap-up-down-signature-results-graph.component';
-import { CmapUpDownSignatureResultsViewComponent } from './components/cmap-up-down-signature-results-view/cmap-up-down-signature-results-view.component';
-import { CmapGeneSetSignatureResultsViewComponent } from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
-import { CmapGeneSetSignatureResultsGraphComponent } from './components/cmap-gene-set-signature-results-graph/cmap-gene-set-signature-results-graph.component';
+import {CmapUpDownSignatureResultsViewComponent} from './components/cmap-up-down-signature-results-view/cmap-up-down-signature-results-view.component';
+import {CmapGeneSetSignatureResultsViewComponent} from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
+import {CmapGeneSetSignatureResultsGraphComponent} from './components/cmap-gene-set-signature-results-graph/cmap-gene-set-signature-results-graph.component';
 
 @NgModule({
   imports: [

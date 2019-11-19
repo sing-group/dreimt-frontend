@@ -51,7 +51,7 @@ export abstract class PaginatedDataSource<T> extends DataSource<T> {
   }
 
   public connect(collectionViewer: CollectionViewer): Observable<T[]> {
-    return this.paginatedDataSubject.asObservable();
+    return this.paginatedData$;
   }
 
   public disconnect(collectionViewer: CollectionViewer): void {

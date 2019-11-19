@@ -1,0 +1,15 @@
+app-cmap-up-down-signature-results-graph {
+  .bar {
+    fill: steelblue;
+  }
+
+  .bar:hover {
+    fill: brown;
+  }
+
+  .axis--x path {
+    display: none;
+  }
+
+  margin: 1px;
+}

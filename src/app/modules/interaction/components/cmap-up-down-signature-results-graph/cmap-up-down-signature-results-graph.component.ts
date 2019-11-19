@@ -19,11 +19,27 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import * as c3 from 'c3';
-import * as d3 from 'd3';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import * as Highcharts from 'highcharts';
 import {CmapUpDownSignatureResultsDataSource} from '../cmap-up-down-signature-results-view/cmap-up-down-signature-results-data-source';
 import {Subscription} from 'rxjs';
+import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+
+declare var require: any;
+const Boost = require('highcharts/modules/boost');
+const noData = require('highcharts/modules/no-data-to-display');
+const More = require('highcharts/highcharts-more');
+const BrokenAxis = require('highcharts/modules/broken-axis');
+const Exporting = require('highcharts/modules/exporting');
+const ExportingOffline = require('highcharts/modules/offline-exporting');
+
+Boost(Highcharts);
+noData(Highcharts);
+More(Highcharts);
+noData(Highcharts);
+BrokenAxis(Highcharts);
+Exporting(Highcharts);
+ExportingOffline(Highcharts);
 
 export interface DataModel {
   letter: string;
@@ -32,26 +48,184 @@ export interface DataModel {
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-graph',
-  encapsulation: ViewEncapsulation.None,
   templateUrl: './cmap-up-down-signature-results-graph.component.html',
   styleUrls: ['./cmap-up-down-signature-results-graph.component.scss']
 })
 export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() public dataSource: CmapUpDownSignatureResultsDataSource;
 
+  constructor() {
+  }
+
+  private static Y_AXIS_MAX = 2.42;
+  private static renderedObjects = [];
+
   private dataSourceSubscription: Subscription;
   private loadingSubscription: Subscription;
   private loading = false;
 
-  private static generateRandomSequence(min: number, max: number, length: number): number[] {
-    const sequence: number[] = [];
+  public options: any = {
+    chart: {
+      type: 'scatter',
+      zoomType: 'xy',
+      resetZoomButton: {
+        position: {
+          x: -25,
+          y: 0
+        }
+      },
+      height: 700,
+      events: {
+        render() {
+          CmapUpDownSignatureResultsGraphComponent.addDecorations(this);
+        },
+        // The load event is triggered in order to launch a resize event. This is done to force the graph to be rendered using the full
+        // width available.
+        load() {
+          setTimeout(function () {
+            window.dispatchEvent(new Event('resize'));
+          }, 1);
+        }
+      }
+    },
+    title: {
+      text: null
+    },
+    credits: {
+      enabled: false
+    },
+    legend: {
+      enabled: false
+    },
+    exporting: {
+      enabled: true,
+      filename: 'drug-prioritization-plot',
+      sourceWidth: 1502,
+      scale: 1,
+      fallbackToExportServer: false,
+      buttons: {
+        contextButton: {
+          menuItems: [{
+            textKey: 'downloadPNG',
+            onclick: function () {
+              this.exportChart();
+              this.redraw();
+            }
+          }, {
+            textKey: 'downloadJPEG',
+            onclick: function () {
+              this.exportChart({
+                type: 'image/jpeg'
+              });
+              this.redraw();
+            }
+          }, {
+            separator: true
+          }, {
+            textKey: 'downloadPDF',
+            onclick: function () {
+              this.exportChart({
+                type: 'application/pdf'
+              });
+              this.redraw();
+            }
+          }, {
+            textKey: 'downloadSVG',
+            onclick: function () {
+              this.exportChart({
+                type: 'image/svg+xml'
+              });
+              this.redraw();
+            }
+          }]
+        }
+      },
+      chartOptions: {
+        chart: {
+          events: {
+            render() {
+              CmapUpDownSignatureResultsGraphComponent.addDecorations(this);
+            }
+          }
+        }
+      }
+    },
+    xAxis: {
+      title: {
+        text: 'Association Score',
+        style: {
+          color: 'black',
+          fontSize: '15px'
+        }
+      },
+      min: -100,
+      max: 100,
+      breaks: [{
+        from: -75,
+        to: 75,
+        breakSize: 1
+      }],
+      plotLines: [
+        {
+          color: 'red',
+          dashStyle: 'ShortDash',
+          value: 90,
+          width: 2
+        },
+        {
+          color: 'green',
+          dashStyle: 'ShortDash',
+          value: -90,
+          width: 2
+        },
+        {
+          color: 'gray',
+          dashStyle: 'ShortDash',
+          value: 75,
+          width: 2
+        }
+      ]
+    },
+    yAxis: {
+      visible: false,
+      max: CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX,
+      min: 0,
+      startOnTick: false,
+      endOnTick: false
+    },
+    tooltip: {
+      formatter: function () {
+        return CmapUpDownSignatureResultsGraphComponent.tooltip(this.point);
+      }
+    },
+    series: [
+      {
+        name: 'Positive TAU',
+        data: [],
+        color: 'red',
+        marker: {
+          symbol: 'circle',
+          fillColor: '#FF9994',
+          lineWidth: 2,
+          lineColor: null
+        }
+      },
+      {
+        name: 'Negative TAU',
+        data: [],
+        color: 'green',
+        marker: {
+          symbol: 'circle',
+          fillColor: 'lightgreen',
+          lineWidth: 2,
+          lineColor: null
+        }
+      }
+    ]
+  };
 
-    const randomRange = max - min + 1;
-    for (let i = 0; i < length; i++) {
-      sequence.push(Math.random() * randomRange + min);
-    }
-
-    return sequence;
+  private static convertFdr(fdr: number): number {
+    return Math.abs(Math.log10(fdr));
   }
 
   public ngOnInit(): void {
@@ -62,138 +236,161 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     this.dataSourceSubscription = this.dataSource.fullData$.subscribe(
       data => {
 
-        const significantInteractions = data
-          .filter(interaction => interaction.downFdr <= 0.05 || interaction.upFdr <= 0.05)
-          .sort((a, b) => a.tau - b.tau);
+        const positiveTau = data
+          .filter(interaction => interaction.tau >= 80)
+          .map(this.mapInteraction);
 
-        const significant = significantInteractions
-          .map(interaction => interaction.tau);
+        const negativeTau = data
+          .filter(interaction => interaction.tau <= -80)
+          .map(this.mapInteraction);
 
-        const notSignificantInteractions = data
-          .filter(interaction => interaction.downFdr > 0.05 && interaction.upFdr > 0.05)
-          .sort((a, b) => a.tau - b.tau);
+        this.options.series[0]['data'] = positiveTau;
+        this.options.series[1]['data'] = negativeTau;
 
-        const notSignificant = notSignificantInteractions
-          .map(interaction => interaction.tau);
+        Highcharts.chart('chart', this.options);
+      });
+  }
 
-        const rs = d3.scaleLinear()
-          .domain([0, 99])
-          .range([2, 10]);
+  private static addDecorations(hchart) {
+    if (this.renderedObjects.length > 0) {
+      this.renderedObjects.forEach(o => o.destroy());
+      this.renderedObjects = [];
+    }
 
-        const chart = c3.generate({
-          bindto: '#chart',
-          point: {
-            r: function (d) {
-              return rs(Math.abs(d.x) * 0.9);
-            }
-          },
-          size: {
-            height: 600
-          },
-          data: {
-            xs: {
-              significant: 'significant_x',
-              not_significant: 'not_significant_x'
-            },
-            columns: [
-              ['significant_x', ...significant],
-              ['significant', ...CmapUpDownSignatureResultsGraphComponent.generateRandomSequence(0, 100, significant.length)],
-              ['not_significant_x', ...notSignificant],
-              ['not_significant', ...CmapUpDownSignatureResultsGraphComponent.generateRandomSequence(0, 100, notSignificant.length)],
-            ],
-            type: 'scatter',
-            colors: {
-              significant: '#ff0000',
-              not_significant: 'black',
-            }
-          },
-          axis: {
-            y: {
-              show: false
-            },
-            x: {
-              min: -100,
-              max: 100,
-              tick: {
-                values: [-100, -95, -90, -75, -50, 0, 50, 75, 90, 95, 100]
-              },
-              label: {
-                text: 'TAU',
-                position: 'outer-center'
-              }
-            }
+    const minVisibleX = hchart.xAxis[0].getExtremes().min;
+    const maxVisibleX = hchart.xAxis[0].getExtremes().max;
+    const minVisibleY = hchart.yAxis[0].getExtremes().min;
+    const maxVisibleY = hchart.yAxis[0].getExtremes().max;
 
-          },
-          legend: {
-            show: false
-          },
-          grid: {
-            x: {
-              lines: [
-                {value: '95'},
-                {value: '90'},
-                {value: '75'},
-                {value: '50'},
-                {value: '-95'},
-                {value: '-90'},
-                {value: '-75'},
-                {value: '-50'}
-              ]
-            }
-          },
-          tooltip: {
-            contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-              const $$ = this, config = $$.config,
-                titleFormat = config.tooltip_format_title || defaultTitleFormat,
-                nameFormat = config.tooltip_format_name || function (name) {
-                  return name;
-                },
-                valueFormat = config.tooltip_format_value || defaultValueFormat;
+    // Upper-right red rectangle for best candidates with positive TAU
+    let fromX = Math.max(90, minVisibleX);
+    let toX = Math.min(100, maxVisibleX);
+    let fromY = Math.min(maxVisibleY, CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX);
+    let toY = Math.max(minVisibleY, CmapUpDownSignatureResultsGraphComponent.convertFdr(0.05));
+    this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawRectFromCoordinates(
+      hchart,
+      fromX,
+      fromY,
+      toX,
+      toY,
+      10
+    ).attr({
+      fill: '#F5CEC7',
+      stroke: 'black',
+      'stroke-width': 0
+    }).add());
 
-              let title, text, name, i;
+    this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawText(
+      hchart, 90.5, CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX - 0.05, 'BEST CANDIDATES')
+      .css({color: 'red', fontWeight: 'bold', opacity: 0.5})
+      .add());
 
-              for (i = 0; i < d.length; i++) {
-                if (!(d[i] && (d[i].value || d[i].value === 0))) {
-                  continue;
-                }
+    this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawText(
+      hchart, 90.5, CmapUpDownSignatureResultsGraphComponent.convertFdr(0.06), 'GOOD CANDIDATES')
+      .css({color: 'red', fontWeight: 'bold', opacity: 0.5})
+      .add());
 
-                if (!text) {
-                  title = titleFormat ? titleFormat(d[i].x) : d[i].x;
-                  text = '<table class=\'' + $$.CLASS.tooltip + '\'>'
-                    + (title || title === 0 ? '<tr><th colspan=\'2\'>TAU: ' + title.toPrecision(4) + '</th></tr>' : '');
-                }
+    // Upper-left red rectangle for best candidates with negative TAU
+    fromX = Math.max(-100, minVisibleX);
+    toX = Math.min(-90, maxVisibleX);
+    fromY = Math.min(maxVisibleY, CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX);
+    toY = Math.max(minVisibleY, CmapUpDownSignatureResultsGraphComponent.convertFdr(0.05));
+    this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawRectFromCoordinates(
+      hchart,
+      fromX,
+      fromY,
+      toX,
+      toY,
+      10
+    ).attr({
+      fill: '#EEFAEE',
+      stroke: 'black',
+      'stroke-width': 0
+    }).add());
 
-                name = nameFormat(d[i].id);
+    this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawText(
+      hchart, -99.5, CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX - 0.05, 'BEST CANDIDATES')
+      .css({color: 'green', fontWeight: 'bold', opacity: 0.5})
+      .add());
 
-                var tooltipArray = significantInteractions;
-                if (name === 'not_significant') {
-                  tooltipArray = notSignificantInteractions;
-                }
+    this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawText(
+      hchart, -99.5, CmapUpDownSignatureResultsGraphComponent.convertFdr(0.06), 'GOOD CANDIDATES')
+      .css({color: 'green', fontWeight: 'bold', opacity: 0.5})
+      .add());
 
-                const upFdr = tooltipArray[d[i].index].upFdr.toPrecision(4);
-                const downFdr = tooltipArray[d[i].index].downFdr.toPrecision(4);
-                const commonName = tooltipArray[d[i].index].drug.commonName;
+    // Horizontal line to separate interactions at FDR = 0.05
+    fromX = Math.max(-100, minVisibleX);
+    toX = Math.min(100, maxVisibleX);
+    if (CmapUpDownSignatureResultsGraphComponent.convertFdr(0.05) > minVisibleY) {
+      this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawPath(
+        hchart,
+        fromX,
+        CmapUpDownSignatureResultsGraphComponent.convertFdr(0.05),
+        toX,
+        CmapUpDownSignatureResultsGraphComponent.convertFdr(0.05)
+      ).attr({
+        'stroke-width': 1,
+        dashstyle: 'ShortDash',
+        stroke: '#888'
+      }).add());
+    }
 
-                text +=
-                  `<tr> \
-                  <td class="name">UP FDR</td> \
-                  <td class="value"> ${upFdr} </td> \
-                  </tr> \
-                  <tr> \
-                  <td class="name">DOWN FDR</td> \
-                  <td class="value"> ${downFdr} </td> \
-                  </tr> \
-                  <tr> \
-                  <td class="name">Drug</td> \
-                  <td class="value"> ${commonName} </td> \
-                   </tr>`;
-              }
-              return text + '</table>';
-            }
-          }
-        });
-      }
+    // Horizontal line at the X axis for positive TAU interactions
+    fromX = Math.max(75, minVisibleX);
+    toX = Math.min(100, maxVisibleX);
+    if (fromX <= toX) {
+      this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawPath(hchart, fromX, minVisibleY, toX, minVisibleY).attr({
+        'stroke-width': 5,
+        stroke: '#FF7F7F'
+      }).add());
+    }
+
+    // Horizontal line at the X axis for negative TAU interactions
+    fromX = Math.max(-100, minVisibleX);
+    toX = Math.min(75, maxVisibleX);
+    if (fromX <= toX) {
+      this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawPath(hchart, fromX, minVisibleY, toX, minVisibleY).attr({
+        'stroke-width': 5,
+        stroke: '#7FBF7F'
+      }).add());
+    }
+  }
+
+  private static toXPixel(hchart, xAxisPos) {
+    return hchart.xAxis[0].toPixels(xAxisPos, false);
+  }
+
+  private static toYPixel(hchart, yAxisPos) {
+    return hchart.yAxis[0].toPixels(yAxisPos, false);
+  }
+
+  private static drawText(hchart, atX, atY, text) {
+    return hchart.renderer.text(
+      text,
+      CmapUpDownSignatureResultsGraphComponent.toXPixel(hchart, atX),
+      CmapUpDownSignatureResultsGraphComponent.toYPixel(hchart, atY)
     );
+  }
+
+  private static drawRectFromCoordinates(hchart, fromX, fromY, toX, toY, radius) {
+    return hchart.renderer.rect(
+      CmapUpDownSignatureResultsGraphComponent.toXPixel(hchart, fromX),
+      CmapUpDownSignatureResultsGraphComponent.toYPixel(hchart, fromY),
+      CmapUpDownSignatureResultsGraphComponent.toXPixel(hchart, toX) - CmapUpDownSignatureResultsGraphComponent.toXPixel(hchart, fromX),
+      CmapUpDownSignatureResultsGraphComponent.toYPixel(hchart, toY) - CmapUpDownSignatureResultsGraphComponent.toYPixel(hchart, fromY),
+      radius
+    );
+  }
+
+  private static drawPath(hchart, fromX, fromY, toX, toY) {
+    return hchart.renderer.path([
+      'M',
+      CmapUpDownSignatureResultsGraphComponent.toXPixel(hchart, fromX),
+      CmapUpDownSignatureResultsGraphComponent.toYPixel(hchart, fromY),
+      'L',
+      CmapUpDownSignatureResultsGraphComponent.toXPixel(hchart, toX),
+      CmapUpDownSignatureResultsGraphComponent.toYPixel(hchart, toY)
+    ]);
   }
 
   public ngOnDestroy(): void {
@@ -205,5 +402,27 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
 
   public isLoading(): boolean {
     return this.loading;
+  }
+
+  private static tooltip(point): string {
+    return `
+            <b>TAU</b>: ${point.interaction.tau} <br/>
+            <b>Up Genes FDR</b>: ${point.interaction.upFdr} <br/>
+            <b>Down Genes FDR</b>: ${point.interaction.downFdr} <br/>
+            <b>Drug</b>: ${point.interaction.drug.commonName} <br/>
+          `;
+  }
+
+  private mapInteraction(interaction: CmapUpDownSignatureDrugInteraction) {
+    return {
+      x: interaction.tau,
+      y: CmapUpDownSignatureResultsGraphComponent.convertFdr(
+        Math.max(
+          Math.min(interaction.upFdr, interaction.downFdr),
+          0.005
+        )
+      ),
+      interaction: interaction
+    };
   }
 }
