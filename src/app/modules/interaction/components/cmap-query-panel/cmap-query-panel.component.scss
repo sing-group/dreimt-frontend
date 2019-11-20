@@ -26,13 +26,13 @@ mat-card {
 
 .query-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
   grid-template-areas:
-    "query-row-1 query-row-1"
-    "query-row-2 query-row-2"
-    "query-row-3-col-1 query-row-3-col-2"
-    "query-row-4 query-row-4";
+    "query-row-1"
+    "query-row-2"
+    "query-row-3"
+    "query-row-4";
   grid-column-gap: 40px;
 }
 
@@ -44,12 +44,8 @@ mat-card {
   grid-area: query-row-2;
 }
 
-.query-up-genes {
-  grid-area: query-row-3-col-1;
-}
-
-.query-down-genes {
-  grid-area: query-row-3-col-2;
+.query-genes {
+  grid-area: query-row-3;
 }
 
 .query-examples {

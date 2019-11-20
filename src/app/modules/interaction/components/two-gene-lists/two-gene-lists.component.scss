@@ -1,0 +1,15 @@
+.genes-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "query-row-1-col-1 query-row-1-col-2";
+  grid-column-gap: 40px;
+}
+
+.up-genes {
+  grid-area: query-row-1-col-1;
+}
+
+.down-genes {
+  grid-area: query-row-1-col-2;
+}

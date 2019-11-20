@@ -55,9 +55,6 @@ export class CmapQueryPanelComponent implements OnInit {
 
   private precalculatedExamples: PrecalculatedExample[];
 
-  @ViewChild('upGenes') private upGenesComponent: GeneListComponent;
-  @ViewChild('downGenes') private downGenesComponent: GeneListComponent;
-
   public constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -92,7 +89,7 @@ export class CmapQueryPanelComponent implements OnInit {
     this.upGenes = CmapQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 
-  public onDownUpGenesChanged(genes: string): void {
+  public onDownGenesChanged(genes: string): void {
     this.downGenes = CmapQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 

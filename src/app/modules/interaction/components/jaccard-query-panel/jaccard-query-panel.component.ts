@@ -29,7 +29,6 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QueryService} from '../../services/query.service';
-import {GeneListComponent} from '../gene-list/gene-list.component';
 import {PrecalculatedExampleService} from '../../services/precalculated-example.service';
 import {PrecalculatedExample} from '../../../../models/interactions/precalculated-example.model';
 import {Work} from '../../../../models/work/work.model';
@@ -68,9 +67,6 @@ export class JaccardQueryPanelComponent implements OnInit {
   public considerOnlyUniverseGenes: boolean;
 
   private precalculatedExamples: PrecalculatedExample[];
-
-  @ViewChild('upGenes') private upGenesComponent: GeneListComponent;
-  @ViewChild('downGenes') private downGenesComponent: GeneListComponent;
 
   @ViewChild('cellType2') private cellType2Component: FilterFieldComponent;
   @ViewChild('cellSubType2') private cellSubType2Component: FilterFieldComponent;
@@ -114,7 +110,7 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.upGenes = JaccardQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 
-  public onDownUpGenesChanged(genes: string): void {
+  public onDownGenesChanged(genes: string): void {
     this.downGenes = JaccardQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 

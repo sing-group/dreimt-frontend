@@ -104,10 +104,8 @@
       </div>
     </div>
 
-    <app-gene-list #upGenes class="query-up-genes" title="Up genes / Geneset"
-                   (genesChanged)="onUpGenesChanged($event)"></app-gene-list>
-    <app-gene-list #downGenes class="query-down-genes" title="Down genes"
-                   (genesChanged)="onDownUpGenesChanged($event)"></app-gene-list>
+    <app-two-gene-lists class="query-genes" (upGenesChanged)="onUpGenesChanged($event)"
+                        (downGenesChanged)="onDownGenesChanged($event)"></app-two-gene-lists>
 
     <mat-expansion-panel class="query-examples" *ngIf="hasPrecalculatedExamples()">
       <mat-expansion-panel-header>

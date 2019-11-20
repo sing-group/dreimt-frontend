@@ -1,0 +1,6 @@
+<div class="genes-container">
+  <app-gene-list #upGenes class="up-genes" title="Up genes / Geneset"
+                 (genesChanged)="onUpGenesChanged($event)"></app-gene-list>
+  <app-gene-list #downGenes class="down-genes" title="Down genes"
+                 (genesChanged)="onDownGenesChanged($event)"></app-gene-list>
+</div>
