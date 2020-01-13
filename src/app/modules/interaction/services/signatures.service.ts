@@ -24,10 +24,9 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
-import {
-  JaccardCalculateInteractionsQueryParams
-} from '../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
+import {JaccardCalculateInteractionsQueryParams} from '../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {toPlainObject} from '../../../utils/types';
+import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +36,29 @@ export class SignaturesService {
   public constructor(
     private http: HttpClient
   ) {
+  }
+
+  public listCellTypeAndSubtype1Values(queryParams: JaccardCalculateInteractionsQueryParams): Observable<CellTypeAndSubtype[]> {
+    return this.listCellTypeAndSubtypeValues('cell-type-and-subtype-1', queryParams);
+  }
+
+  public listCellTypeAndSubtype2Values(queryParams: JaccardCalculateInteractionsQueryParams): Observable<CellTypeAndSubtype[]> {
+    return this.listCellTypeAndSubtypeValues('cell-type-and-subtype-2', queryParams);
+  }
+
+  private listCellTypeAndSubtypeValues(resource: string, queryParams: JaccardCalculateInteractionsQueryParams): Observable<CellTypeAndSubtype[]> {
+    const options = {
+      params: new HttpParams({
+        fromObject: toPlainObject(queryParams)
+      })
+    };
+
+    return this.http.get<CellTypeAndSubtype[]>(`${environment.dreimtUrl}/signature/params/${resource}/values`, options)
+      .pipe(
+        DreimtError.throwOnError(
+          'Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.'
+        )
+      );
   }
 
   public listCellType1Values(queryParams: JaccardCalculateInteractionsQueryParams): Observable<string[]> {

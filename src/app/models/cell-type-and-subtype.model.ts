@@ -1,7 +1,7 @@
-/*!
+/*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,28 +19,13 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.full-width-field {
-  width: 100%;
-}
+export class CellTypeAndSubtype {
+  public readonly type: string;
+  public readonly subType: string;
 
-.filters-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-app-number-field {
-  margin-right: 50px;
-}
-
-#clearFiltersButton {
-  margin: 10px;
-}
-
-.basic-filters-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.filters-warning-message {
-  margin-bottom: 15px;
+  public static isA(object: any): object is CellTypeAndSubtype {
+    return object !== undefined && object !== null
+      && typeof object.type === 'string'
+      && typeof object.subType === 'string';
+  }
 }

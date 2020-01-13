@@ -33,6 +33,7 @@ import {PrecalculatedExampleService} from '../../services/precalculated-example.
 import {PrecalculatedExample} from '../../../../models/interactions/precalculated-example.model';
 import {Work} from '../../../../models/work/work.model';
 import {FilterFieldComponent} from '../../../shared/components/filter-field/filter-field.component';
+import {FieldFilterCellTypeModel} from '../../../shared/components/filter-field/field-filter-cell-type.model';
 
 @Component({
   selector: 'app-jaccard-query-panel',
@@ -55,10 +56,9 @@ export class JaccardQueryPanelComponent implements OnInit {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
-  public readonly cellType1FieldFilter: FieldFilterModel;
-  public readonly cellSubType1FieldFilter: FieldFilterModel;
-  public readonly cellType2FieldFilter: FieldFilterModel;
-  public readonly cellSubType2FieldFilter: FieldFilterModel;
+  public readonly cellTypeAndSubtype1FieldFilter: FieldFilterCellTypeModel;
+  public readonly cellTypeAndSubtype2FieldFilter: FieldFilterCellTypeModel;
+
   public readonly experimentalDesignFieldFilter: FieldFilterModel;
   public readonly organismFieldFilter: FieldFilterModel;
   public readonly diseaseFieldFilter: FieldFilterModel;
@@ -68,8 +68,7 @@ export class JaccardQueryPanelComponent implements OnInit {
 
   private precalculatedExamples: PrecalculatedExample[];
 
-  @ViewChild('cellType2') private cellType2Component: FilterFieldComponent;
-  @ViewChild('cellSubType2') private cellSubType2Component: FilterFieldComponent;
+  @ViewChild('cellTypeAndSubtype2') private cellTypeAndSubType2Component: FilterFieldComponent;
 
   constructor(
     private service: SignaturesService,
@@ -85,10 +84,8 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.upGenes = [];
     this.downGenes = [];
 
-    this.cellType1FieldFilter = new FieldFilterModel();
-    this.cellSubType1FieldFilter = new FieldFilterModel();
-    this.cellType2FieldFilter = new FieldFilterModel();
-    this.cellSubType2FieldFilter = new FieldFilterModel();
+    this.cellTypeAndSubtype1FieldFilter = new FieldFilterCellTypeModel();
+    this.cellTypeAndSubtype2FieldFilter = new FieldFilterCellTypeModel();
     this.experimentalDesignFieldFilter = new FieldFilterModel();
     this.organismFieldFilter = new FieldFilterModel();
     this.diseaseFieldFilter = new FieldFilterModel();
@@ -124,19 +121,14 @@ export class JaccardQueryPanelComponent implements OnInit {
     const queryParams = this.createQueryParameters();
 
     if (!JaccardCalculateInteractionsQueryParams.equals(queryParams, this.previousQueryParams)) {
-      this.loadCellType1Values(queryParams);
-      this.loadCellSubType1Values(queryParams);
+      this.loadCellTypeAndSubtype1Values(queryParams);
       this.loadExperimentalDesignValues(queryParams);
       this.loadOrganismValues(queryParams);
       this.loadDiseaseValues(queryParams);
       this.loadSignatureSourceDbValues(queryParams);
 
-      if (this.cellType1FieldFilter.getClearedFilter()) {
-        this.loadCellType2Values(queryParams);
-      }
-
-      if (this.cellSubType1FieldFilter.getClearedFilter()) {
-        this.loadCellSubType2Values(queryParams);
+      if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
+        this.loadCellTypeAndSubtype2Values(queryParams);
       }
 
       this.previousQueryParams = queryParams;
@@ -144,39 +136,26 @@ export class JaccardQueryPanelComponent implements OnInit {
   }
 
   private checkCellTypeAndSubType2FiltersStatus(): void {
-    if (this.cellType1FieldFilter.getClearedFilter()) {
-      this.cellType2Component.enable();
+    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
+      this.cellTypeAndSubType2Component.enable();
     } else {
-      this.cellType2FieldFilter.filter = '';
-      this.cellType2Component.disable();
-    }
-
-    if (this.cellSubType1FieldFilter.getClearedFilter()) {
-      this.cellSubType2Component.enable();
-    } else {
-      this.cellSubType2FieldFilter.filter = '';
-      this.cellSubType2Component.disable();
+      this.cellTypeAndSubtype2FieldFilter.filter = '';
+      this.cellTypeAndSubType2Component.disable();
     }
   }
 
-  private loadCellType1Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellType1Values(queryParams)
-      .subscribe(values => this.cellType1FieldFilter.update(values));
+  private loadCellTypeAndSubtype1Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
+    this.service.listCellTypeAndSubtype1Values(queryParams)
+      .subscribe(values => this.cellTypeAndSubtype1FieldFilter.updateCellTypeAndSubtypeValues(values, true));
   }
 
-  private loadCellSubType1Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellSubType1Values(queryParams)
-      .subscribe(values => this.cellSubType1FieldFilter.update(values));
+  private loadCellTypeAndSubtype2Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
+    this.service.listCellTypeAndSubtype2Values(queryParams)
+      .subscribe(values => this.cellTypeAndSubtype2FieldFilter.updateCellTypeAndSubtypeValues(values, this.isAllowedCellSubtype2()));
   }
 
-  private loadCellType2Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellType2Values(queryParams)
-      .subscribe(values => this.cellType2FieldFilter.update(values));
-  }
-
-  private loadCellSubType2Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellSubType2Values(queryParams)
-      .subscribe(values => this.cellSubType2FieldFilter.update(values));
+  private isAllowedCellSubtype2(): boolean {
+    return this.cellTypeAndSubtype1FieldFilter.getCellSubtypeFilter() !== undefined;
   }
 
   private loadDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
@@ -197,7 +176,7 @@ export class JaccardQueryPanelComponent implements OnInit {
   private loadSignatureSourceDbValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listSignatureSourceDbValues(queryParams)
       .subscribe(values => this.signatureSourceDbFieldFilter.update(values));
-  }
+  }ff
 
   private createQueryParameters(): JaccardCalculateInteractionsQueryParams {
     const experimentalDesign = this.experimentalDesignFieldFilter.hasValue()
@@ -205,10 +184,10 @@ export class JaccardQueryPanelComponent implements OnInit {
       : undefined;
 
     return {
-      cellType1: this.cellType1FieldFilter.getClearedFilter(),
-      cellSubType1: this.cellSubType1FieldFilter.getClearedFilter(),
-      cellType2: this.cellType2FieldFilter.getClearedFilter(),
-      cellSubType2: this.cellSubType2FieldFilter.getClearedFilter(),
+      cellType1: this.cellTypeAndSubtype1FieldFilter.getCellTypeFilter(),
+      cellSubType1: this.cellTypeAndSubtype1FieldFilter.getCellSubtypeFilter(),
+      cellType2: this.cellTypeAndSubtype2FieldFilter.getCellTypeFilter(),
+      cellSubType2: this.cellTypeAndSubtype2FieldFilter.getCellSubtypeFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       experimentalDesign: experimentalDesign,
       organism: this.organismFieldFilter.getClearedFilter(),

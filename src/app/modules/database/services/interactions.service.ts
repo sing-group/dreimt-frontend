@@ -29,6 +29,7 @@ import {DrugCellDatabaseInteraction} from '../../../models/database/drug-cell-da
 import {DatabaseQueryResult} from '../../../models/database/database-query-result.model';
 import {map} from 'rxjs/operators';
 import {toPlainObject} from '../../../utils/types';
+import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,29 @@ export class InteractionsService {
     );
   }
 
+  public listCellTypeAndSubtype1Values(queryParams: DatabaseQueryParams): Observable<CellTypeAndSubtype[]> {
+    return this.listCellTypeAndSubtypeValues('cell-type-and-subtype-1', queryParams);
+  }
+
+  public listCellTypeAndSubtype2Values(queryParams: DatabaseQueryParams): Observable<CellTypeAndSubtype[]> {
+    return this.listCellTypeAndSubtypeValues('cell-type-and-subtype-2', queryParams);
+  }
+
+  private listCellTypeAndSubtypeValues(resource: string, queryParams: DatabaseQueryParams): Observable<CellTypeAndSubtype[]> {
+    const options = {
+      params: new HttpParams({
+        fromObject: toPlainObject(queryParams, DatabaseQueryParams.MANIPULATION_FIELDS)
+      })
+    };
+
+    return this.http.get<CellTypeAndSubtype[]>(`${environment.dreimtUrl}/interactions/params/${resource}/values`, options)
+      .pipe(
+        DreimtError.throwOnError(
+          'Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.'
+        )
+      );
+  }
+
   public listDrugCommonNameValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('drug-common-name', queryParams);
   }
@@ -86,6 +110,7 @@ export class InteractionsService {
   public listDiseaseValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('disease', queryParams);
   }
+
   public listOrganismValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('organism', queryParams);
   }

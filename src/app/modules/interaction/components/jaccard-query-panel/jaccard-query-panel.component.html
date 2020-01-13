@@ -28,21 +28,20 @@
     </mat-form-field>
 
     <div class="query-configuration">
-
       <div class="jaccard-form">
-
         <app-filter-field
-          label="Cell type 1"
-          [options]="cellType1FieldFilter.options"
-          [(filter)]="cellType1FieldFilter.filter"
+          label="Cell type/subtype 1"
+          [options]="cellTypeAndSubtype1FieldFilter.options"
+          [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field
-          label="Cell subtype 1"
-          [options]="cellSubType1FieldFilter.options"
-          [(filter)]="cellSubType1FieldFilter.filter"
+          #cellTypeAndSubtype2
+          label="Cell type/subtype 2"
+          [options]="cellTypeAndSubtype2FieldFilter.options"
+          [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
@@ -51,24 +50,6 @@
           label="Organism"
           [options]="organismFieldFilter.options"
           [(filter)]="organismFieldFilter.filter"
-          (filterChange)="updateFieldValues()"
-          [debounceTime]="debounceTime"
-          [maxOptions]="maxOptions"></app-filter-field>
-
-        <app-filter-field
-          #cellType2
-          label="Cell type 2"
-          [options]="cellType2FieldFilter.options"
-          [(filter)]="cellType2FieldFilter.filter"
-          (filterChange)="updateFieldValues()"
-          [debounceTime]="debounceTime"
-          [maxOptions]="maxOptions"></app-filter-field>
-
-        <app-filter-field
-          #cellSubType2
-          label="Cell subtype 2"
-          [options]="cellSubType2FieldFilter.options"
-          [(filter)]="cellSubType2FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
