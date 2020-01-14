@@ -50,18 +50,7 @@ table {
   line-height: 1.5;
 }
 
-.text-organism {
-  border-radius: 4px;
-  padding: 3px;
-  border-width: 1px;
-  border-style: solid;
-  text-decoration: none;
-  margin: 1px;
-  display: inline-block;
-  background-color: lightblue;
-}
-
-.text-experimental-design {
+.text-interaction-type, .text-experimental-design {
   border-radius: 4px;
   padding: 3px;
   border-width: 1px;

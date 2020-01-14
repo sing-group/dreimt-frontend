@@ -21,10 +21,12 @@
 
 import {Drug} from '../drug.model';
 import {CellSignature} from './cell-signature.model';
+import {InteractionType} from '../interaction-type.enum';
 
 export class DrugCellDatabaseInteraction {
   public readonly drug: Drug;
   public readonly signature: CellSignature;
+  public readonly interactionType: InteractionType;
   public readonly tau: number;
   public readonly upFdr: number;
   public readonly downFdr: number;

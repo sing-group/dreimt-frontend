@@ -139,8 +139,9 @@
           <div class="text-experimental-design" [matTooltip]="interaction.signature.experimentalDesign">
             {{getExperimentalDesignAcronym(interaction.signature.experimentalDesign)}}
           </div>
-          <mat-icon [matTooltip]="interaction.interactionType">{{interaction.interactionType | interactionTypeIcon}}
-          </mat-icon>
+          <div class="text-interaction-type" [matTooltip]="interaction.interactionType">
+            {{getInteractionTypeAcronym(interaction.interactionType)}}
+          </div>
         </td>
       </ng-container>
 

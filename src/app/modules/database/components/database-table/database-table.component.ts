@@ -31,6 +31,7 @@ import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {ActivatedRoute} from '@angular/router';
 import {DatabaseTableFiltersComponent} from '../database-table-filters/database-table-filters.component';
+import {InteractionType} from '../../../../models/interaction-type.enum';
 
 @Component({
   selector: 'app-database',
@@ -270,6 +271,19 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
       return this.acronymsMap.get(experimentalDesign);
     } else {
       return '';
+    }
+  }
+
+  public getInteractionTypeAcronym(interactionType: InteractionType): string {
+    switch (interactionType) {
+      case InteractionType.GENESET:
+        return 'G';
+      case InteractionType.SIGNATURE:
+        return 'S';
+      case InteractionType.SIGNATURE_UP:
+        return 'UP';
+      case InteractionType.SIGNATURE_DOWN:
+        return 'DN';
     }
   }
 
