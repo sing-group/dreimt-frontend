@@ -107,8 +107,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.checkCellTypeAndSubType2FiltersStatus();
 
     const queryParams = this.createQueryParameters();
-    console.log(queryParams);
-    console.log(this.previousDatabaseQueryParams);
 
     if (!DatabaseQueryParams.equals(queryParams, this.previousDatabaseQueryParams)) {
       this.loadDrugCommonNames(queryParams);
@@ -214,10 +212,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   private createQueryParameters(): DatabaseQueryParams {
     if (this.isAdvancedPanelOpened) {
-      console.log('Creating query parameters using ALL the filters.');
       return this.createFullQueryParameters();
     } else {
-      console.log('Creating query parameters using the BASIC filters');
       return this.createBasicQueryParameters();
     }
   }

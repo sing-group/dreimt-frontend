@@ -23,11 +23,15 @@ export class Drug {
   public readonly commonName: string;
   public readonly sourceName: string;
   public readonly sourceDb: string;
+  public readonly status: string;
+  public readonly moa: string;
 
   public static isA(object: any): object is Drug {
     return object !== undefined && object !== null
       && typeof object.commonName === 'string'
       && typeof object.sourceName === 'string'
-      && typeof object.sourceDb === 'string';
+      && typeof object.sourceDb === 'string'
+      && typeof object.status === 'string'
+      && typeof object.moa === 'string';
   }
 }
