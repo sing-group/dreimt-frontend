@@ -27,7 +27,7 @@ import {
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatSelectModule
+  MatSelectModule, MatTooltipModule
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HighlightPipe} from './pipes/highlight.pipe';
@@ -50,6 +50,7 @@ import {PvalueNumberPipePipe} from './pipes/pvalue-number-pipe.pipe';
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    MatTooltipModule,
     ReactiveFormsModule
   ],
   exports: [

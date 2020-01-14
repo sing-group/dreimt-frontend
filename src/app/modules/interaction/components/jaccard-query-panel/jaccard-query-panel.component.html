@@ -35,6 +35,7 @@
           [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
+          [showOptionsTooltip]="true"
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field
@@ -44,6 +45,7 @@
           [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
           (filterChange)="updateFieldValues()"
           [debounceTime]="debounceTime"
+          [showOptionsTooltip]="true"
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field

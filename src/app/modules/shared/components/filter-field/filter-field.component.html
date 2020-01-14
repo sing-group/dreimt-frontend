@@ -37,6 +37,6 @@
 
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of sortedOptions | async" [value]="option"
-                [innerHTML]="option | highlight: filter"></mat-option>
+                [innerHTML]="option | highlight: filter" [matTooltip]="optionTooltip(option)"></mat-option>
   </mat-autocomplete>
 </mat-form-field>

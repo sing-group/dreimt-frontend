@@ -36,6 +36,7 @@ export class FilterFieldComponent implements OnInit {
   @Input() public debounceTime: number;
   @Input() public maxOptions: number;
   @Input() public fixedValues: boolean;
+  @Input() public showOptionsTooltip: boolean;
 
   @Output() public filterChange: EventEmitter<string>;
 
@@ -48,6 +49,7 @@ export class FilterFieldComponent implements OnInit {
     this.debounceTime = 500;
     this.maxOptions = 100;
     this.fixedValues = false;
+    this.showOptionsTooltip = false;
 
     this.formControl = new FormControl('');
     this.filterChange = new EventEmitter<string>();
@@ -133,5 +135,13 @@ export class FilterFieldComponent implements OnInit {
 
   public disable(): void {
     this.formControl.disable();
+  }
+
+  public optionTooltip(option: string): string {
+    if (this.showOptionsTooltip) {
+      return option;
+    } else {
+      return undefined;
+    }
   }
 }

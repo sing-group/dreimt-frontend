@@ -15,6 +15,7 @@
                         [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         [debounceTime]="debounceTime"
+                        [showOptionsTooltip]="true"
                         [maxOptions]="maxOptions"></app-filter-field>
 
       <app-filter-field label="Drug Source Name"
@@ -99,6 +100,7 @@
                           [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
                           (filterChange)="updateFilterValues()"
                           [debounceTime]="debounceTime"
+                          [showOptionsTooltip]="true"
                           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field label="Cell type/subtype 2"
@@ -107,6 +109,7 @@
                           [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
                           (filterChange)="updateFilterValues()"
                           [debounceTime]="debounceTime"
+                          [showOptionsTooltip]="true"
                           [maxOptions]="maxOptions"></app-filter-field>
 
         <div></div>
