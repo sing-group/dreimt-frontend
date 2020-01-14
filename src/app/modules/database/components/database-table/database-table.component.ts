@@ -51,8 +51,6 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
   @ViewChild(MatSort) private sort: MatSort;
   @ViewChild(DatabaseTableFiltersComponent) private databaseTableFiltersComponent: DatabaseTableFiltersComponent;
 
-  private acronymsMap = new Map();
-
   private filterParams: DatabaseQueryParams;
   private positiveTauColorMap;
   private negativeTauColorMap;
@@ -263,14 +261,22 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
   }
 
   public getExperimentalDesignAcronym(experimentalDesign: string): string {
-    if (experimentalDesign) {
-      if (!this.acronymsMap.has(experimentalDesign)) {
-        const acronym = experimentalDesign.split(/_/).reduce((response, word) => response += word.slice(0, 1), '');
-        this.acronymsMap.set(experimentalDesign, acronym);
-      }
-      return this.acronymsMap.get(experimentalDesign);
-    } else {
-      return '';
+    switch (experimentalDesign) {
+      case 'IN_VIVO':
+        return 'VI';
+      case 'EX_VIVO':
+        return 'EV';
+      case 'IN_VITRO':
+        return 'VT';
+      case 'IN_SILICO':
+        return 'IS';
+      case 'PATIENT':
+        return 'PA';
+      case 'TRANSFECTION':
+        return 'TR';
+      case 'UNKNOWN':
+      default:
+        return 'UN';
     }
   }
 
