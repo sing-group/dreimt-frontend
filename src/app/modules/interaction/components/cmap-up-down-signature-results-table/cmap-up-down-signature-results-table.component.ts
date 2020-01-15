@@ -37,6 +37,7 @@ import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.mode
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {Subscription} from 'rxjs';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
+import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-table',
@@ -343,5 +344,13 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     if (filter.value !== undefined && filter.value !== event) {
       filter.setValue(event);
     }
+  }
+
+  public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
+    let tooltip = 'Source name: ' + interaction.drug.sourceName;
+    tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
+    tooltip = tooltip + '\nMOA: ' + interaction.drug.moa;
+
+    return tooltip;
   }
 }

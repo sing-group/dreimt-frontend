@@ -37,6 +37,7 @@ import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.mode
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {Subscription} from 'rxjs';
+import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 
 @Component({
   selector: 'app-cmap-gene-set-signature-results-table',
@@ -331,5 +332,13 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     if (filter.value !== undefined && filter.value !== event) {
       filter.setValue(event);
     }
+  }
+
+  public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
+    let tooltip = 'Source name: ' + interaction.drug.sourceName;
+    tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
+    tooltip = tooltip + '\nMOA: ' + interaction.drug.moa;
+
+    return tooltip;
   }
 }
