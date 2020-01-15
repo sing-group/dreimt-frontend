@@ -202,6 +202,32 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
   }
 
   public getTauTagCssClass(interaction: DrugCellDatabaseInteraction, targetCell: string): string {
+    let tauInteractionMode = this.getTauInteractionMode(interaction, targetCell);
+
+    switch (tauInteractionMode) {
+      case 'BOOST':
+        return 'text-tag-tau text-tag-tau-boost';
+      case 'REVERT':
+        return 'text-tag-tau text-tag-tau-revert';
+      default:
+        return 'text-tag-tau-none';
+    }
+  }
+
+  public getCellSubtypeIcon(interaction: DrugCellDatabaseInteraction, targetCell: string): string {
+    let tauInteractionMode = this.getTauInteractionMode(interaction, targetCell);
+
+    switch (tauInteractionMode) {
+      case 'BOOST':
+        return 'cancel';
+      case 'REVERT':
+        return 'remove_circle';
+      default:
+        return 'undo';
+    }
+  }
+
+  public getTauInteractionMode(interaction: DrugCellDatabaseInteraction, targetCell: string): string {
     let boost;
     let revert;
     let signatureType = interaction.signature.signatureType;
@@ -243,12 +269,12 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
 
     if (boost !== 'NONE') {
       if (targetCell === boost) {
-        return 'text-tag-tau-boost';
+        return 'BOOST';
       } else {
-        return 'text-tag-tau-revert';
+        return 'REVERT';
       }
     } else {
-      return 'text-tag-tau-none';
+      return 'NONE';
     }
   }
 

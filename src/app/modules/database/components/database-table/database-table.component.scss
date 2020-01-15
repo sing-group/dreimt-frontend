@@ -84,6 +84,10 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   max-width: 350px;
 }
 
+.text-tag-tau {
+  width: 100px;
+}
+
 .text-tag-tau-revert {
   border-radius: 4px;
   padding: 3px;
@@ -92,7 +96,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   text-decoration: none;
   margin: 1px;
   display: inline-block;
-  background-color: lightgreen;
+  background-color: #D6E4AA;
 }
 
 .text-tag-tau-boost {
@@ -103,24 +107,19 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   text-decoration: none;
   margin: 1px;
   display: inline-block;
-  background-color: lightcoral;
+  background-color: #EFAFA3;
 }
 
 .text-tag-tau-revert .material-icons {
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  transform: rotate(90deg);
   color: green;
 }
 
 .text-tag-tau-boost .material-icons {
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  transform: rotate(-90deg);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
   color: red;
 }
 
