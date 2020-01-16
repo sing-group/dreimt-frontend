@@ -61,10 +61,11 @@
 
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="tau">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 100 to -100)">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 75 to 100)">
           <span mat-sort-header="TAU">TAU</span>
 
-          <app-number-field #tauMin label="Min." [debounceTime]="debounceTime" [min]="-100" [max]="100" [step]="1.0"
+          <app-number-field #tauMin label="Min." [debounceTime]="debounceTime" [min]="75" [max]="100" [step]="1.0"
+                            [initialValue]="75" [clearable]="false"
                             (valueChange)="minTauFilterChanged($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction" [style.color]="getTauStyleColor(interaction.tau)">{{interaction.tau |

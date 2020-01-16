@@ -57,6 +57,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
   constructor() {
   }
 
+  private static TAU_THRESHOLD = 75;
   private static Y_AXIS_MAX = 2.42;
   private static renderedObjects = [];
 
@@ -237,11 +238,11 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
       data => {
 
         const positiveTau = data
-          .filter(interaction => interaction.tau >= 80)
+          .filter(interaction => interaction.tau >= CmapUpDownSignatureResultsGraphComponent.TAU_THRESHOLD)
           .map(this.mapInteraction);
 
         const negativeTau = data
-          .filter(interaction => interaction.tau <= -80)
+          .filter(interaction => interaction.tau <= -CmapUpDownSignatureResultsGraphComponent.TAU_THRESHOLD)
           .map(this.mapInteraction);
 
         this.options.series[0]['data'] = positiveTau;
@@ -406,9 +407,9 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
 
   private static tooltip(point): string {
     return `
-            <b>TAU</b>: ${point.interaction.tau} <br/>
-            <b>Up Genes FDR</b>: ${point.interaction.upFdr} <br/>
-            <b>Down Genes FDR</b>: ${point.interaction.downFdr} <br/>
+            <b>TAU</b>: ${point.interaction.tau.toFixed(4)} <br/>
+            <b>Up Genes FDR</b>: ${point.interaction.upFdr.toFixed(4)} <br/>
+            <b>Down Genes FDR</b>: ${point.interaction.downFdr.toFixed(4)} <br/>
             <b>Drug</b>: ${point.interaction.drug.commonName} <br/>
           `;
   }

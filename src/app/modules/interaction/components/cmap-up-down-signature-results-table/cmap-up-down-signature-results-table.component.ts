@@ -45,6 +45,8 @@ import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell
   styleUrls: ['./cmap-up-down-signature-results-table.component.scss']
 })
 export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnChanges {
+  private static DEFAULT_TAU_FILTER = 75;
+
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -85,7 +87,6 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     this.debounceTime = 500;
     this.maxOptions = 100;
 
-    // this.dataSource = new CmapUpDownSignatureResultsDataSource(this.service);
     this.columns = [
       'tau', 'upFdr', 'downFdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
     ];
@@ -152,7 +153,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
       this.maxDownFdrFilterComponent.clearValue();
     }
 
-    this.minTauFilter.setValue(null);
+    this.minTauFilter.setValue(CmapUpDownSignatureResultsTableComponent.DEFAULT_TAU_FILTER);
     this.maxUpFdrFilter.setValue(null);
     this.maxDownFdrFilter.setValue(null);
   }

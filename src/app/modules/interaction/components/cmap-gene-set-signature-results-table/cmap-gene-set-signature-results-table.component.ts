@@ -45,6 +45,7 @@ import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell
   styleUrls: ['./cmap-gene-set-signature-results-table.component.scss']
 })
 export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnChanges {
+  private static DEFAULT_TAU_FILTER = 75;
 
   public readonly debounceTime: number;
   public readonly maxOptions: number;
@@ -84,7 +85,6 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     this.debounceTime = 500;
     this.maxOptions = 100;
 
-    // this.dataSource = new CmapGeneSetSignatureResultsDataSource(this.service);
     this.columns = [
       'tau', 'fdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
     ];
@@ -147,7 +147,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
       this.maxFdrFilterComponent.clearValue();
     }
 
-    this.minTauFilter.setValue(null);
+    this.minTauFilter.setValue(CmapGeneSetSignatureResultsTableComponent.DEFAULT_TAU_FILTER);
     this.maxFdrFilter.setValue(null);
   }
 
