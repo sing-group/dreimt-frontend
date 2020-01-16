@@ -35,12 +35,14 @@ export class NumberFieldComponent implements OnInit {
   @Input() public min: string;
   @Input() public label: string;
   @Input() public debounceTime: number;
+  @Input() public clearable: boolean;
 
   @Output() public valueChange: EventEmitter<number>;
 
   public readonly formControl: FormControl;
 
   constructor() {
+    this.clearable = true;
     this.formControl = new FormControl('');
     this.valueChange = new EventEmitter<number>();
   }
@@ -54,7 +56,11 @@ export class NumberFieldComponent implements OnInit {
         debounceTime(this.debounceTime),
         distinctUntilChanged()
       )
-      .subscribe(value => this.valueChange.emit(value));
+      .subscribe(value => {
+        if (this.isValidValue(value)) {
+          this.valueChange.emit(value);
+        }
+      });
   }
 
   public hasValue(): boolean {
@@ -63,5 +69,21 @@ export class NumberFieldComponent implements OnInit {
 
   public clearValue(): void {
     this.formControl.setValue(null);
+  }
+
+  public getMatInputWrapperClass(): string {
+    if (this.hasValue()) {
+      if (this.isValidValue(this.formControl.value)) {
+        return 'mat-input-wrapper';
+      } else {
+        return 'mat-input-wrapper invalid-value';
+      }
+    } else {
+      return 'mat-input-wrapper';
+    }
+  }
+
+  private isValidValue(value): boolean {
+    return value >= this.min && value <= this.max;
   }
 }

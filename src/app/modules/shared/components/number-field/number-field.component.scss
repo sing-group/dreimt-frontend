@@ -22,3 +22,15 @@
 mat-form-field {
   width: 100%;
 }
+
+.mat-input-wrapper {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  width: 96%;
+  border-radius: 4px;
+}
+
+.invalid-value {
+  background-color: #FF9994;
+}
