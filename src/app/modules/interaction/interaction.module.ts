@@ -63,6 +63,8 @@ import {CmapUpDownSignatureResultsViewComponent} from './components/cmap-up-down
 import {CmapGeneSetSignatureResultsViewComponent} from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
 import {CmapGeneSetSignatureResultsGraphComponent} from './components/cmap-gene-set-signature-results-graph/cmap-gene-set-signature-results-graph.component';
 import { TwoGeneListsComponent } from './components/two-gene-lists/two-gene-lists.component';
+import {CmapUpDownSignatureResultsSummaryComponent} from './components/cmap-up-down-signature-results-summary/cmap-up-down-signature-results-summary.component';
+import { CmapGeneSetSignatureResultsSummaryComponent } from './components/cmap-gene-set-signature-results-summary/cmap-gene-set-signature-results-summary.component';
 
 @NgModule({
   imports: [
@@ -109,7 +111,9 @@ import { TwoGeneListsComponent } from './components/two-gene-lists/two-gene-list
     CmapUpDownSignatureResultsViewComponent,
     CmapGeneSetSignatureResultsViewComponent,
     CmapGeneSetSignatureResultsGraphComponent,
-    TwoGeneListsComponent
+    TwoGeneListsComponent,
+    CmapUpDownSignatureResultsSummaryComponent,
+    CmapGeneSetSignatureResultsSummaryComponent
   ],
   providers: [
     QueryService

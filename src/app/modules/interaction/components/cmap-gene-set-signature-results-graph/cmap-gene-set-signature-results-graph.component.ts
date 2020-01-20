@@ -385,6 +385,8 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
             <b>TAU</b>: ${point.interaction.tau.toFixed(4)} <br/>
             <b>Up Genes FDR</b>: ${point.interaction.fdr.toFixed(4)} <br/>
             <b>Drug</b>: ${point.interaction.drug.commonName} <br/>
+            <b>\tStatus</b>: ${point.interaction.drug.status} <br/>
+            <b>\tMOA</b>: ${point.interaction.drug.moa} <br/>
           `;
   }
 

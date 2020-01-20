@@ -411,6 +411,8 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
             <b>Up Genes FDR</b>: ${point.interaction.upFdr.toFixed(4)} <br/>
             <b>Down Genes FDR</b>: ${point.interaction.downFdr.toFixed(4)} <br/>
             <b>Drug</b>: ${point.interaction.drug.commonName} <br/>
+            <b>\tStatus</b>: ${point.interaction.drug.status} <br/>
+            <b>\tMOA</b>: ${point.interaction.drug.moa} <br/>
           `;
   }
 
