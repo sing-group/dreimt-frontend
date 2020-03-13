@@ -1,0 +1,38 @@
+table {
+  width: 100%;
+}
+
+#pagination-container {
+  display: grid;
+  grid-template-areas: 'loading paginator';
+  grid-template-columns: 1fr 1fr;
+}
+
+#loading {
+  grid-area: loading;
+  justify-self: start;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 10px;
+  place-content: center / start;
+}
+
+#paginator {
+  grid-area: paginator;
+  justify-self: end;
+  background-color: transparent;
+}
+
+.gray {
+  background-color: #FAFAFA
+}
+
+.mat-table {
+  margin-top: 10px;
+}
+
+::ng-deep .mat-tooltip {
+  white-space: pre-line;
+  word-wrap: break-word;
+  line-height: 1.5;
+}

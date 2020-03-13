@@ -19,14 +19,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {JaccardComparisonType} from './jaccard-comparison-type.enum';
-import {SignatureSummary} from './signature-summary.model';
+export class DreimtInformationModel {
+  public readonly tauThreshold: number;
 
-export class GeneOverlap {
-  public readonly sourceComparisonType: JaccardComparisonType;
-  public readonly targetSignatureData: SignatureSummary;
-  public readonly targetComparisonType: JaccardComparisonType;
-  public readonly jaccard: number;
-  public readonly pvalue: number;
-  public readonly fdr: number;
+  public static isA(object: any): object is DreimtInformationModel {
+    return object !== undefined && object !== null
+      && typeof object.tauThreshold === 'number';
+  }
 }

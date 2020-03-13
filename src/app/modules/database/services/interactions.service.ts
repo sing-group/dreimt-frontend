@@ -24,12 +24,13 @@ import {Observable, OperatorFunction} from 'rxjs';
 import {DatabaseQueryParams} from '../../../models/database/database-query-params.model';
 import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
-import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {DrugCellDatabaseInteraction} from '../../../models/database/drug-cell-database-interaction.model';
 import {DatabaseQueryResult} from '../../../models/database/database-query-result.model';
 import {map} from 'rxjs/operators';
 import {toPlainObject} from '../../../utils/types';
 import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
+import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 
 @Injectable({
   providedIn: 'root'
@@ -160,5 +161,20 @@ export class InteractionsService {
         mapper,
         DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.')
       );
+  }
+
+  public listGenes(signatureGenesUri: string, onlyUniverseGenes: boolean): Observable<UpDownGenes> {
+    const options = {
+      params: new HttpParams().set('onlyUniverseGenes', String(onlyUniverseGenes)),
+      observe: 'response' as 'response',
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+
+    return this.http.get<UpDownGenes>(signatureGenesUri, options).pipe(
+      DreimtError.throwOnError('Signature query error', 'Signature genes could not be retrieved.'),
+      map((response: HttpResponse<UpDownGenes>) => (response.body))
+    );
   }
 }

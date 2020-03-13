@@ -1,0 +1,19 @@
+app-signature-view-graph {
+  .bar {
+    fill: steelblue;
+  }
+
+  .bar:hover {
+    fill: brown;
+  }
+
+  .axis--x path {
+    display: none;
+  }
+
+  margin: 1px;
+}
+
+app-signature-view-summary {
+  margin: 1px;
+}

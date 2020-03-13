@@ -24,39 +24,52 @@ import {CommonModule} from '@angular/common';
 import {
   MatAutocompleteModule,
   MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatSelectModule, MatTooltipModule
+  MatRadioModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatTooltipModule
 } from '@angular/material';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HighlightPipe} from './pipes/highlight.pipe';
 import {FilterFieldComponent} from './components/filter-field/filter-field.component';
 import {NumberFieldComponent} from './components/number-field/number-field.component';
 import {PvalueNumberPipePipe} from './pipes/pvalue-number-pipe.pipe';
+import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
 
 @NgModule({
   declarations: [
     FilterFieldComponent,
     HighlightPipe,
     NumberFieldComponent,
-    PvalueNumberPipePipe
+    PvalueNumberPipePipe,
+    ExportGenesDialogComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     MatAutocompleteModule,
     MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatRadioModule,
     MatSelectModule,
+    MatSlideToggleModule,
     MatTooltipModule,
     ReactiveFormsModule
   ],
   exports: [
     FilterFieldComponent,
     NumberFieldComponent,
-    PvalueNumberPipePipe
+    PvalueNumberPipePipe,
+    ExportGenesDialogComponent
   ]
 })
 export class SharedModule {

@@ -1,59 +1,37 @@
-/*
- * DREIMT Frontend
- *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
- *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
- *  Fátima Al-Sharhour and Gonzalo Gómez-López.
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
+import {SignatureSummary} from '../../../../models/interactions/jaccard/signature-summary.model';
+import {SignatureViewDataSource} from '../signature-view/signature-view-data-source';
 import {MatDialog, MatPaginator, MatSort, MatSortHeader} from '@angular/material';
+import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
+import {FormControl} from '@angular/forms';
+import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
+import {Subscription} from 'rxjs';
+import {InteractionsService} from '../../services/interactions.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
-import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
-import {CmapUpDownSignatureResultsDataSource} from '../cmap-up-down-signature-results-view/cmap-up-down-signature-results-data-source';
-import {CmapResultsService} from '../../services/cmap-results.service';
-import {CmapUpDownSignatureResultField} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-result-field.enum';
-import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
-import {FormControl} from '@angular/forms';
-import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {ExportGenesDialogComponent} from '../../../shared/components/export-genes-dialog/export-genes-dialog.component';
 import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
 import saveAs from 'file-saver';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
-import {Subscription} from 'rxjs';
-import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
+import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
+import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
 
 @Component({
-  selector: 'app-cmap-up-down-signature-results-table',
-  templateUrl: './cmap-up-down-signature-results-table.component.html',
-  styleUrls: ['./cmap-up-down-signature-results-table.component.scss']
+  selector: 'app-signature-view-table',
+  templateUrl: './signature-view-table.component.html',
+  styleUrls: ['./signature-view-table.component.scss']
 })
-export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnChanges {
-  private static DEFAULT_TAU_FILTER = 75;
-
+export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
-  @Input() public metadata: CmapQueryUpDownSignatureResultsMetadata;
+  @Input() public signature: SignatureSummary;
+  @Input() public dataSource: SignatureViewDataSource;
+  @Input() public tauThreshold: number;
 
-  public readonly columns: string[];
-  @Input() public dataSource: CmapUpDownSignatureResultsDataSource;
+  public columns: string[];
 
   public totalResultsSize: number;
 
@@ -79,17 +57,13 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private service: CmapResultsService,
+    private service: InteractionsService,
     public dialog: MatDialog
   ) {
     this.routeUrl = window.location.href;
 
     this.debounceTime = 500;
     this.maxOptions = 100;
-
-    this.columns = [
-      'tau', 'upFdr', 'downFdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
-    ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
     this.drugSourceNameFieldFilter = new FieldFilterModel();
@@ -102,6 +76,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     this.positiveTauColorMap = interpolate(['tomato', 'red']);
     this.negativeTauColorMap = interpolate(['lightgreen', 'darkgreen']);
   }
+
 
   private updateSort(active: string, sortDirection): void {
     this.sort.direction = sortDirection;
@@ -127,12 +102,27 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    this.initColumns();
     this.cancelWatchForChanges();
     this.clearColumnModifiers();
     this.initSort();
     this.resetPage();
     this.updateResults();
     this.initWatchForChanges();
+  }
+
+  private initColumns() {
+    if (!this.columns) {
+      if (this.signature.signatureType === 'UPDOWN') {
+        this.columns = [
+          'tau', 'upFdr', 'downFdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
+        ];
+      } else {
+        this.columns = [
+          'tau', 'upFdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
+        ];
+      }
+    }
   }
 
   private cancelWatchForChanges() {
@@ -153,7 +143,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
       this.maxDownFdrFilterComponent.clearValue();
     }
 
-    this.minTauFilter.setValue(CmapUpDownSignatureResultsTableComponent.DEFAULT_TAU_FILTER);
+    this.minTauFilter.setValue(this.tauThreshold);
     this.maxUpFdrFilter.setValue(null);
     this.maxDownFdrFilter.setValue(null);
   }
@@ -200,7 +190,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   }
 
   private updatePage(queryParams = this.createQueryParameters()): void {
-    this.dataSource.list(this.metadata.id, queryParams);
+    this.dataSource.list(queryParams);
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
   }
 
@@ -230,30 +220,30 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     }
   }
 
-  private orderField(): CmapUpDownSignatureResultField {
+  private orderField(): DrugSignatureInteractionField {
     if (this.sortDirection() !== undefined) {
-      return CmapUpDownSignatureResultField[this.sort.active];
+      return DrugSignatureInteractionField[this.sort.active];
     } else {
       return undefined;
     }
   }
 
-  private loadDrugSourceNames(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugSourceNameValues(this.metadata.id, queryParams)
+  private loadDrugSourceNames(queryParams: DatabaseQueryParams): void {
+    this.service.listDrugSourceNameValues(queryParams)
       .subscribe(values => this.drugSourceNameFieldFilter.update(values));
   }
 
-  private loadDrugSourceDbs(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugSourceDbValues(this.metadata.id, queryParams)
+  private loadDrugSourceDbs(queryParams: DatabaseQueryParams): void {
+    this.service.listDrugSourceDbValues(queryParams)
       .subscribe(values => this.drugSourceDbFieldFilter.update(values));
   }
 
-  private loadDrugCommonNames(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugCommonNameValues(this.metadata.id, queryParams)
+  private loadDrugCommonNames(queryParams: DatabaseQueryParams): void {
+    this.service.listDrugCommonNameValues(queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
 
-  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): CmapUpDownSignatureDrugInteractionResultsQueryParams {
+  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): DatabaseQueryParams {
     return {
       page: this.paginator.pageIndex || defaultPageIndex,
       pageSize: this.paginator.pageSize || defaultPageSize,
@@ -264,16 +254,13 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
       maxDownFdr: this.maxDownFdrFilter.value,
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
-      drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter()
+      drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter(),
+      signatureName: this.signature.signatureName
     };
   }
 
-  public downloadCsv() {
-    this.service.downloadCsv(this.metadata.id, this.metadata.queryTitle, this.createQueryParameters());
-  }
-
   public isMetadataAvailable(): boolean {
-    return this.metadata !== undefined;
+    return this.signature !== undefined;
   }
 
   public getResultsUrl(): string {
@@ -284,7 +271,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     const dialogRef = this.dialog.open(ExportGenesDialogComponent, {
       width: '380px',
       data: {
-        title: 'Export query genes',
+        title: 'Export signature genes',
         onlyUniverseGenes: false,
         fileFormats: [FileFormat.GMT, FileFormat.GMX],
         fileFormat: FileFormat.GMT
@@ -299,7 +286,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   }
 
   private downloadGenes(onlyUniverseGenes: boolean, fileFormat: FileFormat) {
-    this.service.listGenes(this.metadata.id, onlyUniverseGenes).subscribe(result => {
+    this.service.listGenes(this.signature.signatureGenesUri, onlyUniverseGenes).subscribe(result => {
       this.saveGenes(result, fileFormat);
     });
   }
@@ -307,12 +294,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   private saveGenes(genes: UpDownGenes | GeneSet, fileFormat: FileFormat) {
     let fileName = '';
     const fileExtension = FileFormat.getFileExtension(fileFormat);
-    const queryTitle = this.metadata.queryTitle;
-    if (!queryTitle) {
-      fileName = 'Drug_Prioritization_Query_Genes_' + this.metadata.id + '.' + fileExtension;
-    } else {
-      fileName = queryTitle.replace(/\s/g, '_') + '.' + fileExtension;
-    }
+    const queryTitle = this.signature.signatureName;
+    fileName = queryTitle.replace(/\s/g, '_') + '.' + fileExtension;
 
     const fileContents = GenesHelper.formatGenes(genes, fileFormat);
 

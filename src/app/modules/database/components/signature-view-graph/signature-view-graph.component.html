@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Drug Prioritization Plot</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="isLoading()">
+      <p>Generating plot...</p>
+      <mat-spinner diameter="100"></mat-spinner>
+    </div>
+    <div [hidden]="isLoading()">
+      <div #chart id="chart"></div>
+    </div>
+  </mat-card-content>
+</mat-card>

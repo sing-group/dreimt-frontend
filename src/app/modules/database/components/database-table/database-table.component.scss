@@ -126,3 +126,8 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 .text-tag-tau-none .material-icons {
   display: none;
 }
+
+#navigateSignatureButton:hover {
+  cursor: pointer;
+  color: blue;
+}

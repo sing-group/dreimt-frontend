@@ -1,0 +1,15 @@
+<div *ngIf="isLoading()">
+  <p>Loading signature...</p>
+  <mat-spinner diameter="100"></mat-spinner>
+</div>
+
+<div *ngIf="isError()">
+  <p>Error loading signature {{signatureParam}}</p>
+</div>
+
+<ng-container *ngIf="isLoaded()">
+  <app-signature-view-table [signature]="signature" [dataSource]="dataSource"
+                            [tauThreshold]="minDatabaseTau"></app-signature-view-table>
+  <app-signature-view-summary [dataSource]="dataSource"></app-signature-view-summary>
+  <app-signature-view-graph [dataSource]="dataSource"></app-signature-view-graph>
+</ng-container>

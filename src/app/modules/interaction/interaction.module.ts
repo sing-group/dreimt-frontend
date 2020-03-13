@@ -57,7 +57,7 @@ import {JaccardResultsTableComponent} from './components/jaccard-results-table/j
 import {CmapUpDownSignatureResultsTableComponent} from './components/cmap-up-down-signature-results-table/cmap-up-down-signature-results-table.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import {CmapGeneSetSignatureResultsTableComponent} from './components/cmap-gene-set-signature-results-table/cmap-gene-set-signature-results-table.component';
-import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
+import {ExportGenesDialogComponent} from '../shared/components/export-genes-dialog/export-genes-dialog.component';
 import {CmapUpDownSignatureResultsGraphComponent} from './components/cmap-up-down-signature-results-graph/cmap-up-down-signature-results-graph.component';
 import {CmapUpDownSignatureResultsViewComponent} from './components/cmap-up-down-signature-results-view/cmap-up-down-signature-results-view.component';
 import {CmapGeneSetSignatureResultsViewComponent} from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
@@ -100,13 +100,11 @@ import { CmapGeneSetSignatureResultsSummaryComponent } from './components/cmap-g
   declarations: [
     ResultsViewComponent,
     CmapQueryPanelComponent,
-    ExportGenesDialogComponent,
     GeneListComponent,
     JaccardQueryPanelComponent,
     JaccardResultsTableComponent,
     CmapUpDownSignatureResultsTableComponent,
     CmapGeneSetSignatureResultsTableComponent,
-    ExportGenesDialogComponent,
     CmapUpDownSignatureResultsGraphComponent,
     CmapUpDownSignatureResultsViewComponent,
     CmapGeneSetSignatureResultsViewComponent,

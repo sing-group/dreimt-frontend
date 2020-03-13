@@ -23,11 +23,14 @@ export class SignatureSummary {
   public readonly signatureName: string;
   public readonly signatureGenesUri: string;
   public readonly articleMetadataUri: string;
-
-  public static isA(object: any): object is SignatureSummary {
-    return object !== undefined && object !== null
-      && typeof object.signatureName === 'string'
-      && typeof object.signatureGenesUri === 'string'
-      && typeof object.articleMetadataUri === 'string';
-  }
+  public readonly articleTitle: string;
+  public readonly signatureType: string;
+  public readonly sourceDb: string;
+  public readonly organism: string;
+  public readonly disease: string[];
+  public readonly articlePubMedId: number;
+  public readonly cellTypeA: string[];
+  public readonly cellSubTypeA: string[];
+  public readonly cellTypeB: string[];
+  public readonly cellSubTypeB: string[];
 }

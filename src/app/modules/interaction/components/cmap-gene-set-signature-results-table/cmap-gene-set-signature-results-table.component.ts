@@ -30,7 +30,7 @@ import {CmapGeneSetSignatureResultsDataSource} from '../cmap-gene-set-signature-
 import {CmapGeneSetResultsService} from '../../services/cmap-gene-set-results.service';
 import {CmapGeneSetSignatureResultField} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-result-field.enum';
 import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
-import {ExportGenesDialogComponent} from '../export-genes-dialog/export-genes-dialog.component';
+import {ExportGenesDialogComponent} from '../../../shared/components/export-genes-dialog/export-genes-dialog.component';
 import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
 import saveAs from 'file-saver';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
@@ -275,6 +275,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     const dialogRef = this.dialog.open(ExportGenesDialogComponent, {
       width: '380px',
       data: {
+        title: 'Export query genes',
         onlyUniverseGenes: false,
         fileFormats: [FileFormat.GMT, FileFormat.GMX],
         fileFormat: FileFormat.GMT

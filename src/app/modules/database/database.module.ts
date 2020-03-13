@@ -26,13 +26,16 @@ import {DatabaseTableFiltersComponent} from './components/database-table-filters
 import {
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule, MatExpansionModule,
+  MatCardModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
+  MatListModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
-  MatSelectModule, MatSortModule,
+  MatSelectModule,
+  MatSortModule,
   MatTableModule,
   MatToolbarModule,
   MatTooltipModule
@@ -42,14 +45,23 @@ import {InteractionTypeIconPipe} from './pipes/interaction-type-icon.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
 import {HttpClientModule} from 'ngx-http-client';
-import { OrganismPipe } from './pipes/organism.pipe';
+import {OrganismPipe} from './pipes/organism.pipe';
+import {SignatureViewComponent} from './components/signature-view/signature-view.component';
+import {SignatureViewTableComponent} from './components/signature-view-table/signature-view-table.component';
+import {ExportGenesDialogComponent} from '../shared/components/export-genes-dialog/export-genes-dialog.component';
+import {SignatureViewSummaryComponent} from './components/signature-view-summary/signature-view-summary.component';
+import {SignatureViewGraphComponent} from './components/signature-view-graph/signature-view-graph.component';
 
 @NgModule({
   declarations: [
     DatabaseTableComponent,
     InteractionTypeIconPipe,
     DatabaseTableFiltersComponent,
-    OrganismPipe
+    OrganismPipe,
+    SignatureViewComponent,
+    SignatureViewTableComponent,
+    SignatureViewSummaryComponent,
+    SignatureViewGraphComponent
   ],
   imports: [
     CommonModule,
@@ -62,6 +74,7 @@ import { OrganismPipe } from './pipes/organism.pipe';
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
+    MatListModule,
     MatInputModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
@@ -72,6 +85,10 @@ import { OrganismPipe } from './pipes/organism.pipe';
     MatTooltipModule,
     ReactiveFormsModule,
     SharedModule
-  ]
+  ],
+  entryComponents: [
+    ExportGenesDialogComponent
+  ],
 })
-export class DatabaseModule { }
+export class DatabaseModule {
+}

@@ -22,14 +22,14 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {InteractionsService} from '../../services/interactions.service';
 import {DatabaseDataSource} from './database-data-source';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort} from '@angular/material';
 import {debounceTime} from 'rxjs/operators';
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DatabaseTableFiltersComponent} from '../database-table-filters/database-table-filters.component';
 import {InteractionType} from '../../../../models/interaction-type.enum';
 
@@ -59,7 +59,8 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
 
   constructor(
     private service: InteractionsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.debounceTime = 500;
     this.maxOptions = 100;
@@ -317,6 +318,10 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
       case InteractionType.SIGNATURE_DOWN:
         return 'DN';
     }
+  }
+
+  public navigateToSignature(signature: string): void {
+    this.router.navigate(['/database/signature', {signature: signature}]);
   }
 
   public ngOnDestroy(): void {

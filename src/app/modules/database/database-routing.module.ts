@@ -22,11 +22,16 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {DatabaseTableComponent} from './components/database-table/database-table.component';
+import {SignatureViewComponent} from './components/signature-view/signature-view.component';
 
 const routes: Routes = [
   {
     path: '',
     component: DatabaseTableComponent
+  },
+  {
+    path: 'signature',
+    component: SignatureViewComponent
   }
 ];
 

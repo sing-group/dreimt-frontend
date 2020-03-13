@@ -32,7 +32,7 @@ import {FormControl} from '@angular/forms';
 import saveAs from 'file-saver';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
-import {ExportGenesDialogComponent} from '../export-genes-dialog/export-genes-dialog.component';
+import {ExportGenesDialogComponent} from '../../../shared/components/export-genes-dialog/export-genes-dialog.component';
 import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
 import {Router} from '@angular/router';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
@@ -301,7 +301,7 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
   }
 
   public navigateToSignature(signature: string): void {
-    this.router.navigate(['/database', {signature: signature}]);
+    this.router.navigate(['/database/signature', {signature: signature}]);
   }
 
   public minJaccardFilterChanged(event): void {

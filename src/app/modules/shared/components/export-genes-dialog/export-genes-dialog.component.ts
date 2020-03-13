@@ -41,6 +41,7 @@ export class ExportGenesDialogComponent {
 }
 
 export interface DialogData {
+  title: string;
   onlyUniverseGenes: boolean;
   fileFormats: FileFormat[];
   fileFormat: FileFormat;

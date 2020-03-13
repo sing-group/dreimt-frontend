@@ -27,6 +27,7 @@ import {DreimtError} from '../../notification/entities';
 import {JaccardCalculateInteractionsQueryParams} from '../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {toPlainObject} from '../../../utils/types';
 import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
+import {SignatureSummary} from '../../../models/interactions/jaccard/signature-summary.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,16 @@ export class SignaturesService {
   public constructor(
     private http: HttpClient
   ) {
+  }
+
+  public getSignatureSummary(signatureName: string): Observable<SignatureSummary> {
+    return this.http.get<SignatureSummary>(`${environment.dreimtUrl}/signature/${signatureName}`)
+      .pipe(
+        DreimtError.throwOnError(
+          'Error retrieving signature information',
+          'Signature information could not be retrieved from the backend. Please, make sure that this signature exists in the database'
+        )
+      );
   }
 
   public listCellTypeAndSubtype1Values(queryParams: JaccardCalculateInteractionsQueryParams): Observable<CellTypeAndSubtype[]> {
