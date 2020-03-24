@@ -72,7 +72,13 @@ export class WorkService {
             status: ExecutionStatus.DELETED
           })))
         )),
-        mergeMap(works => forkJoin<Work>(...works))
+        mergeMap(works => {
+          if (works.length === 0) {
+            return of([]);
+          } else {
+            return forkJoin<Work>(...works);
+          }
+        })
       );
   }
 
@@ -82,6 +88,13 @@ export class WorkService {
 
   public removeUserWork(uuid: string): void {
     this.manipulateWorks(works => works.delete(uuid));
+  }
+
+  public removeAllUserWorks(): void {
+    this.manipulateWorks(works => {
+      works.clear();
+      return true;
+    } );
   }
 
   public listUserWorks(): Observable<string[]> {
@@ -95,7 +108,6 @@ export class WorkService {
 
     if (this.areWorksDifferentFromStored(works)) {
       localStorage.setItem(CACHE_KEY, JSON.stringify(Array.from(works)));
-
       this.workIds.next(Array.from(works));
     }
   }

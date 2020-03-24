@@ -63,10 +63,26 @@ export class WorkListComponent implements OnInit {
 
   public deleteWork(uuid: string): void {
     this.confirmDialog.open(ConfirmDeletionDialogComponent, {
-      data: {workUuid: uuid}
+      data: {
+        workUuid: uuid,
+        title: 'Delete result',
+        warning: 'You are about to delete a result'
+      }
     })
-    .afterClosed().subscribe(workUuid => {
+      .afterClosed().subscribe(workUuid => {
       this.workService.removeUserWork(workUuid);
+    });
+  }
+
+  public deleteAllWorks(): void {
+    this.confirmDialog.open(ConfirmDeletionDialogComponent, {
+      data: {
+        title: 'Clear history',
+        warning: 'You are about to delete all the results'
+      }
+    })
+      .afterClosed().subscribe(() => {
+      this.workService.removeAllUserWorks();
     });
   }
 

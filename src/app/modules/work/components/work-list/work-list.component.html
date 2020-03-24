@@ -20,7 +20,9 @@
   -->
 
 <ng-container *ngIf="works.length === 0">
-  No results found.
+  <div class="empty-works">
+    No results found.
+  </div>
 </ng-container>
 
 <table mat-table [dataSource]="works">
@@ -57,3 +59,11 @@
 
   <tr mat-row *matRowDef="let work; columns: ['status', 'info', 'actions-open', 'actions-delete'];"></tr>
 </table>
+
+<ng-container *ngIf="works.length !== 0">
+  <div class="work-actions">
+    <button mat-icon-button (click)="deleteAllWorks()" matTooltip="Delete all works">
+      Clear history <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</ng-container>
