@@ -37,6 +37,14 @@ export class FieldFilterCellTypeModel extends FieldFilterModel {
     super.update(Array.from(cellTypes.values()));
   }
 
+  public setCellTypeAndSubtype(cellType: string, cellSubtype: string) {
+    if (!cellSubtype) {
+      this.filter = cellType;
+    } else {
+      this.filter = cellType + ' / ' + cellSubtype;
+    }
+  }
+
   public getCellTypeFilter(): string {
     let clearedFilter = super.getClearedFilter();
     if (clearedFilter !== undefined) {

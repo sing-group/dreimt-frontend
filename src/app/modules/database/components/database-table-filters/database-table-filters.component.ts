@@ -30,6 +30,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {FilterFieldComponent} from '../../../shared/components/filter-field/filter-field.component';
 import {FieldFilterCellTypeModel} from '../../../shared/components/filter-field/field-filter-cell-type.model';
+import {ParamMap} from '@angular/router';
 
 @Component({
   selector: 'app-database-table-filters',
@@ -51,7 +52,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly organismFieldFilter: FieldFilterModel;
   public readonly signatureSourceDbFieldFilter: FieldFilterModel;
   public readonly pubMedIdFieldFilter: FieldFilterModel;
-  public readonly drugSourceNameFieldFilter: FieldFilterModel;
   public readonly experimentalDesignFilter: FieldFilterModel;
   public readonly interactionTypeFilter: FieldFilterModel;
   public readonly minTauFilter: FormControl;
@@ -77,7 +77,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.organismFieldFilter = new FieldFilterModel();
     this.signatureSourceDbFieldFilter = new FieldFilterModel();
     this.pubMedIdFieldFilter = new FieldFilterModel();
-    this.drugSourceNameFieldFilter = new FieldFilterModel();
     this.experimentalDesignFilter = new FieldFilterModel();
     this.interactionTypeFilter = new FieldFilterModel();
     this.minTauFilter = new FormControl();
@@ -116,7 +115,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
       this.loadOrganisms(queryParams);
       this.loadSignatureSourceDbs(queryParams);
       this.loadSignaturePubMedIds(queryParams);
-      this.loadDrugSourceNames(queryParams);
       this.loadExperimentalDesigns(queryParams);
       this.loadInteractionTypes(queryParams);
 
@@ -130,7 +128,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   private emitDatabaseFiltersEvent(queryParams: DatabaseQueryParams): void {
-    if (this.isValidFiltersConfiguration()) {
+    if (this.isValidFiltersConfiguration() || this.areBasicFiltersEmpty()) {
       this.applyDatabaseFilters.emit(queryParams);
     }
   }
@@ -140,6 +138,13 @@ export class DatabaseTableFiltersComponent implements OnInit {
       this.organismFieldFilter.getClearedFilter() !== undefined &&
       this.cellTypeAndSubtype1FieldFilter.getClearedFilter() !== undefined
     );
+  }
+
+  private areBasicFiltersEmpty(): boolean {
+    return !this.isAdvancedPanelOpened &&
+      this.organismFieldFilter.getClearedFilter() === undefined &&
+      this.cellTypeAndSubtype1FieldFilter.getClearedFilter() === undefined &&
+      this.drugCommonNameFieldFilter.getClearedFilter() === undefined;
   }
 
   private checkCellTypeAndSubType2FiltersStatus(): void {
@@ -195,11 +200,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
       .subscribe(values => this.pubMedIdFieldFilter.update(values));
   }
 
-  private loadDrugSourceNames(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugSourceNameValues(queryParams)
-      .subscribe(values => this.drugSourceNameFieldFilter.update(values));
-  }
-
   private loadExperimentalDesigns(queryParams: DatabaseQueryParams): void {
     this.service.listExperimentalDesignValues(queryParams)
       .subscribe(values => this.experimentalDesignFilter.update(values));
@@ -238,7 +238,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),
       signaturePubMedId: this.pubMedIdFieldFilter.getClearedFilter(),
-      drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
       experimentalDesign: experimentalDesign,
       interactionType: interactionType,
       minTau: this.minTauFilter.value,
@@ -277,7 +276,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.organismFieldFilter.filter = '';
     this.signatureSourceDbFieldFilter.filter = '';
     this.pubMedIdFieldFilter.filter = '';
-    this.drugSourceNameFieldFilter.filter = '';
     this.experimentalDesignFilter.filter = '';
     this.interactionTypeFilter.filter = '';
 
@@ -286,8 +284,88 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.maxDownFdrFilterComponent.clearValue();
   }
 
-  public setSignatureFilter(signatureParam: string): void {
-    this.signatureNameFieldFilter.filter = signatureParam;
+  public setFilters(params: ParamMap): void {
+    let openAdvancedPanel = false;
+
+    const signatureName = params.get('signatureName');
+    if (signatureName) {
+      openAdvancedPanel = true;
+      this.signatureNameFieldFilter.filter = signatureName;
+    }
+
+    const cellType1 = params.get('cellType1');
+    if (cellType1) {
+      this.cellTypeAndSubtype1FieldFilter.setCellTypeAndSubtype(cellType1, params.get('cellSubType1'));
+
+      const cellType2 = params.get('cellType2');
+      if (cellType2) {
+        this.cellTypeAndSubtype2FieldFilter.setCellTypeAndSubtype(cellType2, params.get('cellSubType2'));
+      }
+    }
+
+    const experimentalDesign = params.get('experimentalDesign');
+    if (experimentalDesign) {
+      openAdvancedPanel = true;
+      this.experimentalDesignFilter.filter = experimentalDesign;
+    }
+
+    const disease = params.get('disease');
+    if (disease) {
+      openAdvancedPanel = true;
+      this.diseaseFieldFilter.filter = disease;
+    }
+
+    const organism = params.get('organism');
+    if (organism) {
+      this.organismFieldFilter.filter = organism;
+    }
+
+    const signaturePubMedId = params.get('signaturePubMedId');
+    if (signaturePubMedId) {
+      openAdvancedPanel = true;
+      this.pubMedIdFieldFilter.filter = signaturePubMedId;
+    }
+
+    const drugCommonName = params.get('drugCommonName');
+    if (drugCommonName) {
+      openAdvancedPanel = true;
+      this.drugCommonNameFieldFilter.filter = drugCommonName;
+    }
+
+    const signatureSourceDb = params.get('signatureSourceDb');
+    if (signatureSourceDb) {
+      openAdvancedPanel = true;
+      this.signatureSourceDbFieldFilter.filter = signatureSourceDb;
+    }
+
+    const interactionType = params.get('interactionType');
+    if (interactionType) {
+      openAdvancedPanel = true;
+      this.interactionTypeFilter.filter = interactionType;
+    }
+
+    const minTau = params.get('minTau');
+    if (minTau) {
+      openAdvancedPanel = true;
+      this.minTauFilterComponent.setValue(minTau);
+      this.minTauFilter.setValue(minTau);
+    }
+
+    const maxUpFdr = params.get('maxUpFdr');
+    if (maxUpFdr) {
+      openAdvancedPanel = true;
+      this.maxUpFdrFilterComponent.setValue(maxUpFdr);
+      this.maxUpFdrFilter.setValue(maxUpFdr);
+    }
+
+    const maxDownFdr = params.get('maxDownFdr');
+    if (maxDownFdr) {
+      openAdvancedPanel = true;
+      this.maxDownFdrFilterComponent.setValue(maxDownFdr);
+      this.maxDownFdrFilter.setValue(maxDownFdr);
+    }
+
+    this.isAdvancedPanelOpened = openAdvancedPanel;
   }
 
   public advancedPanelOpened(): void {

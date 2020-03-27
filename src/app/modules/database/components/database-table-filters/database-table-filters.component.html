@@ -32,7 +32,7 @@
       use the advanced filters panel.
     </div>
 
-    <mat-expansion-panel (opened)="advancedPanelOpened()" (closed)="advancedPanelClosed()">
+    <mat-expansion-panel (opened)="advancedPanelOpened()" (closed)="advancedPanelClosed()" [expanded]="isAdvancedPanelOpened">
       <mat-expansion-panel-header>
         <mat-panel-title>Advanced Filters</mat-panel-title>
       </mat-expansion-panel-header>

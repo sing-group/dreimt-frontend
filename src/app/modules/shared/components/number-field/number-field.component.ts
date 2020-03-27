@@ -67,6 +67,10 @@ export class NumberFieldComponent implements OnInit {
     return this.formControl.value !== null;
   }
 
+  public setValue(value): void {
+    this.formControl.setValue(value);
+  }
+
   public clearValue(): void {
     this.formControl.setValue(null);
   }

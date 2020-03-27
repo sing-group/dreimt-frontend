@@ -19,17 +19,17 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {InteractionsService} from '../../services/interactions.service';
 import {DatabaseDataSource} from './database-data-source';
-import {MatDialog, MatPaginator, MatSort} from '@angular/material';
+import {MatPaginator, MatSort} from '@angular/material';
 import {debounceTime} from 'rxjs/operators';
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {DatabaseTableFiltersComponent} from '../database-table-filters/database-table-filters.component';
 import {InteractionType} from '../../../../models/interaction-type.enum';
 
@@ -38,7 +38,7 @@ import {InteractionType} from '../../../../models/interaction-type.enum';
   templateUrl: './database-table.component.html',
   styleUrls: ['./database-table.component.scss']
 })
-export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
+export class DatabaseTableComponent implements AfterViewInit, OnInit {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -54,8 +54,6 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
   private filterParams: DatabaseQueryParams;
   private positiveTauColorMap;
   private negativeTauColorMap;
-
-  private routeSubscription;
 
   constructor(
     private service: InteractionsService,
@@ -83,19 +81,11 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
     this.initSort();
 
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
+    this.setInitialQueryParams(this.route.snapshot.queryParamMap);
+  }
 
-    this.routeSubscription = this.route
-      .paramMap
-      .subscribe(params => {
-        const signatureParam = params.get('signature');
-        if (signatureParam) {
-          this.filterParams = {signatureName: signatureParam};
-          this.databaseTableFiltersComponent.setSignatureFilter(signatureParam);
-          this.updatePage();
-        } else {
-          this.updatePage();
-        }
-      });
+  private setInitialQueryParams(params: ParamMap): void {
+    this.databaseTableFiltersComponent.setFilters(params);
   }
 
   public initSort(): void {
@@ -150,6 +140,12 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
 
   public applyDatabaseFilters(newFilterParams: DatabaseQueryParams, defaultPageIndex = 0, defaultPageSize = 50): void {
     this.filterParams = newFilterParams;
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: this.filterParams
+      });
     this.updatePage(this.createQueryParameters());
   }
 
@@ -322,9 +318,5 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit, OnDestroy 
 
   public navigateToSignature(signature: string): void {
     this.router.navigate(['/database/signature', {signature: signature}]);
-  }
-
-  public ngOnDestroy(): void {
-    this.routeSubscription.unsubscribe();
   }
 }

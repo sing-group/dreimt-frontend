@@ -75,7 +75,8 @@ export class DatabaseQueryParams {
         a.signatureSourceDb === b.signatureSourceDb &&
         a.interactionType === b.interactionType &&
         a.minTau === b.minTau &&
-        a.maxUpFdr === b.maxUpFdr;
+        a.maxUpFdr === b.maxUpFdr &&
+        a.maxDownFdr === b.maxDownFdr;
     }
   }
 }
