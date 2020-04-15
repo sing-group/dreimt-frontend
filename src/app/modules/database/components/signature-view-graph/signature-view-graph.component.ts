@@ -33,12 +33,14 @@ export interface DataModel {
 })
 export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() public dataSource: SignatureViewDataSource;
+
   constructor() {
   }
 
   private static TAU_THRESHOLD = 75;
   private static Y_AXIS_MAX = 2.42;
   private static renderedObjects = [];
+  private static OVERLAPPING_INTERACTIONS_MAP = new Map();
 
   private dataSourceSubscription: Subscription;
   private loadingSubscription: Subscription;
@@ -174,6 +176,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
       endOnTick: false
     },
     tooltip: {
+      useHTML: true,
       formatter: function () {
         return SignatureViewGraphComponent.tooltip(this.point);
       }
@@ -264,6 +267,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
   public ngAfterViewInit(): void {
     this.dataSourceSubscription = this.dataSource.fullData$.subscribe(
       data => {
+        SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.clear();
 
         const positiveTauBoth = data
           .filter(interaction => interaction.upFdr !== null && interaction.downFdr !== null)
@@ -295,6 +299,8 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
           .filter(interaction => interaction.tau <= -SignatureViewGraphComponent.TAU_THRESHOLD)
           .map(this.mapInteraction);
 
+        SignatureViewGraphComponent.pruneOverlappingInteractionsMap();
+
         this.options.series[0]['data'] = positiveTauBoth;
         this.options.series[1]['data'] = negativeTauBoth;
         this.options.series[2]['data'] = positiveTauUp;
@@ -304,6 +310,14 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
 
         Highcharts.chart('chart', this.options);
       });
+  }
+
+  private static pruneOverlappingInteractionsMap(): void {
+    for (const key of Array.from(SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.keys())) {
+      if (SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.get(key).length === 1) {
+        SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.delete(key);
+      }
+    }
   }
 
   private static addDecorations(hchart) {
@@ -460,17 +474,26 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
   }
 
   private static tooltip(point): string {
-    let tooltip = `<b>TAU</b>: ${point.interaction.tau.toFixed(4)} <br/>`;
-    if (point.interaction.upFdr !== null) {
-      tooltip = tooltip.concat(`<b>Up Genes FDR</b>: ${point.interaction.upFdr.toFixed(4)} <br/>`);
+    let points = [point.interaction];
+    const key = SignatureViewGraphComponent.pointKey(point.x, point.y);
+    if (SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.has(key)) {
+      points = SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.get(key);
     }
-    if (point.interaction.downFdr !== null) {
-      tooltip = tooltip.concat(`<b>Down Genes FDR</b>: ${point.interaction.downFdr.toFixed(4)} <br/>`);
+    return points.map(SignatureViewGraphComponent.interactionTooltip).join('<br/>');
+  }
+
+  private static interactionTooltip(interaction: CmapUpDownSignatureDrugInteraction): string {
+    let tooltip = `<b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>`;
+    if (interaction.upFdr !== null) {
+      tooltip = tooltip.concat(`<b>Up Genes FDR</b>: ${interaction.upFdr.toFixed(4)} <br/>`);
+    }
+    if (interaction.downFdr !== null) {
+      tooltip = tooltip.concat(`<b>Down Genes FDR</b>: ${interaction.downFdr.toFixed(4)} <br/>`);
     }
     return tooltip.concat(`
-            <b>Drug</b>: ${point.interaction.drug.commonName} <br/>
-            <b>\tStatus</b>: ${point.interaction.drug.status} <br/>
-            <b>\tMOA</b>: ${point.interaction.drug.moa} <br/>
+            <b>Drug</b>: ${interaction.drug.commonName} <br/>
+            <b>\tStatus</b>: ${interaction.drug.status} <br/>
+            <b>\tMOA</b>: ${interaction.drug.moa} <br/>
           `);
   }
 
@@ -484,15 +507,34 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
       interactionFdr = Math.min(interaction.upFdr, interaction.downFdr);
     }
 
+    const x = interaction.tau;
+    const y = SignatureViewGraphComponent.convertFdr(
+      Math.max(
+        interactionFdr,
+        0.005
+      )
+    );
+
+    SignatureViewGraphComponent.addToOverlappingInteractionsMap(x, y, interaction);
+
     return {
-      x: interaction.tau,
-      y: SignatureViewGraphComponent.convertFdr(
-        Math.max(
-          interactionFdr,
-          0.005
-        )
-      ),
+      x: x,
+      y: y,
       interaction: interaction
     };
+  }
+
+  private static addToOverlappingInteractionsMap(x, y, interaction): void {
+    const key = SignatureViewGraphComponent.pointKey(x, y);
+    if (SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.has(key)) {
+      const newArray = SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.get(key).concat([interaction]);
+      SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.set(key, newArray);
+    } else {
+      SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.set(key, [interaction]);
+    }
+  }
+
+  private static pointKey(x, y): string {
+    return x.toString().concat(y.toString());
   }
 }

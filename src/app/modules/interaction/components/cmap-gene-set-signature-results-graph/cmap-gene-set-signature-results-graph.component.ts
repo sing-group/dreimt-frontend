@@ -34,6 +34,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
   private static TAU_THRESHOLD = 75;
   private static Y_AXIS_MAX = 2.42;
   private static renderedObjects = [];
+  private static OVERLAPPING_INTERACTIONS_MAP = new Map();
 
   private dataSourceSubscription: Subscription;
   private loadingSubscription: Subscription;
@@ -169,6 +170,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
       endOnTick: false
     },
     tooltip: {
+      useHTML: true,
       formatter: function () {
         return CmapGeneSetSignatureResultsGraphComponent.tooltip(this.point);
       }
@@ -215,6 +217,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
   public ngAfterViewInit(): void {
     this.dataSourceSubscription = this.dataSource.fullData$.subscribe(
       data => {
+        CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.clear();
 
         const positiveTau = data
           .filter(interaction => interaction.tau >= CmapGeneSetSignatureResultsGraphComponent.TAU_THRESHOLD)
@@ -224,11 +227,21 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
           .filter(interaction => interaction.tau <= -CmapGeneSetSignatureResultsGraphComponent.TAU_THRESHOLD)
           .map(this.mapInteraction);
 
+        CmapGeneSetSignatureResultsGraphComponent.pruneOverlappingInteractionsMap();
+
         this.options.series[0]['data'] = positiveTau;
         this.options.series[1]['data'] = negativeTau;
 
         Highcharts.chart('chart', this.options);
       });
+  }
+
+  private static pruneOverlappingInteractionsMap(): void {
+    for (const key of Array.from(CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.keys())) {
+      if (CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.get(key).length === 1) {
+        CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.delete(key);
+      }
+    }
   }
 
   private static addDecorations(hchart) {
@@ -384,27 +397,54 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
     return this.loading;
   }
 
-
   private static tooltip(point): string {
+    let points = [point.interaction];
+    const key = CmapGeneSetSignatureResultsGraphComponent.pointKey(point.x, point.y);
+    if (CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.has(key)) {
+      points = CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.get(key);
+    }
+    return points.map(CmapGeneSetSignatureResultsGraphComponent.interactionTooltip).join('<br/>');
+  }
+
+  private static interactionTooltip(interaction: CmapGeneSetSignatureDrugInteraction): string {
     return `
-            <b>TAU</b>: ${point.interaction.tau.toFixed(4)} <br/>
-            <b>Up Genes FDR</b>: ${point.interaction.fdr.toFixed(4)} <br/>
-            <b>Drug</b>: ${point.interaction.drug.commonName} <br/>
-            <b>\tStatus</b>: ${point.interaction.drug.status} <br/>
-            <b>\tMOA</b>: ${point.interaction.drug.moa} <br/>
+            <b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>
+            <b>Up Genes FDR</b>: ${interaction.fdr.toFixed(4)} <br/>
+            <b>Drug</b>: ${interaction.drug.commonName} <br/>
+            <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
+            <b>&nbsp&nbspMOA</b>: ${interaction.drug.moa} <br/>
           `;
   }
 
   private mapInteraction(interaction: CmapGeneSetSignatureDrugInteraction) {
+    const x = interaction.tau;
+    const y = CmapGeneSetSignatureResultsGraphComponent.convertFdr(
+      Math.max(
+        interaction.fdr,
+        0.005
+      )
+    );
+
+    CmapGeneSetSignatureResultsGraphComponent.addToOverlappingInteractionsMap(x, y, interaction);
+
     return {
-      x: interaction.tau,
-      y: CmapGeneSetSignatureResultsGraphComponent.convertFdr(
-        Math.max(
-          interaction.fdr,
-          0.005
-        )
-      ),
+      x: x,
+      y: y,
       interaction: interaction
     };
+  }
+
+  private static addToOverlappingInteractionsMap(x, y, interaction): void {
+    const key = CmapGeneSetSignatureResultsGraphComponent.pointKey(x, y);
+    if (CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.has(key)) {
+      const newArray = CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.get(key).concat([interaction]);
+      CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.set(key, newArray);
+    } else {
+      CmapGeneSetSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.set(key, [interaction]);
+    }
+  }
+
+  private static pointKey(x, y): string {
+    return x.toString().concat(y.toString());
   }
 }
