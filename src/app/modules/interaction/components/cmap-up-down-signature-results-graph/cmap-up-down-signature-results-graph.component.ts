@@ -199,6 +199,11 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
         return CmapUpDownSignatureResultsGraphComponent.tooltip(this.point);
       }
     },
+    plotOptions: {
+      series: {
+        turboThreshold: 0
+      }
+    },
     series: [
       {
         name: 'Positive TAU',

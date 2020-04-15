@@ -173,6 +173,11 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
         return CmapGeneSetSignatureResultsGraphComponent.tooltip(this.point);
       }
     },
+    plotOptions: {
+      series: {
+        turboThreshold: 0
+      }
+    },
     series: [
       {
         name: 'Positive TAU',
