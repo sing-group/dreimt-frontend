@@ -25,9 +25,15 @@
       <a routerLink="/"><img id="logo" src="assets/logo.svg" [alt]="title"></a>
     </div>
     <div class="header-right">
-      <button mat-button routerLink="/interactions/drug-prioritization">Drug Prioritization</button>
-      <button mat-button routerLink="/interactions/jaccard">Signatures Comparison</button>
-      <button mat-button routerLink="/database">Database</button>
+      <button mat-button routerLink="/interactions/drug-prioritization" routerLinkActive="active-route"
+              routerLinkActiveOptions="{exact:true}">Drug Prioritization
+      </button>
+      <button mat-button routerLink="/interactions/jaccard" routerLinkActive="active-route"
+              routerLinkActiveOptions="{exact:true}">Signatures Comparison
+      </button>
+      <button mat-button routerLink="/database" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}">
+        Database
+      </button>
       <button mat-button [matBadge]="workCount" matBadgePosition="after" matBadgeColor="accent"
               (click)="queriesList.toggle()">
         Queries History
