@@ -15,7 +15,7 @@ import {DreimtInformationService} from '../../../../services/dreimt-information.
 })
 export class SignatureViewComponent implements OnInit, OnDestroy {
 
-  private error = false;
+  private errorMessage: string;
   public minDatabaseTau: number;
   private signatureParam: string;
   private signature: SignatureSummary;
@@ -32,17 +32,15 @@ export class SignatureViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.routeSubscription = this.route
-      .paramMap
-      .subscribe(params => {
-        const signatureParam = params.get('signature');
-        if (signatureParam) {
-          this.signatureParam = signatureParam;
-          this.getSignature();
-        }
-      });
-
     this.dreimtInformationService.getDreimtInformation().subscribe(info => this.minDatabaseTau = info.tauThreshold);
+
+    const signatureParam = this.route.snapshot.queryParamMap.get('signature');
+    if (signatureParam) {
+      this.signatureParam = signatureParam;
+      this.getSignature();
+    } else {
+      this.errorMessage = 'No signature selected';
+    }
   }
 
   private getSignature(): void {
@@ -52,7 +50,7 @@ export class SignatureViewComponent implements OnInit, OnDestroy {
       .pipe(
         catchError(
           (error: Error) => {
-            this.error = true;
+            this.errorMessage = 'Error loading signature ' + this.signatureParam;
             return throwError(error);
           }
         ))
@@ -60,7 +58,7 @@ export class SignatureViewComponent implements OnInit, OnDestroy {
   }
 
   public isLoading(): boolean {
-    return this.signature === undefined && !this.error;
+    return this.signature === undefined && !this.isError();
   }
 
   public isLoaded(): boolean {
@@ -68,7 +66,7 @@ export class SignatureViewComponent implements OnInit, OnDestroy {
   }
 
   public isError(): boolean {
-    return this.error;
+    return this.errorMessage !== undefined;
   }
 
   public ngOnDestroy(): void {

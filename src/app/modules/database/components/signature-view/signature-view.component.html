@@ -4,7 +4,7 @@
 </div>
 
 <div *ngIf="isError()">
-  <p>Error loading signature {{signatureParam}}</p>
+  <p>{{errorMessage}}</p>
 </div>
 
 <ng-container *ngIf="isLoaded()">

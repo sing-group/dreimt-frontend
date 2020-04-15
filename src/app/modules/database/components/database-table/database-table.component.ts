@@ -317,6 +317,6 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   }
 
   public navigateToSignature(signature: string): void {
-    this.router.navigate(['/database/signature', {signature: signature}]);
+    this.router.navigate(['/database/signature'], {queryParams: {signature: signature}});
   }
 }

@@ -301,7 +301,7 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
   }
 
   public navigateToSignature(signature: string): void {
-    this.router.navigate(['/database/signature', {signature: signature}]);
+    this.router.navigate(['/database/signature'], {queryParams: {signature: signature}});
   }
 
   public minJaccardFilterChanged(event): void {
