@@ -28,18 +28,6 @@
       <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
     </mat-form-field>
 
-    <div class="query-configuration">
-      <form [formGroup]="formGroup">
-        <mat-form-field class="permutationField">
-          <input type="number" matInput placeholder="Number of GSEA permutations" [min]="0" [max]="1000" [step]="1"
-                 [value]="formGroup.value.numPerm" formControlName="numPerm">
-        </mat-form-field>
-        <mat-slider class="permutationSlider" thumbLabel tickInterval="1" [min]="0" [max]="1000" [step]="1"
-                    [value]="formGroup.value.numPerm"
-                    formControlName="numPerm"></mat-slider>
-      </form>
-    </div>
-
     <app-two-gene-lists class="query-genes" (upGenesChanged)="onUpGenesChanged($event)"
                         (downGenesChanged)="onDownGenesChanged($event)"></app-two-gene-lists>
 

@@ -43,12 +43,9 @@
       </mat-expansion-panel-header>
 
       <mat-list>
-        <mat-list-item> Number of GSEA permutations: {{metadata.numPerm}}</mat-list-item>
-
         <mat-list-item> Query up genes: {{metadata.upGenesCount}}</mat-list-item>
         <mat-list-item> Query up genes in universe: {{metadata.upUniverseGenesCount}}
         </mat-list-item>
-
 
         <mat-list-item *ngIf="metadata.downGenesCount"> Query down genes:
           {{metadata.downGenesCount}}

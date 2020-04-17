@@ -225,7 +225,7 @@ export class JaccardQueryPanelComponent implements OnInit {
       genes: genes
     };
 
-    this.interactionsService.launchQuery(queryParams)
+    this.interactionsService.launchJaccardQuery(queryParams)
       .subscribe(work => {
         this.navigateToWork(work);
       });

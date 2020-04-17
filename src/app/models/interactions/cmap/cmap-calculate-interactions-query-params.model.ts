@@ -21,9 +21,4 @@
 
 export class CmapCalculateInteractionsQueryParams {
   public readonly queryTitle?: string;
-  public readonly numPerm: number;
-
-  public static isA(object: any): object is CmapCalculateInteractionsQueryParams {
-    return object.numPerm !== undefined;
-  }
 }

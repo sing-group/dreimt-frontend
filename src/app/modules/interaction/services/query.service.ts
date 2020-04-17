@@ -53,7 +53,15 @@ export class QueryService {
     );
   }
 
-  public launchQuery(queryParams: CalculateInteractionsQueryParamsModel): Observable<Work> {
+  public launchCmapQuery(queryParams: CalculateInteractionsQueryParamsModel): Observable<Work> {
+    return this.launchQuery(queryParams, 'cmap');
+  }
+
+  public launchJaccardQuery(queryParams: CalculateInteractionsQueryParamsModel): Observable<Work> {
+    return this.launchQuery(queryParams, 'jaccard');
+  }
+
+  private launchQuery(queryParams: CalculateInteractionsQueryParamsModel, analysisResource: string): Observable<Work> {
     let body: {
       upGenes: string[];
       downGenes?: string[];
@@ -65,20 +73,14 @@ export class QueryService {
       body = {upGenes: queryParams.genes.genes};
     }
 
-    let analysisResource: string;
-    if (CmapCalculateInteractionsQueryParams.isA(queryParams.params)) {
-      analysisResource = 'cmap';
-    } else {
-      analysisResource = 'jaccard';
-    }
-
     Object.assign(body, body, queryParams.params);
 
     return this.http.post<Work>(
       `${environment.dreimtUrl}/interactions/query/${analysisResource}`, body
     ).pipe(
       tap(work => this.workService.addUserWork(work.id.id)),
-      DreimtError.throwOnError('Query error', (error: HttpErrorResponse) => 'Query could not be launched due to the following error: ' + error.error)
+      DreimtError.throwOnError('Query error',
+        (error: HttpErrorResponse) => 'Query could not be launched due to the following error: ' + error.error)
     );
   }
 

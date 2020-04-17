@@ -31,8 +31,7 @@ mat-card {
   grid-template-areas:
     "query-row-1"
     "query-row-2"
-    "query-row-3"
-    "query-row-4";
+    "query-row-3";
   grid-column-gap: 40px;
 }
 
@@ -40,35 +39,16 @@ mat-card {
   grid-area: query-row-1;
 }
 
-.query-configuration {
+.query-genes {
   grid-area: query-row-2;
 }
 
-.query-genes {
-  grid-area: query-row-3;
-}
-
 .query-examples {
-  grid-area: query-row-4;
+  grid-area: query-row-3;
 }
 
 app-gene-list {
   width: 100%;
-}
-
-form {
-  display: grid;
-  grid-template-areas:
-    "permutationsInput permutationsSlider";
-  grid-template-columns: auto 1fr;
-}
-
-.permutationField {
-  grid-area: permutationsInput;
-}
-
-.permutationSlider {
-  grid-area: permutationsSlider;
 }
 
 .btn-load-genes {

@@ -38,14 +38,12 @@ import {Work} from '../../../../models/work/work.model';
   templateUrl: './cmap-query-panel.component.html',
   styleUrls: ['./cmap-query-panel.component.scss']
 })
-export class CmapQueryPanelComponent implements OnInit {
+export class CmapQueryPanelComponent {
   private static readonly DEFAULT_VALUES = {
-    debounceTime: 500,
-    numPerm: 1000,
+    debounceTime: 500
   };
 
   public queryTitle: string;
-  private numPerm: number;
   private upGenes: string[];
   private downGenes: string[];
 
@@ -56,7 +54,6 @@ export class CmapQueryPanelComponent implements OnInit {
   private precalculatedExamples: PrecalculatedExample[];
 
   public constructor(
-    private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private interactionsService: QueryService,
@@ -67,13 +64,6 @@ export class CmapQueryPanelComponent implements OnInit {
     this.queryTitle = '';
     this.upGenes = [];
     this.downGenes = [];
-
-    this.formGroup = this.formBuilder.group({
-      'numPerm': [
-        CmapQueryPanelComponent.DEFAULT_VALUES.numPerm,
-        [Validators.required, Validators.min(1), Validators.max(1000)]
-      ]
-    });
 
     this.precalculatedExampleService.listCmapPrecalculatedExamples()
       .subscribe(examples => this.precalculatedExamples = examples);
@@ -93,41 +83,13 @@ export class CmapQueryPanelComponent implements OnInit {
     this.downGenes = CmapQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 
-  public ngOnInit(): void {
-    this.formGroup.valueChanges
-      .pipe(
-        debounceTime(this.debounceTime),
-        distinctUntilChanged()
-      )
-      .subscribe(val => {
-        if (this.formGroup.valid) {
-          this.changeFormConfiguration(val);
-        } else {
-          this.changeFormConfiguration();
-        }
-      });
-
-    this.changeFormConfiguration(this.formGroup.value);
-  }
-
-  private changeFormConfiguration(val?: {
-    numPerm: number;
-  }) {
-    if (val !== undefined) {
-      this.numPerm = val.numPerm;
-    } else {
-      this.numPerm = undefined;
-    }
-  }
-
   public isValid(): boolean {
-    return this.upGenes.length > 0 && this.numPerm !== undefined;
+    return this.upGenes.length > 0;
   }
 
   private getQueryConfiguration(): CmapCalculateInteractionsQueryParams {
     return {
-      queryTitle: this.queryTitle,
-      numPerm: this.numPerm
+      queryTitle: this.queryTitle
     };
   }
 
@@ -149,7 +111,7 @@ export class CmapQueryPanelComponent implements OnInit {
       genes: genes
     };
 
-    this.interactionsService.launchQuery(queryParams)
+    this.interactionsService.launchCmapQuery(queryParams)
       .subscribe(work => {
         this.navigateToWork(work);
       });
