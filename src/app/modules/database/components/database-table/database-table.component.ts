@@ -175,7 +175,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     }
     if (interaction.signature.articleAuthors) {
       var articleAuthors = '';
-      if (interaction.signature.articleAuthors.indexOf(',') != -1) {
+      if (interaction.signature.articleAuthors.indexOf(',') !== -1) {
         articleAuthors = interaction.signature.articleAuthors.substring(0, interaction.signature.articleAuthors.indexOf(',')) + ' et al.';
       } else {
         articleAuthors = interaction.signature.articleAuthors;

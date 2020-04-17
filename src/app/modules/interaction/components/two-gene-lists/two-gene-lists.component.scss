@@ -2,14 +2,41 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-  grid-template-areas: "query-row-1-col-1 query-row-1-col-2";
+  grid-template-areas:
+    "row-1 row-1"
+    "row-2-col-1 row-2-col-2";
   grid-column-gap: 40px;
 }
 
+.genes-info {
+  grid-area: row-1;
+  display: inline-grid;
+  grid-template-columns: 68% 32%;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "row-1-col-1 row-1-col-2";
+}
+
 .up-genes {
-  grid-area: query-row-1-col-1;
+  grid-area: row-2-col-1;
 }
 
 .down-genes {
-  grid-area: query-row-1-col-2;
+  grid-area: row-2-col-2;
+}
+
+.genes-info-title{
+  font-size: 1.25em;
+  grid-area: row-1-col-1;
+  margin: 0px;
+}
+
+.genes-info-buttons {
+  grid-area: row-1-col-2;
+}
+
+::ng-deep .mat-tooltip {
+  white-space: pre-line;
+  word-wrap: break-word;
+  line-height: 1.5;
 }
