@@ -5,19 +5,11 @@
       </mat-icon>
     </p>
     <div class="genes-info-buttons">
-      <input id="gmt-selection" type="file" name="files" (change)="onGmtChange($event)" style="display: none"/>
+      <input id="file-selection" type="file" name="files" (change)="onImportFileChange($event)" style="display: none"/>
 
-      <button mat-button (click)="importGmtFile()"
-              matTooltip="Import a file in Gene Matrix Transposed file format (*.gmt)">
+      <button mat-button (click)="importFile()" matTooltip="Import a geneset/signature from a plain text file.">
         <mat-icon>cloud_upload</mat-icon>
-        Import GMT
-      </button>
-
-      <input id="gmx-selection" type="file" name="files" (change)="onGmxChange($event)" style="display: none"/>
-
-      <button mat-button (click)="importGmxFile()" matTooltip="Import a file in Gene MatriX file format (*.gmx)">
-        <mat-icon>cloud_upload</mat-icon>
-        Import GMX
+        Import file
       </button>
     </div>
   </div>
