@@ -162,7 +162,6 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
     let tooltip = 'Source name: ' + interaction.drug.sourceName;
     tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
-    tooltip = tooltip + '\nMOA: ' + interaction.drug.moa;
 
     return tooltip;
   }

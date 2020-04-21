@@ -61,8 +61,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   @ViewChild(MatSort) private sort: MatSort;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
-  public readonly drugSourceNameFieldFilter: FieldFilterModel;
-  public readonly drugSourceDbFieldFilter: FieldFilterModel;
+  public readonly drugMoaFieldFilter: FieldFilterModel;
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
@@ -88,12 +87,11 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     this.maxOptions = 100;
 
     this.columns = [
-      'tau', 'upFdr', 'downFdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
+      'drugCommonName', 'tau', 'upFdr', 'downFdr', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
-    this.drugSourceNameFieldFilter = new FieldFilterModel();
-    this.drugSourceDbFieldFilter = new FieldFilterModel();
+    this.drugMoaFieldFilter = new FieldFilterModel();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
     this.maxDownFdrFilter = new FormControl();
@@ -211,8 +209,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
 
     this.updatePage(queryParams);
     this.loadDrugCommonNames(queryParams);
-    this.loadDrugSourceNames(queryParams);
-    this.loadDrugSourceDbs(queryParams);
+    this.loadDrugMoas(queryParams);
   }
 
   public ngOnDestroy(): void {
@@ -238,14 +235,9 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     }
   }
 
-  private loadDrugSourceNames(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugSourceNameValues(this.metadata.id, queryParams)
-      .subscribe(values => this.drugSourceNameFieldFilter.update(values));
-  }
-
-  private loadDrugSourceDbs(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugSourceDbValues(this.metadata.id, queryParams)
-      .subscribe(values => this.drugSourceDbFieldFilter.update(values));
+  private loadDrugMoas(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
+    this.service.listDrugMoas(this.metadata.id, queryParams)
+      .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
   private loadDrugCommonNames(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
@@ -263,8 +255,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
       maxUpFdr: this.maxUpFdrFilter.value,
       maxDownFdr: this.maxDownFdrFilter.value,
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
-      drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
-      drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter()
+      drugMoa: this.drugMoaFieldFilter.getClearedFilter()
     };
   }
 
@@ -351,7 +342,6 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
     let tooltip = 'Source name: ' + interaction.drug.sourceName;
     tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
-    tooltip = tooltip + '\nMOA: ' + interaction.drug.moa;
 
     return tooltip;
   }

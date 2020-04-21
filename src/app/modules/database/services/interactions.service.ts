@@ -88,6 +88,10 @@ export class InteractionsService {
     return this.listValues('drug-common-name', queryParams);
   }
 
+  public listMoaValues(queryParams: DatabaseQueryParams): Observable<string[]> {
+    return this.listValues('drug-moa', queryParams);
+  }
+
   public listSignatureNameValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('signature-name', queryParams);
   }

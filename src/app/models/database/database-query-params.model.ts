@@ -44,6 +44,7 @@ export class DatabaseQueryParams {
   public readonly drugSourceName?: string;
   public readonly drugSourceDb?: string;
   public readonly drugCommonName?: string;
+  public readonly drugMoa?: string;
   public readonly signatureSourceDb?: string;
   public readonly interactionType?: InteractionType;
   public readonly minTau?: number;
@@ -72,6 +73,7 @@ export class DatabaseQueryParams {
         a.drugSourceName === b.drugSourceName &&
         a.drugSourceDb === b.drugSourceDb &&
         a.drugCommonName === b.drugCommonName &&
+        a.drugMoa === b.drugMoa &&
         a.signatureSourceDb === b.signatureSourceDb &&
         a.interactionType === b.interactionType &&
         a.minTau === b.minTau &&

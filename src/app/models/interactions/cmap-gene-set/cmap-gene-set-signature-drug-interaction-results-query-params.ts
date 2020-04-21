@@ -32,7 +32,6 @@ export class CmapGeneSetSignatureDrugInteractionResultsQueryParams {
   public readonly sortDirection?: SortDirection;
   public readonly minTau?: number;
   public readonly maxFdr?: number;
-  public readonly drugSourceName?: string;
-  public readonly drugSourceDb?: string;
   public readonly drugCommonName?: string;
+  public readonly drugMoa?: string;
 }

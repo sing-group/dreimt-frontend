@@ -69,8 +69,7 @@ export class CmapGeneSetSignatureResultsDataSource extends PaginatedDataSource<C
         || this.queryParams.sortDirection !== queryParams.sortDirection
         || this.queryParams.minTau !== queryParams.minTau
         || this.queryParams.maxFdr !== queryParams.maxFdr
-        || this.queryParams.drugSourceName !== queryParams.drugSourceName
-        || this.queryParams.drugSourceDb !== queryParams.drugSourceDb
+        || this.queryParams.drugMoa !== queryParams.drugMoa
         || this.queryParams.drugCommonName !== queryParams.drugCommonName;
     }
   }
