@@ -39,17 +39,18 @@ export class CmapGeneSetSignatureResultsSummaryComponent implements OnInit, OnDe
     this.dataSourceSubscription = this.dataSource.fullData$.subscribe(
       data => {
 
-        const best: DrugSummary[] = data
+        const best: DrugSummary[][] = data
           .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.fdr <= 0.05)
           .map(this.mapInteraction);
+        const bestFlatten = [].concat(...best);
 
-        const good: DrugSummary[] = data
+        const good: DrugSummary[][] = data
           .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.fdr > 0.05)
           .map(this.mapInteraction);
+        const goodFlatten = [].concat(...good);
 
-
-        const bestMap = SummaryHelper.mapDrugSummaryArray(best);
-        const goodMap = SummaryHelper.mapDrugSummaryArray(good);
+        const bestMap = SummaryHelper.mapDrugSummaryArray(bestFlatten);
+        const goodMap = SummaryHelper.mapDrugSummaryArray(goodFlatten);
 
         this.summaryDataSource = SummaryHelper.mapToSummaryElement(bestMap, 'Best', CmapGeneSetSignatureResultsSummaryComponent.TOP_N_MOA_VALUES)
           .concat(SummaryHelper.mapToSummaryElement(goodMap, 'Good', CmapGeneSetSignatureResultsSummaryComponent.TOP_N_MOA_VALUES));
@@ -67,10 +68,11 @@ export class CmapGeneSetSignatureResultsSummaryComponent implements OnInit, OnDe
     return this.loading;
   }
 
-  private mapInteraction(interaction: CmapGeneSetSignatureDrugInteraction) {
-    return {
-      status: interaction.drug.status,
-      moa: interaction.drug.moa
-    };
+  private mapInteraction(interaction: CmapGeneSetSignatureDrugInteraction): DrugSummary[] {
+    return interaction.drug.moa.map(moa =>
+      ({
+        status: interaction.drug.status,
+        moa: moa
+      }));
   }
 }

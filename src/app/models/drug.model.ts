@@ -24,7 +24,7 @@ export class Drug {
   public readonly sourceName: string;
   public readonly sourceDb: string;
   public readonly status: string;
-  public readonly moa: string;
+  public readonly moa: string[];
 
   public static isA(object: any): object is Drug {
     return object !== undefined && object !== null
@@ -32,6 +32,8 @@ export class Drug {
       && typeof object.sourceName === 'string'
       && typeof object.sourceDb === 'string'
       && typeof object.status === 'string'
-      && typeof object.moa === 'string';
+      && object.moa.every(function (i) {
+        return typeof i === 'string';
+      });
   }
 }
