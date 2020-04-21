@@ -38,6 +38,7 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {Subscription} from 'rxjs';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-cmap-gene-set-signature-results-table',
@@ -77,7 +78,8 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
 
   constructor(
     private service: CmapGeneSetResultsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
     this.routeUrl = window.location.href;
 
@@ -333,4 +335,9 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
 
     return tooltip;
   }
+
+  public navigateToDatabase(drugCommonName: string): void {
+    this.router.navigate(['/database'], {queryParams: {drugCommonName: drugCommonName}});
+  }
 }
+

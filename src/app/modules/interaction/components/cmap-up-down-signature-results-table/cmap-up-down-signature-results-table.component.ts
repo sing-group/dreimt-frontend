@@ -38,6 +38,7 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {Subscription} from 'rxjs';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-table',
@@ -79,7 +80,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
 
   constructor(
     private service: CmapResultsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
     this.routeUrl = window.location.href;
 
@@ -344,5 +346,9 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
 
     return tooltip;
+  }
+
+  public navigateToDatabase(drugCommonName: string): void {
+    this.router.navigate(['/database'], {queryParams: {drugCommonName: drugCommonName}});
   }
 }
