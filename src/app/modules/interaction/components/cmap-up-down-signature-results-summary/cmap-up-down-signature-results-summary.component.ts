@@ -3,7 +3,6 @@ import {CmapUpDownSignatureResultsDataSource} from '../cmap-up-down-signature-re
 import {Subscription} from 'rxjs';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
-import {DrugSummary, SummaryElement, SummaryHelper} from '../../../../models/interactions/cmap/cmap-result-summary.model';
 
 
 @Component({
@@ -19,9 +18,10 @@ import {DrugSummary, SummaryElement, SummaryHelper} from '../../../../models/int
   ]
 })
 export class CmapUpDownSignatureResultsSummaryComponent implements OnInit, OnDestroy {
-  private static TOP_N_MOA_VALUES = 5;
 
   @Input() public dataSource: CmapUpDownSignatureResultsDataSource;
+
+  public resultsArray: CmapUpDownSignatureDrugInteraction[];
 
   constructor() {
   }
@@ -30,32 +30,10 @@ export class CmapUpDownSignatureResultsSummaryComponent implements OnInit, OnDes
   private loadingSubscription: Subscription;
   private loading = false;
 
-  columnsToDisplay = ['candidates', 'drugStatus', 'count'];
-  displayedMoaColumns = ['moa', 'moaCount'];
-
-  summaryDataSource: SummaryElement[];
 
   public ngOnInit(): void {
     this.loadingSubscription = this.dataSource.loading$.subscribe(loading => this.loading = loading);
-    this.dataSourceSubscription = this.dataSource.fullData$.subscribe(
-      data => {
-
-        const best: DrugSummary[][] = data
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && (interaction.downFdr <= 0.05 || interaction.upFdr <= 0.05))
-          .map(this.mapInteraction);
-        const bestFlatten = [].concat(...best);
-
-        const good: DrugSummary[][] = data
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.downFdr > 0.05 && interaction.upFdr > 0.05)
-          .map(this.mapInteraction);
-        const goodFlatten = [].concat(...good);
-
-        const bestMap = SummaryHelper.mapDrugSummaryArray(bestFlatten);
-        const goodMap = SummaryHelper.mapDrugSummaryArray(goodFlatten);
-
-        this.summaryDataSource = SummaryHelper.mapToSummaryElement(bestMap, 'Best', CmapUpDownSignatureResultsSummaryComponent.TOP_N_MOA_VALUES)
-          .concat(SummaryHelper.mapToSummaryElement(goodMap, 'Good', CmapUpDownSignatureResultsSummaryComponent.TOP_N_MOA_VALUES));
-      });
+    this.dataSourceSubscription = this.dataSource.fullData$.subscribe(data => this.resultsArray = data);
   }
 
   public ngOnDestroy(): void {
@@ -67,13 +45,5 @@ export class CmapUpDownSignatureResultsSummaryComponent implements OnInit, OnDes
 
   public isLoading(): boolean {
     return this.loading;
-  }
-
-  private mapInteraction(interaction: CmapUpDownSignatureDrugInteraction): DrugSummary[] {
-    return interaction.drug.moa.map(moa =>
-      ({
-        status: interaction.drug.status,
-        moa: moa
-      }));
   }
 }

@@ -1,6 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {DrugSummary, SummaryElement, SummaryHelper} from '../../../../models/interactions/cmap/cmap-result-summary.model';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
 import {CmapGeneSetSignatureResultsDataSource} from '../cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-data-source';
@@ -18,9 +17,10 @@ import {CmapGeneSetSignatureResultsDataSource} from '../cmap-gene-set-signature-
   ]
 })
 export class CmapGeneSetSignatureResultsSummaryComponent implements OnInit, OnDestroy {
-  private static TOP_N_MOA_VALUES = 5;
 
   @Input() public dataSource: CmapGeneSetSignatureResultsDataSource;
+
+  public resultsArray: CmapGeneSetSignatureDrugInteraction[];
 
   constructor() {
   }
@@ -29,32 +29,9 @@ export class CmapGeneSetSignatureResultsSummaryComponent implements OnInit, OnDe
   private loadingSubscription: Subscription;
   private loading = false;
 
-  columnsToDisplay = ['candidates', 'drugStatus', 'count'];
-  displayedMoaColumns = ['moa', 'moaCount'];
-
-  summaryDataSource: SummaryElement[];
-
   public ngOnInit(): void {
     this.loadingSubscription = this.dataSource.loading$.subscribe(loading => this.loading = loading);
-    this.dataSourceSubscription = this.dataSource.fullData$.subscribe(
-      data => {
-
-        const best: DrugSummary[][] = data
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.fdr <= 0.05)
-          .map(this.mapInteraction);
-        const bestFlatten = [].concat(...best);
-
-        const good: DrugSummary[][] = data
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.fdr > 0.05)
-          .map(this.mapInteraction);
-        const goodFlatten = [].concat(...good);
-
-        const bestMap = SummaryHelper.mapDrugSummaryArray(bestFlatten);
-        const goodMap = SummaryHelper.mapDrugSummaryArray(goodFlatten);
-
-        this.summaryDataSource = SummaryHelper.mapToSummaryElement(bestMap, 'Best', CmapGeneSetSignatureResultsSummaryComponent.TOP_N_MOA_VALUES)
-          .concat(SummaryHelper.mapToSummaryElement(goodMap, 'Good', CmapGeneSetSignatureResultsSummaryComponent.TOP_N_MOA_VALUES));
-      });
+    this.dataSourceSubscription = this.dataSource.fullData$.subscribe(data => this.resultsArray = data);
   }
 
   public ngOnDestroy(): void {
@@ -66,13 +43,5 @@ export class CmapGeneSetSignatureResultsSummaryComponent implements OnInit, OnDe
 
   public isLoading(): boolean {
     return this.loading;
-  }
-
-  private mapInteraction(interaction: CmapGeneSetSignatureDrugInteraction): DrugSummary[] {
-    return interaction.drug.moa.map(moa =>
-      ({
-        status: interaction.drug.status,
-        moa: moa
-      }));
   }
 }
