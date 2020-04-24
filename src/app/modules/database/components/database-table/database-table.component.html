@@ -37,6 +37,15 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="explanation">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Interpretation">
+          <div>Interpretation</div>
+        </th>
+        <td mat-cell *matCellDef="let interaction">
+          <div [innerHTML]="getExplanation(interaction)"></div>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="signature">
         <th mat-header-cell *matHeaderCellDef matTooltip="Signature/Geneset name">
           <span mat-sort-header="SIGNATURE_NAME">Signature/Geneset name</span>
@@ -57,7 +66,7 @@
         <th id="tau" mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 100 to -100)">
           <span id="tauHead" mat-sort-header="TAU">TAU</span>
         </th>
-        <td mat-cell *matCellDef="let interaction" [matTooltip]="getTauTooltip(interaction)"
+        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.tau"
             [style.color]="getTauStyleColor(interaction.tau)">
           {{interaction.tau | number : '1.2-2'}}
         </td>
@@ -87,49 +96,18 @@
         <th mat-header-cell *matHeaderCellDef matTooltip="Case cell type involved in the signature">
           <span mat-sort-header="CELL_TYPE_A">Case Type</span>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeA}}</td>
+        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeA}} <br>
+          {{interaction.signature.cellSubTypeA}}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="cellTypeB">
         <th mat-header-cell *matHeaderCellDef matTooltip="Control cell type involved in the signature">
           <span mat-sort-header="CELL_TYPE_B">Reference Type</span>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeB}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="cellSubtypeA">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Case cell-subtype involved in the signature">
-          <span mat-sort-header="CELL_SUBTYPE_A">Case Subtype</span>
-        </th>
-        <td mat-cell *matCellDef="let interaction">
-          <div [class]="getTauTagCssClass(interaction, 'A')">
-            <i class="material-icons">
-              {{getCellSubtypeIcon(interaction, 'A')}}
-            </i>
-            {{interaction.signature.cellSubTypeA}}
-          </div>
+        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeB}} <br>
+          {{interaction.signature.cellSubTypeB}}
         </td>
-      </ng-container>
-
-      <ng-container matColumnDef="cellSubtypeB">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Control cell-subtype involved in the signature">
-          <span mat-sort-header="CELL_SUBTYPE_B">Reference Subtype</span>
-        </th>
-        <td mat-cell *matCellDef="let interaction">
-          <div [class]="getTauTagCssClass(interaction, 'B')">
-            <i class="material-icons">
-              {{getCellSubtypeIcon(interaction, 'B')}}
-            </i>
-            {{interaction.signature.cellSubTypeB}}
-          </div>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="disease">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Experimental perturbation and diseases">
-          <span>Condition</span>
-        </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.disease}}</td>
       </ng-container>
 
       <ng-container matColumnDef="additional-info">

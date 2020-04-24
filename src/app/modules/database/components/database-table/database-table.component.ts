@@ -52,8 +52,12 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   @ViewChild(DatabaseTableFiltersComponent) private databaseTableFiltersComponent: DatabaseTableFiltersComponent;
 
   private filterParams: DatabaseQueryParams;
-  private positiveTauColorMap;
-  private negativeTauColorMap;
+  private readonly positiveTauColorMap;
+  private readonly negativeTauColorMap;
+
+  private static COLLAPSE_TREATMENTS = ['Overexpression', 'Knock-out model'];
+  private mapTreatmentA = {};
+  private mapTreatmentB = {};
 
   constructor(
     private service: InteractionsService,
@@ -64,11 +68,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     this.maxOptions = 100;
 
     this.dataSource = new DatabaseDataSource(this.service);
-    this.columns = [
-      'drug', 'signature', 'tau', 'upFdr', 'downFdr',
-      'cellTypeA', 'cellTypeB', 'cellSubtypeA', 'cellSubtypeB',
-      'disease', 'additional-info'
-    ];
+    this.columns = ['drug', 'explanation', 'cellTypeA', 'cellTypeB', 'signature', 'tau', 'upFdr', 'downFdr', 'additional-info'];
 
     this.filterParams = {};
 
@@ -138,7 +138,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  public applyDatabaseFilters(newFilterParams: DatabaseQueryParams, defaultPageIndex = 0, defaultPageSize = 50): void {
+  public applyDatabaseFilters(newFilterParams: DatabaseQueryParams): void {
     this.filterParams = newFilterParams;
     this.router.navigate(
       [],
@@ -162,6 +162,9 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
     let tooltip = 'Source name: ' + interaction.drug.sourceName;
     tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
+    if (interaction.drug.targetGenes.length > 0) {
+      tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
+    }
 
     return tooltip;
   }
@@ -173,7 +176,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
       tooltip = tooltip + '\nArticle title: ' + interaction.signature.articleTitle;
     }
     if (interaction.signature.articleAuthors) {
-      var articleAuthors = '';
+      let articleAuthors = '';
       if (interaction.signature.articleAuthors.indexOf(',') !== -1) {
         articleAuthors = interaction.signature.articleAuthors.substring(0, interaction.signature.articleAuthors.indexOf(',')) + ' et al.';
       } else {
@@ -195,91 +198,6 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     } else {
       return 'black';
     }
-  }
-
-  public getTauTagCssClass(interaction: DrugCellDatabaseInteraction, targetCell: string): string {
-    let tauInteractionMode = this.getTauInteractionMode(interaction, targetCell);
-
-    switch (tauInteractionMode) {
-      case 'BOOST':
-        return 'text-tag-tau text-tag-tau-boost';
-      case 'REVERT':
-        return 'text-tag-tau text-tag-tau-revert';
-      default:
-        return 'text-tag-tau-none';
-    }
-  }
-
-  public getCellSubtypeIcon(interaction: DrugCellDatabaseInteraction, targetCell: string): string {
-    let tauInteractionMode = this.getTauInteractionMode(interaction, targetCell);
-
-    switch (tauInteractionMode) {
-      case 'BOOST':
-        return 'cancel';
-      case 'REVERT':
-        return 'remove_circle';
-      default:
-        return 'undo';
-    }
-  }
-
-  public getTauInteractionMode(interaction: DrugCellDatabaseInteraction, targetCell: string): string {
-    let boost;
-    let revert;
-    let signatureType = interaction.signature.signatureType;
-
-    if (signatureType === 'UPDOWN') {
-      if (!interaction.downFdr) {
-        signatureType = 'UP';
-      } else if (!interaction.upFdr) {
-        signatureType = 'DOWN';
-      }
-    }
-
-    switch (signatureType) {
-      case 'UPDOWN':
-      case 'UP':
-      case 'GENESET':
-        if (interaction.tau >= 90) {
-          boost = 'A';
-          revert = 'B';
-        } else if (interaction.tau <= -90) {
-          boost = 'B';
-          revert = 'A';
-        } else {
-          boost = 'NONE';
-        }
-        break;
-      case 'DOWN':
-        if (interaction.tau >= 90) {
-          boost = 'B';
-          revert = 'A';
-        } else if (interaction.tau <= -90) {
-          boost = 'A';
-          revert = 'B';
-        } else {
-          boost = 'NONE';
-        }
-        break;
-    }
-
-    if (boost !== 'NONE') {
-      if (targetCell === boost) {
-        return 'BOOST';
-      } else {
-        return 'REVERT';
-      }
-    } else {
-      return 'NONE';
-    }
-  }
-
-  public getTauTooltip(interaction: DrugCellDatabaseInteraction): string {
-    var action = ' boosts';
-    if (interaction.tau < 0) {
-      action = ' reverts';
-    }
-    return 'The drug ' + interaction.drug.commonName + action + ' the signature ' + interaction.signature.signatureName + '.';
   }
 
   public getExperimentalDesignAcronym(experimentalDesign: string): string {
@@ -313,6 +231,105 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
       case InteractionType.SIGNATURE_DOWN:
         return 'DN';
     }
+  }
+
+  public getExplanation(interaction: DrugCellDatabaseInteraction): string {
+    let first = 'A';
+    if (interaction.interactionType === InteractionType.SIGNATURE_DOWN) {
+      first = 'B';
+    }
+
+    let effect = 'boosts';
+    if (interaction.tau < 0) {
+      effect = 'inhibits';
+    }
+
+    if (first === 'A') {
+      return this._getExplanation(
+        interaction.signature.signatureName, effect, interaction.drug.commonName,
+        interaction.signature.stateA, interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA,
+        interaction.signature.stateB, interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB
+      );
+    } else {
+      return this._getExplanation(
+        interaction.signature.signatureName, effect, interaction.drug.commonName,
+        interaction.signature.stateB, interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB,
+        interaction.signature.stateA, interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA
+      );
+    }
+  }
+
+  private _getExplanation(
+    signatureName: string, effect: string, drug: string,
+    stateA: string, subTypeA: string[], treatmentA: string[], diseaseA: string[],
+    stateB: string, subTypeB: string[], treatmentB: string[], diseaseB: string[],
+  ): string {
+    const treatmentAStr = treatmentA.length > 0 ?
+      ` <span class="explanation-treatment">stimulated with ${
+        this.concat(DatabaseTableComponent.collapseTreatments(treatmentA, signatureName, this.mapTreatmentA))
+        } </span> ` : '';
+
+    const treatmentBStr = treatmentB.length > 0 ?
+      ` <span class="explanation-treatment">stimulated with ${
+        this.concat(DatabaseTableComponent.collapseTreatments(treatmentB, signatureName, this.mapTreatmentB))
+        } </span> ` : '';
+
+    const diseaseAStr = diseaseA.length > 0 ? ` <span class="explanation-disease">in ${this.concat(diseaseA)} </span>` : '';
+    const diseaseBStr = diseaseB.length > 0 ? ` <span class="explanation-disease">in ${this.concat(diseaseB)} </span>` : '';
+
+    return `<span class="explanation-drug"> ${drug} </span> <span class="explanation-${effect}">${effect}</span> ${stateA} <b>
+        ${subTypeA.join('/')}</b> ${treatmentAStr}${diseaseAStr}<span class="explanation"> compared to</span> ${stateB} <b>
+        ${subTypeB.join('/')}</b> ${treatmentBStr}${diseaseBStr}`;
+  }
+
+  private static collapseTreatments(treatments: string[], signatureName: string, treatmentsMap): string[] {
+    if (treatmentsMap[signatureName] === undefined) {
+      const collapseMap = {};
+      const result = [];
+      for (let i = 0; i < treatments.length; i++) {
+        const treatment = treatments[i];
+        let collapse = false;
+
+        for (let j = 0; j < DatabaseTableComponent.COLLAPSE_TREATMENTS.length && collapse === false; j++) {
+          const keyword = DatabaseTableComponent.COLLAPSE_TREATMENTS[j];
+          if (treatment.startsWith(keyword)) {
+            const treatmentValue = treatment
+              .replace(keyword, '').replace('[', '').replace(']', '').trim();
+            if (collapseMap[keyword] === undefined) {
+              collapseMap[keyword] = [];
+            }
+            collapseMap[keyword].push(treatmentValue);
+            collapse = true;
+          }
+        }
+
+        if (!collapse) {
+          result.push(treatment);
+        }
+      }
+
+      for (const treatment in collapseMap) {
+        result.push(treatment + ' (' + collapseMap[treatment].join(', ') + ')');
+      }
+
+      treatmentsMap[signatureName] = result;
+    }
+
+    return treatmentsMap[signatureName];
+  }
+
+  private concat(data: string[]) {
+    let result = '';
+    for (let i = 0; i < data.length; i++) {
+      if (i > 0 && i === (data.length - 1)) {
+        result = result + ' and ';
+      } else if (i > 0) {
+        result = result + ', ';
+      }
+      result = result + data[i];
+    }
+
+    return result;
   }
 
   public navigateToSignature(signature: string): void {

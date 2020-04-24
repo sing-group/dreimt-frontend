@@ -331,7 +331,9 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
   public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
     let tooltip = 'Source name: ' + interaction.drug.sourceName;
     tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
-    tooltip = tooltip + '\nMOA: ' + interaction.drug.moa;
+    if (interaction.drug.targetGenes.length > 0) {
+      tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
+    }
 
     return tooltip;
   }

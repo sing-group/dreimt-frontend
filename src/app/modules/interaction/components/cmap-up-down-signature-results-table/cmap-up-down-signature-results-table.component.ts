@@ -344,6 +344,9 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
     let tooltip = 'Source name: ' + interaction.drug.sourceName;
     tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
+    if (interaction.drug.targetGenes.length > 0) {
+      tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
+    }
 
     return tooltip;
   }

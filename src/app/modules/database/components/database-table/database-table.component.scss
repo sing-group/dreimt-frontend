@@ -66,6 +66,11 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   padding-right: 6px;
 }
 
+td.mat-cell {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
 .gray {
   background-color: #FAFAFA
 }
@@ -74,9 +79,13 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   vertical-align: middle;
 }
 
-.mat-column-cellTypeA, .mat-column-cellTypeB, .mat-column-cellSubtypeB, .mat-column-cellSubtypeA {
+.mat-column-cellTypeA, .mat-column-cellTypeB {
   word-wrap: break-word;
   max-width: 120px;
+}
+
+.mat-column-explanation {
+  max-width: 450px;
 }
 
 .mat-column-signature {
@@ -84,50 +93,27 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   max-width: 350px;
 }
 
-.text-tag-tau {
-  width: 100px;
-}
-
-.text-tag-tau-revert {
-  border-radius: 4px;
-  padding: 3px;
-  border-width: 1px;
-  border-style: solid;
-  text-decoration: none;
-  margin: 1px;
-  display: inline-block;
-  background-color: #D6E4AA;
-}
-
-.text-tag-tau-boost {
-  border-radius: 4px;
-  padding: 3px;
-  border-width: 1px;
-  border-style: solid;
-  text-decoration: none;
-  margin: 1px;
-  display: inline-block;
-  background-color: #EFAFA3;
-}
-
-.text-tag-tau-revert .material-icons {
-  color: green;
-}
-
-.text-tag-tau-boost .material-icons {
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  color: red;
-}
-
-.text-tag-tau-none .material-icons {
-  display: none;
-}
-
 #navigateSignatureButton:hover {
   cursor: pointer;
   color: blue;
+}
+
+::ng-deep .explanation-drug {
+  color: orange;
+}
+
+::ng-deep .explanation-boosts {
+  color: red;
+}
+
+::ng-deep .explanation-inhibits {
+  color: green;
+}
+
+::ng-deep .explanation-treatment {
+  color: blue;
+}
+
+::ng-deep .explanation-disease {
+  color: #3cb371;
 }
