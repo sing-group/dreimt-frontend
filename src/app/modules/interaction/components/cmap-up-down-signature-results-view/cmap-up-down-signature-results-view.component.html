@@ -1,5 +1,44 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title *ngIf="!isMetadataAvailable()">Cmap results</mat-card-title>
+    <mat-card-title *ngIf="isMetadataAvailable()">{{metadata.queryTitle}}</mat-card-title>
+    <mat-card-subtitle>{{metadata.id}}
+      <button mat-icon-button ngxClipboard [cbContent]="getResultsUrl()"
+              matTooltip="Copy the results URL to the clipboard">
+        <mat-icon aria-label="Copy the results URL to the clipboard">
+          link
+        </mat-icon>
+      </button>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <mat-expansion-panel *ngIf="isMetadataAvailable()">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Query parameters
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-list>
+        <mat-list-item> Query up genes: {{metadata.upGenesCount}}</mat-list-item>
+        <mat-list-item> Query up genes in DREIMT: {{metadata.upUniverseGenesCount}}
+        </mat-list-item>
+
+        <mat-list-item *ngIf="metadata.downGenesCount"> Query down genes:
+          {{metadata.downGenesCount}}
+        </mat-list-item>
+        <mat-list-item *ngIf="metadata.downUniverseGenesCount"> Query down genes in
+          DREIMT: {{metadata.downUniverseGenesCount}}
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+  </mat-card-content>
+</mat-card>
+
+<app-cmap-up-down-signature-results-graph [dataSource]="dataSource"></app-cmap-up-down-signature-results-graph>
+<app-cmap-up-down-signature-results-summary [dataSource]="dataSource"></app-cmap-up-down-signature-results-summary>
 <app-cmap-up-down-signature-results-table [metadata]="metadata"
                                           [dataSource]="dataSource"></app-cmap-up-down-signature-results-table>
-<app-cmap-up-down-signature-results-summary
-  [dataSource]="dataSource"></app-cmap-up-down-signature-results-summary>
-<app-cmap-up-down-signature-results-graph [dataSource]="dataSource"></app-cmap-up-down-signature-results-graph>
+

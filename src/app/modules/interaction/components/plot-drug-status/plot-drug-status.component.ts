@@ -29,6 +29,50 @@ export class PlotDrugStatusComponent implements OnChanges {
     tooltip: {
       pointFormat: '{point.y} drugs ({point.percentage:.1f}%)</b>'
     },
+    exporting: {
+      enabled: true,
+      filename: 'drug-status-plot',
+      sourceWidth: 1502,
+      scale: 1,
+      fallbackToExportServer: false,
+      buttons: {
+        contextButton: {
+          menuItems: [{
+            textKey: 'downloadPNG',
+            onclick: function () {
+              this.exportChart();
+              this.redraw();
+            }
+          }, {
+            textKey: 'downloadJPEG',
+            onclick: function () {
+              this.exportChart({
+                type: 'image/jpeg'
+              });
+              this.redraw();
+            }
+          }, {
+            separator: true
+          }, {
+            textKey: 'downloadPDF',
+            onclick: function () {
+              this.exportChart({
+                type: 'application/pdf'
+              });
+              this.redraw();
+            }
+          }, {
+            textKey: 'downloadSVG',
+            onclick: function () {
+              this.exportChart({
+                type: 'image/svg+xml'
+              });
+              this.redraw();
+            }
+          }]
+        }
+      },
+    },
     plotOptions: {
       pie: {
         allowPointSelect: true,

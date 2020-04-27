@@ -74,8 +74,6 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   private positiveTauColorMap;
   private negativeTauColorMap;
 
-  private readonly routeUrl: string;
-
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -83,8 +81,6 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     public dialog: MatDialog,
     private router: Router
   ) {
-    this.routeUrl = window.location.href;
-
     this.debounceTime = 500;
     this.maxOptions = 100;
 
@@ -263,14 +259,6 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
 
   public downloadCsv() {
     this.service.downloadCsv(this.metadata.id, this.metadata.queryTitle, this.createQueryParameters());
-  }
-
-  public isMetadataAvailable(): boolean {
-    return this.metadata !== undefined;
-  }
-
-  public getResultsUrl(): string {
-    return this.routeUrl;
   }
 
   openDownloadGenesDialog(): void {

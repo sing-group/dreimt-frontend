@@ -21,41 +21,13 @@
 
 <mat-card>
   <mat-card-header>
-    <mat-card-title *ngIf="!isMetadataAvailable()">Cmap results</mat-card-title>
-    <mat-card-title *ngIf="isMetadataAvailable()">{{metadata.queryTitle}}</mat-card-title>
-    <mat-card-subtitle>{{metadata.id}}
-      <button mat-icon-button ngxClipboard [cbContent]="getResultsUrl()"
-              matTooltip="Copy the results URL to the clipboard">
-        <mat-icon aria-label="Copy the results URL to the clipboard">
-          link
-        </mat-icon>
-      </button>
+    <mat-card-title>Drug Predictions Table</mat-card-title>
+    <mat-card-subtitle>This table shows all the predictions. The column filters can be used to refine the predictions
+      being shown, which are also used to create the plots above.
     </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
-
-    <mat-expansion-panel *ngIf="isMetadataAvailable()">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Query parameters
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <mat-list>
-        <mat-list-item> Query up genes: {{metadata.upGenesCount}}</mat-list-item>
-        <mat-list-item> Query up genes in universe: {{metadata.upUniverseGenesCount}}
-        </mat-list-item>
-
-        <mat-list-item *ngIf="metadata.downGenesCount"> Query down genes:
-          {{metadata.downGenesCount}}
-        </mat-list-item>
-        <mat-list-item *ngIf="metadata.downUniverseGenesCount"> Query down genes in
-          universe: {{metadata.downUniverseGenesCount}}
-        </mat-list-item>
-      </mat-list>
-    </mat-expansion-panel>
-
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="drugCommonName">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug common name">

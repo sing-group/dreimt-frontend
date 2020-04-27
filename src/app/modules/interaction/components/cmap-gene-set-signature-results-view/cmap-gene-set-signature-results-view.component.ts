@@ -14,7 +14,18 @@ export class CmapGeneSetSignatureResultsViewComponent {
 
   public readonly dataSource: CmapGeneSetSignatureResultsDataSource;
 
+  private readonly routeUrl: string;
+
   constructor(private service: CmapGeneSetResultsService) {
+    this.routeUrl = window.location.href;
     this.dataSource = new CmapGeneSetSignatureResultsDataSource(this.service);
+  }
+
+  public getResultsUrl(): string {
+    return this.routeUrl;
+  }
+
+  public isMetadataAvailable(): boolean {
+    return this.metadata !== undefined;
   }
 }

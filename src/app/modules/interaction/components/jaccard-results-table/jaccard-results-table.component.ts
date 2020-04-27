@@ -81,7 +81,7 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
 
     this.dataSource = new JaccardResultsDataSource(this.service);
     this.columns = [
-      'sourceComparisonType', 'targetComparisonType', 'targetSignature', 'jaccard', 'pValue', 'fdr'
+      'sourceComparisonType', 'targetComparisonType', 'targetSignature', 'jaccard', 'fdr'
     ];
 
     this.minJaccardFilter = new FormControl();
@@ -310,10 +310,6 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
 
   public maxFdrFilterChanged(event): void {
     this.updateFilter(this.maxFdrFilter, event);
-  }
-
-  public maxPvalueFilterChanged(event): void {
-    this.updateFilter(this.maxPvalueFilter, event);
   }
 
   private updateFilter(filter: FormControl, event) {

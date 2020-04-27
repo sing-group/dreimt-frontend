@@ -14,7 +14,18 @@ export class CmapUpDownSignatureResultsViewComponent {
 
   public readonly dataSource: CmapUpDownSignatureResultsDataSource;
 
+  private readonly routeUrl: string;
+
   constructor(private service: CmapResultsService) {
+    this.routeUrl = window.location.href;
     this.dataSource = new CmapUpDownSignatureResultsDataSource(this.service);
+  }
+
+  public getResultsUrl(): string {
+    return this.routeUrl;
+  }
+
+  public isMetadataAvailable(): boolean {
+    return this.metadata !== undefined;
   }
 }

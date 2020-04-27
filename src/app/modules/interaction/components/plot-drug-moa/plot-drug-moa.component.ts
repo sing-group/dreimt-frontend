@@ -29,6 +29,50 @@ export class PlotDrugMoaComponent implements OnChanges {
     tooltip: {
       pointFormat: '{point.y} drugs ({point.percentage:.1f}%)'
     },
+    exporting: {
+      enabled: true,
+      filename: 'drug-moa-plot',
+      sourceWidth: 1502,
+      scale: 1,
+      fallbackToExportServer: false,
+      buttons: {
+        contextButton: {
+          menuItems: [{
+            textKey: 'downloadPNG',
+            onclick: function () {
+              this.exportChart();
+              this.redraw();
+            }
+          }, {
+            textKey: 'downloadJPEG',
+            onclick: function () {
+              this.exportChart({
+                type: 'image/jpeg'
+              });
+              this.redraw();
+            }
+          }, {
+            separator: true
+          }, {
+            textKey: 'downloadPDF',
+            onclick: function () {
+              this.exportChart({
+                type: 'application/pdf'
+              });
+              this.redraw();
+            }
+          }, {
+            textKey: 'downloadSVG',
+            onclick: function () {
+              this.exportChart({
+                type: 'image/svg+xml'
+              });
+              this.redraw();
+            }
+          }]
+        }
+      },
+    },
     plotOptions: {
       pie: {
         allowPointSelect: true,
@@ -48,7 +92,6 @@ export class PlotDrugMoaComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.drugMoa !== undefined) {
-      console.log(this.drugMoa);
       const moaCounts = {};
       for (let i = 0; i < this.drugMoa.length; i++) {
         const moa = this.drugMoa[i];

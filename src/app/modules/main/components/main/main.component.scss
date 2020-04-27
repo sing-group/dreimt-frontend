@@ -25,3 +25,12 @@
   grid-template-columns: 1fr 1fr 1fr;
   place-items: center / center;
 }
+
+.home-image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-card-image {
+  width: calc(80% + 32px);
+}
