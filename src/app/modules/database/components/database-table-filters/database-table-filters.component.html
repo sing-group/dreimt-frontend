@@ -3,13 +3,6 @@
   <mat-card-content>
 
     <div class="basic-filters-form">
-      <app-filter-field label="Organism"
-                        [options]="organismFieldFilter.options"
-                        [(filter)]="organismFieldFilter.filter"
-                        (filterChange)="updateFilterValues()"
-                        [debounceTime]="debounceTime"
-                        [maxOptions]="maxOptions"></app-filter-field>
-
       <app-filter-field label="Cell type/subtype 1"
                         [options]="cellTypeAndSubtype1FieldFilter.options"
                         [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
@@ -28,11 +21,12 @@
 
     <div class="filters-warning-message" [hidden]="isFiltersWarningMessageHidden()">
       <mat-icon inline="true">warning</mat-icon>
-      You must select the organism and the cell type/subtype 1 filters to filter the database (drug is optional) or
-      use the advanced filters panel.
+      You must select the cell type/subtype 1 or the drug filters to filter the database or use the advanced filters
+      panel.
     </div>
 
-    <mat-expansion-panel (opened)="advancedPanelOpened()" (closed)="advancedPanelClosed()" [expanded]="isAdvancedPanelOpened">
+    <mat-expansion-panel (opened)="advancedPanelOpened()" (closed)="advancedPanelClosed()"
+                         [expanded]="isAdvancedPanelOpened">
       <mat-expansion-panel-header>
         <mat-panel-title>Advanced Filters</mat-panel-title>
       </mat-expansion-panel-header>

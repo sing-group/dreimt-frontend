@@ -43,6 +43,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public isAdvancedPanelOpened: boolean;
   private previousDatabaseQueryParams: DatabaseQueryParams = undefined;
+  private isClearFiltersAction = false;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugMoaFieldFilter: FieldFilterModel;
@@ -131,23 +132,16 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   private emitDatabaseFiltersEvent(queryParams: DatabaseQueryParams): void {
-    if (this.isValidFiltersConfiguration() || this.areBasicFiltersEmpty()) {
+    if (this.isValidFiltersConfiguration() || this.isClearFiltersAction) {
+      this.isClearFiltersAction = false;
       this.applyDatabaseFilters.emit(queryParams);
     }
   }
 
   private isValidFiltersConfiguration(): boolean {
-    return this.isAdvancedPanelOpened || (
-      this.organismFieldFilter.getClearedFilter() !== undefined &&
-      this.cellTypeAndSubtype1FieldFilter.getClearedFilter() !== undefined
-    );
-  }
-
-  private areBasicFiltersEmpty(): boolean {
-    return !this.isAdvancedPanelOpened &&
-      this.organismFieldFilter.getClearedFilter() === undefined &&
-      this.cellTypeAndSubtype1FieldFilter.getClearedFilter() === undefined &&
-      this.drugCommonNameFieldFilter.getClearedFilter() === undefined;
+    return this.isAdvancedPanelOpened ||
+      this.drugCommonNameFieldFilter.getClearedFilter() !== undefined ||
+      this.cellTypeAndSubtype1FieldFilter.getClearedFilter() !== undefined;
   }
 
   private checkCellTypeAndSubType2FiltersStatus(): void {
@@ -293,6 +287,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.minTauFilterComponent.clearValue();
     this.maxUpFdrFilterComponent.clearValue();
     this.maxDownFdrFilterComponent.clearValue();
+
+    this.isClearFiltersAction = true;
   }
 
   public setFilters(params: ParamMap): void {
@@ -310,6 +306,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
       const cellType2 = params.get('cellType2');
       if (cellType2) {
+        openAdvancedPanel = true;
         this.cellTypeAndSubtype2FieldFilter.setCellTypeAndSubtype(cellType2, params.get('cellSubType2'));
       }
     }

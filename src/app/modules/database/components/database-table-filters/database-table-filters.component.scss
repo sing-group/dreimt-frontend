@@ -37,10 +37,16 @@ app-number-field {
 }
 
 .basic-filters-form {
+  text-align: center;
+  margin-left: 100px;
+  margin-right: 100px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .filters-warning-message {
+  text-align: center;
+  margin-left: 100px;
+  margin-right: 100px;
   margin-bottom: 15px;
 }
