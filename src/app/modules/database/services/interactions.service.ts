@@ -31,6 +31,7 @@ import {map} from 'rxjs/operators';
 import {toPlainObject} from '../../../utils/types';
 import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
+import {CmapUpDownSignatureDrugInteraction} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,20 @@ export class InteractionsService {
         result: response.body,
         count: Number(response.headers.get('X-Count'))
       }))
+    );
+  }
+
+  public listArray(queryParams: DatabaseQueryParams): Observable<DrugCellDatabaseInteraction[]> {
+    const options = {
+      params: new HttpParams({
+        fromObject: toPlainObject(queryParams)
+      })
+    };
+
+    return this.http.get<DrugCellDatabaseInteraction[]>(
+      `${environment.dreimtUrl}/interactions`, options
+    ).pipe(
+      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.')
     );
   }
 

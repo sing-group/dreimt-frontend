@@ -22,6 +22,8 @@ export class SignatureViewSummaryComponent implements OnInit, OnDestroy {
 
   @Input() public dataSource: SignatureViewDataSource;
 
+  public resultsArray: CmapUpDownSignatureDrugInteraction[];
+
   constructor() {
   }
 
@@ -29,69 +31,10 @@ export class SignatureViewSummaryComponent implements OnInit, OnDestroy {
   private loadingSubscription: Subscription;
   private loading = false;
 
-  columnsToDisplay = ['candidates', 'drugStatus', 'count'];
-  displayedMoaColumns = ['moa', 'moaCount'];
-
-  summaryDataSource: SummaryElement[];
 
   public ngOnInit(): void {
     this.loadingSubscription = this.dataSource.loading$.subscribe(loading => this.loading = loading);
-    this.dataSourceSubscription = this.dataSource.fullData$.subscribe(
-      data => {
-
-        const bestBoth: DrugSummary[][] = data
-          .filter(interaction => interaction.downFdr !== null && interaction.upFdr !== null)
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && (interaction.downFdr <= 0.05 || interaction.upFdr <= 0.05))
-          .map(this.mapInteraction);
-        const bestBothFlatten = [].concat(...bestBoth);
-
-        const goodBoth: DrugSummary[][] = data
-          .filter(interaction => interaction.downFdr !== null && interaction.upFdr !== null)
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.downFdr > 0.05 && interaction.upFdr > 0.05)
-          .map(this.mapInteraction);
-        const goodBothFlatten = [].concat(...goodBoth);
-
-        const bestBothMap = SummaryHelper.mapDrugSummaryArray(bestBothFlatten);
-        const goodBothMap = SummaryHelper.mapDrugSummaryArray(goodBothFlatten);
-
-        const bestUp: DrugSummary[][] = data
-          .filter(interaction => interaction.downFdr === null && interaction.upFdr !== null)
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.upFdr <= 0.05)
-          .map(this.mapInteraction);
-        const bestUpFlatten = [].concat(...bestUp);
-
-        const goodUp: DrugSummary[][] = data
-          .filter(interaction => interaction.downFdr === null && interaction.upFdr !== null)
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.upFdr > 0.05)
-          .map(this.mapInteraction);
-        const goodUpFlatten = [].concat(...goodUp);
-
-        const bestUpMap = SummaryHelper.mapDrugSummaryArray(bestUpFlatten);
-        const goodUpMap = SummaryHelper.mapDrugSummaryArray(goodUpFlatten);
-
-        const bestDown: DrugSummary[][] = data
-          .filter(interaction => interaction.downFdr !== null && interaction.upFdr === null)
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.downFdr <= 0.05)
-          .map(this.mapInteraction);
-        const bestDownFlatten = [].concat(...bestDown);
-
-        const goodDown: DrugSummary[][] = data
-          .filter(interaction => interaction.downFdr !== null && interaction.upFdr === null)
-          .filter(interaction => Math.abs(interaction.tau) >= 90 && interaction.downFdr > 0.05)
-          .map(this.mapInteraction);
-        const goodDownFlatten = [].concat(...goodDown);
-
-        const bestDownMap = SummaryHelper.mapDrugSummaryArray(bestDownFlatten);
-        const goodDownMap = SummaryHelper.mapDrugSummaryArray(goodDownFlatten);
-
-        this.summaryDataSource =
-          SummaryHelper.mapToSummaryElement(bestBothMap, 'Best (Up and Down)', SignatureViewSummaryComponent.TOP_N_MOA_VALUES)
-            .concat(SummaryHelper.mapToSummaryElement(goodBothMap, 'Good (Up and Down)', SignatureViewSummaryComponent.TOP_N_MOA_VALUES))
-            .concat(SummaryHelper.mapToSummaryElement(bestUpMap, 'Best (Up)', SignatureViewSummaryComponent.TOP_N_MOA_VALUES))
-            .concat(SummaryHelper.mapToSummaryElement(goodUpMap, 'Good (Up)', SignatureViewSummaryComponent.TOP_N_MOA_VALUES))
-            .concat(SummaryHelper.mapToSummaryElement(bestDownMap, 'Best (Down)', SignatureViewSummaryComponent.TOP_N_MOA_VALUES))
-            .concat(SummaryHelper.mapToSummaryElement(goodDownMap, 'Good (Down)', SignatureViewSummaryComponent.TOP_N_MOA_VALUES));
-      });
+    this.dataSourceSubscription = this.dataSource.fullData$.subscribe(data => this.resultsArray = data);
   }
 
   public ngOnDestroy(): void {
@@ -103,13 +46,5 @@ export class SignatureViewSummaryComponent implements OnInit, OnDestroy {
 
   public isLoading(): boolean {
     return this.loading;
-  }
-
-  private mapInteraction(interaction: CmapUpDownSignatureDrugInteraction): DrugSummary[] {
-    return interaction.drug.moa.map(moa =>
-      ({
-        status: interaction.drug.status,
-        moa: moa
-      }));
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {SignaturesService} from '../../../interaction/services/signatures.service';
 import {SignatureSummary} from '../../../../models/interactions/jaccard/signature-summary.model';
@@ -13,13 +13,12 @@ import {DreimtInformationService} from '../../../../services/dreimt-information.
   templateUrl: './signature-view.component.html',
   styleUrls: ['./signature-view.component.scss']
 })
-export class SignatureViewComponent implements OnInit, OnDestroy {
+export class SignatureViewComponent implements OnInit {
 
   private errorMessage: string;
   public minDatabaseTau: number;
   private signatureParam: string;
   private signature: SignatureSummary;
-  private routeSubscription;
   public readonly dataSource: SignatureViewDataSource;
 
   constructor(
@@ -67,9 +66,5 @@ export class SignatureViewComponent implements OnInit, OnDestroy {
 
   public isError(): boolean {
     return this.errorMessage !== undefined;
-  }
-
-  public ngOnDestroy(): void {
-    this.routeSubscription.unsubscribe();
   }
 }

@@ -6,11 +6,11 @@ export interface DrugContainer {
 }
 
 @Component({
-  selector: 'app-cmap-results-summary',
-  templateUrl: './cmap-results-summary.component.html',
-  styleUrls: ['./cmap-results-summary.component.scss']
+  selector: 'app-cmap-drug-results-summary',
+  templateUrl: './cmap-drug-results-summary.component.html',
+  styleUrls: ['./cmap-drug-results-summary.component.scss']
 })
-export class CmapResultsSummaryComponent implements OnChanges {
+export class CmapDrugResultsSummaryComponent implements OnChanges {
 
   @Input() public data: DrugContainer[];
 

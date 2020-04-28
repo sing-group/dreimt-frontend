@@ -62,12 +62,12 @@ import {CmapUpDownSignatureResultsGraphComponent} from './components/cmap-up-dow
 import {CmapUpDownSignatureResultsViewComponent} from './components/cmap-up-down-signature-results-view/cmap-up-down-signature-results-view.component';
 import {CmapGeneSetSignatureResultsViewComponent} from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
 import {CmapGeneSetSignatureResultsGraphComponent} from './components/cmap-gene-set-signature-results-graph/cmap-gene-set-signature-results-graph.component';
-import { TwoGeneListsComponent } from './components/two-gene-lists/two-gene-lists.component';
+import {TwoGeneListsComponent} from './components/two-gene-lists/two-gene-lists.component';
 import {CmapUpDownSignatureResultsSummaryComponent} from './components/cmap-up-down-signature-results-summary/cmap-up-down-signature-results-summary.component';
-import { CmapGeneSetSignatureResultsSummaryComponent } from './components/cmap-gene-set-signature-results-summary/cmap-gene-set-signature-results-summary.component';
-import { PlotDrugStatusComponent } from './components/plot-drug-status/plot-drug-status.component';
-import { PlotDrugMoaComponent } from './components/plot-drug-moa/plot-drug-moa.component';
-import { CmapResultsSummaryComponent } from './components/cmap-results-summary/cmap-results-summary.component';
+import {CmapGeneSetSignatureResultsSummaryComponent} from './components/cmap-gene-set-signature-results-summary/cmap-gene-set-signature-results-summary.component';
+import {PlotDrugStatusComponent} from './components/plot-drug-status/plot-drug-status.component';
+import {PlotDrugMoaComponent} from './components/plot-drug-moa/plot-drug-moa.component';
+import {CmapDrugResultsSummaryComponent} from './components/cmap-results-summary/cmap-drug-results-summary.component';
 
 @NgModule({
   imports: [
@@ -117,7 +117,10 @@ import { CmapResultsSummaryComponent } from './components/cmap-results-summary/c
     CmapGeneSetSignatureResultsSummaryComponent,
     PlotDrugStatusComponent,
     PlotDrugMoaComponent,
-    CmapResultsSummaryComponent
+    CmapDrugResultsSummaryComponent
+  ],
+  exports: [
+    CmapDrugResultsSummaryComponent
   ],
   providers: [
     QueryService

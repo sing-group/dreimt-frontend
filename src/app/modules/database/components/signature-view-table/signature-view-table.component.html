@@ -1,34 +1,12 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title *ngIf="!isMetadataAvailable()">Database Signature results</mat-card-title>
-    <mat-card-title *ngIf="isMetadataAvailable()">{{signature.signatureName}}</mat-card-title>
+    <mat-card-title>Drug Predictions Table</mat-card-title>
+    <mat-card-subtitle>This table shows all the predictions. The column filters can be used to refine the predictions
+      being shown, which are also used to create the plots above.
+    </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
-    <mat-expansion-panel *ngIf="isMetadataAvailable()">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Signature Information
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <mat-list>
-        <mat-list-item> Source Database: {{signature.sourceDb}}</mat-list-item>
-        <mat-list-item> Organism: {{signature.organism}}</mat-list-item>
-        <mat-list-item *ngIf="signature.disease.length > 0"> Disease: {{signature.disease}}</mat-list-item>
-        <mat-list-item *ngIf="signature.cellTypeA.length > 0"> Case Type: {{signature.cellTypeA}}</mat-list-item>
-        <mat-list-item *ngIf="signature.cellSubTypeA.length > 0"> Case Subype: {{signature.cellSubTypeA}}
-        </mat-list-item>
-        <mat-list-item *ngIf="signature.cellTypeB.length > 0"> Reference Type: {{signature.cellTypeB}}</mat-list-item>
-        <mat-list-item *ngIf="signature.cellSubTypeB.length > 0"> Reference Subype: {{signature.cellSubTypeB}}
-        </mat-list-item>
-        <mat-list-item> Article: {{signature.articleTitle}} <a
-          href="http://www.ncbi.nlm.nih.gov/pubmed/{{signature.articlePubMedId}}" target="_blank">
-          <mat-icon svgIcon="pubmed"></mat-icon>
-        </a></mat-list-item>
-      </mat-list>
-    </mat-expansion-panel>
-
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="tau">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range {{tauThreshold}} to 100)">

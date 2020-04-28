@@ -52,16 +52,12 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   private positiveTauColorMap;
   private negativeTauColorMap;
 
-  private readonly routeUrl: string;
-
   private subscriptions: Subscription[] = [];
 
   constructor(
     private service: InteractionsService,
     public dialog: MatDialog
   ) {
-    this.routeUrl = window.location.href;
-
     this.debounceTime = 500;
     this.maxOptions = 100;
 
@@ -257,14 +253,6 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
       drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter(),
       signatureName: this.signature.signatureName
     };
-  }
-
-  public isMetadataAvailable(): boolean {
-    return this.signature !== undefined;
-  }
-
-  public getResultsUrl(): string {
-    return this.routeUrl;
   }
 
   openDownloadGenesDialog(): void {

@@ -44,8 +44,7 @@ export class SignatureViewDataSource extends PaginatedDataSource<DrugCellDatabas
       unpaginatedQueryParams.pageSize = undefined;
 
       this.queryParams = queryParams;
-      this.service.list(unpaginatedQueryParams)
-        .subscribe(result => this.update(of(result.result), pagination));
+      this.update(this.service.listArray(unpaginatedQueryParams), pagination);
     } else if (this.hasPaginationChanged(queryParams)) {
       const pagination = new Pagination(queryParams.page, queryParams.pageSize);
 

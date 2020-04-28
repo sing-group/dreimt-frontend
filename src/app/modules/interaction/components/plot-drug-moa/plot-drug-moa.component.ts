@@ -92,6 +92,8 @@ export class PlotDrugMoaComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.drugMoa !== undefined) {
+      this.options.series[0].data = [];
+
       const moaCounts = {};
       for (let i = 0; i < this.drugMoa.length; i++) {
         const moa = this.drugMoa[i];

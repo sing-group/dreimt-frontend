@@ -92,6 +92,8 @@ export class PlotDrugStatusComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.drugStatus !== undefined) {
+      this.options.series[0].data = [];
+
       let approved = 0;
       let withdrawn = 0;
       let experimental = 0;
