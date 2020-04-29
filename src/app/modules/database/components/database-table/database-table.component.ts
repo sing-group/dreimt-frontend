@@ -68,7 +68,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     this.maxOptions = 100;
 
     this.dataSource = new DatabaseDataSource(this.service);
-    this.columns = ['drug', 'explanation', 'cellTypeA', 'cellTypeB', 'signature', 'tau', 'dss', 'upFdr', 'downFdr', 'additional-info'];
+    this.columns = ['drug', 'summary', 'cellTypeA', 'cellTypeB', 'signature', 'tau', 'dss', 'upFdr', 'downFdr', 'additional-info'];
 
     this.filterParams = {};
 
@@ -234,7 +234,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  public getExplanation(interaction: DrugCellDatabaseInteraction): string {
+  public getSummary(interaction: DrugCellDatabaseInteraction): string {
     let first = 'A';
     if (interaction.interactionType === InteractionType.SIGNATURE_DOWN) {
       first = 'B';
@@ -335,5 +335,21 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
 
   public navigateToSignature(signature: string): void {
     this.router.navigate(['/database/signature'], {queryParams: {signature: signature}});
+  }
+
+  public downloadCsv() {
+    this.service.downloadCsv({
+      sortDirection: SortDirection.ASCENDING,
+      orderField: DrugSignatureInteractionField.TAU,
+      ...this.filterParams
+    });
+  }
+
+  public downloadCsvTooltip(): string {
+    return this.isDownloadCsvDisabled() ? 'Please, select upt to 1000 predictions to download them as CSV. For larger queries, use the API.' : '';
+  }
+
+  public isDownloadCsvDisabled(): boolean {
+    return this.totalResultsSize === undefined || this.totalResultsSize === 0 || this.totalResultsSize > 1000;
   }
 }

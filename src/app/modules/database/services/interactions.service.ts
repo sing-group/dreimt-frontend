@@ -31,7 +31,7 @@ import {map} from 'rxjs/operators';
 import {toPlainObject} from '../../../utils/types';
 import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
-import {CmapUpDownSignatureDrugInteraction} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import saveAs from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +45,9 @@ export class InteractionsService {
 
   public list(queryParams: DatabaseQueryParams): Observable<DatabaseQueryResult> {
     const options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      }),
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
       }),
@@ -195,5 +198,27 @@ export class InteractionsService {
       DreimtError.throwOnError('Signature query error', 'Signature genes could not be retrieved.'),
       map((response: HttpResponse<UpDownGenes>) => (response.body))
     );
+  }
+
+  public downloadCsv(queryParams: DatabaseQueryParams) {
+    this.http.get(`${environment.dreimtUrl}/interactions`, {
+      headers: new HttpHeaders({
+        'Accept': 'text/csv'
+      }),
+      responseType: 'blob',
+      params: new HttpParams({
+        fromObject: toPlainObject(queryParams)
+      })
+    })
+      .pipe(
+        DreimtError.throwOnError(
+          'Error requesting database predictions',
+          `The CSV for the current query could not be retrieved from the backend.`
+        )
+      )
+      .subscribe(res => {
+        const blob = new Blob([res], {type: 'text/csv'});
+        saveAs(blob, 'database.csv');
+      });
   }
 }

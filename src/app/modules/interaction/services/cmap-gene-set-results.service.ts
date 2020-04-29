@@ -42,7 +42,7 @@ export class CmapGeneSetResultsService {
   }
 
   public listAll(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams)
-  : Observable<CmapGeneSetSignatureDrugInteraction[]> {
+    : Observable<CmapGeneSetSignatureDrugInteraction[]> {
     if (queryParams.page !== undefined || queryParams.pageSize !== undefined) {
       throw new TypeError('page and pageSize values not supported in queryParams');
     }
@@ -87,7 +87,6 @@ export class CmapGeneSetResultsService {
         saveAs(blob, fileName);
       });
   }
-
 
   public listDrugCommonNameValues(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
     return this.listValues('drug-common-name', resultId, queryParams);
