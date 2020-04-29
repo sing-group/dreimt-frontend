@@ -54,7 +54,7 @@
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 75 to 100)">
           <span mat-sort-header="TAU">TAU</span>
 
-          <app-number-field #tauMin label="Min." [debounceTime]="debounceTime" [min]="75" [max]="100" [step]="1.0"
+          <app-number-field minTau label="Min." [debounceTime]="debounceTime" [min]="75" [max]="100" [step]="1.0"
                             [initialValue]="75" [clearable]="false"
                             (valueChange)="minTauFilterChanged($event)"></app-number-field>
         </th>
@@ -68,8 +68,7 @@
             matTooltip="Adjusted p-value for the up-regulated geneset tested vs. each drug profile">
           <span mat-sort-header="UP_FDR">Up genes FDR</span>
 
-          <app-number-field #maxUpFdr label="Max." [debounceTime]="debounceTime" [min]="0"
-                            [max]="1" [step]="0.05"
+          <app-number-field maxUpFdr label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
                             (valueChange)="maxUpFdrFilterChanged($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction" matTooltip="{{interaction.upFdr}}">{{interaction.upFdr |
@@ -82,14 +81,22 @@
             matTooltip="Adjusted p-value for the down-regulated geneset tested vs. each drug profile">
           <span mat-sort-header="DOWN_FDR">Down genes FDR</span>
 
-          <app-number-field maxDownFdr label="Max." [debounceTime]="debounceTime" [min]="0"
-                            [max]="1"
-                            [step]="0.05"
+          <app-number-field maxDownFdr label="Max." [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
                             (valueChange)="maxDownFdrFilterChanged($event)"></app-number-field>
         </th>
         <td mat-cell *matCellDef="let interaction" matTooltip="{{interaction.downFdr}}">{{interaction.downFdr |
           pvalueNumberPipe : '1.3-3'}}
         </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drugDss">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Drug specificity score">
+          <span mat-sort-header="DRUG_DSS">DSS</span>
+
+          <app-number-field minDrugDss label="Min. DSS" [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"
+                            (valueChange)="minDrugDssFilterChanged($event)"></app-number-field>
+        </th>
+        <td mat-cell *matCellDef="let interaction">{{interaction.drug.dss | number : '1.2-2'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="drugMoa">

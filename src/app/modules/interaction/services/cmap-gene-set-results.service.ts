@@ -93,7 +93,7 @@ export class CmapGeneSetResultsService {
     return this.listValues('drug-common-name', resultId, queryParams);
   }
 
-  public listDrugMoas(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
+  public listDrugMoaValues(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
     return this.listValues('drug-moa', resultId, queryParams);
   }
 

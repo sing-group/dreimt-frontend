@@ -34,4 +34,5 @@ export class CmapGeneSetSignatureDrugInteractionResultsQueryParams {
   public readonly maxFdr?: number;
   public readonly drugCommonName?: string;
   public readonly drugMoa?: string;
+  public readonly minDrugDss?: number;
 }

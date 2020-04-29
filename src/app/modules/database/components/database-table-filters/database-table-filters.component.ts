@@ -56,11 +56,13 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly pubMedIdFieldFilter: FieldFilterModel;
   public readonly experimentalDesignFilter: FieldFilterModel;
   public readonly interactionTypeFilter: FieldFilterModel;
+  public readonly minDrugDssFilter: FormControl;
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
   @ViewChild('cellTypeAndSubtype2') private cellTypeAndSubType2Component: FilterFieldComponent;
+  @ViewChild('drugDss') minDrugDssFilterComponent: NumberFieldComponent;
   @ViewChild('tauMin') minTauFilterComponent: NumberFieldComponent;
   @ViewChild('maxUpFdr') maxUpFdrFilterComponent: NumberFieldComponent;
   @ViewChild('maxDownFdr') maxDownFdrFilterComponent: NumberFieldComponent;
@@ -82,6 +84,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.pubMedIdFieldFilter = new FieldFilterModel();
     this.experimentalDesignFilter = new FieldFilterModel();
     this.interactionTypeFilter = new FieldFilterModel();
+    this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
     this.maxDownFdrFilter = new FormControl();
@@ -90,6 +93,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.watchForChanges(this.minDrugDssFilter);
     this.watchForChanges(this.minTauFilter);
     this.watchForChanges(this.maxUpFdrFilter);
     this.watchForChanges(this.maxDownFdrFilter);
@@ -159,7 +163,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   private loadDrugMoas(queryParams: DatabaseQueryParams): void {
-    this.service.listMoaValues(queryParams)
+    this.service.listDrugMoaValues(queryParams)
       .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
@@ -232,6 +236,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     return {
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
+      minDrugDss: this.minDrugDssFilter.value,
       signatureName: this.signatureNameFieldFilter.getClearedFilter(),
       cellType1: this.cellTypeAndSubtype1FieldFilter.getCellTypeFilter(),
       cellSubType1: this.cellTypeAndSubtype1FieldFilter.getCellSubtypeFilter(),
@@ -253,6 +258,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     return {
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugMoa: undefined,
+      minDrugDss: null,
       signatureName: undefined,
       cellType1: this.cellTypeAndSubtype1FieldFilter.getCellTypeFilter(),
       cellSubType1: this.cellTypeAndSubtype1FieldFilter.getCellSubtypeFilter(),
@@ -284,6 +290,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.experimentalDesignFilter.filter = '';
     this.interactionTypeFilter.filter = '';
 
+    this.minDrugDssFilterComponent.clearValue();
     this.minTauFilterComponent.clearValue();
     this.maxUpFdrFilterComponent.clearValue();
     this.maxDownFdrFilterComponent.clearValue();
@@ -344,6 +351,13 @@ export class DatabaseTableFiltersComponent implements OnInit {
     if (drugMoa) {
       openAdvancedPanel = true;
       this.drugMoaFieldFilter.filter = drugMoa;
+    }
+
+    const minDrugDss = params.get('minDrugDss');
+    if (minDrugDss) {
+      openAdvancedPanel = true;
+      this.minDrugDssFilterComponent.setValue(minDrugDss);
+      this.minDrugDssFilter.setValue(minDrugDss);
     }
 
     const signatureSourceDb = params.get('signatureSourceDb');

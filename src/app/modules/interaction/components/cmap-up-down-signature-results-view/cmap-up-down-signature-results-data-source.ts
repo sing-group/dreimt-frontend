@@ -71,7 +71,8 @@ export class CmapUpDownSignatureResultsDataSource extends PaginatedDataSource<Cm
         || this.queryParams.maxDownFdr !== queryParams.maxDownFdr
         || this.queryParams.maxUpFdr !== queryParams.maxUpFdr
         || this.queryParams.drugMoa !== queryParams.drugMoa
-        || this.queryParams.drugCommonName !== queryParams.drugCommonName;
+        || this.queryParams.drugCommonName !== queryParams.drugCommonName
+        || this.queryParams.minDrugDss !== queryParams.minDrugDss;
     }
   }
 }

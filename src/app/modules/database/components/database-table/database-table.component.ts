@@ -68,7 +68,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     this.maxOptions = 100;
 
     this.dataSource = new DatabaseDataSource(this.service);
-    this.columns = ['drug', 'explanation', 'cellTypeA', 'cellTypeB', 'signature', 'tau', 'upFdr', 'downFdr', 'additional-info'];
+    this.columns = ['drug', 'explanation', 'cellTypeA', 'cellTypeB', 'signature', 'tau', 'dss', 'upFdr', 'downFdr', 'additional-info'];
 
     this.filterParams = {};
 
@@ -165,6 +165,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     if (interaction.drug.targetGenes.length > 0) {
       tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
     }
+    tooltip = tooltip + '\nDSS: ' + interaction.drug.dss;
 
     return tooltip;
   }

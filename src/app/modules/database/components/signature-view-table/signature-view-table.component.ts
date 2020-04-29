@@ -17,6 +17,7 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
+import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
 
 @Component({
   selector: 'app-signature-view-table',
@@ -39,13 +40,14 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   @ViewChild(MatSort) private sort: MatSort;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
-  public readonly drugSourceNameFieldFilter: FieldFilterModel;
-  public readonly drugSourceDbFieldFilter: FieldFilterModel;
+  public readonly drugMoaFieldFilter: FieldFilterModel;
+  public readonly minDrugDssFilter: FormControl;
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
-  @ViewChild('tauMin') minTauFilterComponent: NumberFieldComponent;
+  @ViewChild('minDrugDss') minDrugDssFilterComponent: NumberFieldComponent;
+  @ViewChild('minTau') minTauFilterComponent: NumberFieldComponent;
   @ViewChild('maxUpFdr') maxUpFdrFilterComponent: NumberFieldComponent;
   @ViewChild('maxDownFdr') maxDownFdrFilterComponent: NumberFieldComponent;
 
@@ -62,8 +64,8 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     this.maxOptions = 100;
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
-    this.drugSourceNameFieldFilter = new FieldFilterModel();
-    this.drugSourceDbFieldFilter = new FieldFilterModel();
+    this.drugMoaFieldFilter = new FieldFilterModel();
+    this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
     this.maxDownFdrFilter = new FormControl();
@@ -111,11 +113,11 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     if (!this.columns) {
       if (this.signature.signatureType === 'UPDOWN') {
         this.columns = [
-          'tau', 'upFdr', 'downFdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
+          'drugCommonName', 'tau', 'upFdr', 'downFdr', 'drugDss', 'drugMoa'
         ];
       } else {
         this.columns = [
-          'tau', 'upFdr', 'drugSourceName', 'drugCommonName', 'drugSourceDb'
+          'drugCommonName', 'tau', 'upFdr', 'drugDss', 'drugMoa'
         ];
       }
     }
@@ -129,6 +131,9 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   }
 
   private clearColumnModifiers(): void {
+    if (this.minDrugDssFilterComponent) {
+      this.minDrugDssFilterComponent.clearValue();
+    }
     if (this.minTauFilterComponent) {
       this.minTauFilterComponent.clearValue();
     }
@@ -139,6 +144,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
       this.maxDownFdrFilterComponent.clearValue();
     }
 
+    this.minDrugDssFilter.setValue(null);
     this.minTauFilter.setValue(this.tauThreshold);
     this.maxUpFdrFilter.setValue(null);
     this.maxDownFdrFilter.setValue(null);
@@ -149,6 +155,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   }
 
   private initWatchForChanges() {
+    this.watchForChanges(this.minDrugDssFilter);
     this.watchForChanges(this.minTauFilter);
     this.watchForChanges(this.maxUpFdrFilter);
     this.watchForChanges(this.maxDownFdrFilter);
@@ -197,8 +204,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
 
     this.updatePage(queryParams);
     this.loadDrugCommonNames(queryParams);
-    this.loadDrugSourceNames(queryParams);
-    this.loadDrugSourceDbs(queryParams);
+    this.loadDrugMoas(queryParams);
   }
 
   public ngOnDestroy(): void {
@@ -224,14 +230,9 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     }
   }
 
-  private loadDrugSourceNames(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugSourceNameValues(queryParams)
-      .subscribe(values => this.drugSourceNameFieldFilter.update(values));
-  }
-
-  private loadDrugSourceDbs(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugSourceDbValues(queryParams)
-      .subscribe(values => this.drugSourceDbFieldFilter.update(values));
+  private loadDrugMoas(queryParams: DatabaseQueryParams): void {
+    this.service.listDrugMoaValues(queryParams)
+      .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
   private loadDrugCommonNames(queryParams: DatabaseQueryParams): void {
@@ -249,8 +250,8 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
       maxUpFdr: this.maxUpFdrFilter.value,
       maxDownFdr: this.maxDownFdrFilter.value,
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
-      drugSourceName: this.drugSourceNameFieldFilter.getClearedFilter(),
-      drugSourceDb: this.drugSourceDbFieldFilter.getClearedFilter(),
+      drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
+      minDrugDss: this.minDrugDssFilter.value,
       signatureName: this.signature.signatureName
     };
   }
@@ -299,6 +300,10 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     } else {
       return 'black';
     }
+  }
+
+  public minDrugDssFilterChanged(event): void {
+    this.updateFilter(this.minDrugDssFilter, event);
   }
 
   public minTauFilterChanged(event): void {

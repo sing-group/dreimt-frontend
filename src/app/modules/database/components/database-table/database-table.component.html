@@ -64,11 +64,20 @@
 
       <ng-container matColumnDef="tau">
         <th id="tau" mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 100 to -100)">
-          <span id="tauHead" mat-sort-header="TAU">TAU</span>
+          <span mat-sort-header="TAU">TAU</span>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.tau"
             [style.color]="getTauStyleColor(interaction.tau)">
           {{interaction.tau | number : '1.2-2'}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dss">
+        <th id="dss" mat-header-cell *matHeaderCellDef matTooltip="Drug specificity score">
+          <span mat-sort-header="DRUG_DSS">DSS</span>
+        </th>
+        <td mat-cell *matCellDef="let interaction" [matTooltip]="interaction.drug.dss">
+          {{interaction.drug.dss | number : '1.2-2'}}
         </td>
       </ng-container>
 

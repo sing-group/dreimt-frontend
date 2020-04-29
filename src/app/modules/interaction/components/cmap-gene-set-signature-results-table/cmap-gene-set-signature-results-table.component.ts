@@ -63,10 +63,12 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugMoaFieldFilter: FieldFilterModel;
+  public readonly minDrugDssFilter: FormControl;
   public readonly minTauFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
-  @ViewChild('tauMin') minTauFilterComponent: NumberFieldComponent;
+  @ViewChild('minDrugDss') minDrugDssFilterComponent: NumberFieldComponent;
+  @ViewChild('minTau') minTauFilterComponent: NumberFieldComponent;
   @ViewChild('maxFdr') maxFdrFilterComponent: NumberFieldComponent;
 
   private positiveTauColorMap;
@@ -83,11 +85,12 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     this.maxOptions = 100;
 
     this.columns = [
-      'drugCommonName', 'tau', 'fdr', 'drugMoa'
+      'drugCommonName', 'tau', 'fdr', 'drugDss', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
     this.drugMoaFieldFilter = new FieldFilterModel();
+    this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
     this.maxFdrFilter = new FormControl();
 
@@ -136,6 +139,9 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
   }
 
   private clearColumnModifiers(): void {
+    if (this.minDrugDssFilterComponent) {
+      this.minDrugDssFilterComponent.clearValue();
+    }
     if (this.minTauFilterComponent) {
       this.minTauFilterComponent.clearValue();
     }
@@ -143,6 +149,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
       this.maxFdrFilterComponent.clearValue();
     }
 
+    this.minDrugDssFilter.setValue(null);
     this.minTauFilter.setValue(CmapGeneSetSignatureResultsTableComponent.DEFAULT_TAU_FILTER);
     this.maxFdrFilter.setValue(null);
   }
@@ -152,6 +159,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
   }
 
   private initWatchForChanges() {
+    this.watchForChanges(this.minDrugDssFilter);
     this.watchForChanges(this.minTauFilter);
     this.watchForChanges(this.maxFdrFilter);
 
@@ -226,7 +234,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
   }
 
   private loadDrugMoas(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugMoas(this.metadata.id, queryParams)
+    this.service.listDrugMoaValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
@@ -245,6 +253,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
       maxFdr: this.maxFdrFilter.value,
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
+      minDrugDss: this.minDrugDssFilter.value
     };
   }
 
@@ -308,6 +317,10 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
 
   public maxFdrFilterChanged(event): void {
     this.updateFilter(this.maxFdrFilter, event);
+  }
+
+  public minDrugDssFilterChanged(event): void {
+    this.updateFilter(this.minDrugDssFilter, event);
   }
 
   private updateFilter(filter: FormControl, event) {
