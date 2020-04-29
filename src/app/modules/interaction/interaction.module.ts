@@ -68,6 +68,7 @@ import {CmapGeneSetSignatureResultsSummaryComponent} from './components/cmap-gen
 import {PlotDrugStatusComponent} from './components/plot-drug-status/plot-drug-status.component';
 import {PlotDrugMoaComponent} from './components/plot-drug-moa/plot-drug-moa.component';
 import {CmapDrugResultsSummaryComponent} from './components/cmap-results-summary/cmap-drug-results-summary.component';
+import {HtmlDialogComponent} from '../shared/components/html-dialog/html-dialog.component';
 
 @NgModule({
   imports: [
@@ -126,7 +127,8 @@ import {CmapDrugResultsSummaryComponent} from './components/cmap-results-summary
     QueryService
   ],
   entryComponents: [
-    ExportGenesDialogComponent
+    ExportGenesDialogComponent,
+    HtmlDialogComponent
   ]
 })
 export class InteractionModule {

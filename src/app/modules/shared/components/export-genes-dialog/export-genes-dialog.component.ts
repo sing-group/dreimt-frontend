@@ -32,7 +32,8 @@ export class ExportGenesDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ExportGenesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {
   }
 
   onCancel(): void {

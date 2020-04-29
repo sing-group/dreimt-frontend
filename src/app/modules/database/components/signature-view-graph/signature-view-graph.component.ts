@@ -3,6 +3,8 @@ import {SignatureViewDataSource} from '../signature-view/signature-view-data-sou
 import * as Highcharts from 'highcharts';
 import {Subscription} from 'rxjs';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import {MatDialog} from '@angular/material';
+import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -32,9 +34,12 @@ export interface DataModel {
   styleUrls: ['./signature-view-graph.component.scss']
 })
 export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDestroy {
+  private static DIALOG: MatDialog;
+
   @Input() public dataSource: SignatureViewDataSource;
 
-  constructor() {
+  constructor(private dialog: MatDialog) {
+    SignatureViewGraphComponent.DIALOG = this.dialog;
   }
 
   private static TAU_THRESHOLD = 75;
@@ -183,7 +188,14 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
     },
     plotOptions: {
       series: {
-        turboThreshold: 0
+        turboThreshold: 0,
+        point: {
+          events: {
+            click: function () {
+              SignatureViewGraphComponent.click(this);
+            }
+          }
+        }
       }
     },
     series: [
@@ -473,6 +485,15 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
     return this.loading;
   }
 
+  private static click(point): void {
+    const dialogRef = SignatureViewGraphComponent.DIALOG.open(HtmlDialogComponent, {
+      data: {
+        title: 'Point detail',
+        html: SignatureViewGraphComponent.tooltip(point)
+      }
+    });
+  }
+
   private static tooltip(point): string {
     let points = [point.interaction];
     const key = SignatureViewGraphComponent.pointKey(point.x, point.y);
@@ -483,6 +504,8 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
   }
 
   private static interactionTooltip(interaction: CmapUpDownSignatureDrugInteraction): string {
+    const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
+
     let tooltip = `<b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>`;
     if (interaction.upFdr !== null) {
       tooltip = tooltip.concat(`<b>Up Genes FDR</b>: ${interaction.upFdr.toFixed(4)} <br/>`);
@@ -492,8 +515,9 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
     }
     return tooltip.concat(`
             <b>Drug</b>: ${interaction.drug.commonName} <br/>
-            <b>\tStatus</b>: ${interaction.drug.status} <br/>
-            <b>\tMOA</b>: ${interaction.drug.moa} <br/>
+            <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
+            <b>&nbsp&nbspMOA</b>: ${interaction.drug.moa} <br/>
+            <b>&nbsp&nbspDSS</b>: ${dss} <br/>
           `);
   }
 

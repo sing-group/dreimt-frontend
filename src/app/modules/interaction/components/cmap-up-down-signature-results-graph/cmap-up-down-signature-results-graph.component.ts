@@ -19,11 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {CmapUpDownSignatureResultsDataSource} from '../cmap-up-down-signature-results-view/cmap-up-down-signature-results-data-source';
 import {Subscription} from 'rxjs';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import {ExportGenesDialogComponent} from '../../../shared/components/export-genes-dialog/export-genes-dialog.component';
+import {FileFormat} from '../../../../models/helpers/genes.helper';
+import {MatDialog} from '@angular/material';
+import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -52,9 +56,12 @@ export interface DataModel {
   styleUrls: ['./cmap-up-down-signature-results-graph.component.scss']
 })
 export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, OnInit, OnDestroy {
+  private static DIALOG: MatDialog;
+
   @Input() public dataSource: CmapUpDownSignatureResultsDataSource;
 
-  constructor() {
+  constructor(private dialog: MatDialog) {
+    CmapUpDownSignatureResultsGraphComponent.DIALOG = this.dialog;
   }
 
   private static TAU_THRESHOLD = 75;
@@ -203,7 +210,14 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     },
     plotOptions: {
       series: {
-        turboThreshold: 0
+        turboThreshold: 0,
+        point: {
+          events: {
+            click: function () {
+              CmapUpDownSignatureResultsGraphComponent.click(this);
+            }
+          }
+        }
       }
     },
     series: [
@@ -423,16 +437,28 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     return this.loading;
   }
 
+  private static click(point): void {
+    const dialogRef = CmapUpDownSignatureResultsGraphComponent.DIALOG.open(HtmlDialogComponent, {
+      data: {
+        title: 'Point detail',
+        html: CmapUpDownSignatureResultsGraphComponent.tooltip(point)
+      }
+    });
+  }
+
   private static tooltip(point): string {
     let points = [point.interaction];
     const key = CmapUpDownSignatureResultsGraphComponent.pointKey(point.x, point.y);
     if (CmapUpDownSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.has(key)) {
       points = CmapUpDownSignatureResultsGraphComponent.OVERLAPPING_INTERACTIONS_MAP.get(key);
     }
+
     return points.map(CmapUpDownSignatureResultsGraphComponent.interactionTooltip).join('<br/>');
   }
 
   private static interactionTooltip(interaction: CmapUpDownSignatureDrugInteraction): string {
+    const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
+
     return `
             <b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>
             <b>Up Genes FDR</b>: ${interaction.upFdr.toFixed(4)} <br/>
@@ -440,6 +466,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
             <b>Drug</b>: ${interaction.drug.commonName} <br/>
             <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
             <b>&nbsp&nbspMOA</b>: ${interaction.drug.moa} <br/>
+            <b>&nbsp&nbspDSS</b>: ${dss} <br/>
           `;
   }
 

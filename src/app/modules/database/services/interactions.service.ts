@@ -67,6 +67,9 @@ export class InteractionsService {
 
   public listArray(queryParams: DatabaseQueryParams): Observable<DrugCellDatabaseInteraction[]> {
     const options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      }),
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
       })

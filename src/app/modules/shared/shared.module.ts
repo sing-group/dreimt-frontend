@@ -40,6 +40,7 @@ import {FilterFieldComponent} from './components/filter-field/filter-field.compo
 import {NumberFieldComponent} from './components/number-field/number-field.component';
 import {PvalueNumberPipePipe} from './pipes/pvalue-number-pipe.pipe';
 import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
+import {HtmlDialogComponent} from './components/html-dialog/html-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {ExportGenesDialogComponent} from './components/export-genes-dialog/expor
     HighlightPipe,
     NumberFieldComponent,
     PvalueNumberPipePipe,
-    ExportGenesDialogComponent
+    ExportGenesDialogComponent,
+    HtmlDialogComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +71,8 @@ import {ExportGenesDialogComponent} from './components/export-genes-dialog/expor
     FilterFieldComponent,
     NumberFieldComponent,
     PvalueNumberPipePipe,
-    ExportGenesDialogComponent
+    ExportGenesDialogComponent,
+    HtmlDialogComponent
   ]
 })
 export class SharedModule {

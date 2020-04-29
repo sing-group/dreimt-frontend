@@ -3,6 +3,8 @@ import {Subscription} from 'rxjs';
 import * as Highcharts from 'highcharts';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
 import {CmapGeneSetSignatureResultsDataSource} from '../cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-data-source';
+import {MatDialog} from '@angular/material';
+import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -26,9 +28,12 @@ ExportingOffline(Highcharts);
   styleUrls: ['./cmap-gene-set-signature-results-graph.component.scss']
 })
 export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit, OnInit, OnDestroy {
+  private static DIALOG: MatDialog;
+
   @Input() public dataSource: CmapGeneSetSignatureResultsDataSource;
 
-  constructor() {
+  constructor(private dialog: MatDialog) {
+    CmapGeneSetSignatureResultsGraphComponent.DIALOG = this.dialog;
   }
 
   private static TAU_THRESHOLD = 75;
@@ -177,7 +182,14 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
     },
     plotOptions: {
       series: {
-        turboThreshold: 0
+        turboThreshold: 0,
+        point: {
+          events: {
+            click: function () {
+              CmapGeneSetSignatureResultsGraphComponent.click(this);
+            }
+          }
+        }
       }
     },
     series: [
@@ -397,6 +409,15 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
     return this.loading;
   }
 
+  private static click(point): void {
+    const dialogRef = CmapGeneSetSignatureResultsGraphComponent.DIALOG.open(HtmlDialogComponent, {
+      data: {
+        title: 'Point detail',
+        html: CmapGeneSetSignatureResultsGraphComponent.tooltip(point)
+      }
+    });
+  }
+
   private static tooltip(point): string {
     let points = [point.interaction];
     const key = CmapGeneSetSignatureResultsGraphComponent.pointKey(point.x, point.y);
@@ -407,12 +428,15 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
   }
 
   private static interactionTooltip(interaction: CmapGeneSetSignatureDrugInteraction): string {
+    const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
+
     return `
             <b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>
             <b>Up Genes FDR</b>: ${interaction.fdr.toFixed(4)} <br/>
             <b>Drug</b>: ${interaction.drug.commonName} <br/>
             <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
             <b>&nbsp&nbspMOA</b>: ${interaction.drug.moa} <br/>
+            <b>&nbsp&nbspDSS</b>: ${dss} <br/>
           `;
   }
 
