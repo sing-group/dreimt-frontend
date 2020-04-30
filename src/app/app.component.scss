@@ -111,6 +111,11 @@
   }
 
   .active-route {
-    color: #f5085c;
+    background-color: #f5085c;
+  }
+
+  .mat-button-wrapper {
+    font-size: 1.1em;
+    font-weight: bold;
   }
 }

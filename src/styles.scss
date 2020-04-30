@@ -32,16 +32,29 @@
   @include app-component-theme($theme);
 }
 
+@font-face {
+  font-family: 'gidoleregular';
+  src: url('assets/font/Gidole-Regular.ttf') format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+$custom-typography: mat-typography-config(
+  $font-family: 'gidoleregular'
+);
+
 // specify theme class eg: <body class="my-theme"> ... </body>
 .dreimt-theme {
   // use our theme with angular-material-theme mixin
   @include angular-material-theme($dreimt-theme);
 
   @include custom-component-theme($dreimt-theme);
+
+  @include angular-material-typography($custom-typography);
 }
 
 body, html {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'gidoleregular';
 }

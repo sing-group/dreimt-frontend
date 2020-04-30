@@ -15,19 +15,19 @@ export class CustomIconService {
   init() {
     this.matIconRegistry.addSvgIcon(
       'pubmed',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/pubmed.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/pubmed.svg')
     );
     this.matIconRegistry.addSvgIcon(
       'pubchem',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/pubchem.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/pubchem.svg')
     );
     this.matIconRegistry.addSvgIcon(
       'homo-sapiens',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/homo-sapiens.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/homo-sapiens.svg')
     );
     this.matIconRegistry.addSvgIcon(
       'mus-musculus',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/mus-musculus.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/mus-musculus.svg')
     );
   }
 }
