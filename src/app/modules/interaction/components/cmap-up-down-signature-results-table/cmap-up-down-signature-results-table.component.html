@@ -50,6 +50,14 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="drugEffect">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Effect of the drug on the query signature">
+          <div>Effect</div>
+        </th>
+        <td mat-cell *matCellDef="let interaction"><span
+          ngClass="{{interaction.drugEffect}}">{{interaction.drugEffect}}</span></td>
+      </ng-container>
+
       <ng-container matColumnDef="tau">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 75 to 100)">
           <span mat-sort-header="TAU">TAU</span>

@@ -460,6 +460,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
 
     return `
+            <b>Drug effect</b>: ${interaction.drugEffect} <br/>
             <b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>
             <b>Up Genes FDR</b>: ${interaction.upFdr.toFixed(4)} <br/>
             <b>Down Genes FDR</b>: ${interaction.downFdr.toFixed(4)} <br/>

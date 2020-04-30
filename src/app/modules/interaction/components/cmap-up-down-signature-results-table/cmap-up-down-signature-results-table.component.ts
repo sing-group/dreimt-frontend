@@ -87,7 +87,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     this.maxOptions = 100;
 
     this.columns = [
-      'drugCommonName', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugMoa'
+      'drugCommonName', 'drugEffect', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();

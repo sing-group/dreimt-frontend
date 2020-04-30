@@ -197,7 +197,7 @@ export class JaccardQueryPanelComponent implements OnInit {
   }
 
   public isValid(): boolean {
-    return this.upGenes.length > 0 && this.getQueryConfiguration() !== undefined;
+    return (this.upGenes.length > 0 || this.upGenes.length > 0) && this.getQueryConfiguration() !== undefined;
   }
 
   private getQueryConfiguration(): JaccardCalculateInteractionsQueryParams {
@@ -208,17 +208,10 @@ export class JaccardQueryPanelComponent implements OnInit {
   }
 
   public launchQuery(): void {
-    let genes: UpDownGenes | GeneSet;
-    if (this.downGenes.length === 0) {
-      genes = {
-        genes: this.upGenes
-      };
-    } else {
-      genes = {
-        up: this.upGenes,
-        down: this.downGenes
-      };
-    }
+    const genes: UpDownGenes = {
+      up: this.upGenes,
+      down: this.downGenes
+    };
 
     const queryParams: CalculateInteractionsQueryParamsModel = {
       params: this.getQueryConfiguration(),

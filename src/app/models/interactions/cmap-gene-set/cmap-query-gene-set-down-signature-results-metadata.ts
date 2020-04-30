@@ -25,6 +25,7 @@ export class CmapQueryGeneSetSignatureResultsMetadata {
   public readonly numPerm: number;
   public readonly genesCount: number;
   public readonly universeGenesCount: number;
+  public readonly geneSetType: string;
 
   public set id(id: string) {
     if (this.resultId === undefined) {
@@ -39,7 +40,10 @@ export class CmapQueryGeneSetSignatureResultsMetadata {
   }
 
   public static isA(object: any): object is CmapQueryGeneSetSignatureResultsMetadata {
-    return object !== undefined && object !== null && object.numPerm !== undefined &&
-      object.genesCount !== undefined && object.universeGenesCount !== undefined;
+    return object !== undefined && object !== null
+      && object.numPerm !== undefined &&
+      object.genesCount !== undefined
+      && object.universeGenesCount !== undefined
+      && object.geneSetType !== undefined;
   }
 }

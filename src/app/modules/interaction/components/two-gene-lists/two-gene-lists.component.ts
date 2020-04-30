@@ -74,8 +74,13 @@ export class TwoGeneListsComponent implements OnInit {
         }
 
         if (secondColumnGenes.length === 0) {
-          this.upGenesComponent.updateGenes(firstColumnGenes.join('\t'));
-          this.downGenesComponent.updateGenes('');
+          if (genesetNamesLine[0].endsWith('_DN')) {
+            this.downGenesComponent.updateGenes(firstColumnGenes.join('\t'));
+            this.upGenesComponent.updateGenes('');
+          } else {
+            this.upGenesComponent.updateGenes(firstColumnGenes.join('\t'));
+            this.downGenesComponent.updateGenes('');
+          }
         } else {
           this.updateGeneListComponents(
             genesetNamesLine[0], firstColumnGenes,

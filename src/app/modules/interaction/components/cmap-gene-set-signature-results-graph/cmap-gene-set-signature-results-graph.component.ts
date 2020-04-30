@@ -431,6 +431,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
     const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
 
     return `
+            <b>Drug effect</b>: ${interaction.drugEffect} <br/>
             <b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>
             <b>Up Genes FDR</b>: ${interaction.fdr.toFixed(4)} <br/>
             <b>Drug</b>: ${interaction.drug.commonName} <br/>

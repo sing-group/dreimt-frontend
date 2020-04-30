@@ -26,5 +26,5 @@ import {GeneSet} from './gene-set.model';
 
 export class CalculateInteractionsQueryParamsModel {
   public readonly params: JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams;
-  public readonly genes: UpDownGenes | GeneSet;
+  public readonly genes: UpDownGenes;
 }

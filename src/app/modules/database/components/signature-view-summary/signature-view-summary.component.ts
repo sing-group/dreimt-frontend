@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs';
 import {DrugSummary, SummaryElement, SummaryHelper} from '../../../../models/interactions/cmap/cmap-result-summary.model';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 
 @Component({
   selector: 'app-signature-view-summary',
@@ -22,7 +23,7 @@ export class SignatureViewSummaryComponent implements OnInit, OnDestroy {
 
   @Input() public dataSource: SignatureViewDataSource;
 
-  public resultsArray: CmapUpDownSignatureDrugInteraction[];
+  public resultsArray: DrugCellDatabaseInteraction[];
 
   constructor() {
   }

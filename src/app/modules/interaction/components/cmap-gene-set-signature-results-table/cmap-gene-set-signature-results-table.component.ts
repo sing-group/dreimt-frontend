@@ -85,7 +85,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     this.maxOptions = 100;
 
     this.columns = [
-      'drugCommonName', 'tau', 'fdr', 'drugDss', 'drugMoa'
+      'drugCommonName', 'drugEffect', 'tau', 'fdr', 'drugDss', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();

@@ -63,14 +63,16 @@ export class QueryService {
 
   private launchQuery(queryParams: CalculateInteractionsQueryParamsModel, analysisResource: string): Observable<Work> {
     let body: {
-      upGenes: string[];
+      upGenes?: string[];
       downGenes?: string[];
     };
 
-    if (UpDownGenes.isA(queryParams.genes)) {
+    if (queryParams.genes.up.length === 0) {
+      body = {downGenes: queryParams.genes.down};
+    } else if (queryParams.genes.up.length === 0) {
+      body = {upGenes: queryParams.genes.up};
+    } else {
       body = {upGenes: queryParams.genes.up, downGenes: queryParams.genes.down};
-    } else if (GeneSet.isA(queryParams.genes)) {
-      body = {upGenes: queryParams.genes.genes};
     }
 
     Object.assign(body, body, queryParams.params);

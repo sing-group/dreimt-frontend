@@ -26,12 +26,14 @@ export class CmapUpDownSignatureDrugInteraction {
   public readonly tau: number;
   public readonly upFdr: number;
   public readonly downFdr: number;
+  public readonly drugEffect: string;
 
   public static isA(object: any): object is CmapUpDownSignatureDrugInteraction {
     return object !== undefined && object !== null
       && Drug.isA(object.drug)
       && typeof object.tau === 'number'
       && typeof object.upFdr === 'number'
-      && typeof object.downFdr === 'number';
+      && typeof object.downFdr === 'number'
+      && typeof object.drugEffect === 'string';
   }
 }

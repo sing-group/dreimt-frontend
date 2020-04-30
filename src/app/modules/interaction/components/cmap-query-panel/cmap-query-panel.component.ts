@@ -49,8 +49,6 @@ export class CmapQueryPanelComponent {
 
   public readonly debounceTime: number;
 
-  public readonly formGroup: FormGroup;
-
   private precalculatedExamples: PrecalculatedExample[];
 
   public constructor(
@@ -84,7 +82,7 @@ export class CmapQueryPanelComponent {
   }
 
   public isValid(): boolean {
-    return this.upGenes.length > 0;
+    return this.upGenes.length > 0 || this.downGenes.length > 0;
   }
 
   private getQueryConfiguration(): CmapCalculateInteractionsQueryParams {
@@ -94,17 +92,10 @@ export class CmapQueryPanelComponent {
   }
 
   public launchQuery(): void {
-    let genes: UpDownGenes | GeneSet;
-    if (this.downGenes.length === 0) {
-      genes = {
-        genes: this.upGenes
-      };
-    } else {
-      genes = {
+    const genes: UpDownGenes = {
         up: this.upGenes,
         down: this.downGenes
       };
-    }
 
     const queryParams: CalculateInteractionsQueryParamsModel = {
       params: this.getQueryConfiguration(),

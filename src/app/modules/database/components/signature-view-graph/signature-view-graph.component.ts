@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {MatDialog} from '@angular/material';
 import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
+import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -521,7 +522,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
           `);
   }
 
-  private mapInteraction(interaction: CmapUpDownSignatureDrugInteraction) {
+  private mapInteraction(interaction: DrugCellDatabaseInteraction) {
     let interactionFdr: number;
     if (interaction.upFdr === null) {
       interactionFdr = interaction.downFdr;
