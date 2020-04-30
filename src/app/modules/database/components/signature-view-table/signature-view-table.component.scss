@@ -31,8 +31,50 @@ table {
   margin-top: 10px;
 }
 
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+td.mat-cell {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+.mat-column-tau, .mat-column-upFdr, .mat-column-downFdr, .mat-column-drugDss {
+  max-width: 105px;
+}
+
+.mat-column-summary #titleDiv {
+  margin-bottom: 57px;
+}
+
 ::ng-deep .mat-tooltip {
   white-space: pre-line;
   word-wrap: break-word;
   line-height: 1.5;
+}
+
+.mat-column-summary {
+  max-width: 400px;
+}
+
+::ng-deep .explanation-drug {
+  color: orange;
+}
+
+::ng-deep .explanation-boosts {
+  color: red;
+}
+
+::ng-deep .explanation-inhibits {
+  color: green;
+}
+
+::ng-deep .explanation-treatment {
+  color: blue;
+}
+
+::ng-deep .explanation-disease {
+  color: #3cb371;
 }

@@ -82,3 +82,8 @@ table {
 .mat-column-drugCommonName {
   padding-right: 10px;
 }
+
+.mat-column-tau, .mat-column-upFdr, .mat-column-downFdr, .mat-column-drugDss {
+  max-width: 105px;
+  padding-right: 5px;
+}

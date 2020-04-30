@@ -18,6 +18,7 @@ import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
+import {SignaturesSummaryHelper} from '../../helpers/SignaturesSummaryHelper';
 
 @Component({
   selector: 'app-signature-view-table',
@@ -53,6 +54,8 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
 
   private positiveTauColorMap;
   private negativeTauColorMap;
+
+  private readonly signaturesSummaryHelper = new SignaturesSummaryHelper();
 
   private subscriptions: Subscription[] = [];
 
@@ -113,11 +116,11 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     if (!this.columns) {
       if (this.signature.signatureType === 'UPDOWN') {
         this.columns = [
-          'drugCommonName', 'tau', 'upFdr', 'downFdr', 'drugDss', 'drugMoa'
+          'drugCommonName', 'summary', 'tau', 'upFdr', 'downFdr', 'drugDss', 'drugMoa'
         ];
       } else {
         this.columns = [
-          'drugCommonName', 'tau', 'upFdr', 'drugDss', 'drugMoa'
+          'drugCommonName', 'summary', 'tau', 'upFdr', 'drugDss', 'drugMoa'
         ];
       }
     }
@@ -332,5 +335,9 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     }
 
     return tooltip;
+  }
+
+  public getSummary(interaction: DrugCellDatabaseInteraction): string {
+    return this.signaturesSummaryHelper.getSummary(interaction);
   }
 }

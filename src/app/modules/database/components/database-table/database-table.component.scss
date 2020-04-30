@@ -84,10 +84,6 @@ td.mat-cell {
   max-width: 120px;
 }
 
-.mat-column-summary {
-  max-width: 450px;
-}
-
 .mat-column-signature {
   word-wrap: break-word;
   max-width: 350px;
@@ -96,6 +92,10 @@ td.mat-cell {
 #navigateSignatureButton:hover {
   cursor: pointer;
   color: blue;
+}
+
+.mat-column-summary {
+  max-width: 400px;
 }
 
 ::ng-deep .explanation-drug {

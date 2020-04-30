@@ -62,7 +62,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly maxDownFdrFilter: FormControl;
 
   @ViewChild('cellTypeAndSubtype2') private cellTypeAndSubType2Component: FilterFieldComponent;
-  @ViewChild('drugDss') minDrugDssFilterComponent: NumberFieldComponent;
+  @ViewChild('minDrugDss') minDrugDssFilterComponent: NumberFieldComponent;
   @ViewChild('tauMin') minTauFilterComponent: NumberFieldComponent;
   @ViewChild('maxUpFdr') maxUpFdrFilterComponent: NumberFieldComponent;
   @ViewChild('maxDownFdr') maxDownFdrFilterComponent: NumberFieldComponent;
