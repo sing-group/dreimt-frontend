@@ -49,7 +49,6 @@ import {OrganismPipe} from './pipes/organism.pipe';
 import {SignatureViewComponent} from './components/signature-view/signature-view.component';
 import {SignatureViewTableComponent} from './components/signature-view-table/signature-view-table.component';
 import {ExportGenesDialogComponent} from '../shared/components/export-genes-dialog/export-genes-dialog.component';
-import {SignatureViewSummaryComponent} from './components/signature-view-summary/signature-view-summary.component';
 import {SignatureViewGraphComponent} from './components/signature-view-graph/signature-view-graph.component';
 import {InteractionModule} from '../interaction/interaction.module';
 
@@ -61,7 +60,6 @@ import {InteractionModule} from '../interaction/interaction.module';
     OrganismPipe,
     SignatureViewComponent,
     SignatureViewTableComponent,
-    SignatureViewSummaryComponent,
     SignatureViewGraphComponent
   ],
   imports: [
@@ -69,6 +67,7 @@ import {InteractionModule} from '../interaction/interaction.module';
     DatabaseRoutingModule,
     FormsModule,
     HttpClientModule,
+    InteractionModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
@@ -85,8 +84,7 @@ import {InteractionModule} from '../interaction/interaction.module';
     MatToolbarModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    SharedModule,
-    InteractionModule
+    SharedModule
   ],
   entryComponents: [
     ExportGenesDialogComponent

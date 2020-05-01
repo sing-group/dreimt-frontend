@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -63,8 +63,6 @@ import {CmapUpDownSignatureResultsViewComponent} from './components/cmap-up-down
 import {CmapGeneSetSignatureResultsViewComponent} from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
 import {CmapGeneSetSignatureResultsGraphComponent} from './components/cmap-gene-set-signature-results-graph/cmap-gene-set-signature-results-graph.component';
 import {TwoGeneListsComponent} from './components/two-gene-lists/two-gene-lists.component';
-import {CmapUpDownSignatureResultsSummaryComponent} from './components/cmap-up-down-signature-results-summary/cmap-up-down-signature-results-summary.component';
-import {CmapGeneSetSignatureResultsSummaryComponent} from './components/cmap-gene-set-signature-results-summary/cmap-gene-set-signature-results-summary.component';
 import {PlotDrugStatusComponent} from './components/plot-drug-status/plot-drug-status.component';
 import {PlotDrugMoaComponent} from './components/plot-drug-moa/plot-drug-moa.component';
 import {CmapDrugResultsSummaryComponent} from './components/cmap-results-summary/cmap-drug-results-summary.component';
@@ -115,8 +113,6 @@ import { JaccardResultsViewComponent } from './components/jaccard-results-view/j
     CmapGeneSetSignatureResultsViewComponent,
     CmapGeneSetSignatureResultsGraphComponent,
     TwoGeneListsComponent,
-    CmapUpDownSignatureResultsSummaryComponent,
-    CmapGeneSetSignatureResultsSummaryComponent,
     PlotDrugStatusComponent,
     PlotDrugMoaComponent,
     CmapDrugResultsSummaryComponent,

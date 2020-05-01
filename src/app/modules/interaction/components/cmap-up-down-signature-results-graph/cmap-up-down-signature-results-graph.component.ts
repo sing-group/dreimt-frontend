@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -98,7 +98,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
       }
     },
     title: {
-      text: null
+      text: 'Drug Prioritization Plot'
     },
     credits: {
       enabled: false

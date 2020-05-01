@@ -42,8 +42,9 @@
     </mat-card-content>
   </mat-card>
 
-  <app-signature-view-graph [dataSource]="dataSource"></app-signature-view-graph>
-  <app-signature-view-summary [dataSource]="dataSource"></app-signature-view-summary>
+  <app-cmap-drug-results-summary [dataSource]="dataSource">
+    <app-signature-view-graph [dataSource]="dataSource"></app-signature-view-graph>
+  </app-cmap-drug-results-summary>
   <app-signature-view-table [signature]="signature" [dataSource]="dataSource"
                             [tauThreshold]="minDatabaseTau"></app-signature-view-table>
 </ng-container>
