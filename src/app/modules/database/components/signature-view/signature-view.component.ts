@@ -45,7 +45,6 @@ export class SignatureViewComponent implements OnInit {
   private getSignature(): void {
     this.signatureService
       .getSignatureSummary(this.signatureParam)
-
       .pipe(
         catchError(
           (error: Error) => {

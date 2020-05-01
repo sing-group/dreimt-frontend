@@ -1,7 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
 import {CmapUpDownSignatureResultsDataSource} from './cmap-up-down-signature-results-data-source';
-import {CmapResultsService} from '../../services/cmap-results.service';
+import {CmapUpDownResultsService} from '../../services/cmap-up-down-results.service';
+import {ActivatedRoute} from '@angular/router';
+import {catchError} from 'rxjs/operators';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-view',
@@ -10,15 +13,32 @@ import {CmapResultsService} from '../../services/cmap-results.service';
 })
 export class CmapUpDownSignatureResultsViewComponent {
 
-  @Input() public metadata: CmapQueryUpDownSignatureResultsMetadata;
-
-  public readonly dataSource: CmapUpDownSignatureResultsDataSource;
-
+  private metadata: CmapQueryUpDownSignatureResultsMetadata;
+  private dataSource: CmapUpDownSignatureResultsDataSource;
   private readonly routeUrl: string;
+  private errorMessage: string;
 
-  constructor(private service: CmapResultsService) {
+  constructor(
+    private service: CmapUpDownResultsService,
+    private route: ActivatedRoute
+  ) {
     this.routeUrl = window.location.href;
-    this.dataSource = new CmapUpDownSignatureResultsDataSource(this.service);
+    const uuid = this.route.snapshot.params['uuid'];
+    if (uuid) {
+      this.service.getMetadata(uuid)
+        .pipe(
+          catchError(
+            (error: Error) => {
+              this.errorMessage = 'Error loading drug prioritization result with id = ' + uuid;
+              return throwError(error);
+            }
+          ))
+        .subscribe(metadata => {
+          this.metadata = metadata;
+          this.metadata.id = uuid;
+          this.dataSource = new CmapUpDownSignatureResultsDataSource(this.service);
+        });
+    }
   }
 
   public getResultsUrl(): string {
@@ -27,5 +47,9 @@ export class CmapUpDownSignatureResultsViewComponent {
 
   public isMetadataAvailable(): boolean {
     return this.metadata !== undefined;
+  }
+
+  public isError(): boolean {
+    return this.errorMessage !== undefined;
   }
 }

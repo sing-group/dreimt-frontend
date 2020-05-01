@@ -21,7 +21,7 @@
 
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
-import {CmapResultsService} from '../../services/cmap-results.service';
+import {CmapUpDownResultsService} from '../../services/cmap-up-down-results.service';
 import {PaginatedDataSource} from '../../../../models/data-source/paginated-data-source';
 import {Pagination} from '../../../../models/data-source/pagination';
 
@@ -29,7 +29,7 @@ export class CmapUpDownSignatureResultsDataSource extends PaginatedDataSource<Cm
   private queryParams?: CmapUpDownSignatureDrugInteractionResultsQueryParams;
 
   public constructor(
-    private service: CmapResultsService
+    private service: CmapUpDownResultsService
   ) {
     super();
   }

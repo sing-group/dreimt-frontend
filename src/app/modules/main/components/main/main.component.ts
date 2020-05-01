@@ -40,7 +40,7 @@ export class MainComponent {
     this.router.navigateByUrl('/interactions/drug-prioritization');
   }
 
-  public onNavigateToJaccard(): void {
-    this.router.navigateByUrl('/interactions/jaccard');
+  public onNavigateToSignaturesComparison(): void {
+    this.router.navigateByUrl('/interactions/signatures-comparison');
   }
 }

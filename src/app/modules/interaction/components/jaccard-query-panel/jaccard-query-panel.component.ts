@@ -197,7 +197,7 @@ export class JaccardQueryPanelComponent implements OnInit {
   }
 
   public isValid(): boolean {
-    return (this.upGenes.length > 0 || this.upGenes.length > 0) && this.getQueryConfiguration() !== undefined;
+    return (this.upGenes.length > 0 || this.downGenes.length > 0) && this.getQueryConfiguration() !== undefined;
   }
 
   private getQueryConfiguration(): JaccardCalculateInteractionsQueryParams {

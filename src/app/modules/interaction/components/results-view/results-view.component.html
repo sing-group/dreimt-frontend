@@ -32,14 +32,6 @@
     <p>Loading results...</p>
     <mat-spinner diameter="100"></mat-spinner>
   </div>
-
-  <ng-container *ngIf="!isLoading()">
-    <app-jaccard-results-table *ngIf="isJaccard()" [metadata]="results"></app-jaccard-results-table>
-    <app-cmap-up-down-signature-results-view *ngIf="isCmapUpDownSignature()"
-                                             [metadata]="results"></app-cmap-up-down-signature-results-view>
-    <app-cmap-gene-set-signature-results-view *ngIf="isCmapGeneSetSignature()"
-                                               [metadata]="results"></app-cmap-gene-set-signature-results-view>
-  </ng-container>
 </ng-container>
 
 <div *ngIf="isFailed()">

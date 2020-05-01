@@ -24,6 +24,9 @@ import {NgModule} from '@angular/core';
 import {ResultsViewComponent} from './components/results-view/results-view.component';
 import {CmapQueryPanelComponent} from './components/cmap-query-panel/cmap-query-panel.component';
 import {JaccardQueryPanelComponent} from './components/jaccard-query-panel/jaccard-query-panel.component';
+import {CmapUpDownSignatureResultsViewComponent} from './components/cmap-up-down-signature-results-view/cmap-up-down-signature-results-view.component';
+import {CmapGeneSetSignatureResultsViewComponent} from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
+import {JaccardResultsViewComponent} from './components/jaccard-results-view/jaccard-results-view.component';
 
 const routes: Routes = [
   {
@@ -31,8 +34,20 @@ const routes: Routes = [
     component: CmapQueryPanelComponent
   },
   {
-    path: 'jaccard',
+    path: 'drug-prioritization/results/signature/:uuid',
+    component: CmapUpDownSignatureResultsViewComponent
+  },
+  {
+    path: 'drug-prioritization/results/geneset/:uuid',
+    component: CmapGeneSetSignatureResultsViewComponent
+  },
+  {
+    path: 'signatures-comparison',
     component: JaccardQueryPanelComponent
+  },
+  {
+    path: 'signatures-comparison/results/:uuid',
+    component: JaccardResultsViewComponent
   },
   {
     path: 'calculated/:uuid',

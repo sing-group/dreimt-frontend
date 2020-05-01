@@ -25,7 +25,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
 import {CmapUpDownSignatureResultsDataSource} from '../cmap-up-down-signature-results-view/cmap-up-down-signature-results-data-source';
-import {CmapResultsService} from '../../services/cmap-results.service';
+import {CmapUpDownResultsService} from '../../services/cmap-up-down-results.service';
 import {CmapUpDownSignatureResultField} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-result-field.enum';
 import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
 import {FormControl} from '@angular/forms';
@@ -79,7 +79,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private service: CmapResultsService,
+    private service: CmapUpDownResultsService,
     public dialog: MatDialog,
     private router: Router
   ) {

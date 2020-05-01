@@ -30,6 +30,7 @@ import saveAs from 'file-saver';
 import {CmapGeneSetSignatureDrugInteractionResultsQueryParams} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction-results-query-params';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
+import {CmapQueryGeneSetSignatureResultsMetadata} from '../../../models/interactions/cmap-gene-set/cmap-query-gene-set-down-signature-results-metadata';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,13 @@ export class CmapGeneSetResultsService {
   constructor(
     private http: HttpClient
   ) {
+  }
+
+  public getMetadata(resultId: string): Observable<CmapQueryGeneSetSignatureResultsMetadata> {
+    return this.http.get<CmapQueryGeneSetSignatureResultsMetadata>(`${environment.dreimtUrl}/results/cmap/geneset/` + resultId)
+      .pipe(
+        DreimtError.throwOnError('Drug prioritization results error', 'Drug prioritization results could not be retrieved.')
+      );
   }
 
   public listAll(resultId: string, queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams)
@@ -59,7 +67,7 @@ export class CmapGeneSetResultsService {
     return this.http.get<CmapGeneSetSignatureDrugInteraction[]>(
       `${environment.dreimtUrl}/results/cmap/geneset/` + resultId + `/interactions`, options
     ).pipe(
-      DreimtError.throwOnError('Cmap results error', 'Cmap analysis results could not be retrieved.')
+      DreimtError.throwOnError('Drug prioritization results error', 'Drug prioritization results could not be retrieved.')
     );
   }
 

@@ -47,10 +47,10 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
+  @Input() public dataSource: JaccardResultsDataSource;
   @Input() public metadata: JaccardQueryResultMetadata;
 
   public readonly columns: string[];
-  public readonly dataSource: JaccardResultsDataSource;
 
   public totalResultsSize: number;
 
@@ -79,9 +79,8 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
     this.debounceTime = 500;
     this.maxOptions = 100;
 
-    this.dataSource = new JaccardResultsDataSource(this.service);
     this.columns = [
-      'sourceComparisonType', 'targetComparisonType', 'targetSignature', 'jaccard', 'fdr'
+      'sourceComparisonType', 'targetComparisonType', 'targetSignature', 'pValue', 'fdr', 'jaccard'
     ];
 
     this.minJaccardFilter = new FormControl();
@@ -237,30 +236,6 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
     this.service.downloadCsv(this.metadata.id, this.metadata.queryTitle, this.createQueryParameters());
   }
 
-  public isMetadataAvailable(): boolean {
-    return this.metadata !== undefined;
-  }
-
-  public getUpGenesLabel(): string {
-    if (this.metadata.downGenesCount === null || this.metadata.downGenesCount === undefined) {
-      return 'geneset';
-    } else {
-      return 'up';
-    }
-  }
-
-  public formatQueryParameter(object: Object): string {
-    if (object === null || object === undefined) {
-      return 'not used';
-    } else {
-      return object.toString();
-    }
-  }
-
-  public getResultsUrl(): string {
-    return this.routeUrl;
-  }
-
   openDownloadGenesDialog(): void {
     const dialogRef = this.dialog.open(ExportGenesDialogComponent, {
       width: '380px',
@@ -306,6 +281,10 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
 
   public minJaccardFilterChanged(event): void {
     this.updateFilter(this.minJaccardFilter, event);
+  }
+
+  public maxPvalueFilterChanged(event): void {
+    this.updateFilter(this.maxPvalueFilter, event);
   }
 
   public maxFdrFilterChanged(event): void {

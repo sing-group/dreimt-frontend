@@ -1,0 +1,81 @@
+<div *ngIf="!isMetadataAvailable() && !isError()">
+  <p>Loading results...</p>
+  <mat-spinner diameter="100"></mat-spinner>
+</div>
+
+<div *ngIf="isError()">
+  <p>{{errorMessage}}</p>
+</div>
+
+<div *ngIf="isMetadataAvailable()">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title *ngIf="!isMetadataAvailable()">Jaccard results</mat-card-title>
+      <mat-card-title *ngIf="isMetadataAvailable()">{{metadata.queryTitle}}</mat-card-title>
+      <mat-card-subtitle>{{metadata.id}}
+        <button mat-icon-button ngxClipboard [cbContent]="getResultsUrl()"
+                matTooltip="Copy the results URL to the clipboard">
+          <mat-icon aria-label="Copy the results URL to the clipboard">
+            link
+          </mat-icon>
+        </button>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <mat-expansion-panel *ngIf="isMetadataAvailable()">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Query parameters</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-list>
+          <mat-list-item> Use only genes in DREIMT: {{metadata.onlyUniverseGenes}}</mat-list-item>
+
+          <mat-list-item> Query {{getUpGenesLabel()}} genes: {{metadata.upGenesCount}}</mat-list-item>
+          <mat-list-item> Query {{getUpGenesLabel()}} genes in DREIMT: {{metadata.upUniverseGenesCount}}
+          </mat-list-item>
+
+
+          <mat-list-item *ngIf="metadata.downGenesCount"> Query down genes:
+            {{metadata.downGenesCount}}
+          </mat-list-item>
+          <mat-list-item *ngIf="metadata.downUniverseGenesCount"> Query down genes in
+            DREIMT: {{metadata.downUniverseGenesCount}}
+          </mat-list-item>
+        </mat-list>
+
+        <mat-expansion-panel *ngIf="hasDatabaseSignatureFilters()">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Database signature filters</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-list style="margin-left:30px;">
+            <mat-list-item *ngIf="metadata.cellType1"> Cell Type 1: {{formatQueryParameter(metadata.cellType1)}}
+            </mat-list-item>
+            <mat-list-item *ngIf="metadata.cellType2"> Cell Type 2: {{formatQueryParameter(metadata.cellType2)}}
+            </mat-list-item>
+            <mat-list-item *ngIf="metadata.cellSubType1"> Cell Subtype 1:
+              {{formatQueryParameter(metadata.cellSubType1)}}
+            </mat-list-item>
+            <mat-list-item *ngIf="metadata.cellSubType2"> Cell Subtype 2:
+              {{formatQueryParameter(metadata.cellSubType2)}}
+            </mat-list-item>
+            <mat-list-item *ngIf="metadata.experimentalDesign"> Experimental Design:
+              {{formatQueryParameter(metadata.experimentalDesign)}}
+            </mat-list-item>
+            <mat-list-item *ngIf="metadata.organism"> Organism: {{formatQueryParameter(metadata.organism)}}
+            </mat-list-item>
+            <mat-list-item *ngIf="metadata.disease"> Disease: {{formatQueryParameter(metadata.disease)}}</mat-list-item>
+            <mat-list-item *ngIf="metadata.signatureSourceDb"> Signature Source DB:
+              {{formatQueryParameter(metadata.signatureSourceDb)}}
+            </mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
+  <app-jaccard-results-table [dataSource]="dataSource" [metadata]="metadata"></app-jaccard-results-table>
+</div>

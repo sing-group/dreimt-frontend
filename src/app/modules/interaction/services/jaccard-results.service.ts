@@ -32,6 +32,8 @@ import saveAs from 'file-saver';
 import {GeneOverlap} from '../../../models/interactions/jaccard/gene-overlap.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
+import {CmapQueryUpDownSignatureResultsMetadata} from '../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
+import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +43,13 @@ export class JaccardResultsService {
   constructor(
     private http: HttpClient
   ) {
+  }
+
+  public getMetadata(resultId: string): Observable<JaccardQueryResultMetadata> {
+    return this.http.get<JaccardQueryResultMetadata>(`${environment.dreimtUrl}/results/jaccard/` + resultId)
+      .pipe(
+        DreimtError.throwOnError('Signature comparison information error', 'Signature comparison information could not be retrieved.')
+      );
   }
 
   public list(resultId: string, queryParams: JaccardOverlapsQueryParams): Observable<GeneOverlapResults> {
@@ -57,7 +66,7 @@ export class JaccardResultsService {
     return this.http.get<GeneOverlap[]>(
       `${environment.dreimtUrl}/results/jaccard/` + resultId + `/overlaps`, options
     ).pipe(
-      DreimtError.throwOnError('Jaccard results error', 'Jaccard analysis results could not be retrieved.'),
+      DreimtError.throwOnError('Signature comparison results error', 'Signature comparison results could not be retrieved.'),
       map((response: HttpResponse<GeneOverlap[]>) => ({
         result: response.body,
         count: Number(response.headers.get('X-Count'))
@@ -102,7 +111,7 @@ export class JaccardResultsService {
     return this.http.get<UpDownGenes>(
       `${environment.dreimtUrl}/results/jaccard/` + resultId + `/genes`, options
     ).pipe(
-      DreimtError.throwOnError('Jaccard results error', 'Jaccard query genes could not be retrieved.'),
+      DreimtError.throwOnError('Signature comparison results error', 'Jaccard query genes could not be retrieved.'),
       map((response: HttpResponse<UpDownGenes>) => (response.body.down ? response.body : {genes: response.body.up}))
     );
   }

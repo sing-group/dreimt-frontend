@@ -69,6 +69,7 @@ import {PlotDrugStatusComponent} from './components/plot-drug-status/plot-drug-s
 import {PlotDrugMoaComponent} from './components/plot-drug-moa/plot-drug-moa.component';
 import {CmapDrugResultsSummaryComponent} from './components/cmap-results-summary/cmap-drug-results-summary.component';
 import {HtmlDialogComponent} from '../shared/components/html-dialog/html-dialog.component';
+import { JaccardResultsViewComponent } from './components/jaccard-results-view/jaccard-results-view.component';
 
 @NgModule({
   imports: [
@@ -118,7 +119,8 @@ import {HtmlDialogComponent} from '../shared/components/html-dialog/html-dialog.
     CmapGeneSetSignatureResultsSummaryComponent,
     PlotDrugStatusComponent,
     PlotDrugMoaComponent,
-    CmapDrugResultsSummaryComponent
+    CmapDrugResultsSummaryComponent,
+    JaccardResultsViewComponent
   ],
   exports: [
     CmapDrugResultsSummaryComponent

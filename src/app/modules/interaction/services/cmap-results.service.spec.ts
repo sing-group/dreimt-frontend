@@ -21,13 +21,13 @@
 
 import { TestBed } from '@angular/core/testing';
 
-import { CmapResultsService } from './cmap-results.service';
+import { CmapUpDownResultsService } from './cmap-up-down-results.service';
 
-describe('CmapResultsService', () => {
+describe('CmapUpDownResultsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: CmapResultsService = TestBed.get(CmapResultsService);
+    const service: CmapUpDownResultsService = TestBed.get(CmapUpDownResultsService);
     expect(service).toBeTruthy();
   });
 });

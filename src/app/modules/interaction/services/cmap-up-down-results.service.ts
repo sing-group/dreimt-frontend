@@ -30,20 +30,28 @@ import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../mod
 import saveAs from 'file-saver';
 import {CmapUpDownSignatureDrugInteraction} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
+import {CmapQueryUpDownSignatureResultsMetadata} from '../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
+import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CmapResultsService {
+export class CmapUpDownResultsService {
 
   constructor(
     private http: HttpClient
   ) {
   }
 
+  public getMetadata(resultId: string): Observable<CmapQueryUpDownSignatureResultsMetadata> {
+    return this.http.get<CmapQueryUpDownSignatureResultsMetadata>(`${environment.dreimtUrl}/results/cmap/signature/` + resultId)
+      .pipe(
+        DreimtError.throwOnError('Drug prioritization results error', 'Drug prioritization results could not be retrieved.')
+      );
+  }
+
   public listAll(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams)
-    : Observable<CmapUpDownSignatureDrugInteraction[]>
-  {
+    : Observable<CmapUpDownSignatureDrugInteraction[]> {
     if (queryParams.page !== undefined || queryParams.pageSize !== undefined) {
       throw new TypeError('page and pageSize values not supported in queryParams');
     }
@@ -60,7 +68,7 @@ export class CmapResultsService {
     return this.http.get<CmapUpDownSignatureDrugInteraction[]>(
       `${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, options
     ).pipe(
-      DreimtError.throwOnError('Cmap results error', 'Cmap analysis results could not be retrieved.')
+      DreimtError.throwOnError('Drug prioritization results error', 'Drug prioritization results could not be retrieved.')
     );
   }
 

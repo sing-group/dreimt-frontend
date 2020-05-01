@@ -60,3 +60,12 @@ table {
   cursor: pointer;
   color: blue;
 }
+
+.mat-column-pValue {
+  padding-left: 10px;
+}
+
+.mat-column-pValue, .mat-column-fdr, .mat-column-jaccard {
+  max-width: 105px;
+  padding-right: 5px;
+}

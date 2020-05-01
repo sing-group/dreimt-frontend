@@ -21,7 +21,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {QueryService} from '../../services/query.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import {Work} from '../../../../models/work/work.model';
@@ -30,7 +30,6 @@ import {JaccardQueryResultMetadata} from '../../../../models/interactions/jaccar
 import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
 import {WorkService} from '../../../work/services/work.service';
 import {CmapQueryGeneSetSignatureResultsMetadata} from '../../../../models/interactions/cmap-gene-set/cmap-query-gene-set-down-signature-results-metadata';
-import {ExecutionStatusIconPipe} from '../../../work/pipes/execution-status-icon.pipe';
 
 @Component({
   selector: 'app-results-view',
@@ -48,7 +47,8 @@ export class ResultsViewComponent implements OnInit {
   public constructor(
     private route: ActivatedRoute,
     private workService: WorkService,
-    private queryService: QueryService
+    private queryService: QueryService,
+    private router: Router
   ) {
     this.workSubscription = null;
   }
@@ -82,18 +82,6 @@ export class ResultsViewComponent implements OnInit {
     }
   }
 
-  public isJaccard(): boolean {
-    return JaccardQueryResultMetadata.isA(this.results);
-  }
-
-  public isCmapUpDownSignature(): boolean {
-    return CmapQueryUpDownSignatureResultsMetadata.isA(this.results);
-  }
-
-  public isCmapGeneSetSignature(): boolean {
-    return CmapQueryGeneSetSignatureResultsMetadata.isA(this.results);
-  }
-
   private watchWork(): void {
     if (this.workSubscription !== null) {
       this.workSubscription.unsubscribe();
@@ -112,12 +100,25 @@ export class ResultsViewComponent implements OnInit {
 
     if (work.status === ExecutionStatus.COMPLETED) {
       this.queryService.getWorkResult(work)
-        .subscribe(results => this.results = results);
+        .subscribe(results => {
+          this.updateResults(results);
+        });
 
       if (this.workSubscription !== null) {
         this.workSubscription.unsubscribe();
         this.workSubscription = null;
       }
+    }
+  }
+
+  private updateResults(results) {
+    this.results = results;
+    if (CmapQueryUpDownSignatureResultsMetadata.isA(this.results)) {
+      this.router.navigate(['/interactions/drug-prioritization/results/signature/' + this.uuid]);
+    } else if (CmapQueryGeneSetSignatureResultsMetadata.isA(this.results)) {
+      this.router.navigate(['/interactions/drug-prioritization/results/geneset/' + this.uuid]);
+    } else if (JaccardQueryResultMetadata.isA(this.results)) {
+      this.router.navigate(['/interactions/signatures-comparison/results/' + this.uuid]);
     }
   }
 }
