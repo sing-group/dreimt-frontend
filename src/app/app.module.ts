@@ -47,8 +47,10 @@ import {WorkModule} from './modules/work/work.module';
     MatToolbarModule,
     NotificationModule,
     SimpleNotificationsModule.forRoot({
-      timeOut: 5000,
-      preventDuplicates: true
+      timeOut: 10000,
+      preventDuplicates: true,
+      pauseOnHover: true,
+      clickToClose: true
     }),
     WorkModule
   ],
