@@ -19,18 +19,11 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-
 <mat-card>
   <mat-card-title>Drug Prioritization Query</mat-card-title>
+  <mat-card-subtitle>This panel allows you to configure and execute a Drug Prioritization Query.</mat-card-subtitle>
 
   <mat-card-content class="query-container">
-    <mat-form-field class="query-title">
-      <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
-    </mat-form-field>
-
-    <app-two-gene-lists class="query-genes" (upGenesChanged)="onUpGenesChanged($event)"
-                        (downGenesChanged)="onDownGenesChanged($event)"></app-two-gene-lists>
-
     <mat-expansion-panel class="query-examples" *ngIf="hasPrecalculatedExamples()">
       <mat-expansion-panel-header>
         <mat-panel-title>Load an example</mat-panel-title>
@@ -42,10 +35,20 @@
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
+
+    <mat-form-field class="query-title">
+      <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
+    </mat-form-field>
+
+    <app-two-gene-lists class="query-genes" (upGenesChanged)="onUpGenesChanged($event)"
+                        (downGenesChanged)="onDownGenesChanged($event)"></app-two-gene-lists>
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-button (click)="launchQuery()" [disabled]="!isValid()">Launch query</button>
+    <button mat-button class="launch-query" (click)="launchQuery()" [disabled]="!isValid()">
+      <mat-icon>play_circle_outline</mat-icon>
+      Launch query
+    </button>
   </mat-card-actions>
 </mat-card>
 

@@ -4,17 +4,19 @@
       <mat-icon [inline]="true" [matTooltip]="getInfoTooltip()">info
       </mat-icon>
     </p>
-    <div class="genes-info-buttons">
-      <input id="file-selection" type="file" name="files" (change)="onImportFileChange($event)" style="display: none"/>
-
-      <button mat-button (click)="importFile()" matTooltip="Import a geneset/signature from a plain text file.">
-        <mat-icon>cloud_upload</mat-icon>
-        Import file
-      </button>
-    </div>
   </div>
+
   <app-gene-list #upGenes class="up-genes" title="Up genes / Geneset"
                  (genesChanged)="onUpGenesChanged($event)"></app-gene-list>
   <app-gene-list #downGenes class="down-genes" title="Down genes"
                  (genesChanged)="onDownGenesChanged($event)"></app-gene-list>
+
+  <div class="genes-info-buttons">
+    <input id="file-selection" type="file" name="files" (change)="onImportFileChange($event)" style="display: none"/>
+
+    <button mat-button class="import-file" (click)="importFile()" matTooltip="Import a geneset/signature from a plain text file.">
+      <mat-icon>cloud_upload</mat-icon>
+      Load from file (.csv, .tsv)
+    </button>
+  </div>
 </div>

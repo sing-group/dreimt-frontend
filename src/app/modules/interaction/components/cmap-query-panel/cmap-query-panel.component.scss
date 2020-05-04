@@ -35,15 +35,22 @@ mat-card {
   grid-column-gap: 40px;
 }
 
-.query-title {
+.query-examples {
   grid-area: query-row-1;
 }
 
-.query-genes {
+.query-title {
   grid-area: query-row-2;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  border: 1px solid lightgray;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  border-radius: 5px;
 }
 
-.query-examples {
+.query-genes {
   grid-area: query-row-3;
 }
 
@@ -57,4 +64,28 @@ app-gene-list {
 
 app-two-gene-lists {
   margin-top: 15px;
+}
+
+::ng-deep .up-genes, ::ng-deep .down-genes {
+  border: 1px solid lightgray;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  border-radius: 5px;
+}
+
+.mat-card-actions {
+  padding-left: 8px;
+  margin-bottom: 5px;
+}
+
+.launch-query.mat-button {
+  background-color: #f5085c;
+  color: white;
+  width: 232px;
+}
+
+.launch-query.mat-button[disabled] {
+  background-color: white;
+  border: 1px solid lightgray;
 }
