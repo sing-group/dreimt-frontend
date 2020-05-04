@@ -145,6 +145,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
         relativeTo: this.route,
         queryParams: this.filterParams
       });
+    this.paginator.pageIndex = 0;
     this.updatePage(this.createQueryParameters());
   }
 
@@ -197,6 +198,16 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
       return this.negativeTauColorMap((Math.abs(tau) - 90) / 10);
     } else {
       return 'black';
+    }
+  }
+
+  public getCellType(cellType: string[], cellSubType: string[]): string {
+    const cellTypeStr = cellType.join(', ');
+    const cellSubTypeStr = cellSubType.join(', ');
+    if (cellTypeStr === cellSubTypeStr) {
+      return cellTypeStr;
+    } else {
+      return `${cellTypeStr} <br> &#9;&#9;&boxur; ${cellSubTypeStr}`;
     }
   }
 

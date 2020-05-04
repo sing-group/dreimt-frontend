@@ -105,8 +105,8 @@
         <th mat-header-cell *matHeaderCellDef matTooltip="Case cell type involved in the signature">
           <span mat-sort-header="CELL_TYPE_A">Case Type</span>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeA}} <br>
-          {{interaction.signature.cellSubTypeA}}
+        <td mat-cell *matCellDef="let interaction"
+            [innerHTML]="getCellType(interaction.signature.cellTypeA, interaction.signature.cellSubTypeA)">
         </td>
       </ng-container>
 
@@ -114,8 +114,8 @@
         <th mat-header-cell *matHeaderCellDef matTooltip="Control cell type involved in the signature">
           <span mat-sort-header="CELL_TYPE_B">Reference Type</span>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.signature.cellTypeB}} <br>
-          {{interaction.signature.cellSubTypeB}}
+        <td mat-cell *matCellDef="let interaction"
+            [innerHTML]="getCellType(interaction.signature.cellTypeB, interaction.signature.cellSubTypeB)">
         </td>
       </ng-container>
 
