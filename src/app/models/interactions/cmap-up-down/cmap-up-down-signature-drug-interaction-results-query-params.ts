@@ -34,5 +34,6 @@ export class CmapUpDownSignatureDrugInteractionResultsQueryParams {
   public readonly maxDownFdr?: number;
   public readonly drugCommonName?: string;
   public readonly drugMoa?: string;
+  public readonly drugStatus?: string;
   public readonly minDrugDss?: number;
 }

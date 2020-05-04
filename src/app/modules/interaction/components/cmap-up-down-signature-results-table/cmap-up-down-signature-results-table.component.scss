@@ -63,7 +63,7 @@ table {
   color: blue;
 }
 
-.mat-column-drugEffect {
+::ng-deep.mat-column-drugEffect {
   min-width: 110px;
 }
 

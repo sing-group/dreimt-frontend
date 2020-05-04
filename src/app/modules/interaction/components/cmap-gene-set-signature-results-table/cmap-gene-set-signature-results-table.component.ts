@@ -39,6 +39,7 @@ import {NumberFieldComponent} from '../../../shared/components/number-field/numb
 import {Subscription} from 'rxjs';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {Router} from '@angular/router';
+import {query} from '@angular/animations';
 
 @Component({
   selector: 'app-cmap-gene-set-signature-results-table',
@@ -62,6 +63,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
   @ViewChild(MatSort) private sort: MatSort;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
+  public readonly drugStatusFieldFilter: FieldFilterModel;
   public readonly drugMoaFieldFilter: FieldFilterModel;
   public readonly minDrugDssFilter: FormControl;
   public readonly minTauFilter: FormControl;
@@ -85,10 +87,11 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     this.maxOptions = 100;
 
     this.columns = [
-      'drugCommonName', 'drugEffect', 'tau', 'fdr', 'drugDss', 'drugMoa'
+      'drugCommonName', 'drugEffect', 'fdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
+    this.drugStatusFieldFilter = new FieldFilterModel();
     this.drugMoaFieldFilter = new FieldFilterModel();
     this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
@@ -208,6 +211,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     this.updatePage(queryParams);
     this.loadDrugCommonNames(queryParams);
     this.loadDrugMoas(queryParams);
+    this.loadDrugStatus(queryParams);
   }
 
   public ngOnDestroy(): void {
@@ -238,6 +242,11 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
       .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
+  private loadDrugStatus(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
+    this.service.listDrugStatusValues(this.metadata.id, queryParams)
+      .subscribe(values => this.drugStatusFieldFilter.update(values));
+  }
+
   private loadDrugCommonNames(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugCommonNameValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
@@ -253,6 +262,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
       maxFdr: this.maxFdrFilter.value,
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
+      drugStatus: this.drugStatusFieldFilter.getClearedFilter(),
       minDrugDss: this.minDrugDssFilter.value
     };
   }

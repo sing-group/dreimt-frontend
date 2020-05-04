@@ -42,6 +42,7 @@ import {PvalueNumberPipePipe} from './pipes/pvalue-number-pipe.pipe';
 import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
 import {HtmlDialogComponent} from './components/html-dialog/html-dialog.component';
 import {SignatureSummaryInfoComponent} from './components/database-table-signature-info/signature-summary-info.component';
+import { CapitalizePipe } from './pipes/capitalize.pipe';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {SignatureSummaryInfoComponent} from './components/database-table-signatu
     PvalueNumberPipePipe,
     ExportGenesDialogComponent,
     HtmlDialogComponent,
-    SignatureSummaryInfoComponent
+    SignatureSummaryInfoComponent,
+    CapitalizePipe
   ],
   imports: [
     CommonModule,
@@ -75,7 +77,8 @@ import {SignatureSummaryInfoComponent} from './components/database-table-signatu
     PvalueNumberPipePipe,
     ExportGenesDialogComponent,
     HtmlDialogComponent,
-    SignatureSummaryInfoComponent
+    SignatureSummaryInfoComponent,
+    CapitalizePipe
   ]
 })
 export class SharedModule {

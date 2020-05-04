@@ -106,6 +106,10 @@ export class CmapUpDownResultsService {
     return this.listValues('drug-moa', resultId, queryParams);
   }
 
+  public listDrugStatusValues(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
+    return this.listValues('drug-status', resultId, queryParams);
+  }
+
   public listDrugSourceDbValues(resultId: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): Observable<string[]> {
     return this.listValues('drug-source-db', resultId, queryParams);
   }
