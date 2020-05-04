@@ -7,6 +7,7 @@ import {throwError} from 'rxjs';
 import {SignatureViewDataSource} from './signature-view-data-source';
 import {InteractionsService} from '../../services/interactions.service';
 import {DreimtInformationService} from '../../../../services/dreimt-information.service';
+import {CellSignature} from '../../../../models/database/cell-signature.model';
 
 @Component({
   selector: 'app-signature-view',
@@ -18,7 +19,7 @@ export class SignatureViewComponent implements OnInit {
   private errorMessage: string;
   public minDatabaseTau: number;
   private signatureParam: string;
-  private signature: SignatureSummary;
+  private signature: CellSignature;
   public readonly dataSource: SignatureViewDataSource;
 
   constructor(

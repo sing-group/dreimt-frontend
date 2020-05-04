@@ -1,0 +1,20 @@
+<div class="signature-info-grid">
+  <div class="signature-name" [matTooltip]="signatureNameTooltip()">{{signature.signatureName}}</div>
+  <div class="db-button-container" *ngIf="signature.sourceDbUrl">
+    <a class="signature-button db-button"
+       href="{{signature.sourceDbUrl}}"
+       target="_blank">
+      {{signature.sourceDb}}
+    </a>
+  </div>
+  <div class="pubmed-button-container" *ngIf="signature.articlePubMedId">
+    <a class="signature-button pubmed-button"
+       href="http://www.ncbi.nlm.nih.gov/pubmed/{{signature.articlePubMedId}}"
+       target="_blank">
+      PubMed
+    </a>
+  </div>
+  <div class="dreimt-query-button-container">
+    <a class="signature-button dreimt-query-button" (click)="navigateToSignature()">DREIMT Query</a>
+  </div>
+</div>

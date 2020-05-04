@@ -19,6 +19,7 @@ import {DatabaseQueryParams} from '../../../../models/database/database-query-pa
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
 import {SignaturesSummaryHelper} from '../../helpers/SignaturesSummaryHelper';
+import {CellSignature} from '../../../../models/database/cell-signature.model';
 
 @Component({
   selector: 'app-signature-view-table',
@@ -29,7 +30,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
-  @Input() public signature: SignatureSummary;
+  @Input() public signature: CellSignature;
   @Input() public dataSource: SignatureViewDataSource;
   @Input() public tauThreshold: number;
 

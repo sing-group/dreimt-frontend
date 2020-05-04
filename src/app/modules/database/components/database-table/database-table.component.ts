@@ -170,27 +170,6 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     return tooltip;
   }
 
-  public signatureNameTooltip(interaction: DrugCellDatabaseInteraction): string {
-    let tooltip = 'Signature: ' + interaction.signature.signatureName;
-    tooltip = tooltip + '\nSignature Source DB: ' + interaction.signature.sourceDb;
-    if (interaction.signature.articleTitle) {
-      tooltip = tooltip + '\nArticle title: ' + interaction.signature.articleTitle;
-    }
-    if (interaction.signature.articleAuthors) {
-      let articleAuthors = '';
-      if (interaction.signature.articleAuthors.indexOf(',') !== -1) {
-        articleAuthors = interaction.signature.articleAuthors.substring(0, interaction.signature.articleAuthors.indexOf(',')) + ' et al.';
-      } else {
-        articleAuthors = interaction.signature.articleAuthors;
-      }
-      tooltip = tooltip + '\nArticle authors: ' + articleAuthors;
-    }
-    if (interaction.signature.articlePubMedId) {
-      tooltip = tooltip + '\nPubMed ID: ' + interaction.signature.articlePubMedId;
-    }
-    return tooltip;
-  }
-
   public getTauStyleColor(tau: number): string {
     if (tau >= 90) {
       return this.positiveTauColorMap((tau - 90) / 10);
@@ -246,10 +225,6 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
 
   public getSummary(interaction: DrugCellDatabaseInteraction): string {
     return this.signaturesSummaryHelper.getSummary(interaction);
-  }
-
-  public navigateToSignature(signature: string): void {
-    this.router.navigate(['/database/signature'], {queryParams: {signature: signature}});
   }
 
   public downloadCsv() {

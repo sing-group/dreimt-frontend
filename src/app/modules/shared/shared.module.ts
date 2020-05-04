@@ -41,6 +41,7 @@ import {NumberFieldComponent} from './components/number-field/number-field.compo
 import {PvalueNumberPipePipe} from './pipes/pvalue-number-pipe.pipe';
 import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
 import {HtmlDialogComponent} from './components/html-dialog/html-dialog.component';
+import {SignatureSummaryInfoComponent} from './components/database-table-signature-info/signature-summary-info.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {HtmlDialogComponent} from './components/html-dialog/html-dialog.componen
     NumberFieldComponent,
     PvalueNumberPipePipe,
     ExportGenesDialogComponent,
-    HtmlDialogComponent
+    HtmlDialogComponent,
+    SignatureSummaryInfoComponent
   ],
   imports: [
     CommonModule,
@@ -72,7 +74,8 @@ import {HtmlDialogComponent} from './components/html-dialog/html-dialog.componen
     NumberFieldComponent,
     PvalueNumberPipePipe,
     ExportGenesDialogComponent,
-    HtmlDialogComponent
+    HtmlDialogComponent,
+    SignatureSummaryInfoComponent
   ]
 })
 export class SharedModule {

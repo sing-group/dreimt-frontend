@@ -28,6 +28,7 @@ import {JaccardCalculateInteractionsQueryParams} from '../../../models/interacti
 import {toPlainObject} from '../../../utils/types';
 import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
 import {SignatureSummary} from '../../../models/interactions/jaccard/signature-summary.model';
+import {CellSignature} from '../../../models/database/cell-signature.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +40,8 @@ export class SignaturesService {
   ) {
   }
 
-  public getSignatureSummary(signatureName: string): Observable<SignatureSummary> {
-    return this.http.get<SignatureSummary>(`${environment.dreimtUrl}/signature/${signatureName}`)
+  public getSignatureSummary(signatureName: string): Observable<CellSignature> {
+    return this.http.get<CellSignature>(`${environment.dreimtUrl}/signature/${signatureName}`)
       .pipe(
         DreimtError.throwOnError(
           'Error retrieving signature information',

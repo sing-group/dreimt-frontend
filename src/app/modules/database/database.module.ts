@@ -51,6 +51,7 @@ import {SignatureViewTableComponent} from './components/signature-view-table/sig
 import {ExportGenesDialogComponent} from '../shared/components/export-genes-dialog/export-genes-dialog.component';
 import {SignatureViewGraphComponent} from './components/signature-view-graph/signature-view-graph.component';
 import {InteractionModule} from '../interaction/interaction.module';
+import {SignatureSummaryInfoComponent} from '../shared/components/database-table-signature-info/signature-summary-info.component';
 
 @NgModule({
   declarations: [

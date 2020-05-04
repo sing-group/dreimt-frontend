@@ -23,6 +23,16 @@ table {
   width: 100%;
 }
 
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+td.mat-cell {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
 #pagination-container {
   display: grid;
   grid-template-areas: 'loading paginator';
@@ -56,11 +66,6 @@ table {
   margin-top: 10px;
 }
 
-#navigateSignatureButton:hover {
-  cursor: pointer;
-  color: blue;
-}
-
 .mat-column-pValue {
   padding-left: 10px;
 }
@@ -68,4 +73,9 @@ table {
 .mat-column-pValue, .mat-column-fdr, .mat-column-jaccard {
   max-width: 105px;
   padding-right: 5px;
+}
+
+.mat-column-targetSignature {
+  word-wrap: break-word;
+  max-width: 350px;
 }

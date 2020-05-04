@@ -26,6 +26,7 @@ export class CellSignature {
   public readonly cellTypeB: string[];
   public readonly cellSubTypeB: string[];
   public readonly sourceDb: string;
+  public readonly sourceDbUrl: string;
   public readonly experimentalDesign: string;
   public readonly organism: string;
   public readonly disease: string[];

@@ -34,7 +34,6 @@ import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.mode
 import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {ExportGenesDialogComponent} from '../../../shared/components/export-genes-dialog/export-genes-dialog.component';
 import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
-import {Router} from '@angular/router';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {Subscription} from 'rxjs';
 
@@ -71,8 +70,7 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
 
   public constructor(
     private service: JaccardResultsService,
-    public dialog: MatDialog,
-    private router: Router
+    public dialog: MatDialog
   ) {
     this.routeUrl = window.location.href;
 
@@ -273,10 +271,6 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
 
     const blob = new Blob([fileContents], {type: 'text/plain'});
     saveAs(blob, fileName);
-  }
-
-  public navigateToSignature(signature: string): void {
-    this.router.navigate(['/database/signature'], {queryParams: {signature: signature}});
   }
 
   public minJaccardFilterChanged(event): void {
