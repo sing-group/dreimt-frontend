@@ -228,10 +228,6 @@ export class JaccardQueryPanelComponent implements OnInit {
     return this.precalculatedExamples !== undefined && this.precalculatedExamples.length > 0;
   }
 
-  public loadPrecalculatedExample(example: PrecalculatedExample) {
-    this.navigateToWork(example.workData);
-  }
-
   private navigateToWork(work: Work): void {
     this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
   }

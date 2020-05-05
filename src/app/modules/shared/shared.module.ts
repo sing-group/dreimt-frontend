@@ -26,9 +26,11 @@ import {
   MatButtonModule,
   MatCardModule,
   MatDialogModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
+  MatListModule,
   MatRadioModule,
   MatSelectModule,
   MatSlideToggleModule,
@@ -42,7 +44,8 @@ import {PvalueNumberPipePipe} from './pipes/pvalue-number-pipe.pipe';
 import {ExportGenesDialogComponent} from './components/export-genes-dialog/export-genes-dialog.component';
 import {HtmlDialogComponent} from './components/html-dialog/html-dialog.component';
 import {SignatureSummaryInfoComponent} from './components/database-table-signature-info/signature-summary-info.component';
-import { CapitalizePipe } from './pipes/capitalize.pipe';
+import {CapitalizePipe} from './pipes/capitalize.pipe';
+import {PrecalculatedExamplesComponent} from './components/precalculated-examples/precalculated-examples.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,8 @@ import { CapitalizePipe } from './pipes/capitalize.pipe';
     ExportGenesDialogComponent,
     HtmlDialogComponent,
     SignatureSummaryInfoComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    PrecalculatedExamplesComponent
   ],
   imports: [
     CommonModule,
@@ -61,10 +65,12 @@ import { CapitalizePipe } from './pipes/capitalize.pipe';
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
+    MatExpansionModule,
     MatDialogModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatListModule,
     MatRadioModule,
     MatSelectModule,
     MatSlideToggleModule,
@@ -78,7 +84,8 @@ import { CapitalizePipe } from './pipes/capitalize.pipe';
     ExportGenesDialogComponent,
     HtmlDialogComponent,
     SignatureSummaryInfoComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    PrecalculatedExamplesComponent
   ]
 })
 export class SharedModule {

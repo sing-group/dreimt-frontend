@@ -26,17 +26,8 @@
   </mat-card-subtitle>
 
   <mat-card-content class="query-container">
-    <mat-expansion-panel class="query-examples" *ngIf="hasPrecalculatedExamples()">
-      <mat-expansion-panel-header>
-        <mat-panel-title>Load an example</mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <mat-list>
-        <mat-list-item *ngFor="let example of precalculatedExamples">{{ example.name }}
-          <button mat-button class="btn-load-genes" (click)="loadPrecalculatedExample(example)">Load example</button>
-        </mat-list-item>
-      </mat-list>
-    </mat-expansion-panel>
+    <app-precalculated-examples class="query-examples" *ngIf="hasPrecalculatedExamples()"
+                                [examples]="precalculatedExamples"></app-precalculated-examples>
 
     <mat-form-field class="query-title">
       <input matInput placeholder="Query title" [(ngModel)]="queryTitle">

@@ -1,0 +1,15 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Load an example</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-list>
+    <mat-list-item class="precalculated-example" *ngFor="let example of examples">
+      <p>
+        <strong>{{ example.title }}</strong> <br/> {{ example.description }} (<i><a href="{{example.url}}"
+                                                                                    target="_blank">{{example.reference}}</a></i>)
+      </p>
+      <button mat-button class="button-load-example" (click)="loadPrecalculatedExample(example)">Load example</button>
+    </mat-list-item>
+  </mat-list>
+</mat-expansion-panel>

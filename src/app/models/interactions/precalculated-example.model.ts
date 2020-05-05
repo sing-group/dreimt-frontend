@@ -22,6 +22,9 @@
 import {Work} from '../work/work.model';
 
 export class PrecalculatedExample {
-  public readonly name: string;
+  public readonly title: string;
+  public readonly description: string;
+  public readonly reference: string;
+  public readonly url: string;
   public readonly workData: Work;
 }
