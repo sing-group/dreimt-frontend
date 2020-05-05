@@ -21,7 +21,9 @@
 
 <mat-card>
   <mat-card-title>Drug Prioritization Query</mat-card-title>
-  <mat-card-subtitle>This panel allows you to configure and execute a Drug Prioritization Query.</mat-card-subtitle>
+  <mat-card-subtitle>This panel allows you to provide a gene list (HUGO Gene Symbols) to retrieve a prioritized ranking
+    of drugs candidates to modulate the immune cell signature.
+  </mat-card-subtitle>
 
   <mat-card-content class="query-container">
     <mat-expansion-panel class="query-examples" *ngIf="hasPrecalculatedExamples()">
