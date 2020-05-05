@@ -19,13 +19,10 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.full-width-field {
-  width: 100%;
-}
-
 .filters-form {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-row-gap: 5px;
 }
 
 app-number-field {
@@ -37,11 +34,17 @@ app-number-field {
 }
 
 .basic-filters-form {
-  text-align: center;
-  margin-left: 100px;
-  margin-right: 100px;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin-bottom:10px;
+}
+
+.basic-filter-cell {
+  justify-self: end;
+}
+
+.basic-filter-drug {
+  justify-self: start;
 }
 
 .filters-warning-message {
@@ -49,4 +52,19 @@ app-number-field {
   margin-left: 100px;
   margin-right: 100px;
   margin-bottom: 15px;
+}
+
+app-filter-field {
+  width: 250px;
+}
+
+app-number-field {
+  width: 200px;
+}
+
+::ng-deep .field-filter-component, ::ng-deep .number-filter-component {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
 }

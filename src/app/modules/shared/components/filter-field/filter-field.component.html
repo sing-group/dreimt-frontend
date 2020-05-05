@@ -19,7 +19,7 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<mat-form-field floatLabel="never" *ngIf="fixedValues">
+<mat-form-field class="field-filter-component" floatLabel="never" *ngIf="fixedValues">
   <mat-label>{{label}}</mat-label>
   <mat-select [formControl]="formControl">
     <mat-option class="clearOption">Clear filter</mat-option>
@@ -27,7 +27,7 @@
   </mat-select>
 </mat-form-field>
 
-<mat-form-field floatLabel="never" *ngIf="!fixedValues">
+<mat-form-field class="field-filter-component" floatLabel="never" *ngIf="!fixedValues">
   <mat-label>{{label}}</mat-label>
 
   <input #filterInput matInput [formControl]="formControl" [matAutocomplete]="auto" (keyup.enter)="clearSelection()">

@@ -47,6 +47,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugMoaFieldFilter: FieldFilterModel;
+  public readonly drugStatusFieldFilter: FieldFilterModel;
+
   public readonly signatureNameFieldFilter: FieldFilterModel;
   public readonly cellTypeAndSubtype1FieldFilter: FieldFilterCellTypeModel;
   public readonly cellTypeAndSubtype2FieldFilter: FieldFilterCellTypeModel;
@@ -75,6 +77,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
     this.drugMoaFieldFilter = new FieldFilterModel();
+    this.drugStatusFieldFilter = new FieldFilterModel();
     this.signatureNameFieldFilter = new FieldFilterModel();
     this.cellTypeAndSubtype1FieldFilter = new FieldFilterCellTypeModel();
     this.cellTypeAndSubtype2FieldFilter = new FieldFilterCellTypeModel();
@@ -117,6 +120,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     if (!DatabaseQueryParams.equals(queryParams, this.previousDatabaseQueryParams)) {
       this.loadDrugCommonNames(queryParams);
       this.loadDrugMoas(queryParams);
+      this.loadDrugStatusValues(queryParams);
       this.loadSignatureNames(queryParams);
       this.loadCellTypeAndSubtype1Values(queryParams);
       this.loadDiseases(queryParams);
@@ -165,6 +169,11 @@ export class DatabaseTableFiltersComponent implements OnInit {
   private loadDrugMoas(queryParams: DatabaseQueryParams): void {
     this.service.listDrugMoaValues(queryParams)
       .subscribe(values => this.drugMoaFieldFilter.update(values));
+  }
+
+  private loadDrugStatusValues(queryParams: DatabaseQueryParams): void {
+    this.service.loadDrugStatusValues(queryParams)
+      .subscribe(values => this.drugStatusFieldFilter.update(values));
   }
 
   private loadSignatureNames(queryParams: DatabaseQueryParams): void {
@@ -236,6 +245,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     return {
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
+      drugStatus: this.drugStatusFieldFilter.getClearedFilter(),
       minDrugDss: this.minDrugDssFilter.value,
       signatureName: this.signatureNameFieldFilter.getClearedFilter(),
       cellType1: this.cellTypeAndSubtype1FieldFilter.getCellTypeFilter(),
@@ -280,6 +290,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public clearFiltersAction(): void {
     this.drugCommonNameFieldFilter.filter = '';
     this.drugMoaFieldFilter.filter = '';
+    this.drugStatusFieldFilter.filter = '';
     this.signatureNameFieldFilter.filter = '';
     this.cellTypeAndSubtype1FieldFilter.filter = '';
     this.cellTypeAndSubtype2FieldFilter.filter = '';
@@ -351,6 +362,12 @@ export class DatabaseTableFiltersComponent implements OnInit {
     if (drugMoa) {
       openAdvancedPanel = true;
       this.drugMoaFieldFilter.filter = drugMoa;
+    }
+
+    const drugStatus = params.get('drugStatus');
+    if (drugStatus) {
+      openAdvancedPanel = true;
+      this.drugStatusFieldFilter.filter = drugStatus;
     }
 
     const minDrugDss = params.get('minDrugDss');

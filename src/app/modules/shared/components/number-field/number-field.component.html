@@ -19,7 +19,7 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<mat-form-field floatLabel="never">
+<mat-form-field class="number-filter-component" floatLabel="never">
   <mat-label>{{label}}</mat-label>
   <div [class]="getMatInputWrapperClass()">
     <input matInput type="number" [min]="min" [step]="step" [max]="max" [formControl]="formControl"
