@@ -43,6 +43,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugMoaFieldFilter: FieldFilterModel;
+  public readonly drugStatusFieldFilter: FieldFilterModel;
   public readonly minDrugDssFilter: FormControl;
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
@@ -69,6 +70,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
     this.drugMoaFieldFilter = new FieldFilterModel();
+    this.drugStatusFieldFilter = new FieldFilterModel();
     this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
@@ -117,11 +119,11 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     if (!this.columns) {
       if (this.signature.signatureType === 'UPDOWN') {
         this.columns = [
-          'drugCommonName', 'summary', 'tau', 'upFdr', 'downFdr', 'drugDss', 'drugMoa'
+          'drug', 'summary', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
         ];
       } else {
         this.columns = [
-          'drugCommonName', 'summary', 'tau', 'upFdr', 'drugDss', 'drugMoa'
+          'drug', 'summary', 'upFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
         ];
       }
     }
@@ -207,8 +209,9 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     const queryParams = this.createQueryParameters();
 
     this.updatePage(queryParams);
-    this.loadDrugCommonNames(queryParams);
-    this.loadDrugMoas(queryParams);
+    this.loadDrugCommonNameValues(queryParams);
+    this.loadDrugMoaValues(queryParams);
+    this.loadDrugStatusValues(queryParams);
   }
 
   public ngOnDestroy(): void {
@@ -234,12 +237,17 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     }
   }
 
-  private loadDrugMoas(queryParams: DatabaseQueryParams): void {
+  private loadDrugMoaValues(queryParams: DatabaseQueryParams): void {
     this.service.listDrugMoaValues(queryParams)
       .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
-  private loadDrugCommonNames(queryParams: DatabaseQueryParams): void {
+  private loadDrugStatusValues(queryParams: DatabaseQueryParams): void {
+    this.service.listDrugStatusValues(queryParams)
+      .subscribe(values => this.drugStatusFieldFilter.update(values));
+  }
+
+  private loadDrugCommonNameValues(queryParams: DatabaseQueryParams): void {
     this.service.listDrugCommonNameValues(queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
@@ -255,6 +263,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
       maxDownFdr: this.maxDownFdrFilter.value,
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
+      drugStatus: this.drugStatusFieldFilter.getClearedFilter(),
       minDrugDss: this.minDrugDssFilter.value,
       signatureName: this.signature.signatureName
     };
@@ -330,7 +339,6 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
 
   public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
     let tooltip = 'Source name: ' + interaction.drug.sourceName;
-    tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
     if (interaction.drug.targetGenes.length > 0) {
       tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
     }

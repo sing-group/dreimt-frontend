@@ -113,7 +113,7 @@ export class InteractionsService {
     return this.listValues('drug-moa', queryParams);
   }
 
-  public loadDrugStatusValues(queryParams: DatabaseQueryParams): Observable<string[]> {
+  public listDrugStatusValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('drug-status', queryParams);
   }
 

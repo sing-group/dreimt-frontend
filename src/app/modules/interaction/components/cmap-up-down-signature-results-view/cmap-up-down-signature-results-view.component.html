@@ -19,16 +19,16 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div *ngIf="!isMetadataAvailable() && !isError()">
+<div class="results-container" *ngIf="!isMetadataAvailable() && !isError()">
   <p>Loading results...</p>
   <mat-spinner diameter="100"></mat-spinner>
 </div>
 
-<div *ngIf="isError()">
+<div class="results-container" *ngIf="isError()">
   <p>{{errorMessage}}</p>
 </div>
 
-<div *ngIf="isMetadataAvailable()">
+<div class="results-container" *ngIf="isMetadataAvailable()">
   <mat-card>
     <mat-card-header>
       <mat-card-title *ngIf="!isMetadataAvailable()">Cmap results</mat-card-title>

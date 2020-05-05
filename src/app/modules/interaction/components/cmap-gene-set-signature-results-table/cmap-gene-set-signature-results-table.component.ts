@@ -87,7 +87,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     this.maxOptions = 100;
 
     this.columns = [
-      'drugCommonName', 'drugEffect', 'fdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
+      'drug', 'drugEffect', 'fdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
@@ -209,9 +209,9 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     const queryParams = this.createQueryParameters();
 
     this.updatePage(queryParams);
-    this.loadDrugCommonNames(queryParams);
-    this.loadDrugMoas(queryParams);
-    this.loadDrugStatus(queryParams);
+    this.loadDrugCommonNameValues(queryParams);
+    this.loadDrugMoaValues(queryParams);
+    this.loadDrugStatusValues(queryParams);
   }
 
   public ngOnDestroy(): void {
@@ -237,17 +237,17 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     }
   }
 
-  private loadDrugMoas(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
+  private loadDrugMoaValues(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugMoaValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
-  private loadDrugStatus(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
+  private loadDrugStatusValues(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugStatusValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugStatusFieldFilter.update(values));
   }
 
-  private loadDrugCommonNames(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
+  private loadDrugCommonNameValues(queryParams: CmapGeneSetSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugCommonNameValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }

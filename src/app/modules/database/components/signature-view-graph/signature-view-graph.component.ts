@@ -77,7 +77,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
       }
     },
     title: {
-      text: null
+      text: 'Drug Prioritization Plot'
     },
     credits: {
       enabled: false

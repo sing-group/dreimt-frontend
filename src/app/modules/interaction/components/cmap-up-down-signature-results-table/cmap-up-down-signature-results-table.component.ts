@@ -88,7 +88,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     this.maxOptions = 100;
 
     this.columns = [
-      'drugCommonName', 'drugEffect', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
+      'drug', 'drugEffect', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
@@ -216,9 +216,9 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     const queryParams = this.createQueryParameters();
 
     this.updatePage(queryParams);
-    this.loadDrugCommonNames(queryParams);
-    this.loadDrugMoas(queryParams);
-    this.loadDrugStatus(queryParams);
+    this.loadDrugCommonNameValues(queryParams);
+    this.loadDrugMoaValues(queryParams);
+    this.loadDrugStatusValues(queryParams);
   }
 
   public ngOnDestroy(): void {
@@ -244,17 +244,17 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     }
   }
 
-  private loadDrugMoas(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
+  private loadDrugMoaValues(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugMoaValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
-  private loadDrugStatus(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
+  private loadDrugStatusValues(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugStatusValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugStatusFieldFilter.update(values));
   }
 
-  private loadDrugCommonNames(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
+  private loadDrugCommonNameValues(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
     this.service.listDrugCommonNameValues(this.metadata.id, queryParams)
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }

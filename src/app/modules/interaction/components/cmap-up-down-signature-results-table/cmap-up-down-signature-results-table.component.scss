@@ -63,10 +63,6 @@ table {
   color: blue;
 }
 
-::ng-deep.mat-column-drugEffect {
-  min-width: 110px;
-}
-
 .mat-column-drugEffect div {
   margin-bottom: 57px;
 }
@@ -79,11 +75,31 @@ table {
   color: green;
 }
 
-.mat-column-drugCommonName {
-  padding-right: 10px;
+.mat-column-tau, .mat-column-upFdr, .mat-column-downFdr, .mat-column-drugDss {
+  max-width: 65px;
+  width: 65px;
+  padding-right: 5px;
 }
 
-.mat-column-tau, .mat-column-upFdr, .mat-column-downFdr, .mat-column-drugDss {
-  max-width: 105px;
-  padding-right: 5px;
+.mat-column-drug {
+  padding-right: 10px;
+  word-wrap: break-word;
+  max-width: 120px;
+  width: 120px;
+}
+
+.mat-column-drugMoa {
+  word-wrap: break-word;
+  max-width: 110px;
+  width: 110px;
+}
+
+.mat-column-drugEffect {
+  max-width: 65px;
+  width: 65px;
+}
+
+.mat-column-drugStatus {
+  max-width: 92px;
+  width: 92px;
 }

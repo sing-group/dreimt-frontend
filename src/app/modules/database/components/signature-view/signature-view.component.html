@@ -1,14 +1,13 @@
-<div *ngIf="isLoading()">
+<div class="results-container" *ngIf="isLoading()">
   <p>Loading signature...</p>
   <mat-spinner diameter="100"></mat-spinner>
 </div>
 
-<div *ngIf="isError()">
+<div class="results-container" *ngIf="isError()">
   <p>{{errorMessage}}</p>
 </div>
 
-<ng-container *ngIf="isLoaded()">
-
+<div class="results-container" *ngIf="isLoaded()">
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{signature.signatureName}}</mat-card-title>
@@ -47,4 +46,4 @@
   </app-cmap-drug-results-summary>
   <app-signature-view-table [signature]="signature" [dataSource]="dataSource"
                             [tauThreshold]="minDatabaseTau"></app-signature-view-table>
-</ng-container>
+</div>

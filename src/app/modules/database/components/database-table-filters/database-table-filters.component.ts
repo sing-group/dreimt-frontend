@@ -172,7 +172,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   private loadDrugStatusValues(queryParams: DatabaseQueryParams): void {
-    this.service.loadDrugStatusValues(queryParams)
+    this.service.listDrugStatusValues(queryParams)
       .subscribe(values => this.drugStatusFieldFilter.update(values));
   }
 
