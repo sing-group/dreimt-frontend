@@ -43,33 +43,38 @@ export class SignaturesSummaryHelper {
     }
 
     if (first === 'A') {
-      return this._getExplanation(
+      return SignaturesSummaryHelper._getExplanation(
         interaction.signature.signatureName, effect, interaction.drug.commonName,
         interaction.signature.stateA, interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA,
-        interaction.signature.stateB, interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB
+        this.mapTreatmentA,
+        interaction.signature.stateB, interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB,
+        this.mapTreatmentB
       );
     } else {
-      return this._getExplanation(
+      return SignaturesSummaryHelper._getExplanation(
         interaction.signature.signatureName, effect, interaction.drug.commonName,
         interaction.signature.stateB, interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB,
-        interaction.signature.stateA, interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA
+        this.mapTreatmentB,
+        interaction.signature.stateA, interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA,
+        this.mapTreatmentA
       );
     }
   }
 
-  private _getExplanation(
+  private static _getExplanation(
     signatureName: string, effect: string, drug: string,
-    stateA: string, subTypeA: string[], treatmentA: string[], diseaseA: string[],
-    stateB: string, subTypeB: string[], treatmentB: string[], diseaseB: string[],
+    stateA: string, subTypeA: string[], treatmentA: string[], diseaseA: string[], mapTreatmentA,
+    stateB: string, subTypeB: string[], treatmentB: string[], diseaseB: string[], mapTreatmentB
   ): string {
+
     const treatmentAStr = treatmentA.length > 0 ?
       ` <span class="explanation-treatment">stimulated with ${
-        this.concat(SignaturesSummaryHelper.collapseTreatments(treatmentA, signatureName, this.mapTreatmentA))
+        this.concat(SignaturesSummaryHelper.collapseTreatments(treatmentA, signatureName, mapTreatmentA))
         } </span> ` : '';
 
     const treatmentBStr = treatmentB.length > 0 ?
       ` <span class="explanation-treatment">stimulated with ${
-        this.concat(SignaturesSummaryHelper.collapseTreatments(treatmentB, signatureName, this.mapTreatmentB))
+        this.concat(SignaturesSummaryHelper.collapseTreatments(treatmentB, signatureName, mapTreatmentB))
         } </span> ` : '';
 
     const diseaseAStr = diseaseA.length > 0 ? ` <span class="explanation-disease">in ${this.concat(diseaseA)} </span>` : '';
@@ -116,7 +121,7 @@ export class SignaturesSummaryHelper {
     return treatmentsMap[signatureName];
   }
 
-  private concat(data: string[]) {
+  private static concat(data: string[]) {
     let result = '';
     for (let i = 0; i < data.length; i++) {
       if (i > 0 && i === (data.length - 1)) {
