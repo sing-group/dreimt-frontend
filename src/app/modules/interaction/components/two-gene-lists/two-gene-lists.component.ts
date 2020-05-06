@@ -44,7 +44,7 @@ export class TwoGeneListsComponent implements OnInit {
   }
 
   private static splitLine(genes: string): string[] {
-    return genes.split(/\t|,/)
+    return genes.split(/\t|,|;/)
       .map(val => val.trim());
   }
 
