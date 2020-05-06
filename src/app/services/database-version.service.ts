@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {DreimtError} from '../modules/notification/entities';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {CmapUpDownSignatureDrugInteraction} from '../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 
 @Injectable({
   providedIn: 'root'

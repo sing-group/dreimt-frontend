@@ -23,7 +23,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import {MatAutocompleteTrigger} from '@angular/material';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-filter-field',
@@ -40,8 +40,8 @@ export class FilterFieldComponent implements OnInit {
 
   @Output() public filterChange: EventEmitter<string>;
 
-  @ViewChild(MatAutocompleteTrigger) private autocomplete: MatAutocompleteTrigger;
-  @ViewChild('filterInput') private filterInput: ElementRef;
+  @ViewChild(MatAutocompleteTrigger, {static: false}) private autocomplete: MatAutocompleteTrigger;
+  @ViewChild('filterInput', {static: false}) private filterInput: ElementRef;
 
   public readonly formControl: FormControl;
 

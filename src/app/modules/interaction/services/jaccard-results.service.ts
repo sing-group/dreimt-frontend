@@ -32,7 +32,6 @@ import saveAs from 'file-saver';
 import {GeneOverlap} from '../../../models/interactions/jaccard/gene-overlap.model';
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
-import {CmapQueryUpDownSignatureResultsMetadata} from '../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
 import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
 
 @Injectable({

@@ -26,15 +26,15 @@ import {NgModule} from '@angular/core';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './modules/main/main.module#MainModule'
+    loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule)
   },
   {
     path: 'database',
-    loadChildren: './modules/database/database.module#DatabaseModule'
+    loadChildren: () => import('./modules/database/database.module').then(m => m.DatabaseModule)
   },
   {
     path: 'interactions',
-    loadChildren: './modules/interaction/interaction.module#InteractionModule'
+    loadChildren: () => import('./modules/interaction/interaction.module').then(m => m.InteractionModule)
   }
 ];
 

@@ -27,7 +27,6 @@ import {DreimtError} from '../../notification/entities';
 import {JaccardCalculateInteractionsQueryParams} from '../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {toPlainObject} from '../../../utils/types';
 import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
-import {SignatureSummary} from '../../../models/interactions/jaccard/signature-summary.model';
 import {CellSignature} from '../../../models/database/cell-signature.model';
 
 @Injectable({

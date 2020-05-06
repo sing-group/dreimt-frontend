@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {CellSignature} from '../../../../models/database/cell-signature.model';
 import {Router} from '@angular/router';
 import {SignatureSummary} from '../../../../models/interactions/jaccard/signature-summary.model';
 

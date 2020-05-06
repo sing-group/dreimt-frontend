@@ -19,16 +19,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
 import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
-import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
 import {QueryService} from '../../services/query.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {GeneListComponent} from '../gene-list/gene-list.component';
 import {PrecalculatedExampleService} from '../../services/precalculated-example.service';
 import {PrecalculatedExample} from '../../../../models/interactions/precalculated-example.model';
 import {Work} from '../../../../models/work/work.model';

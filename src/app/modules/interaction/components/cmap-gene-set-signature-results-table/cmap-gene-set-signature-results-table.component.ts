@@ -20,7 +20,9 @@
  */
 
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort, MatSortHeader} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {FormControl} from '@angular/forms';
@@ -39,7 +41,6 @@ import {NumberFieldComponent} from '../../../shared/components/number-field/numb
 import {Subscription} from 'rxjs';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {Router} from '@angular/router';
-import {query} from '@angular/animations';
 
 @Component({
   selector: 'app-cmap-gene-set-signature-results-table',
@@ -59,8 +60,8 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
 
   public totalResultsSize: number;
 
-  @ViewChild(MatPaginator) private paginator: MatPaginator;
-  @ViewChild(MatSort) private sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) private sort: MatSort;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugStatusFieldFilter: FieldFilterModel;
@@ -69,9 +70,9 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
   public readonly minTauFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
-  @ViewChild('minDrugDss') minDrugDssFilterComponent: NumberFieldComponent;
-  @ViewChild('minTau') minTauFilterComponent: NumberFieldComponent;
-  @ViewChild('maxFdr') maxFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('minDrugDss', {static: false}) minDrugDssFilterComponent: NumberFieldComponent;
+  @ViewChild('minTau', {static: false}) minTauFilterComponent: NumberFieldComponent;
+  @ViewChild('maxFdr', {static: false}) maxFdrFilterComponent: NumberFieldComponent;
 
   private positiveTauColorMap;
   private negativeTauColorMap;

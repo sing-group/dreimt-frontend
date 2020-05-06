@@ -20,7 +20,9 @@
  */
 
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort, MatSortHeader} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
@@ -58,8 +60,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
 
   public totalResultsSize: number;
 
-  @ViewChild(MatPaginator) private paginator: MatPaginator;
-  @ViewChild(MatSort) private sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) private sort: MatSort;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugMoaFieldFilter: FieldFilterModel;
@@ -69,10 +71,10 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
-  @ViewChild('minDrugDss') minDrugDssFilterComponent: NumberFieldComponent;
-  @ViewChild('minTau') minTauFilterComponent: NumberFieldComponent;
-  @ViewChild('maxUpFdr') maxUpFdrFilterComponent: NumberFieldComponent;
-  @ViewChild('maxDownFdr') maxDownFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('minDrugDss', {static: true}) minDrugDssFilterComponent: NumberFieldComponent;
+  @ViewChild('minTau', {static: true}) minTauFilterComponent: NumberFieldComponent;
+  @ViewChild('maxUpFdr', {static: true}) maxUpFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('maxDownFdr', {static: true}) maxDownFdrFilterComponent: NumberFieldComponent;
 
   private positiveTauColorMap;
   private negativeTauColorMap;

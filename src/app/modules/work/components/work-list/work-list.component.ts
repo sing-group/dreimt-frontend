@@ -27,7 +27,7 @@ import {mergeMap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ExecutionStatus, isActiveExecution} from '../../../../models/work/execution-status.enum';
 import {compareDates} from '../../../../utils/types';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDeletionDialogComponent} from './confirm-deletion-dialog.component';
 
 @Component({

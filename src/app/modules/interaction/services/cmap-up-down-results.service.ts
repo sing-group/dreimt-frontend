@@ -31,7 +31,6 @@ import saveAs from 'file-saver';
 import {CmapUpDownSignatureDrugInteraction} from '../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {CmapQueryUpDownSignatureResultsMetadata} from '../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
-import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
 
 @Injectable({
   providedIn: 'root'

@@ -29,7 +29,7 @@ export class FieldFilterCellTypeModel extends FieldFilterModel {
   }
 
   public updateCellTypeAndSubtypeValues(values: CellTypeAndSubtype[], isAllowedCellSubtype: boolean): void {
-    const cellTypes = new Set();
+    const cellTypes = new Set<string>();
     values.map(cts => cts.type).forEach(val => cellTypes.add(val));
     if (isAllowedCellSubtype) {
       values.map(cts => cts.type + ' / ' + cts.subType).forEach(val => cellTypes.add(val));

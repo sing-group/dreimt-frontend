@@ -22,29 +22,27 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ResultsViewComponent} from './components/results-view/results-view.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatDialogModule,
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule
-} from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatListModule} from '@angular/material/list';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {QueryService} from './services/query.service';
 import {HttpClientModule} from 'ngx-http-client';
 import {InteractionRoutingModule} from './interaction-routing.module';
@@ -67,7 +65,7 @@ import {PlotDrugStatusComponent} from './components/plot-drug-status/plot-drug-s
 import {PlotDrugMoaComponent} from './components/plot-drug-moa/plot-drug-moa.component';
 import {CmapDrugResultsSummaryComponent} from './components/cmap-results-summary/cmap-drug-results-summary.component';
 import {HtmlDialogComponent} from '../shared/components/html-dialog/html-dialog.component';
-import { JaccardResultsViewComponent } from './components/jaccard-results-view/jaccard-results-view.component';
+import {JaccardResultsViewComponent} from './components/jaccard-results-view/jaccard-results-view.component';
 
 @NgModule({
   imports: [

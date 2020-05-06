@@ -19,7 +19,6 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {GeneOverlapField} from '../jaccard/gene-overlap-field.enum';
 import {SortDirection} from '../../sort-direction.enum';
 import {CmapGeneSetSignatureResultField} from './cmap-gene-set-signature-result-field.enum';
 

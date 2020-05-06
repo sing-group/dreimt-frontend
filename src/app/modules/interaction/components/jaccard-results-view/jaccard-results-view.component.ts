@@ -1,7 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
-import {CmapUpDownSignatureResultsDataSource} from '../cmap-up-down-signature-results-view/cmap-up-down-signature-results-data-source';
-import {CmapUpDownResultsService} from '../../services/cmap-up-down-results.service';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {JaccardQueryResultMetadata} from '../../../../models/interactions/jaccard/jaccard-query-result-metadata';
 import {JaccardResultsDataSource} from '../jaccard-results-table/jaccard-results-data-source';

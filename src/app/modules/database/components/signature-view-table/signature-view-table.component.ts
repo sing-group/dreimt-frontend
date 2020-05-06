@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
-import {SignatureSummary} from '../../../../models/interactions/jaccard/signature-summary.model';
 import {SignatureViewDataSource} from '../signature-view/signature-view-data-source';
-import {MatDialog, MatPaginator, MatSort, MatSortHeader} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {FormControl} from '@angular/forms';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
@@ -17,7 +18,6 @@ import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
-import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
 import {SignaturesSummaryHelper} from '../../helpers/SignaturesSummaryHelper';
 import {CellSignature} from '../../../../models/database/cell-signature.model';
 
@@ -38,8 +38,8 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
 
   public totalResultsSize: number;
 
-  @ViewChild(MatPaginator) private paginator: MatPaginator;
-  @ViewChild(MatSort) private sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) private sort: MatSort;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugMoaFieldFilter: FieldFilterModel;
@@ -49,10 +49,10 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
-  @ViewChild('minDrugDss') minDrugDssFilterComponent: NumberFieldComponent;
-  @ViewChild('minTau') minTauFilterComponent: NumberFieldComponent;
-  @ViewChild('maxUpFdr') maxUpFdrFilterComponent: NumberFieldComponent;
-  @ViewChild('maxDownFdr') maxDownFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('minDrugDss', {static: false}) minDrugDssFilterComponent: NumberFieldComponent;
+  @ViewChild('minTau', {static: false}) minTauFilterComponent: NumberFieldComponent;
+  @ViewChild('maxUpFdr', {static: false}) maxUpFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('maxDownFdr', {static: false}) maxDownFdrFilterComponent: NumberFieldComponent;
 
   private positiveTauColorMap;
   private negativeTauColorMap;

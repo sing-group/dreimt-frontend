@@ -3,7 +3,7 @@ import {SignatureViewDataSource} from '../signature-view/signature-view-data-sou
 import * as Highcharts from 'highcharts';
 import {Subscription} from 'rxjs';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 

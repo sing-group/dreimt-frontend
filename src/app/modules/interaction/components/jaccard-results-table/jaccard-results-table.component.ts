@@ -22,7 +22,9 @@
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
 import {JaccardResultsDataSource} from './jaccard-results-data-source';
 import {JaccardResultsService} from '../../services/jaccard-results.service';
-import {MatDialog, MatPaginator, MatSort, MatSortHeader} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {JaccardOverlapsQueryParams} from '../../../../models/interactions/jaccard/jaccard-overlaps-query-params';
 import {SortDirection} from '../../../../models/sort-direction.enum';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
@@ -53,16 +55,16 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
 
   public totalResultsSize: number;
 
-  @ViewChild(MatPaginator) private paginator: MatPaginator;
-  @ViewChild(MatSort) private sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) private sort: MatSort;
 
   public readonly minJaccardFilter: FormControl;
   public readonly maxPvalueFilter: FormControl;
   public readonly maxFdrFilter: FormControl;
 
-  @ViewChild('jaccardMin') minJaccardFilterComponent: NumberFieldComponent;
-  @ViewChild('maxPvalue') maxPvalueFilterComponent: NumberFieldComponent;
-  @ViewChild('maxFdr') maxFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('jaccardMin', {static: false}) minJaccardFilterComponent: NumberFieldComponent;
+  @ViewChild('maxPvalue', {static: false}) maxPvalueFilterComponent: NumberFieldComponent;
+  @ViewChild('maxFdr', {static: false}) maxFdrFilterComponent: NumberFieldComponent;
 
   private readonly routeUrl: string;
 

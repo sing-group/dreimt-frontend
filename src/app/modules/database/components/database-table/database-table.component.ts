@@ -22,7 +22,8 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {InteractionsService} from '../../services/interactions.service';
 import {DatabaseDataSource} from './database-data-source';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 import {debounceTime} from 'rxjs/operators';
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {SortDirection} from '../../../../models/sort-direction.enum';
@@ -48,9 +49,9 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
 
   public totalResultsSize: number;
 
-  @ViewChild(MatPaginator) private paginator: MatPaginator;
-  @ViewChild(MatSort) private sort: MatSort;
-  @ViewChild(DatabaseTableFiltersComponent) private databaseTableFiltersComponent: DatabaseTableFiltersComponent;
+  @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) private sort: MatSort;
+  @ViewChild(DatabaseTableFiltersComponent, {static: true}) private databaseTableFiltersComponent: DatabaseTableFiltersComponent;
 
   private filterParams: DatabaseQueryParams;
   private readonly positiveTauColorMap;

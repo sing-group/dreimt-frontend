@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {SignaturesService} from '../../../interaction/services/signatures.service';
-import {SignatureSummary} from '../../../../models/interactions/jaccard/signature-summary.model';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {SignatureViewDataSource} from './signature-view-data-source';

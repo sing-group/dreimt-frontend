@@ -24,7 +24,7 @@ import {Subscription} from 'rxjs';
 import * as Highcharts from 'highcharts';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
 import {CmapGeneSetSignatureResultsDataSource} from '../cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-data-source';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
 
 declare var require: any;

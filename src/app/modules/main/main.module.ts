@@ -22,7 +22,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MainComponent} from './components/main/main.component';
-import {MatButtonModule, MatCardModule, MatTooltipModule} from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {MainRoutingModule} from './main-routing.module';
 
 @NgModule({

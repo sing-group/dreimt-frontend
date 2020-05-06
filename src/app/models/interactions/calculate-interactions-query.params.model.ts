@@ -22,7 +22,6 @@
 import {JaccardCalculateInteractionsQueryParams} from './jaccard/jaccard-calculate-interactions-query-params.model';
 import {CmapCalculateInteractionsQueryParams} from './cmap/cmap-calculate-interactions-query-params.model';
 import {UpDownGenes} from './up-down-gene-set.model';
-import {GeneSet} from './gene-set.model';
 
 export class CalculateInteractionsQueryParamsModel {
   public readonly params: JaccardCalculateInteractionsQueryParams | CmapCalculateInteractionsQueryParams;

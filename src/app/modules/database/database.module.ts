@@ -23,23 +23,21 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DatabaseTableComponent} from './components/database-table/database-table.component';
 import {DatabaseTableFiltersComponent} from './components/database-table-filters/database-table-filters.component';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatCardModule,
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatSelectModule,
-  MatSortModule,
-  MatTableModule,
-  MatToolbarModule,
-  MatTooltipModule
-} from '@angular/material';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatListModule} from '@angular/material/list';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {DatabaseRoutingModule} from './database-routing.module';
 import {InteractionTypeIconPipe} from './pipes/interaction-type-icon.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -51,7 +49,6 @@ import {SignatureViewTableComponent} from './components/signature-view-table/sig
 import {ExportGenesDialogComponent} from '../shared/components/export-genes-dialog/export-genes-dialog.component';
 import {SignatureViewGraphComponent} from './components/signature-view-graph/signature-view-graph.component';
 import {InteractionModule} from '../interaction/interaction.module';
-import {SignatureSummaryInfoComponent} from '../shared/components/database-table-signature-info/signature-summary-info.component';
 
 @NgModule({
   declarations: [

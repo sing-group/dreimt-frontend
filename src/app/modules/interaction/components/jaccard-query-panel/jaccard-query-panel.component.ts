@@ -25,7 +25,6 @@ import {SignaturesService} from '../../services/signatures.service';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
-import {GeneSet} from '../../../../models/interactions/gene-set.model';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QueryService} from '../../services/query.service';
@@ -68,7 +67,7 @@ export class JaccardQueryPanelComponent implements OnInit {
 
   private precalculatedExamples: PrecalculatedExample[];
 
-  @ViewChild('cellTypeAndSubtype2') private cellTypeAndSubType2Component: FilterFieldComponent;
+  @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent;
 
   constructor(
     private service: SignaturesService,

@@ -24,7 +24,6 @@ import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell
 import {InteractionsService} from '../../services/interactions.service';
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
 import {Pagination} from '../../../../models/data-source/pagination';
-import {of} from 'rxjs';
 
 export class SignatureViewDataSource extends PaginatedDataSource<DrugCellDatabaseInteraction> {
   private queryParams?: DatabaseQueryParams;

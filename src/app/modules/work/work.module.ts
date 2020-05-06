@@ -21,7 +21,12 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MatButtonModule, MatDialogModule, MatIconModule, MatListModule, MatTableModule, MatTooltipModule} from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
+import {MatListModule} from '@angular/material/list';
+import {MatTableModule} from '@angular/material/table';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {WorkListComponent} from './components/work-list/work-list.component';
 import {WorkService} from './services/work.service';
 import {ExecutionStatusIconPipe} from './pipes/execution-status-icon.pipe';

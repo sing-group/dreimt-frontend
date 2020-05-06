@@ -12,8 +12,8 @@ export class TwoGeneListsComponent implements OnInit {
   @Output() public readonly upGenesChanged: EventEmitter<string>;
   @Output() public readonly downGenesChanged: EventEmitter<string>;
 
-  @ViewChild('upGenes') upGenesComponent: GeneListComponent;
-  @ViewChild('downGenes') downGenesComponent: GeneListComponent;
+  @ViewChild('upGenes', {static: false}) upGenesComponent: GeneListComponent;
+  @ViewChild('downGenes', {static: false}) downGenesComponent: GeneListComponent;
 
   private fileSelection: HTMLElement;
 

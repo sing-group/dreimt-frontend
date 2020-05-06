@@ -27,12 +27,9 @@ import {environment} from '../../../../environments/environment';
 import {DreimtError} from '../../notification/entities';
 import {CalculateInteractionsQueryParamsModel} from '../../../models/interactions/calculate-interactions-query.params.model';
 import {Work} from '../../../models/work/work.model';
-import {CmapCalculateInteractionsQueryParams} from '../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
-import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
-import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
 import {CmapQueryUpDownSignatureResultsMetadata} from '../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
-import {map, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {WorkService} from '../../work/services/work.service';
 
 @Injectable({

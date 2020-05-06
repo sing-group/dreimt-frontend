@@ -19,7 +19,6 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DrugSignatureInteractionField} from '../../drug-signature-interaction-field.enum';
 import {SortDirection} from '../../sort-direction.enum';
 import {GeneOverlapField} from './gene-overlap-field.enum';
 
