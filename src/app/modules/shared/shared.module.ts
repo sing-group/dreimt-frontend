@@ -44,6 +44,7 @@ import {HtmlDialogComponent} from './components/html-dialog/html-dialog.componen
 import {SignatureSummaryInfoComponent} from './components/database-table-signature-info/signature-summary-info.component';
 import {CapitalizePipe} from './pipes/capitalize.pipe';
 import {PrecalculatedExamplesComponent} from './components/precalculated-examples/precalculated-examples.component';
+import { DrugStatusPipePipe } from './pipes/drug-status-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {PrecalculatedExamplesComponent} from './components/precalculated-example
     HtmlDialogComponent,
     SignatureSummaryInfoComponent,
     CapitalizePipe,
-    PrecalculatedExamplesComponent
+    PrecalculatedExamplesComponent,
+    DrugStatusPipePipe
   ],
   imports: [
     CommonModule,
@@ -83,7 +85,8 @@ import {PrecalculatedExamplesComponent} from './components/precalculated-example
     HtmlDialogComponent,
     SignatureSummaryInfoComponent,
     CapitalizePipe,
-    PrecalculatedExamplesComponent
+    PrecalculatedExamplesComponent,
+    DrugStatusPipePipe
   ]
 })
 export class SharedModule {

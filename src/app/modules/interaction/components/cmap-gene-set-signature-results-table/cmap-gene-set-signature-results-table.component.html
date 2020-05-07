@@ -108,7 +108,8 @@
                             [debounceTime]="debounceTime"
                             [maxOptions]="maxOptions"></app-filter-field>
         </th>
-        <td mat-cell *matCellDef="let interaction">{{interaction.drug.status | capitalize }}</td>
+        <td mat-cell *matCellDef="let interaction"
+            [innerHTML]="interaction.drug.status | capitalize | drugStatusPipe"></td>
       </ng-container>
 
       <ng-container matColumnDef="drugMoa">
