@@ -25,7 +25,8 @@
     <mat-option class="clear-option">Clear filter</mat-option>
     <mat-option *ngFor="let option of sortedOptions | async" [value]="option">{{option}}</mat-option>
   </mat-select>
-  <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue($event)">
+  <button mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!hasFilterValue()"
+          (click)="clearValue($event)">
     <mat-icon>close</mat-icon>
   </button>
 </mat-form-field>
@@ -34,7 +35,8 @@
   <mat-label>{{label}}</mat-label>
 
   <input #filterInput matInput [formControl]="formControl" [matAutocomplete]="auto" (keyup.enter)="clearSelection()">
-  <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue($event)">
+  <button mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!hasFilterValue()"
+          (click)="clearValue($event)">
     <mat-icon>close</mat-icon>
   </button>
 

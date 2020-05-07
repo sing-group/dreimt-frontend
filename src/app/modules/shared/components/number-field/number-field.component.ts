@@ -64,7 +64,7 @@ export class NumberFieldComponent implements OnInit {
   }
 
   public hasValue(): boolean {
-    return this.formControl.value !== null;
+    return this.formControl.value !== null && this.formControl.value !== '';
   }
 
   public setValue(value): void {
