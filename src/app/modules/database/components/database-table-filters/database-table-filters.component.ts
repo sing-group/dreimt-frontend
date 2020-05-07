@@ -64,10 +64,10 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly maxDownFdrFilter: FormControl;
 
   @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent;
-  @ViewChild('minDrugDss', {static: false}) minDrugDssFilterComponent: NumberFieldComponent;
-  @ViewChild('tauMin', {static: false}) minTauFilterComponent: NumberFieldComponent;
-  @ViewChild('maxUpFdr', {static: false}) maxUpFdrFilterComponent: NumberFieldComponent;
-  @ViewChild('maxDownFdr', {static: false}) maxDownFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('minDrugDss', {static: true}) minDrugDssFilterComponent: NumberFieldComponent;
+  @ViewChild('tauMin', {static: true}) minTauFilterComponent: NumberFieldComponent;
+  @ViewChild('maxUpFdr', {static: true}) maxUpFdrFilterComponent: NumberFieldComponent;
+  @ViewChild('maxDownFdr', {static: true}) maxDownFdrFilterComponent: NumberFieldComponent;
 
   @Output() public readonly applyDatabaseFilters: EventEmitter<DatabaseQueryParams>;
 
