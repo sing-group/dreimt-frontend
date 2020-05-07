@@ -75,6 +75,9 @@ export class JaccardResultsService {
 
   public downloadCsv(resultId: string, queryTitle: string, queryParams: JaccardOverlapsQueryParams) {
     this.http.get(`${environment.dreimtUrl}/results/jaccard/` + resultId + `/overlaps`, {
+      params: new HttpParams({
+        fromObject: toPlainObject(queryParams)
+      }),
       headers: new HttpHeaders({
         'Accept': 'text/csv'
       }), responseType: 'blob'
