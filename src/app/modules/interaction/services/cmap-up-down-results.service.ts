@@ -73,14 +73,17 @@ export class CmapUpDownResultsService {
 
   public downloadCsv(resultId: string, queryTitle: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams) {
     this.http.get(`${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, {
+      params: new HttpParams({
+        fromObject: toPlainObject(queryParams)
+      }),
       headers: new HttpHeaders({
         'Accept': 'text/csv'
       }), responseType: 'blob'
     })
       .pipe(
         DreimtError.throwOnError(
-          'Error requesting Cmap result',
-          `CSV for Cmap result '${resultId}' could not be retrieved from the backend.`
+          'Error requesting Drug prioritization results',
+          `CSV for Drug prioritization results with '${resultId}' could not be retrieved from the backend.`
         )
       )
       .subscribe(res => {
