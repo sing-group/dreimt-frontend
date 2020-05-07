@@ -23,7 +23,7 @@
   <mat-label>{{label}}</mat-label>
   <mat-select [formControl]="formControl">
     <mat-option class="clear-option">Clear filter</mat-option>
-    <mat-option *ngFor="let option of sortedOptions | async" [value]="option">{{option}}</mat-option>
+    <mat-option *ngFor="let option of sortedOptions | async" [value]="option">{{optionLabelMapper(option)}}</mat-option>
   </mat-select>
   <button mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!hasFilterValue()"
           (click)="clearValue($event)">
@@ -34,14 +34,14 @@
 <mat-form-field class="field-filter-component" floatLabel="never" *ngIf="!fixedValues">
   <mat-label>{{label}}</mat-label>
 
-  <input #filterInput matInput [formControl]="formControl" [matAutocomplete]="auto" (keyup.enter)="clearSelection()">
+  <input #filterInput matInput [formControl]="formControl" [matAutocomplete]="auto" (keyup.enter)="clearSelection()" [innerHTML]="optionLabelMapper(filter)">
   <button mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!hasFilterValue()"
           (click)="clearValue($event)">
     <mat-icon>close</mat-icon>
   </button>
 
-  <mat-autocomplete #auto="matAutocomplete" class="autocomplete-panel">
+  <mat-autocomplete #auto="matAutocomplete" class="autocomplete-panel" [displayWith]="optionLabelMapper">
     <mat-option *ngFor="let option of sortedOptions | async" [value]="option"
-                [innerHTML]="option | highlight: filter" [matTooltip]="optionTooltip(option)"></mat-option>
+                [innerHTML]="optionLabelMapper(option) | highlight: filter" [matTooltip]="optionTooltip(option)"></mat-option>
   </mat-autocomplete>
 </mat-form-field>

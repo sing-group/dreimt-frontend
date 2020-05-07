@@ -33,6 +33,7 @@ import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 export class FilterFieldComponent implements OnInit {
   @Input() public label: string;
   @Input() public options: Observable<string[]>;
+  @Input() public optionLabelMapper: (string) => string;
   @Input() public debounceTime: number;
   @Input() public maxOptions: number;
   @Input() public fixedValues: boolean;
@@ -50,6 +51,7 @@ export class FilterFieldComponent implements OnInit {
     this.maxOptions = 100;
     this.fixedValues = false;
     this.showOptionsTooltip = false;
+    this.optionLabelMapper = value => value;
 
     this.formControl = new FormControl('');
     this.filterChange = new EventEmitter<string>();
@@ -140,7 +142,7 @@ export class FilterFieldComponent implements OnInit {
 
   public optionTooltip(option: string): string {
     if (this.showOptionsTooltip) {
-      return option;
+      return this.optionLabelMapper(option);
     } else {
       return undefined;
     }

@@ -32,7 +32,7 @@ import {FilterFieldComponent} from '../../../shared/components/filter-field/filt
 import {FieldFilterCellTypeModel} from '../../../shared/components/filter-field/field-filter-cell-type.model';
 import {ParamMap} from '@angular/router';
 import {DrugEffect} from '../../../../models/database/drug-effect.enum';
-import {listEnumStringValues} from '../../../../utils/types';
+import {formatTitle} from '../../../../utils/types';
 
 @Component({
   selector: 'app-database-table-filters',
@@ -98,7 +98,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.maxUpFdrFilter = new FormControl();
     this.maxDownFdrFilter = new FormControl();
 
-    this.cellType1EffectFieldFilter.update(listEnumStringValues(DrugEffect));
+    this.cellType1EffectFieldFilter.update(Object.keys(DrugEffect));
 
     this.applyDatabaseFilters = new EventEmitter<DatabaseQueryParams>();
   }
@@ -118,6 +118,22 @@ export class DatabaseTableFiltersComponent implements OnInit {
         distinctUntilChanged()
       )
       .subscribe(() => this.updateFilterValues());
+  }
+
+  public mapDrugEffectValues(value: string): string {
+    return DrugEffect[value];
+  }
+
+  public mapDrugStatus(status: string): string {
+    return formatTitle(status);
+  }
+
+  public mapInteractionType(interactionType: string): string {
+    return formatTitle(interactionType);
+  }
+
+  public mapExperimentalDesign(experimentalDesign: string): string {
+    return formatTitle(experimentalDesign);
   }
 
   public updateFilterValues(): void {

@@ -15,6 +15,7 @@
                         #cellType1EffectBasic
                         label="Drug effect"
                         [options]="cellType1EffectFieldFilter.options"
+                        [optionLabelMapper]="mapDrugEffectValues"
                         [(filter)]="cellType1EffectFieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         fixedValues="true"
@@ -56,6 +57,7 @@
 
         <app-filter-field label="Interaction type"
                           [options]="interactionTypeFilter.options"
+                          [optionLabelMapper]="mapInteractionType"
                           [(filter)]="interactionTypeFilter.filter"
                           fixedValues="true"
                           (filterChange)="updateFilterValues()"
@@ -67,6 +69,7 @@
         <app-filter-field #cellType1EffectAdvanced
                           label="Effect"
                           [options]="cellType1EffectFieldFilter.options"
+                          [optionLabelMapper]="mapDrugEffectValues"
                           [(filter)]="cellType1EffectFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
                           fixedValues="true"
@@ -90,6 +93,7 @@
 
         <app-filter-field label="Status"
                           [options]="drugStatusFieldFilter.options"
+                          [optionLabelMapper]="mapDrugStatus"
                           [(filter)]="drugStatusFieldFilter.filter"
                           fixed="true"
                           (filterChange)="updateFilterValues()"
@@ -126,6 +130,7 @@
 
         <app-filter-field label="Experimental design"
                           [options]="experimentalDesignFilter.options"
+                          [optionLabelMapper]="mapExperimentalDesign"
                           [(filter)]="experimentalDesignFilter.filter"
                           fixedValues="true"
                           (filterChange)="updateFilterValues()"

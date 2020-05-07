@@ -87,6 +87,7 @@
         <app-filter-field
           label="Experimental design"
           [options]="experimentalDesignFieldFilter.options"
+          [optionLabelMapper]="mapExperimentalDesign"
           [(filter)]="experimentalDesignFieldFilter.filter"
           fixedValues="true"
           (filterChange)="updateFieldValues()"

@@ -33,6 +33,7 @@ import {PrecalculatedExample} from '../../../../models/interactions/precalculate
 import {Work} from '../../../../models/work/work.model';
 import {FilterFieldComponent} from '../../../shared/components/filter-field/filter-field.component';
 import {FieldFilterCellTypeModel} from '../../../shared/components/filter-field/field-filter-cell-type.model';
+import {formatTitle} from '../../../../utils/types';
 
 @Component({
   selector: 'app-jaccard-query-panel',
@@ -100,6 +101,10 @@ export class JaccardQueryPanelComponent implements OnInit {
     return genes.split(/\s+/)
       .map(gene => gene.trim())
       .filter(gene => gene.length > 0);
+  }
+
+  public mapExperimentalDesign(experimentalDesign: string): string {
+    return formatTitle(experimentalDesign);
   }
 
   public onUpGenesChanged(genes: string): void {

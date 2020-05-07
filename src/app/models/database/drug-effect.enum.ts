@@ -20,6 +20,6 @@
  */
 
 export enum DrugEffect {
-  BOOST = 'BOOST',
-  INHIBIT = 'INHIBIT'
+  BOOST = 'Boosting',
+  INHIBIT = 'Inhibition'
 }

@@ -47,6 +47,6 @@ export function compareDates(s1: Date, s2: Date): number {
   return 0;
 }
 
-export function listEnumStringValues<E>(e: any): string[] {
-  return Object.keys(e).map(k => e[k as any]);
+export function formatTitle(title: string): string {
+  return title.charAt(0) + title.slice(1).replace('_', ' ').toLowerCase();
 }
