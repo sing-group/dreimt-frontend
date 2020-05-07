@@ -146,14 +146,23 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
         relativeTo: this.route,
         queryParams: this.filterParams
       });
-    this.paginator.pageIndex = 0;
+    if (this.paginator !== undefined) {
+      this.paginator.pageIndex = 0;
+    }
     this.updatePage(this.createQueryParameters());
   }
 
   public createQueryParameters(defaultPageIndex = 0, defaultPageSize = 50): DatabaseQueryParams {
+    let page = defaultPageIndex;
+    let pageSize = defaultPageSize;
+    if (this.paginator !== undefined) {
+      page = this.paginator.pageIndex || defaultPageIndex;
+      pageSize = this.paginator.pageSize || defaultPageSize;
+    }
+
     return {
-      page: this.paginator.pageIndex || defaultPageIndex,
-      pageSize: this.paginator.pageSize || defaultPageSize,
+      page: page,
+      pageSize: pageSize,
       sortDirection: this.sortDirection(),
       orderField: this.orderField(),
       ...this.filterParams
