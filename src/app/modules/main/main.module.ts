@@ -26,9 +26,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MainRoutingModule} from './main-routing.module';
+import { SwaggerComponent } from './components/swagger/swagger.component';
 
 @NgModule({
-  declarations: [MainComponent],
+  declarations: [MainComponent, SwaggerComponent],
   imports: [
     CommonModule,
     MatCardModule,

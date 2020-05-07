@@ -1,7 +1,7 @@
-/*
+/*!
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,25 +19,6 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
-import {MainComponent} from './components/main/main.component';
-import {SwaggerComponent} from './components/swagger/swagger.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: MainComponent
-  },
-  {
-    path: 'api',
-    component: SwaggerComponent
-  }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class MainRoutingModule {
+mat-card-content {
+  width: 90vw;
 }
