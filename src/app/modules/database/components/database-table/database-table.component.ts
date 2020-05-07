@@ -237,8 +237,8 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
 
   public downloadCsv() {
     this.service.downloadCsv({
-      sortDirection: SortDirection.ASCENDING,
-      orderField: DrugSignatureInteractionField.TAU,
+      sortDirection: this.sortDirection(),
+      orderField: this.orderField(),
       ...this.filterParams
     });
   }
