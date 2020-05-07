@@ -45,6 +45,7 @@ import {SignatureSummaryInfoComponent} from './components/database-table-signatu
 import {CapitalizePipe} from './pipes/capitalize.pipe';
 import {PrecalculatedExamplesComponent} from './components/precalculated-examples/precalculated-examples.component';
 import { DrugStatusPipePipe } from './pipes/drug-status-pipe.pipe';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -59,24 +60,25 @@ import { DrugStatusPipePipe } from './pipes/drug-status-pipe.pipe';
     PrecalculatedExamplesComponent,
     DrugStatusPipePipe
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatTooltipModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatAutocompleteModule,
+        MatButtonModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatTooltipModule,
+        ReactiveFormsModule,
+        MatMenuModule
+    ],
   exports: [
     FilterFieldComponent,
     NumberFieldComponent,

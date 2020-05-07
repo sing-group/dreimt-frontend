@@ -1,11 +1,12 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {SignatureSummary} from '../../../../models/interactions/jaccard/signature-summary.model';
 
 @Component({
   selector: 'app-signature-summary-info',
   templateUrl: './signature-summary-info.component.html',
-  styleUrls: ['./signature-summary-info.component.scss']
+  styleUrls: ['./signature-summary-info.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SignatureSummaryInfoComponent {
 

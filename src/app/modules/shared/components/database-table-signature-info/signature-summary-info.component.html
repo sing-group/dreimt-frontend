@@ -1,20 +1,22 @@
 <div class="signature-info-grid">
   <div class="signature-name" [matTooltip]="signatureNameTooltip()">{{signature.signatureName}}</div>
-  <div class="db-button-container" *ngIf="signature.sourceDbUrl">
-    <a class="signature-button db-button"
-       href="{{signature.sourceDbUrl}}"
-       target="_blank">
-      {{signature.sourceDb}}
-    </a>
-  </div>
-  <div class="pubmed-button-container" *ngIf="signature.articlePubMedId">
-    <a class="signature-button pubmed-button"
+
+  <button mat-icon-button [matMenuTriggerFor]="moreInfoMenu">
+    <mat-icon>open_in_new</mat-icon>
+  </button>
+
+  <mat-menu #moreInfoMenu="matMenu" class="more-info-menu-panel">
+    <a mat-menu-item class="pubmed-button" *ngIf="signature.articlePubMedId"
        href="http://www.ncbi.nlm.nih.gov/pubmed/{{signature.articlePubMedId}}"
        target="_blank">
       PubMed
     </a>
-  </div>
-  <div class="dreimt-query-button-container">
-    <a class="signature-button dreimt-query-button" (click)="navigateToSignature()">DREIMT Query</a>
-  </div>
+    <a mat-menu-item class="dreimt-query-button" (click)="navigateToSignature()">
+      DREIMT Query
+    </a>
+    <a mat-menu-item class="db-button" *ngIf="signature.sourceDbUrl"
+       href="{{signature.sourceDbUrl}}" target="_blank">
+      {{signature.sourceDb}}
+    </a>
+  </mat-menu>
 </div>

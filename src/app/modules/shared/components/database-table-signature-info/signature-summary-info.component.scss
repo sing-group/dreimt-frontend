@@ -1,4 +1,47 @@
-.signature-info-grid {
+div.signature-info-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  div.signature-name {
+    word-break: break-all;
+    min-width: 120px;
+  }
+}
+
+.mat-menu-panel.more-info-menu-panel {
+  border-radius: 4px !important;
+
+  .mat-menu-content {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+
+    a.mat-menu-item {
+      border-radius: 4px;
+      height: 32px;
+      line-height: 32px;
+      margin: 8px;
+    }
+
+    a.pubmed-button:not(:hover) {
+      background-color: dodgerblue;
+      color: white;
+    }
+
+    a.dreimt-query-button:not(:hover) {
+      background-color: #f5085c;
+      color: white;
+    }
+
+    a.db-button:not(:hover) {
+      background-color: lightgoldenrodyellow;
+      color: black;
+    }
+  }
+}
+
+/*.signature-info-grid {
   display: grid;
   grid-template-rows: 50% 50%;
   grid-template-columns: auto;
@@ -53,4 +96,4 @@
   background-color: lightgoldenrodyellow;
   color: black;
   text-decoration: none;
-}
+}*/
