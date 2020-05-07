@@ -25,8 +25,7 @@
     <input matInput type="number" [min]="min" [step]="step" [max]="max" [formControl]="formControl"
            [placeholder]="label">
   </div>
-  <button mat-button *ngIf="hasValue() && clearable" matSuffix mat-icon-button aria-label="Clear"
-          (click)="clearValue()">
+  <button mat-button *ngIf="clearable" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue()">
     <mat-icon>close</mat-icon>
   </button>
 </mat-form-field>

@@ -20,7 +20,7 @@
   -->
 
 <mat-card>
-  <mat-card-title>Signatures Comparison Query</mat-card-title>
+  <mat-card-title>Signatures comparison query</mat-card-title>
   <mat-card-subtitle>This panel allows you to provide a gene list (HUGO Gene Symbols) to compare a immune cell signature
     against the DREIMT immune cell signatures.
   </mat-card-subtitle>
@@ -93,7 +93,7 @@
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 
-        <mat-checkbox [(ngModel)]="considerOnlyUniverseGenes" (change)="updateFieldValues()">
+        <mat-checkbox class="full-row" [(ngModel)]="considerOnlyUniverseGenes" (change)="updateFieldValues()">
           Perform analysis using only genes in DREIMT
         </mat-checkbox>
       </div>

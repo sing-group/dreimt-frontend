@@ -96,7 +96,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
       }
     },
     title: {
-      text: 'Drug Prioritization Plot'
+      text: 'Drug prioritization plot'
     },
     credits: {
       enabled: false

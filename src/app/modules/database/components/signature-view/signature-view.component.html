@@ -17,19 +17,19 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Signature Information
+            Signature information
           </mat-panel-title>
         </mat-expansion-panel-header>
 
         <mat-list>
-          <mat-list-item> Source Database: {{signature.sourceDb}}</mat-list-item>
+          <mat-list-item> Source database: {{signature.sourceDb}}</mat-list-item>
           <mat-list-item> Organism: {{signature.organism}}</mat-list-item>
           <mat-list-item *ngIf="signature.disease.length > 0"> Disease: {{signature.disease}}</mat-list-item>
-          <mat-list-item *ngIf="signature.cellTypeA.length > 0"> Case Type: {{signature.cellTypeA}}</mat-list-item>
-          <mat-list-item *ngIf="signature.cellSubTypeA.length > 0"> Case Subype: {{signature.cellSubTypeA}}
+          <mat-list-item *ngIf="signature.cellTypeA.length > 0"> Case type: {{signature.cellTypeA}}</mat-list-item>
+          <mat-list-item *ngIf="signature.cellSubTypeA.length > 0"> Case subype: {{signature.cellSubTypeA}}
           </mat-list-item>
-          <mat-list-item *ngIf="signature.cellTypeB.length > 0"> Reference Type: {{signature.cellTypeB}}</mat-list-item>
-          <mat-list-item *ngIf="signature.cellSubTypeB.length > 0"> Reference Subype: {{signature.cellSubTypeB}}
+          <mat-list-item *ngIf="signature.cellTypeB.length > 0"> Reference type: {{signature.cellTypeB}}</mat-list-item>
+          <mat-list-item *ngIf="signature.cellSubTypeB.length > 0"> Reference subype: {{signature.cellSubTypeB}}
           </mat-list-item>
           <mat-list-item> Article: {{signature.articleTitle}} <a
             href="http://www.ncbi.nlm.nih.gov/pubmed/{{signature.articlePubMedId}}" target="_blank">
@@ -37,7 +37,6 @@
           </a></mat-list-item>
         </mat-list>
       </mat-expansion-panel>
-
     </mat-card-content>
   </mat-card>
 

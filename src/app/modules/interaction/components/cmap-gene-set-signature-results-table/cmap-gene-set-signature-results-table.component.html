@@ -21,7 +21,7 @@
 
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Drug Predictions Table</mat-card-title>
+    <mat-card-title>Drug predictions table</mat-card-title>
     <mat-card-subtitle>This table shows all the predictions. The column filters can be used to refine the predictions
       being shown, which are also used to create the plots above.
     </mat-card-subtitle>
@@ -31,7 +31,7 @@
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="drug">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug common name">
-          <span mat-sort-header="DRUG_COMMON_NAME">Drug Common Name</span>
+          <span mat-sort-header="DRUG_COMMON_NAME">Drug common name</span>
 
           <app-filter-field label="Filter"
                             [options]="drugCommonNameFieldFilter.options"
@@ -60,7 +60,7 @@
 
       <ng-container matColumnDef="tau">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 75 to 100)">
-          <span mat-sort-header="TAU">TAU</span>
+          <span mat-sort-header="TAU">Tau</span>
 
           <app-number-field #minTau label="Min." [debounceTime]="debounceTime" [min]="75" [max]="100" [step]="1.0"
                             [initialValue]="75" [clearable]="false"
@@ -150,7 +150,7 @@
     </button>
     <button mat-button (click)="openDownloadGenesDialog()">
       <mat-icon>save_alt</mat-icon>
-      Download Query Genes
+      Download query genes
     </button>
   </mat-card-actions>
 </mat-card>

@@ -51,23 +51,23 @@
           </mat-expansion-panel-header>
 
           <mat-list style="margin-left:30px;">
-            <mat-list-item *ngIf="metadata.cellType1"> Cell Type 1: {{formatQueryParameter(metadata.cellType1)}}
+            <mat-list-item *ngIf="metadata.cellType1"> Cell type 1: {{formatQueryParameter(metadata.cellType1)}}
             </mat-list-item>
-            <mat-list-item *ngIf="metadata.cellType2"> Cell Type 2: {{formatQueryParameter(metadata.cellType2)}}
+            <mat-list-item *ngIf="metadata.cellType2"> Cell type 2: {{formatQueryParameter(metadata.cellType2)}}
             </mat-list-item>
-            <mat-list-item *ngIf="metadata.cellSubType1"> Cell Subtype 1:
+            <mat-list-item *ngIf="metadata.cellSubType1"> Cell subtype 1:
               {{formatQueryParameter(metadata.cellSubType1)}}
             </mat-list-item>
-            <mat-list-item *ngIf="metadata.cellSubType2"> Cell Subtype 2:
+            <mat-list-item *ngIf="metadata.cellSubType2"> Cell subtype 2:
               {{formatQueryParameter(metadata.cellSubType2)}}
             </mat-list-item>
-            <mat-list-item *ngIf="metadata.experimentalDesign"> Experimental Design:
+            <mat-list-item *ngIf="metadata.experimentalDesign"> Experimental design:
               {{formatQueryParameter(metadata.experimentalDesign)}}
             </mat-list-item>
             <mat-list-item *ngIf="metadata.organism"> Organism: {{formatQueryParameter(metadata.organism)}}
             </mat-list-item>
             <mat-list-item *ngIf="metadata.disease"> Disease: {{formatQueryParameter(metadata.disease)}}</mat-list-item>
-            <mat-list-item *ngIf="metadata.signatureSourceDb"> Signature Source DB:
+            <mat-list-item *ngIf="metadata.signatureSourceDb"> Signature source DB:
               {{formatQueryParameter(metadata.signatureSourceDb)}}
             </mat-list-item>
           </mat-list>

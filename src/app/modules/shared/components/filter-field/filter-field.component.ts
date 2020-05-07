@@ -116,8 +116,9 @@ export class FilterFieldComponent implements OnInit {
     return this.filter !== '';
   }
 
-  public clearValue(): void {
+  public clearValue($event: MouseEvent): void {
     this.filter = '';
+    $event.stopPropagation(); // Prevents autocomplete trigger
   }
 
   public isAutocompleteVisible(): boolean {

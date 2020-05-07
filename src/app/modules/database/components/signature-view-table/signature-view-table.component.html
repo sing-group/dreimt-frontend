@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Drug Predictions Table</mat-card-title>
+    <mat-card-title>Drug predictions table</mat-card-title>
     <mat-card-subtitle>This table shows all the predictions. The column filters can be used to refine the predictions
       being shown, which are also used to create the plots above.
     </mat-card-subtitle>
@@ -10,7 +10,7 @@
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="tau">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range {{tauThreshold}} to 100)">
-          <span mat-sort-header="TAU">TAU</span>
+          <span mat-sort-header="TAU">Tau</span>
 
           <app-number-field #minTau label="Min." [debounceTime]="debounceTime" [min]="tauThreshold" [max]="100"
                             [step]="1.0"
@@ -37,7 +37,7 @@
 
       <ng-container matColumnDef="drugStatus">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug status">
-          <span mat-sort-header="DRUG_STATUS">Status</span>
+          <span mat-sort-header="DRUG_STATUS">Drug status</span>
 
           <app-filter-field label="Filter"
                             [options]="drugStatusFieldFilter.options"
@@ -53,7 +53,7 @@
 
       <ng-container matColumnDef="drugMoa">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug mechanism of action">
-          <div>MOA</div>
+          <div>Drug MOA</div>
 
           <app-filter-field label="Filter"
                             [options]="drugMoaFieldFilter.options"
@@ -96,7 +96,7 @@
 
       <ng-container matColumnDef="drug">
         <th mat-header-cell *matHeaderCellDef matTooltip="Drug common name">
-          <span mat-sort-header="DRUG_COMMON_NAME">Drug Common Name</span>
+          <span mat-sort-header="DRUG_COMMON_NAME">Drug common name</span>
 
           <app-filter-field label="Filter"
                             [options]="drugCommonNameFieldFilter.options"
@@ -143,7 +143,7 @@
   <mat-card-actions>
     <button mat-button (click)="openDownloadGenesDialog()">
       <mat-icon>save_alt</mat-icon>
-      Download Signature Genes
+      Download signature genes
     </button>
   </mat-card-actions>
 </mat-card>

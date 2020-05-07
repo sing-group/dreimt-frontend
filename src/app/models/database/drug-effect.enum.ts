@@ -1,4 +1,4 @@
-/*!
+/*
  * DREIMT Frontend
  *
  *  Copyright (C) 2018-2019 - Hugo López-Fernández,
@@ -19,39 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-mat-form-field {
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  width: 100%;
-
-  ::ng-deep .mat-form-field-underline {
-    display: none;
-  }
-
-  ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0px !important;
-  }
-
-  ::ng-deep .mat-form-field-flex {
-    align-items: center;
-  }
-
-  ::ng-deep .mat-form-field-infix {
-    padding: 0px !important;
-    border: 0px !important;
-  }
-
-  ::ng-deep .mat-form-field-label-wrapper {
-    left: 4px !important;
-  }
-}
-
-.mat-input-element {
-  padding: 4px;
-  width: 96%;
-  height: 19px !important;
-}
-
-.invalid-value {
-  background-color: #FF9994;
+export enum DrugEffect {
+  BOOST = 'BOOST',
+  INHIBIT = 'INHIBIT'
 }

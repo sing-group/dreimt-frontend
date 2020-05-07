@@ -31,6 +31,8 @@ import {NumberFieldComponent} from '../../../shared/components/number-field/numb
 import {FilterFieldComponent} from '../../../shared/components/filter-field/filter-field.component';
 import {FieldFilterCellTypeModel} from '../../../shared/components/filter-field/field-filter-cell-type.model';
 import {ParamMap} from '@angular/router';
+import {DrugEffect} from '../../../../models/database/drug-effect.enum';
+import {listEnumStringValues} from '../../../../utils/types';
 
 @Component({
   selector: 'app-database-table-filters',
@@ -50,6 +52,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly drugStatusFieldFilter: FieldFilterModel;
 
   public readonly signatureNameFieldFilter: FieldFilterModel;
+  public readonly cellType1EffectFieldFilter: FieldFilterModel;
   public readonly cellTypeAndSubtype1FieldFilter: FieldFilterCellTypeModel;
   public readonly cellTypeAndSubtype2FieldFilter: FieldFilterCellTypeModel;
   public readonly diseaseFieldFilter: FieldFilterModel;
@@ -63,6 +66,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
+  @ViewChild('cellType1EffectBasic', {static: true}) private cellType1EffectBasicComponent: FilterFieldComponent;
+  @ViewChild('cellType1EffectAdvanced', {static: true}) private cellType1EffectAdvancedComponent: FilterFieldComponent;
   @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent;
   @ViewChild('minDrugDss', {static: true}) minDrugDssFilterComponent: NumberFieldComponent;
   @ViewChild('tauMin', {static: true}) minTauFilterComponent: NumberFieldComponent;
@@ -79,6 +84,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.drugMoaFieldFilter = new FieldFilterModel();
     this.drugStatusFieldFilter = new FieldFilterModel();
     this.signatureNameFieldFilter = new FieldFilterModel();
+    this.cellType1EffectFieldFilter = new FieldFilterModel();
     this.cellTypeAndSubtype1FieldFilter = new FieldFilterCellTypeModel();
     this.cellTypeAndSubtype2FieldFilter = new FieldFilterCellTypeModel();
     this.diseaseFieldFilter = new FieldFilterModel();
@@ -91,6 +97,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
     this.maxDownFdrFilter = new FormControl();
+
+    this.cellType1EffectFieldFilter.update(listEnumStringValues(DrugEffect));
 
     this.applyDatabaseFilters = new EventEmitter<DatabaseQueryParams>();
   }
@@ -114,6 +122,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public updateFilterValues(): void {
     this.checkCellTypeAndSubType2FiltersStatus();
+    this.checkCellType1EffectFilterStatus();
 
     const queryParams = this.createQueryParameters();
 
@@ -158,6 +167,17 @@ export class DatabaseTableFiltersComponent implements OnInit {
     } else {
       this.cellTypeAndSubtype2FieldFilter.filter = '';
       this.cellTypeAndSubType2Component.disable();
+    }
+  }
+
+  private checkCellType1EffectFilterStatus(): void {
+    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
+      this.cellType1EffectBasicComponent.enable();
+      this.cellType1EffectAdvancedComponent.enable();
+    } else {
+      this.cellType1EffectFieldFilter.filter = '';
+      this.cellType1EffectBasicComponent.disable();
+      this.cellType1EffectAdvancedComponent.disable();
     }
   }
 
@@ -252,6 +272,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
       cellSubType1: this.cellTypeAndSubtype1FieldFilter.getCellSubtypeFilter(),
       cellType2: this.cellTypeAndSubtype2FieldFilter.getCellTypeFilter(),
       cellSubType2: this.cellTypeAndSubtype2FieldFilter.getCellSubtypeFilter(),
+      cellType1Effect: this.cellType1EffectFieldFilter.getClearedFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),
@@ -274,6 +295,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
       cellSubType1: this.cellTypeAndSubtype1FieldFilter.getCellSubtypeFilter(),
       cellType2: undefined,
       cellSubType2: undefined,
+      cellType1Effect: this.cellType1EffectFieldFilter.getClearedFilter(),
       disease: undefined,
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: undefined,
@@ -294,6 +316,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.signatureNameFieldFilter.filter = '';
     this.cellTypeAndSubtype1FieldFilter.filter = '';
     this.cellTypeAndSubtype2FieldFilter.filter = '';
+    this.cellType1EffectFieldFilter.filter = '';
     this.diseaseFieldFilter.filter = '';
     this.organismFieldFilter.filter = '';
     this.signatureSourceDbFieldFilter.filter = '';
@@ -321,6 +344,11 @@ export class DatabaseTableFiltersComponent implements OnInit {
     const cellType1 = params.get('cellType1');
     if (cellType1) {
       this.cellTypeAndSubtype1FieldFilter.setCellTypeAndSubtype(cellType1, params.get('cellSubType1'));
+
+      const cellType1Effect = params.get('cellType1Effect');
+      if (cellType1Effect) {
+        this.cellType1EffectFieldFilter.filter = cellType1Effect;
+      }
 
       const cellType2 = params.get('cellType2');
       if (cellType2) {
@@ -425,5 +453,13 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public isFiltersWarningMessageHidden(): boolean {
     return this.isValidFiltersConfiguration();
+  }
+
+  public getCellType1EffectTooltip(): string {
+    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
+      return '';
+    } else {
+      return 'This filter is disabled, the cell type/subtype 1 must be selected to enable it.';
+    }
   }
 }

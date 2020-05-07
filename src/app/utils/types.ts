@@ -46,3 +46,7 @@ export function compareDates(s1: Date, s2: Date): number {
   if (s1 > s2) { return 1; }
   return 0;
 }
+
+export function listEnumStringValues<E>(e: any): string[] {
+  return Object.keys(e).map(k => e[k as any]);
+}
