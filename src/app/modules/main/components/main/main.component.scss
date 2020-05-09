@@ -19,18 +19,69 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.actions {
+// This should be imported the same way as it is done for the app-component.
+// However, it is not possible due to a bug in Angular.
+$primary: #455a64;
+$highlight: #f5085c;
+
+#main-content {
   display: grid;
-  grid-template-areas: 'list query';
-  grid-template-columns: 1fr 1fr 1fr;
-  place-items: center / center;
-}
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 24px;
+  justify-items: stretch;
+  align-items: stretch;
 
-.home-image-container {
-  display: flex;
-  justify-content: center;
-}
+  div#welcome {
+    grid-column: 1 / span 1;
 
-.mat-card-image {
-  width: calc(80% + 32px);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    padding: 12px;
+
+    background-color: $primary;
+    color: white;
+
+    h2 {
+      margin: 0px;
+    }
+
+    h2, div, img {
+      grid-column: 1 / span 3;
+    }
+
+    button {
+      background-color: $highlight;
+      white-space: normal;
+      font-size: 14px;
+      line-height: 18px;
+      width: 100px;
+      height: 50px;
+    }
+  }
+
+  div#what-is-dreimt {
+    grid-column: 2 / span 1;
+
+    p {
+      text-align: justify;
+    }
+
+    a {
+      font-size: 1em;
+      height: 32px;
+    }
+  }
+
+  div#home-image-container {
+    grid-column: 1 / span 2;
+
+    img {
+      width: 960px;
+      max-width: 100%;
+      display: block;
+      margin: auto;
+    }
+  }
 }

@@ -19,17 +19,55 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {DreimtInformationService} from '../../../../services/dreimt-information.service';
+import {DreimtStatsModel} from '../../../../models/dreimt-stats.model';
+
+class SampleLink {
+  constructor(
+    public readonly title: string,
+    public readonly route: string,
+    public readonly queryParams: { [p: string]: any }
+  ) {
+  }
+}
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
+  public readonly SAMPLES = [
+    new SampleLink(
+      'Which drugs inhibit macrophages?',
+      '/database',
+      {cellType1: 'MACROPHAGE', cellType1Effect: 'INHIBIT'}
+    ),
+    new SampleLink(
+      'Which drugs inhibit T cells?',
+      '/database',
+      {cellType1: 'T CELL', cellType1Effect: 'INHIBIT'}
+    ),
+    new SampleLink(
+      'Which drugs boost dendritic cells?',
+      '/database',
+      {cellType1: 'DENDRITIC CELL', cellType1Effect: 'BOOST'}
+    )
+  ];
 
-  public constructor(private router: Router) {
+  public stats: DreimtStatsModel;
+
+  public constructor(
+    private router: Router,
+    private dreimtInformationService: DreimtInformationService
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.dreimtInformationService.getDreimtStats()
+      .subscribe(stats => this.stats = stats);
   }
 
   public onNavigateToDatabase(): void {

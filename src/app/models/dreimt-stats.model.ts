@@ -1,4 +1,4 @@
-/*!
+/*
  * DREIMT Frontend
  *
  *  Copyright (C) 2018-2019 - Hugo López-Fernández,
@@ -18,26 +18,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-@import '~@angular/material/theming';
 
-// always include only once per project
-@include mat-core();
+export class DreimtStatsModel {
+  public readonly drugCount: number;
+  public readonly signaturesCount: number;
 
-// import our custom theme
-@import './theme.scss';
-
-// specify theme class eg: <body class="my-theme"> ... </body>
-.dreimt-theme {
-  // use our theme with angular-material-theme mixin
-  @include angular-material-theme($dreimt-theme);
-
-  @include custom-component-theme($dreimt-theme);
-
-  @include angular-material-typography($dreimt-typography);
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'gidoleregular';
+  public static isA(object: any): object is DreimtStatsModel {
+    return object !== undefined && object !== null
+      && typeof object.drugCount === 'number'
+      && typeof object.signaturesCount === 'number';
+  }
 }

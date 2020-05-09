@@ -18,6 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+@use 'sass:map';
 
 // define 3 theme color
 // mat-palette accepts $palette-name, main, lighter and darker variants
@@ -26,8 +27,23 @@ $dreimt-theme-accent: mat-palette($mat-light-blue);
 $dreimt-theme-warn: mat-palette($mat-deep-orange, A200);
 
 // create theme (use mat-dark-theme for themes with dark backgrounds)
-$dreimt-theme: mat-light-theme(
+$dreimt-theme-base: mat-light-theme(
     $dreimt-theme-primary,
     $dreimt-theme-accent,
     $dreimt-theme-warn
 );
+$dreimt-theme: map_merge($dreimt-theme-base, ('highlight': #f5085c));
+
+
+@font-face {
+  font-family: 'gidoleregular';
+  src: url('./assets/font/Gidole-Regular.ttf') format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+$dreimt-typography: mat-typography-config(
+  $font-family: 'gidoleregular'
+);
+
+@import 'custom-themes.scss';

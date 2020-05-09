@@ -26,15 +26,17 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MainRoutingModule} from './main-routing.module';
-import { SwaggerComponent } from './components/swagger/swagger.component';
+import {SwaggerComponent} from './components/swagger/swagger.component';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [MainComponent, SwaggerComponent],
   imports: [
     CommonModule,
+    MainRoutingModule,
     MatCardModule,
     MatButtonModule,
-    MainRoutingModule,
+    MatListModule,
     MatTooltipModule
   ]
 })

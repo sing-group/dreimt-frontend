@@ -35,6 +35,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {AppRoutingModule} from './app-routing.module';
 import {WorkModule} from './modules/work/work.module';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {WorkModule} from './modules/work/work.module';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    FontAwesomeModule,
     MatBadgeModule,
     MatButtonModule,
     MatIconModule,
@@ -57,7 +59,8 @@ import {WorkModule} from './modules/work/work.module';
       pauseOnHover: true,
       clickToClose: true
     }),
-    WorkModule
+    WorkModule,
+    FontAwesomeModule
   ],
   providers: [
     {

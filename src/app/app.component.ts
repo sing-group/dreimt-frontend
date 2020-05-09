@@ -26,6 +26,9 @@ import {Severity} from './modules/notification/entities';
 import {WorkService} from './modules/work/services/work.service';
 import {CustomIconService} from './services/custom-icon.service';
 import {DatabaseVersionService} from './services/database-version.service';
+import {faTwitter} from '@fortawesome/free-brands-svg-icons';
+import {faEnvelopeOpen} from '@fortawesome/free-regular-svg-icons';
+import {faDatabase} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +37,10 @@ import {DatabaseVersionService} from './services/database-version.service';
 })
 export class AppComponent implements OnInit {
   public readonly title = 'DREIMT';
+
+  public readonly faTwitter = faTwitter;
+  public readonly faEnvelopeOpen = faEnvelopeOpen;
+  public readonly faDatabase = faDatabase;
 
   public workCount: number;
   public currentDatabaseVersion = 'not available';

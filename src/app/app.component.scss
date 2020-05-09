@@ -22,10 +22,16 @@
 @import '~@angular/material/theming';
 
 @mixin app-component-theme($theme) {
+  $highlight: map-get($theme, highlight);
+  $footer-height: 60px;
+
   $primary: map-get($theme, primary);
   $text-color: mat-color($primary, default-contrast);
 
-  .container {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  div#app-container {
     display: grid;
     min-height: 100vh;
     grid-template-areas:
@@ -33,92 +39,87 @@
       'main'
       'footer'
     ;
-    grid-template-rows: 60px auto 80px;
+    grid-template-rows: 80px auto $footer-height;
+    justify-items: stretch;
+    align-items: stretch;
+
+    header {
+      @include mat-elevation(6);
+      grid-area: header;
+      background-color: mat-color($primary);
+      color: $text-color;
+      display: grid;
+      grid-template-columns: 200px auto;
+      align-items: center;
+      padding: 8px 24px;
+
+      .app-header-left {
+        jutify-self: start;
+
+        a {
+          color: $text-color;
+          text-decoration: none;
+          outline: none;
+
+          img#app-logo {
+            height: 40px;
+          }
+        }
+      }
+
+      .app-header-right {
+        justify-self: end;
+
+        .active-route {
+          background-color: $highlight;
+        }
+
+        .mat-button-wrapper {
+          font-size: 1.1em;
+          font-weight: bold;
+        }
+      }
+    }
+
+    main {
+      grid-area: main;
+
+      #app-main-container {
+        height: 100%;
+        width: 100%;
+        padding: 20px 40px;
+        margin-bottom: 2px;
+      }
+
+      #app-main-content {
+        display: grid;
+        grid-area: main-container;
+        grid-template-areas: '. content .';
+        grid-template-columns: 1fr 10fr 1fr;
+        justify-items: center;
+      }
+
+      mat-sidenav {
+        min-width: 320px;
+      }
+    }
+
+    footer {
+      grid-area: footer;
+      padding: 0px 10px;
+      text-align: center;
+      background-color: mat-color($background, background);
+      color: mat-color($foreground, foreground);
+      height: $footer-height;
+      line-height: $footer-height;
+
+      a img {
+        max-height: 30px;
+      }
+    }
   }
 
-  header {
-    @include mat-elevation(6);
-    grid-area: header;
-    background-color: mat-color($primary);
-    color: $text-color;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .header-left {
-    jutify-self: start;
-    padding-left: 30px;
-  }
-
-  .header-left a {
-    color: $text-color;
-    text-decoration: none;
-    outline: none;
-  }
-
-  #logo {
-    height: 40px;
-  }
-
-  .header-right {
-    justify-self: end;
-    padding-right: 10px;
-  }
-
-  main {
-    grid-area: main;
-  }
-
-  footer {
-    grid-area: footer;
-    background-color: mat-color($primary);
-    color: $text-color;
-    padding: 20px 10px;
-  }
-
-  .footer-left {
-    float: left;
-  }
-
-  .footer-right {
-    text-align: right;
-    float: right;
-  }
-
-  #main-container {
-    height: 100%;
-    width: 100%;
-    padding: 20px 40px;
-    margin-bottom: 2px;
-  }
-
-  #main-content {
-    display: grid;
-    grid-area: main-container;
-    grid-template-areas: '. content .';
-    grid-template-columns: 1fr 10fr 1fr;
-    justify-items: center;
-  }
-
-  mat-sidenav {
-    min-width: 320px;
-  }
-
-  .mat-tooltip {
-    font-size: 1.1em !important;
-  }
-
-  .active-route {
-    background-color: #f5085c;
-  }
-
-  .mat-button-wrapper {
-    font-size: 1.1em;
-    font-weight: bold;
-  }
-
+  // Global style required for drug-status-pipe
   .drug-status-approved {
     border: 1px solid black;
     padding: 3px;

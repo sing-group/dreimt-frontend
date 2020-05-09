@@ -20,28 +20,44 @@
   -->
 
 <mat-card>
-  <mat-card-title>DREIMT</mat-card-title>
-  <mat-card-actions class="actions">
-    <button mat-button (click)="onNavigateToDrugPrioritization()"
-            matTooltip="Opens a query panel to get drug prioritizations for a custom signature or geneset.">Drug
-      prioritization
-    </button>
-    <button mat-button (click)="onNavigateToSignaturesComparison()"
-            matTooltip="Opens a query panel to find similar signatures or geneset in the database to a custom signature or geneset by calculating the Jaccard index.">
-      Signatures comparison
-    </button>
-    <button mat-button (click)="onNavigateToDatabase()"
-            matTooltip="Opens the view to explore the database of calculated drug prioritizations.">Database
-    </button>
-  </mat-card-actions>
-  <mat-card-content>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac tempus ipsum. Nam a nunc felis. Vestibulum suscipit
-    mollis eros, vel lacinia tortor tristique at. Nunc iaculis ligula sed lectus bibendum, in fermentum nisi vulputate.
-    Quisque at cursus urna, in porta nulla. Donec auctor rutrum mauris, a maximus urna bibendum tincidunt. Curabitur
-    porta at ante vel fringilla. Donec pulvinar ante ac leo volutpat porta. Nullam lectus risus, pulvinar eget urna
-    quis, vehicula condimentum tortor.
+  <mat-card-content id="main-content">
+    <div id="welcome">
+      <h2>Welcome to</h2>
+      <img src="../../../../../assets/images/logo.svg" alt="DREIMT"/>
+      <div>A tool for immune modulation drug prioritization</div>
+      <button mat-button (click)="onNavigateToDrugPrioritization()"
+              matTooltip="Opens a query panel to get drug prioritizations for a custom signature or geneset.">
+        Drug prioritization
+      </button>
+      <button mat-button (click)="onNavigateToSignaturesComparison()"
+              matTooltip="Opens a query panel to find similar signatures or geneset in the database to a custom signature or geneset by calculating the Jaccard index.">
+        Signatures comparison
+      </button>
+      <button mat-button (click)="onNavigateToDatabase()"
+              matTooltip="Opens the view to explore the database of calculated drug prioritizations.">
+        Database
+      </button>
+    </div>
+
+    <div id="what-is-dreimt">
+      <h3>What is DREIMT?</h3>
+      <p>
+        DREIMT is a bioinformatics tool for hypothesis generation and <strong>prioritization of drugs capable of
+        modulating immune cells activity</strong>. The current version integrates
+        <strong>{{stats.signaturesCount}}</strong> immune cell signatures and <strong>{{stats.drugCount}}</strong>
+        compound profiles.
+      </p>
+
+      <p>
+        DREIMT accepts users own immune cell signature for drug prioritization.
+      </p>
+      <mat-nav-list role="navigation" dense>
+        <a mat-list-item [routerLink]="sample.route" [queryParams]="sample.queryParams" *ngFor="let sample of SAMPLES">{{sample.title}}</a>
+      </mat-nav-list>
+    </div>
+
+    <div id="home-image-container">
+      <img src="../../../../../../../assets/images/home-dreimt.png" alt="How it works?">
+    </div>
   </mat-card-content>
-  <div class="home-image-container">
-    <img mat-card-image src="../../../../../../../assets/images/home-dreimt.png" alt="Dreimt">
-  </div>
 </mat-card>

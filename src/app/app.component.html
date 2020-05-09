@@ -19,12 +19,12 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div class="container">
+<div id="app-container">
   <header>
-    <div class="header-left mat-title">
-      <a routerLink="/"><img id="logo" src="assets/images/logo.svg" [alt]="title"></a>
+    <div class="app-header-left">
+      <a routerLink="/"><img id="app-logo" src="assets/images/logo.svg" [alt]="title"></a>
     </div>
-    <div class="header-right">
+    <div class="app-header-right">
       <button mat-button routerLink="/interactions/drug-prioritization" routerLinkActive="active-route"
               routerLinkActiveOptions="{exact:true}">Drug prioritization
       </button>
@@ -34,6 +34,9 @@
       <button mat-button routerLink="/database" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}">
         Database
       </button>
+      <button mat-button routerLink="/api" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}">
+        REST API
+      </button>
       <button mat-button [matBadge]="workCount" matBadgePosition="after" matBadgeColor="accent"
               (click)="queriesList.toggle()">
         Queries history
@@ -42,22 +45,42 @@
   </header>
 
   <main>
-    <mat-sidenav-container id="main-container">
+    <mat-sidenav-container id="app-main-container">
       <mat-sidenav #queriesList mode="side" position="end">
         <app-work-list></app-work-list>
       </mat-sidenav>
-      <mat-sidenav-content id="main-content">
+      <mat-sidenav-content id="app-main-content">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
   </main>
 
   <footer>
-    <div class="footer-left">
-      <a mat-flat-button color="primary" disableRipple="true" href="https://www.sing-group.org" target="_blank">&copy; SING</a>
-      <a mat-flat-button color="primary" disableRipple="true" routerLink="/api">REST API</a>
-    </div>
-    <div class="footer-right">Database version: {{this.currentDatabaseVersion}}</div>
+    <a mat-button disableRipple="true" href="https://bioinformatics.cnio.es" target="_blank">
+      <img src="assets/images/bu-logo.png" alt="Bioinformatics Unit - CNIO">
+    </a>
+    <a mat-button disableRipple="true" href="https://www.cnio.es" target="_blank">
+      <img src="assets/images/cnio-logo.png" alt="CNIO">
+    </a>
+    <a mat-button disableRipple="true" href="https://www.sing-group.org" target="_blank">
+      <img src="assets/images/sing-logo.png" alt="SING Group - Universidade de Vigo">
+    </a>
+    <a mat-button disableRipple="true" href="https://www.uvigo.gal" target="_blank">
+      <img src="assets/images/uvigo-logo.png" alt="Universidade de Vigo">
+    </a>
+    <a mat-button disableRipple="true" href="https://twitter.com/dreimt_cnio" target="_blank">
+      <fa-icon [icon]="faTwitter"></fa-icon> DREIMT
+    </a>
+    <a mat-button disableRipple="true" href="https://twitter.com/bu_cnio" target="_blank">
+      <fa-icon [icon]="faTwitter"></fa-icon> BU@CNIO
+    </a>
+    <a mat-button disableRipple="true" href="https://twitter.com/SINGgroup" target="_blank">
+      <fa-icon [icon]="faTwitter"></fa-icon> SING
+    </a>
+    <a mat-button disableRipple="true" href="https://github.com/sing-group/dreimt-frontend/issues" target="_blank">
+      <fa-icon [icon]="faEnvelopeOpen"></fa-icon> Issues and feedback
+    </a>
+    <span><fa-icon [icon]="faDatabase"></fa-icon> {{this.currentDatabaseVersion}}</span>
   </footer>
 </div>
 

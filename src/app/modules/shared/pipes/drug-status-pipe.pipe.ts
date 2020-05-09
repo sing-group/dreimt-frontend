@@ -1,5 +1,4 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {Drug} from '../../../models/drug.model';
 
 @Pipe({
   name: 'drugStatusPipe'
