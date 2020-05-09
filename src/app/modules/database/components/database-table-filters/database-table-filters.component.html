@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-title>Filter Database Fields</mat-card-title>
   <mat-card-content>
-    <div class="basic-filters-form">
+    <div id="basic-filters-form" [className]="isAdvancedPanelOpened ? 'invisible' : 'visible'">
       <app-filter-field class="basic-filter-cell"
                         label="Cell type/subtype 1"
                         [options]="cellTypeAndSubtype1FieldFilter.options"

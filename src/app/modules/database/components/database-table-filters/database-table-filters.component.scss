@@ -33,14 +33,35 @@
   }
 }
 
-.basic-filters-form {
+#basic-filters-form {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
   grid-row-gap: 8px;
   grid-column-gap: 8px;
   justify-items: stretch;
   align-items: center;
   padding-bottom: 16px;
+
+  &.visible {
+    max-height: 50px;
+    overflow-y: hidden;
+    opacity: 1;
+    visibility: visible;
+
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+  }
+
+  &.invisible {
+    max-height: 0px;
+    visibility: hidden;
+    opacity: 0;
+
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+  }
 
   .basic-filter-cell {
     grid-column: 2 / span 1;
