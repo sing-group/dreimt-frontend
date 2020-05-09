@@ -30,7 +30,7 @@ export class HighlightPipe implements PipeTransform {
     if (value.trim() === '' || toReplace.trim() === '') {
       return value;
     } else {
-      return value.replace(new RegExp(toReplace, 'gi'), match => `<strong>${match}</strong>`);
+      return value.replace(new RegExp(toReplace, 'gi'), match => `<span class="highlighted">${match}</span>`);
     }
   }
 
