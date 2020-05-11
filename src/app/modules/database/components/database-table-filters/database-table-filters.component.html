@@ -24,7 +24,7 @@
                         [maxOptions]="maxOptions"></app-filter-field>
 
       <app-filter-field class="basic-filter-drug"
-                        label="Drug source name"
+                        label="Drug name"
                         [options]="drugCommonNameFieldFilter.options"
                         [(filter)]="drugCommonNameFieldFilter.filter"
                         (filterChange)="updateFilterValues()"
@@ -77,7 +77,7 @@
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Source name"
+        <app-filter-field label="Drug name"
                           [options]="drugCommonNameFieldFilter.options"
                           [(filter)]="drugCommonNameFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
@@ -91,7 +91,7 @@
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
-        <app-filter-field label="Status"
+        <app-filter-field label="Drug status"
                           [options]="drugStatusFieldFilter.options"
                           [optionLabelMapper]="mapDrugStatus"
                           [(filter)]="drugStatusFieldFilter.filter"
