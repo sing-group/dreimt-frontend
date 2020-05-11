@@ -44,12 +44,6 @@ table {
   background-color: transparent;
 }
 
-::ng-deep .mat-tooltip {
-  white-space: pre-line;
-  word-wrap: break-word;
-  line-height: 1.5;
-}
-
 .text-interaction-type, .text-experimental-design {
   border-radius: 4px;
   padding: 3px;

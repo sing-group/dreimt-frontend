@@ -19,7 +19,7 @@
                         [(filter)]="cellType1EffectFieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         fixedValues="true"
-                        [matTooltip]="getCellType1EffectTooltip()"
+                        [matTooltip]="getCellType1DependentTooltip()"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
@@ -73,7 +73,7 @@
                           [(filter)]="cellType1EffectFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
                           fixedValues="true"
-                          [matTooltip]="getCellType1EffectTooltip()"
+                          [matTooltip]="getCellType1DependentTooltip()"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -137,6 +137,41 @@
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
+        <app-filter-field label="Cell type/subtype 1"
+                          [options]="cellTypeAndSubtype1FieldFilter.options"
+                          [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
+                          (filterChange)="updateFilterValues()"
+                          [debounceTime]="debounceTime"
+                          [showOptionsTooltip]="true"
+                          [maxOptions]="maxOptions"></app-filter-field>
+
+        <app-filter-field #cellType1Disease
+                          label="Cell type 1 disease"
+                          [options]="cellType1DiseaseFieldFilter.options"
+                          [(filter)]="cellType1DiseaseFieldFilter.filter"
+                          (filterChange)="updateFilterValues()"
+                          [matTooltip]="getCellType1DependentTooltip()"
+                          [debounceTime]="debounceTime"
+                          [maxOptions]="maxOptions"></app-filter-field>
+
+        <app-filter-field #cellType1Treatment
+                          label="Cell type 1 treatment"
+                          [options]="cellType1TreatmentFieldFilter.options"
+                          [(filter)]="cellType1TreatmentFieldFilter.filter"
+                          (filterChange)="updateFilterValues()"
+                          [matTooltip]="getCellType1DependentTooltip()"
+                          [debounceTime]="debounceTime"
+                          [maxOptions]="maxOptions"></app-filter-field>
+
+        <app-filter-field label="Cell type/subtype 2"
+                          #cellTypeAndSubtype2
+                          [options]="cellTypeAndSubtype2FieldFilter.options"
+                          [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
+                          (filterChange)="updateFilterValues()"
+                          [debounceTime]="debounceTime"
+                          [showOptionsTooltip]="true"
+                          [maxOptions]="maxOptions"></app-filter-field>
+
         <app-filter-field label="Condition"
                           [options]="diseaseFieldFilter.options"
                           [(filter)]="diseaseFieldFilter.filter"
@@ -149,23 +184,6 @@
                           [(filter)]="organismFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
-
-        <app-filter-field label="Cell type/subtype 1"
-                          [options]="cellTypeAndSubtype1FieldFilter.options"
-                          [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [showOptionsTooltip]="true"
-                          [maxOptions]="maxOptions"></app-filter-field>
-
-        <app-filter-field label="Cell type/subtype 2"
-                          #cellTypeAndSubtype2
-                          [options]="cellTypeAndSubtype2FieldFilter.options"
-                          [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          [debounceTime]="debounceTime"
-                          [showOptionsTooltip]="true"
                           [maxOptions]="maxOptions"></app-filter-field>
       </div>
     </mat-expansion-panel>

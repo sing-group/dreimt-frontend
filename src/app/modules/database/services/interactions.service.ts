@@ -137,6 +137,14 @@ export class InteractionsService {
     return this.listValues('cell-subtype-2', queryParams);
   }
 
+  public loadCellType1DiseaseValues(queryParams: DatabaseQueryParams): Observable<string[]> {
+    return this.listValues('cell-type-1-disease', queryParams);
+  }
+
+  public loadCellType1TreatmentValues(queryParams: DatabaseQueryParams): Observable<string[]> {
+    return this.listValues('cell-type-1-treatment', queryParams);
+  }
+
   public listDiseaseValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('disease', queryParams);
   }

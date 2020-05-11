@@ -28,4 +28,16 @@ export class SignatureSummary {
   public readonly articlePubMedId: number;
   public readonly articleTitle: string;
   public readonly articleAuthors: string;
+
+  public static isA(object: any): object is SignatureSummary {
+    return object !== undefined && object !== null
+      && object.signatureName !== undefined
+      && object.signatureGenesUri !== undefined
+      && object.articleMetadataUri !== undefined
+      && object.sourceDb !== undefined
+      && object.sourceDbUrl !== undefined
+      && object.articlePubMedId !== undefined
+      && object.articleTitle !== undefined
+      && object.articleAuthors !== undefined;
+  }
 }

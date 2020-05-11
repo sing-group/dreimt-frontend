@@ -19,6 +19,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {isArrayOfStrings} from '../../utils/types';
+
 export class CellSignature {
   public readonly signatureName: string;
   public readonly cellTypeA: string[];
@@ -42,4 +44,30 @@ export class CellSignature {
   public readonly signatureType: string;
   public readonly signatureGenesUri: string;
   public readonly signatureMetadataUri: string;
+
+  public static isA(object: any): object is CellSignature {
+    return object !== undefined && object !== null
+      && object.signatureName !== undefined
+      && isArrayOfStrings(object.cellTypeA)
+      && isArrayOfStrings(object.cellSubTypeA)
+      && isArrayOfStrings(object.cellTypeB)
+      && isArrayOfStrings(object.cellSubTypeB)
+      && object.sourceDb !== undefined
+      && object.sourceDbUrl !== undefined
+      && object.experimentalDesign !== undefined
+      && object.organism !== undefined
+      && object.disease !== undefined
+      && isArrayOfStrings(object.diseaseA)
+      && isArrayOfStrings(object.diseaseB)
+      && isArrayOfStrings(object.treatmentA)
+      && isArrayOfStrings(object.treatmentB)
+      && object.stateA !== undefined
+      && object.stateB !== undefined
+      && object.articleTitle !== undefined
+      && object.articleAuthors !== undefined
+      && object.articlePubMedId !== undefined
+      && object.signatureType !== undefined
+      && object.signatureGenesUri !== undefined
+      && object.signatureMetadataUri !== undefined;
+  }
 }

@@ -53,6 +53,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public readonly signatureNameFieldFilter: FieldFilterModel;
   public readonly cellType1EffectFieldFilter: FieldFilterModel;
+  public readonly cellType1TreatmentFieldFilter: FieldFilterModel;
+  public readonly cellType1DiseaseFieldFilter: FieldFilterModel;
   public readonly cellTypeAndSubtype1FieldFilter: FieldFilterCellTypeModel;
   public readonly cellTypeAndSubtype2FieldFilter: FieldFilterCellTypeModel;
   public readonly diseaseFieldFilter: FieldFilterModel;
@@ -68,6 +70,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   @ViewChild('cellType1EffectBasic', {static: true}) private cellType1EffectBasicComponent: FilterFieldComponent;
   @ViewChild('cellType1EffectAdvanced', {static: true}) private cellType1EffectAdvancedComponent: FilterFieldComponent;
+  @ViewChild('cellType1Treatment', {static: true}) private cellType1TreatmentComponent: FilterFieldComponent;
+  @ViewChild('cellType1Disease', {static: true}) private cellType1DiseaseComponent: FilterFieldComponent;
   @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent;
   @ViewChild('minDrugDss', {static: true}) minDrugDssFilterComponent: NumberFieldComponent;
   @ViewChild('tauMin', {static: true}) minTauFilterComponent: NumberFieldComponent;
@@ -85,6 +89,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.drugStatusFieldFilter = new FieldFilterModel();
     this.signatureNameFieldFilter = new FieldFilterModel();
     this.cellType1EffectFieldFilter = new FieldFilterModel();
+    this.cellType1TreatmentFieldFilter = new FieldFilterModel();
+    this.cellType1DiseaseFieldFilter = new FieldFilterModel();
     this.cellTypeAndSubtype1FieldFilter = new FieldFilterCellTypeModel();
     this.cellTypeAndSubtype2FieldFilter = new FieldFilterCellTypeModel();
     this.diseaseFieldFilter = new FieldFilterModel();
@@ -139,6 +145,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public updateFilterValues(): void {
     this.checkCellTypeAndSubType2FiltersStatus();
     this.checkCellType1EffectFilterStatus();
+    this.checkCellType1DependentFilterStatus(this.cellType1DiseaseFieldFilter, this.cellType1DiseaseComponent);
+    this.checkCellType1DependentFilterStatus(this.cellType1TreatmentFieldFilter, this.cellType1TreatmentComponent);
 
     const queryParams = this.createQueryParameters();
 
@@ -157,6 +165,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
       if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
         this.loadCellTypeAndSubtype2Values(queryParams);
+        this.loadCellType1DiseaseValues(queryParams);
+        this.loadCellType1TreatmentValues(queryParams);
       }
 
       this.previousDatabaseQueryParams = queryParams;
@@ -175,6 +185,15 @@ export class DatabaseTableFiltersComponent implements OnInit {
     return this.isAdvancedPanelOpened ||
       this.drugCommonNameFieldFilter.getClearedFilter() !== undefined ||
       this.cellTypeAndSubtype1FieldFilter.getClearedFilter() !== undefined;
+  }
+
+  private checkCellType1DependentFilterStatus(fieldFilter: FieldFilterModel, component: FilterFieldComponent): void {
+    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
+      component.enable();
+    } else {
+      fieldFilter.filter = '';
+      component.disable();
+    }
   }
 
   private checkCellTypeAndSubType2FiltersStatus(): void {
@@ -225,6 +244,16 @@ export class DatabaseTableFiltersComponent implements OnInit {
   private loadCellTypeAndSubtype2Values(queryParams: DatabaseQueryParams): void {
     this.service.listCellTypeAndSubtype2Values(queryParams)
       .subscribe(values => this.cellTypeAndSubtype2FieldFilter.updateCellTypeAndSubtypeValues(values, this.isAllowedCellSubtype2()));
+  }
+
+  private loadCellType1DiseaseValues(queryParams: DatabaseQueryParams): void {
+    this.service.loadCellType1DiseaseValues(queryParams)
+      .subscribe(values => this.cellType1DiseaseFieldFilter.update(values));
+  }
+
+  private loadCellType1TreatmentValues(queryParams: DatabaseQueryParams): void {
+    this.service.loadCellType1TreatmentValues(queryParams)
+      .subscribe(values => this.cellType1TreatmentFieldFilter.update(values));
   }
 
   private isAllowedCellSubtype2(): boolean {
@@ -289,6 +318,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
       cellType2: this.cellTypeAndSubtype2FieldFilter.getCellTypeFilter(),
       cellSubType2: this.cellTypeAndSubtype2FieldFilter.getCellSubtypeFilter(),
       cellType1Effect: this.cellType1EffectFieldFilter.getClearedFilter(),
+      cellType1Disease: this.cellType1DiseaseFieldFilter.getClearedFilter(),
+      cellType1Treatment: this.cellType1TreatmentFieldFilter.getClearedFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),
@@ -312,6 +343,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
       cellType2: undefined,
       cellSubType2: undefined,
       cellType1Effect: this.cellType1EffectFieldFilter.getClearedFilter(),
+      cellType1Disease: undefined,
+      cellType1Treatment: undefined,
       disease: undefined,
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: undefined,
@@ -333,6 +366,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.cellTypeAndSubtype1FieldFilter.filter = '';
     this.cellTypeAndSubtype2FieldFilter.filter = '';
     this.cellType1EffectFieldFilter.filter = '';
+    this.cellType1DiseaseFieldFilter.filter = '';
+    this.cellType1TreatmentFieldFilter.filter = '';
     this.diseaseFieldFilter.filter = '';
     this.organismFieldFilter.filter = '';
     this.signatureSourceDbFieldFilter.filter = '';
@@ -364,6 +399,16 @@ export class DatabaseTableFiltersComponent implements OnInit {
       const cellType1Effect = params.get('cellType1Effect');
       if (cellType1Effect) {
         this.cellType1EffectFieldFilter.filter = cellType1Effect;
+      }
+
+      const cellType1Disease = params.get('cellType1Disease');
+      if (cellType1Disease) {
+        this.cellType1DiseaseFieldFilter.filter = cellType1Disease;
+      }
+
+      const cellType1Treatment = params.get('cellType1Treatment');
+      if (cellType1Treatment) {
+        this.cellType1TreatmentFieldFilter.filter = cellType1Treatment;
       }
 
       const cellType2 = params.get('cellType2');
@@ -471,7 +516,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     return this.isValidFiltersConfiguration();
   }
 
-  public getCellType1EffectTooltip(): string {
+  public getCellType1DependentTooltip(): string {
     if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
       return '';
     } else {
