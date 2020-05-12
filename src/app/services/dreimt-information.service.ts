@@ -19,14 +19,21 @@ export class DreimtInformationService {
   public getDreimtInformation(): Observable<DreimtInformationModel> {
     return this.http.get<DreimtInformationModel>(`${environment.dreimtUrl}/database/information`)
       .pipe(
-        DreimtError.throwOnError('Error retrieving DREIMT database information', `The Dreimt database information could not be retrieved`),
+        DreimtError.throwOnError('Error retrieving DREIMT database information', `The DREIMT database information could not be retrieved`),
       );
   }
 
   public getDreimtStats(): Observable<DreimtStatsModel> {
     return this.http.get<DreimtStatsModel>(`${environment.dreimtUrl}/database/statistics`)
       .pipe(
-        DreimtError.throwOnError('Error retrieving DREIMT database statistics', `The Dreimt database statistics could not be retrieved`),
+        DreimtError.throwOnError('Error retrieving DREIMT database statistics', `The DREIMT database statistics could not be retrieved`),
+      );
+  }
+
+  public getCurrentDatabaseVersion(): Observable<string> {
+    return this.http.get(`${environment.dreimtUrl}/database/versions/current`, {responseType: 'text'})
+      .pipe(
+        DreimtError.throwOnError('Error retrieving database version', `The current database version could not be retrieved`),
       );
   }
 }

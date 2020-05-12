@@ -25,10 +25,10 @@ import {NotificationsService as ToastService} from 'angular2-notifications';
 import {Severity} from './modules/notification/entities';
 import {WorkService} from './modules/work/services/work.service';
 import {CustomIconService} from './services/custom-icon.service';
-import {DatabaseVersionService} from './services/database-version.service';
 import {faTwitter} from '@fortawesome/free-brands-svg-icons';
 import {faEnvelopeOpen} from '@fortawesome/free-regular-svg-icons';
 import {faDatabase} from '@fortawesome/free-solid-svg-icons';
+import {DreimtInformationService} from './services/dreimt-information.service';
 
 @Component({
   selector: 'app-root',
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     private notificationService: NotificationService,
     private toastService: ToastService,
     private customIconService: CustomIconService,
-    private databaseVersionService: DatabaseVersionService
+    private dreimtInformationService: DreimtInformationService
   ) {
     this.workCount = 0;
   }
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
     this.workService.listUserWorks()
       .subscribe(works => this.workCount = works.length);
 
-    this.databaseVersionService.getCurrentDatabaseVersion().subscribe(c => this.currentDatabaseVersion = c);
+    this.dreimtInformationService.getCurrentDatabaseVersion().subscribe(c => this.currentDatabaseVersion = c);
 
     this.notificationService.getMessages().subscribe(
       message => {
