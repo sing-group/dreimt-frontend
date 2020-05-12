@@ -19,13 +19,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import * as Highcharts from 'highcharts';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
 import {CmapGeneSetSignatureResultsDataSource} from '../cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-data-source';
 import {MatDialog} from '@angular/material/dialog';
 import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
+import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
+import {formatTitle} from '../../../../utils/types';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -48,19 +50,20 @@ ExportingOffline(Highcharts);
   templateUrl: './cmap-gene-set-signature-results-graph.component.html',
   styleUrls: ['./cmap-gene-set-signature-results-graph.component.scss']
 })
-export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit, OnInit, OnDestroy {
+export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit, OnInit, OnDestroy, OnChanges {
   private static DIALOG: MatDialog;
-
-  @Input() public dataSource: CmapGeneSetSignatureResultsDataSource;
-
-  constructor(private dialog: MatDialog) {
-    CmapGeneSetSignatureResultsGraphComponent.DIALOG = this.dialog;
-  }
 
   private static TAU_THRESHOLD = 75;
   private static Y_AXIS_MAX = 2.42;
   private static renderedObjects = [];
   private static OVERLAPPING_INTERACTIONS_MAP = new Map();
+  private static POSITIVE_TAU_COLOR = 'red';
+  private static POSITIVE_TAU_MARKER_FILL_COLOR = '#FF9994';
+  private static NEGATIVE_TAU_COLOR = 'green';
+  private static NEGATIVE_TAU_MARKER_FILL_COLOR = 'lightgreen';
+
+  @Input() public dataSource: CmapGeneSetSignatureResultsDataSource;
+  @Input() public geneSetType: string;
 
   private dataSourceSubscription: Subscription;
   private loadingSubscription: Subscription;
@@ -97,7 +100,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
       enabled: false
     },
     legend: {
-      enabled: false
+      verticalAlign: 'bottom'
     },
     exporting: {
       enabled: true,
@@ -154,7 +157,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
     },
     xAxis: {
       title: {
-        text: 'Association Score',
+        text: 'Association score (tau)',
         style: {
           color: 'black',
           fontSize: '15px'
@@ -189,11 +192,23 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
       ]
     },
     yAxis: {
-      visible: false,
+      title: {
+        text: '-log10(FDR)',
+        style: {
+          color: 'black',
+          fontSize: '15px'
+        }
+      },
+      visible: true,
       max: CmapGeneSetSignatureResultsGraphComponent.Y_AXIS_MAX,
       min: 0,
       startOnTick: false,
-      endOnTick: false
+      endOnTick: false,
+      lineWidth: 0,
+      gridLineColor: 'transparent',
+      labels: {
+        enabled: false
+      }
     },
     tooltip: {
       useHTML: true,
@@ -210,34 +225,38 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
               CmapGeneSetSignatureResultsGraphComponent.click(this);
             }
           }
+        },
+        states: {
+          inactive: {
+            opacity: 1
+          }
         }
       }
     },
     series: [
       {
-        name: 'Positive TAU',
+        // Positive TAU
+        name: 'Geneset',
         data: [],
-        color: 'red',
+        color: 'black',
         marker: {
-          symbol: 'circle',
-          fillColor: '#FF9994',
+          fillColor: 'lightgray',
           lineWidth: 2,
-          lineColor: null
+          lineColor: 'black'
         }
       },
       {
-        name: 'Negative TAU',
+        // Negative TAU
+        linkedTo: ':previous',
         data: [],
-        color: 'green',
-        marker: {
-          symbol: 'circle',
-          fillColor: 'lightgreen',
-          lineWidth: 2,
-          lineColor: null
-        }
+        marker: {}
       }
     ]
   };
+
+  constructor(private dialog: MatDialog) {
+    CmapGeneSetSignatureResultsGraphComponent.DIALOG = this.dialog;
+  }
 
   private static convertFdr(fdr: number): number {
     return Math.abs(Math.log10(fdr));
@@ -247,6 +266,22 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
     this.loadingSubscription = this.dataSource.loading$.subscribe(loading => this.loading = loading);
   }
 
+  public ngOnChanges(): void {
+    if (this.geneSetType) {
+      let marker = 'circle';
+      if (this.geneSetType === 'UP') {
+        marker = 'triangle';
+      } else {
+        marker = 'triangle-down';
+      }
+
+      this.options.series[0]['name'] = formatTitle('Geneset ' + this.geneSetType);
+
+      this.options.series[0]['marker']['symbol'] = marker;
+      this.options.series[1]['marker']['symbol'] = marker;
+    }
+  }
+
   public ngAfterViewInit(): void {
     this.dataSourceSubscription = this.dataSource.fullData$.subscribe(
       data => {
@@ -254,11 +289,13 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
 
         const positiveTau = data
           .filter(interaction => interaction.tau >= CmapGeneSetSignatureResultsGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            CmapGeneSetSignatureResultsGraphComponent.POSITIVE_TAU_COLOR, CmapGeneSetSignatureResultsGraphComponent.POSITIVE_TAU_MARKER_FILL_COLOR));
 
         const negativeTau = data
           .filter(interaction => interaction.tau <= -CmapGeneSetSignatureResultsGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            CmapGeneSetSignatureResultsGraphComponent.NEGATIVE_TAU_COLOR, CmapGeneSetSignatureResultsGraphComponent.NEGATIVE_TAU_MARKER_FILL_COLOR));
 
         CmapGeneSetSignatureResultsGraphComponent.pruneOverlappingInteractionsMap();
 
@@ -454,7 +491,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
     return `
             <b>Drug effect</b>: ${interaction.drugEffect} <br/>
             <b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>
-            <b>Up Genes FDR</b>: ${interaction.fdr.toFixed(4)} <br/>
+            <b>FDR</b>: ${interaction.fdr.toFixed(4)} <br/>
             <b>Drug</b>: ${interaction.drug.commonName} <br/>
             <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
             <b>&nbsp&nbspMOA</b>: ${interaction.drug.moa} <br/>
@@ -462,7 +499,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
           `;
   }
 
-  private mapInteraction(interaction: CmapGeneSetSignatureDrugInteraction) {
+  private mapInteraction(interaction: CmapGeneSetSignatureDrugInteraction, seriesColor: string, markerFillColor: string) {
     const x = interaction.tau;
     const y = CmapGeneSetSignatureResultsGraphComponent.convertFdr(
       Math.max(
@@ -476,7 +513,13 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
     return {
       x: x,
       y: y,
-      interaction: interaction
+      interaction: interaction,
+      color: seriesColor,
+      marker: {
+        fillColor: markerFillColor,
+        lineWidth: 2,
+        lineColor: seriesColor
+      }
     };
   }
 

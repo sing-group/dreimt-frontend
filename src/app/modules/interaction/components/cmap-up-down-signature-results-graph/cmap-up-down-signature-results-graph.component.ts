@@ -26,6 +26,7 @@ import {Subscription} from 'rxjs';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {MatDialog} from '@angular/material/dialog';
 import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
+import {CmapGeneSetSignatureDrugInteraction} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -56,16 +57,16 @@ export interface DataModel {
 export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, OnInit, OnDestroy {
   private static DIALOG: MatDialog;
 
-  @Input() public dataSource: CmapUpDownSignatureResultsDataSource;
-
-  constructor(private dialog: MatDialog) {
-    CmapUpDownSignatureResultsGraphComponent.DIALOG = this.dialog;
-  }
-
   private static TAU_THRESHOLD = 75;
   private static Y_AXIS_MAX = 2.42;
   private static renderedObjects = [];
   private static OVERLAPPING_INTERACTIONS_MAP = new Map();
+  private static POSITIVE_TAU_COLOR = 'red';
+  private static POSITIVE_TAU_MARKER_FILL_COLOR = '#FF9994';
+  private static NEGATIVE_TAU_COLOR = 'green';
+  private static NEGATIVE_TAU_MARKER_FILL_COLOR = 'lightgreen';
+
+  @Input() public dataSource: CmapUpDownSignatureResultsDataSource;
 
   private dataSourceSubscription: Subscription;
   private loadingSubscription: Subscription;
@@ -102,7 +103,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
       enabled: false
     },
     legend: {
-      enabled: false
+      verticalAlign: 'bottom'
     },
     exporting: {
       enabled: true,
@@ -159,7 +160,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     },
     xAxis: {
       title: {
-        text: 'Association Score',
+        text: 'Association score (tau)',
         style: {
           color: 'black',
           fontSize: '15px'
@@ -194,11 +195,23 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
       ]
     },
     yAxis: {
-      visible: false,
+      title: {
+        text: '-log10(FDR)',
+        style: {
+          color: 'black',
+          fontSize: '15px'
+        }
+      },
+      visible: true,
       max: CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX,
       min: 0,
       startOnTick: false,
-      endOnTick: false
+      endOnTick: false,
+      lineWidth: 0,
+      gridLineColor: 'transparent',
+      labels: {
+        enabled: false
+      }
     },
     tooltip: {
       useHTML: true,
@@ -215,34 +228,41 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
               CmapUpDownSignatureResultsGraphComponent.click(this);
             }
           }
+        },
+        states: {
+          inactive: {
+            opacity: 1
+          }
         }
       }
     },
     series: [
       {
-        name: 'Positive TAU',
+        // Positive TAU
+        name: 'Signature',
         data: [],
-        color: 'red',
+        color: 'black',
         marker: {
           symbol: 'circle',
-          fillColor: '#FF9994',
+          fillColor: 'lightgray',
           lineWidth: 2,
-          lineColor: null
+          lineColor: 'black'
         }
       },
       {
-        name: 'Negative TAU',
+        // Negative TAU
+        linkedTo: ':previous',
         data: [],
-        color: 'green',
         marker: {
-          symbol: 'circle',
-          fillColor: 'lightgreen',
-          lineWidth: 2,
-          lineColor: null
+          symbol: 'circle'
         }
       }
     ]
   };
+
+  constructor(private dialog: MatDialog) {
+    CmapUpDownSignatureResultsGraphComponent.DIALOG = this.dialog;
+  }
 
   private static convertFdr(fdr: number): number {
     return Math.abs(Math.log10(fdr));
@@ -259,11 +279,13 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
 
         const positiveTau = data
           .filter(interaction => interaction.tau >= CmapUpDownSignatureResultsGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            CmapUpDownSignatureResultsGraphComponent.POSITIVE_TAU_COLOR, CmapUpDownSignatureResultsGraphComponent.POSITIVE_TAU_MARKER_FILL_COLOR));
 
         const negativeTau = data
           .filter(interaction => interaction.tau <= -CmapUpDownSignatureResultsGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            CmapUpDownSignatureResultsGraphComponent.NEGATIVE_TAU_COLOR, CmapUpDownSignatureResultsGraphComponent.NEGATIVE_TAU_MARKER_FILL_COLOR));
 
         CmapUpDownSignatureResultsGraphComponent.pruneOverlappingInteractionsMap();
 
@@ -469,7 +491,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
           `;
   }
 
-  private mapInteraction(interaction: CmapUpDownSignatureDrugInteraction) {
+  private mapInteraction(interaction: CmapUpDownSignatureDrugInteraction, seriesColor: string, markerFillColor: string) {
     const x = interaction.tau;
     const y = CmapUpDownSignatureResultsGraphComponent.convertFdr(
       Math.max(
@@ -483,7 +505,13 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     return {
       x: x,
       y: y,
-      interaction: interaction
+      interaction: interaction,
+      color: seriesColor,
+      marker: {
+        fillColor: markerFillColor,
+        lineWidth: 2,
+        lineColor: seriesColor
+      }
     };
   }
 

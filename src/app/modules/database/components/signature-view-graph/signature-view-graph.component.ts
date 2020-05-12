@@ -6,6 +6,7 @@ import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interaction
 import {MatDialog} from '@angular/material/dialog';
 import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
+import {InteractionType} from '../../../../models/interaction-type.enum';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -37,16 +38,16 @@ export interface DataModel {
 export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDestroy {
   private static DIALOG: MatDialog;
 
-  @Input() public dataSource: SignatureViewDataSource;
-
-  constructor(private dialog: MatDialog) {
-    SignatureViewGraphComponent.DIALOG = this.dialog;
-  }
-
   private static TAU_THRESHOLD = 75;
   private static Y_AXIS_MAX = 2.42;
   private static renderedObjects = [];
   private static OVERLAPPING_INTERACTIONS_MAP = new Map();
+  private static POSITIVE_TAU_COLOR = 'red';
+  private static POSITIVE_TAU_MARKER_FILL_COLOR = '#FF9994';
+  private static NEGATIVE_TAU_COLOR = 'green';
+  private static NEGATIVE_TAU_MARKER_FILL_COLOR = 'lightgreen';
+
+  @Input() public dataSource: SignatureViewDataSource;
 
   private dataSourceSubscription: Subscription;
   private loadingSubscription: Subscription;
@@ -83,7 +84,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
       enabled: false
     },
     legend: {
-      enabled: false
+      verticalAlign: 'bottom'
     },
     exporting: {
       enabled: true,
@@ -140,7 +141,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
     },
     xAxis: {
       title: {
-        text: 'Association Score',
+        text: 'Association score (tau)',
         style: {
           color: 'black',
           fontSize: '15px'
@@ -175,11 +176,23 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
       ]
     },
     yAxis: {
-      visible: false,
+      title: {
+        text: '-log10(FDR)',
+        style: {
+          color: 'black',
+          fontSize: '15px'
+        }
+      },
+      visible: true,
       max: SignatureViewGraphComponent.Y_AXIS_MAX,
       min: 0,
       startOnTick: false,
-      endOnTick: false
+      endOnTick: false,
+      lineWidth: 0,
+      gridLineColor: 'transparent',
+      labels: {
+        enabled: false
+      }
     },
     tooltip: {
       useHTML: true,
@@ -196,78 +209,101 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
               SignatureViewGraphComponent.click(this);
             }
           }
+        },
+        states: {
+          inactive: {
+            opacity: 1
+          }
         }
       }
     },
     series: [
       {
-        name: 'Positive TAU (both)',
+        // Positive TAU (Signagure)
+        name: 'Signature',
         data: [],
-        color: 'red',
+        color: 'black',
         marker: {
           symbol: 'circle',
-          fillColor: '#FF9994',
+          fillColor: 'lightgray',
           lineWidth: 2,
-          lineColor: null
+          lineColor: 'black'
         }
       },
       {
-        name: 'Negative TAU (both)',
+        // Negative TAU (Signature)
+        linkedTo: ':previous',
         data: [],
-        color: 'green',
         marker: {
-          symbol: 'circle',
-          fillColor: 'lightgreen',
-          lineWidth: 2,
-          lineColor: null
+          symbol: 'circle'
         }
       },
       {
-        name: 'Positive TAU (Up)',
+        // Positive TAU (Up)
+        name: 'Geneset up',
         data: [],
-        color: 'red',
+        color: 'black',
         marker: {
           symbol: 'triangle',
-          fillColor: '#FF9994',
+          fillColor: 'lightgray',
           lineWidth: 2,
-          lineColor: null
+          lineColor: 'black'
         }
       },
       {
-        name: 'Negative TAU (Up)',
+        // Negative TAU (Up)
+        linkedTo: ':previous',
         data: [],
-        color: 'green',
         marker: {
-          symbol: 'triangle',
-          fillColor: 'lightgreen',
-          lineWidth: 2,
-          lineColor: null
+          symbol: 'triangle'
         }
       },
       {
-        name: 'Positive TAU (Down)',
+        // Positive TAU (Down)
+        name: 'Geneset down',
         data: [],
-        color: 'red',
+        color: 'black',
         marker: {
           symbol: 'triangle-down',
-          fillColor: '#FF9994',
+          fillColor: 'lightgray',
           lineWidth: 2,
-          lineColor: null
+          lineColor: 'black'
         }
       },
       {
-        name: 'Negative TAU (Down)',
+        // Negative TAU (Down)
+        linkedTo: ':previous',
         data: [],
-        color: 'green',
         marker: {
-          symbol: 'triangle-down',
-          fillColor: 'lightgreen',
+          symbol: 'triangle-down'
+        }
+      },
+      {
+        // Positive TAU (Geneset)
+        name: 'Geneset',
+        data: [],
+        color: 'black',
+        marker: {
+          symbol: 'square',
+          fillColor: 'lightgray',
           lineWidth: 2,
-          lineColor: null
+          lineColor: 'black'
+        }
+      },
+      {
+        // Negative TAU (Geneset)
+        linkedTo: ':previous',
+        data: [],
+        marker: {
+          symbol: 'square'
         }
       }
     ]
   };
+
+  constructor(private dialog: MatDialog) {
+    SignatureViewGraphComponent.DIALOG = this.dialog;
+  }
 
   private static convertFdr(fdr: number): number {
     return Math.abs(Math.log10(fdr));
@@ -283,34 +319,52 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
         SignatureViewGraphComponent.OVERLAPPING_INTERACTIONS_MAP.clear();
 
         const positiveTauBoth = data
-          .filter(interaction => interaction.upFdr !== null && interaction.downFdr !== null)
+          .filter(interaction => interaction.interactionType === InteractionType.SIGNATURE)
           .filter(interaction => interaction.tau >= SignatureViewGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            SignatureViewGraphComponent.POSITIVE_TAU_COLOR, SignatureViewGraphComponent.POSITIVE_TAU_MARKER_FILL_COLOR));
 
         const negativeTauBoth = data
-          .filter(interaction => interaction.upFdr !== null && interaction.downFdr !== null)
+          .filter(interaction => interaction.interactionType === InteractionType.SIGNATURE)
           .filter(interaction => interaction.tau <= -SignatureViewGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            SignatureViewGraphComponent.NEGATIVE_TAU_COLOR, SignatureViewGraphComponent.NEGATIVE_TAU_MARKER_FILL_COLOR));
 
         const positiveTauUp = data
-          .filter(interaction => interaction.upFdr !== null && interaction.downFdr === null)
+          .filter(interaction => interaction.interactionType === InteractionType.SIGNATURE_UP)
           .filter(interaction => interaction.tau >= SignatureViewGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            SignatureViewGraphComponent.POSITIVE_TAU_COLOR, SignatureViewGraphComponent.POSITIVE_TAU_MARKER_FILL_COLOR));
 
         const negativeTauUp = data
-          .filter(interaction => interaction.upFdr !== null && interaction.downFdr === null)
+          .filter(interaction => interaction.interactionType === InteractionType.SIGNATURE_UP)
           .filter(interaction => interaction.tau <= -SignatureViewGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            SignatureViewGraphComponent.NEGATIVE_TAU_COLOR, SignatureViewGraphComponent.NEGATIVE_TAU_MARKER_FILL_COLOR));
 
         const positiveTauDown = data
-          .filter(interaction => interaction.upFdr === null && interaction.downFdr !== null)
+          .filter(interaction => interaction.interactionType === InteractionType.SIGNATURE_DOWN)
           .filter(interaction => interaction.tau >= SignatureViewGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            SignatureViewGraphComponent.POSITIVE_TAU_COLOR, SignatureViewGraphComponent.POSITIVE_TAU_MARKER_FILL_COLOR));
 
         const negativeTauDown = data
-          .filter(interaction => interaction.upFdr === null && interaction.downFdr !== null)
+          .filter(interaction => interaction.interactionType === InteractionType.SIGNATURE_DOWN)
           .filter(interaction => interaction.tau <= -SignatureViewGraphComponent.TAU_THRESHOLD)
-          .map(this.mapInteraction);
+          .map(interaction => this.mapInteraction(interaction,
+            SignatureViewGraphComponent.NEGATIVE_TAU_COLOR, SignatureViewGraphComponent.NEGATIVE_TAU_MARKER_FILL_COLOR));
+
+        const positiveTauGeneset = data
+          .filter(interaction => interaction.interactionType === InteractionType.GENESET)
+          .filter(interaction => interaction.tau >= SignatureViewGraphComponent.TAU_THRESHOLD)
+          .map(interaction => this.mapInteraction(interaction,
+            SignatureViewGraphComponent.POSITIVE_TAU_COLOR, SignatureViewGraphComponent.POSITIVE_TAU_MARKER_FILL_COLOR));
+
+        const negativeTauGeneset = data
+          .filter(interaction => interaction.interactionType === InteractionType.GENESET)
+          .filter(interaction => interaction.tau <= -SignatureViewGraphComponent.TAU_THRESHOLD)
+          .map(interaction => this.mapInteraction(interaction,
+            SignatureViewGraphComponent.NEGATIVE_TAU_COLOR, SignatureViewGraphComponent.NEGATIVE_TAU_MARKER_FILL_COLOR));
 
         SignatureViewGraphComponent.pruneOverlappingInteractionsMap();
 
@@ -320,6 +374,13 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
         this.options.series[3]['data'] = negativeTauUp;
         this.options.series[4]['data'] = positiveTauDown;
         this.options.series[5]['data'] = negativeTauDown;
+        this.options.series[6]['data'] = positiveTauGeneset;
+        this.options.series[7]['data'] = negativeTauGeneset;
+
+        this.options.series[0]['showInLegend'] = positiveTauBoth.length > 0 || negativeTauBoth.length > 0;
+        this.options.series[2]['showInLegend'] = positiveTauUp.length > 0 || negativeTauUp.length > 0;
+        this.options.series[4]['showInLegend'] = positiveTauDown.length > 0 || negativeTauDown.length > 0;
+        this.options.series[6]['showInLegend'] = positiveTauGeneset.length > 0 || negativeTauGeneset.length > 0;
 
         Highcharts.chart('chart', this.options);
       });
@@ -522,7 +583,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
           `);
   }
 
-  private mapInteraction(interaction: DrugCellDatabaseInteraction) {
+  private mapInteraction(interaction: DrugCellDatabaseInteraction, seriesColor: string, markerFillColor: string) {
     let interactionFdr: number;
     if (interaction.upFdr === null) {
       interactionFdr = interaction.downFdr;
@@ -545,7 +606,13 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
     return {
       x: x,
       y: y,
-      interaction: interaction
+      interaction: interaction,
+      color: seriesColor,
+      marker: {
+        fillColor: markerFillColor,
+        lineWidth: 2,
+        lineColor: seriesColor
+      }
     };
   }
 

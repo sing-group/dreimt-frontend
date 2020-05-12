@@ -69,7 +69,8 @@
   </mat-card>
 
   <app-cmap-drug-results-summary [dataSource]="dataSource">
-    <app-cmap-gene-set-signature-results-graph [dataSource]="dataSource"></app-cmap-gene-set-signature-results-graph>
+    <app-cmap-gene-set-signature-results-graph [dataSource]="dataSource"
+                                               [geneSetType]="metadata.geneSetType"></app-cmap-gene-set-signature-results-graph>
   </app-cmap-drug-results-summary>
   <app-cmap-gene-set-signature-results-table [metadata]="metadata"
                                              [dataSource]="dataSource"></app-cmap-gene-set-signature-results-table>
