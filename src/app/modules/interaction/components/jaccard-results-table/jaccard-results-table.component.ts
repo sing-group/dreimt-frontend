@@ -184,7 +184,7 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
     this.paginator.pageIndex = 0;
   }
 
-  private updatePage(queryParams = this.createQueryParameters()): void {
+  private updatePage(queryParams = this.createPaginatedQueryParameters()): void {
     this.dataSource.list(this.metadata.id, queryParams);
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
   }
@@ -192,7 +192,7 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
   public updateResults(): void {
     this.resetPage();
 
-    const queryParams = this.createQueryParameters();
+    const queryParams = this.createPaginatedQueryParameters();
 
     this.updatePage(queryParams);
   }
@@ -220,15 +220,21 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
     }
   }
 
-  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): JaccardOverlapsQueryParams {
+  private createQueryParameters(): JaccardOverlapsQueryParams {
     return {
-      page: this.paginator.pageIndex || defaultPageIndex,
-      pageSize: this.paginator.pageSize || defaultPageSize,
       sortDirection: this.sortDirection(),
       orderField: this.orderField(),
       minJaccard: this.minJaccardFilter.value,
       maxPvalue: this.maxPvalueFilter.value,
       maxFdr: this.maxFdrFilter.value,
+    };
+  }
+
+  private createPaginatedQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): JaccardOverlapsQueryParams {
+    return {
+      page: this.paginator.pageIndex || defaultPageIndex,
+      pageSize: this.paginator.pageSize || defaultPageSize,
+      ...this.createQueryParameters()
     };
   }
 

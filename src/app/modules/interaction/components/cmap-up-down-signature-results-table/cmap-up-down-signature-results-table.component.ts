@@ -212,7 +212,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     this.paginator.pageIndex = 0;
   }
 
-  private updatePage(queryParams = this.createQueryParameters()): void {
+  private updatePage(queryParams = this.createPaginatedQueryParameters()): void {
     this.dataSource.list(this.metadata.id, queryParams);
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
   }
@@ -220,7 +220,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   public updateResults(): void {
     this.resetPage();
 
-    const queryParams = this.createQueryParameters();
+    const queryParams = this.createPaginatedQueryParameters();
 
     this.updatePage(queryParams);
     this.loadDrugCommonNameValues(queryParams);
@@ -266,10 +266,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
 
-  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): CmapUpDownSignatureDrugInteractionResultsQueryParams {
+  private createQueryParameters(): CmapUpDownSignatureDrugInteractionResultsQueryParams {
     return {
-      page: this.paginator.pageIndex || defaultPageIndex,
-      pageSize: this.paginator.pageSize || defaultPageSize,
       sortDirection: this.sortDirection(),
       orderField: this.orderField(),
       minTau: this.minTauFilter.value,
@@ -279,6 +277,14 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
       drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
       drugStatus: this.drugStatusFieldFilter.getClearedFilter(),
       minDrugDss: this.minDrugDssFilter.value
+    };
+  }
+
+  private createPaginatedQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): CmapUpDownSignatureDrugInteractionResultsQueryParams {
+    return {
+      page: this.paginator.pageIndex || defaultPageIndex,
+      pageSize: this.paginator.pageSize || defaultPageSize,
+      ...this.createQueryParameters()
     };
   }
 
