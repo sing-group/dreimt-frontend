@@ -62,12 +62,6 @@ td.mat-cell {
   padding-bottom: 9px;
 }
 
-::ng-deep .mat-tooltip {
-  white-space: pre-line;
-  word-wrap: break-word;
-  line-height: 1.5;
-}
-
 #navigateDrugButton:hover {
   cursor: pointer;
   color: blue;

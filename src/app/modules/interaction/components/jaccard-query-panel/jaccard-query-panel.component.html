@@ -46,8 +46,8 @@
           [options]="cellTypeAndSubtype1FieldFilter.options"
           [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
           (filterChange)="updateFieldValues()"
+          [matTooltip]="TOOLTIP_CELL_TYPE_1"
           [debounceTime]="debounceTime"
-          [showOptionsTooltip]="true"
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field
@@ -56,8 +56,8 @@
           [options]="cellTypeAndSubtype2FieldFilter.options"
           [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
           (filterChange)="updateFieldValues()"
+          [matTooltip]="getCellType1DependentTooltip(TOOLTIP_SIGNATURE_CELL_TYPE_2)"
           [debounceTime]="debounceTime"
-          [showOptionsTooltip]="true"
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field
@@ -65,6 +65,7 @@
           [options]="organismFieldFilter.options"
           [(filter)]="organismFieldFilter.filter"
           (filterChange)="updateFieldValues()"
+          [matTooltip]="TOOLTIP_SIGNATURE_ORGANISM"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -73,14 +74,16 @@
           [options]="diseaseFieldFilter.options"
           [(filter)]="diseaseFieldFilter.filter"
           (filterChange)="updateFieldValues()"
+          [matTooltip]="TOOLTIP_SIGNATURE_CONDITION"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field
-          label="Signature source DB"
+          label="Source DB"
           [options]="signatureSourceDbFieldFilter.options"
           [(filter)]="signatureSourceDbFieldFilter.filter"
           (filterChange)="updateFieldValues()"
+          [matTooltip]="TOOLTIP_SIGNATURE_SOURCE_DB"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -91,6 +94,7 @@
           [(filter)]="experimentalDesignFieldFilter.filter"
           fixedValues="true"
           (filterChange)="updateFieldValues()"
+          [matTooltip]="TOOLTIP_SIGNATURE_EXPERIMENTAL_DESIGN"
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 

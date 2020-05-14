@@ -40,6 +40,32 @@ import {formatTitle} from '../../../../utils/types';
   styleUrls: ['./database-table-filters.component.scss']
 })
 export class DatabaseTableFiltersComponent implements OnInit {
+  public readonly TOOLTIP_WARNING_CELL_TYPE_1 = 'This filter is disabled, the cell type/subtype 1 must be selected to enable it.';
+  public readonly TOOLTIP_CELL_TYPE_1 = 'Specify an immune cell type of interest.';
+  public readonly TOOLTIP_DRUG = 'Specify a drug of interest.';
+  public readonly TOOLTIP_MIN_TAU = 'Specify a minimum threshold tau score value. Works in absolute values.';
+  public readonly TOOLTIP_MAX_UP_FDR = 'Specify a maximum threshold FDR value for the upregulated genes.';
+  public readonly TOOLTIP_MAX_DOWN_FDR = 'Specify a maximum threshold FDR value for the downregulated genes.';
+  public readonly TOOLTIP_INTERACTION_TYPE = 'Specify if you are interested in filtering associations made with the ' +
+    'complete immune signature (Signature), only the upregulated genes (Signature up), only the downregulated genes (Signature down) ' +
+    'or geneset (genes with no specified direction).';
+  public readonly TOOLTIP_DRUG_MOA = 'Specify the mechanism of action of the drug.';
+  public readonly TOOLTIP_DRUG_STATUS = 'Specify the drug status of the drug (approved, experimental or withdrawn).';
+  public readonly TOOLTIP_DRUG_DSS = 'Specify a minimum threshold DSS value for the drugs.';
+  public readonly TOOLTIP_DRUG_EFFECT = 'Specify the desired (inhibition/boosting) effect over the Cell type/subtype 1 selected.';
+  public readonly TOOLTIP_SIGNATURE_NAME = 'Specify the name of the signature of interest.';
+  public readonly TOOLTIP_SIGNATURE_SOURCE_DB = 'Specify a database source of signatures.';
+  public readonly TOOLTIP_SIGNATURE_PUBMED = 'Specify a PubMed ID to filter signatures from a specific publication.';
+  public readonly TOOLTIP_SIGNATURE_EXPERIMENTAL_DESIGN = 'Specify the experimental design to retrieve the signature ' +
+    '(in vitro, in vivo, patient...).';
+  public readonly TOOLTIP_SIGNATURE_CELL_TYPE_1_DISEASE = 'Specify the disease associated with the selected cell type 1.';
+  public readonly TOOLTIP_SIGNATURE_CELL_TYPE_1_TREATMENT = 'Specify the treatment applied to the selected cell type 1.';
+  public readonly TOOLTIP_SIGNATURE_CELL_TYPE_2 = 'Specify an immune cell type of interest. This filter is used in combination with the ' +
+    'cell type/subtype 1 filter. With both filters applied results will display signatures derived from the comparison of the two ' +
+    'specific cell types.';
+  public readonly TOOLTIP_SIGNATURE_CONDITION = 'Specify a treatment or disease applied to generate the signature.';
+  public readonly TOOLTIP_SIGNATURE_ORGANISM = 'Specify the organism source of the immune cells. ';
+
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -143,8 +169,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   public updateFilterValues(): void {
-    this.checkCellTypeAndSubType2FiltersStatus();
     this.checkCellType1EffectFilterStatus();
+    this.checkCellType1DependentFilterStatus(this.cellTypeAndSubtype2FieldFilter, this.cellTypeAndSubType2Component);
     this.checkCellType1DependentFilterStatus(this.cellType1DiseaseFieldFilter, this.cellType1DiseaseComponent);
     this.checkCellType1DependentFilterStatus(this.cellType1TreatmentFieldFilter, this.cellType1TreatmentComponent);
 
@@ -193,15 +219,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
     } else {
       fieldFilter.filter = '';
       component.disable();
-    }
-  }
-
-  private checkCellTypeAndSubType2FiltersStatus(): void {
-    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
-      this.cellTypeAndSubType2Component.enable();
-    } else {
-      this.cellTypeAndSubtype2FieldFilter.filter = '';
-      this.cellTypeAndSubType2Component.disable();
     }
   }
 
@@ -516,11 +533,11 @@ export class DatabaseTableFiltersComponent implements OnInit {
     return this.isValidFiltersConfiguration();
   }
 
-  public getCellType1DependentTooltip(): string {
+  public getCellType1DependentTooltip(tooltip: string): string {
     if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
-      return '';
+      return tooltip;
     } else {
-      return 'This filter is disabled, the cell type/subtype 1 must be selected to enable it.';
+      return tooltip + '\n\n' + this.TOOLTIP_WARNING_CELL_TYPE_1;
     }
   }
 }

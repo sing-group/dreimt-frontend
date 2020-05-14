@@ -7,8 +7,8 @@
                         [options]="cellTypeAndSubtype1FieldFilter.options"
                         [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
                         (filterChange)="updateFilterValues()"
+                        [matTooltip]="TOOLTIP_CELL_TYPE_1"
                         [debounceTime]="debounceTime"
-                        [showOptionsTooltip]="true"
                         [maxOptions]="maxOptions"></app-filter-field>
 
       <app-filter-field class="basic-filter-drug-effect"
@@ -19,7 +19,7 @@
                         [(filter)]="cellType1EffectFieldFilter.filter"
                         (filterChange)="updateFilterValues()"
                         fixedValues="true"
-                        [matTooltip]="getCellType1DependentTooltip()"
+                        [matTooltip]="getCellType1DependentTooltip(TOOLTIP_DRUG_EFFECT)"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
@@ -28,6 +28,7 @@
                         [options]="drugCommonNameFieldFilter.options"
                         [(filter)]="drugCommonNameFieldFilter.filter"
                         (filterChange)="updateFilterValues()"
+                        [matTooltip]="TOOLTIP_DRUG"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
 
@@ -45,14 +46,17 @@
       </mat-expansion-panel-header>
       <div class="filters-form">
         <app-number-field #tauMin label="Min. tau" [debounceTime]="debounceTime" [min]="0" [max]="100" [step]="1"
+                          [matTooltip]="TOOLTIP_MIN_TAU"
                           (valueChange)="minTauFilter.setValue($event)"></app-number-field>
 
         <app-number-field #maxUpFdr label="Max. up genes FDR" [debounceTime]="debounceTime" [min]="0" [max]="1"
                           [step]="0.05"
+                          [matTooltip]="TOOLTIP_MAX_UP_FDR"
                           (valueChange)="maxUpFdrFilter.setValue($event)"></app-number-field>
 
         <app-number-field #maxDownFdr label="Max. down genes FDR" [debounceTime]="debounceTime" [min]="0" [max]="1"
                           [step]="0.05"
+                          [matTooltip]="TOOLTIP_MAX_DOWN_FDR"
                           (valueChange)="maxDownFdrFilter.setValue($event)"></app-number-field>
 
         <app-filter-field label="Interaction type"
@@ -61,6 +65,7 @@
                           [(filter)]="interactionTypeFilter.filter"
                           fixedValues="true"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_INTERACTION_TYPE"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -73,7 +78,7 @@
                           [(filter)]="cellType1EffectFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
                           fixedValues="true"
-                          [matTooltip]="getCellType1DependentTooltip()"
+                          [matTooltip]="getCellType1DependentTooltip(TOOLTIP_DRUG_EFFECT)"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -81,6 +86,7 @@
                           [options]="drugCommonNameFieldFilter.options"
                           [(filter)]="drugCommonNameFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_DRUG"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -88,6 +94,7 @@
                           [options]="drugMoaFieldFilter.options"
                           [(filter)]="drugMoaFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_DRUG_MOA"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -97,12 +104,13 @@
                           [(filter)]="drugStatusFieldFilter.filter"
                           fixed="true"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_DRUG_STATUS"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-number-field #minDrugDss label="Min. drug specificity score" [debounceTime]="debounceTime" [min]="0"
-                          [max]="1"
-                          [step]="0.05"
+                          [max]="1" [step]="0.05"
+                          [matTooltip]="TOOLTIP_DRUG_DSS"
                           (valueChange)="minDrugDssFilter.setValue($event)"></app-number-field>
 
         <div class="title-row">Signature/Geneset filters</div>
@@ -111,6 +119,7 @@
                           [options]="signatureNameFieldFilter.options"
                           [(filter)]="signatureNameFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_SIGNATURE_NAME"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -118,6 +127,7 @@
                           [options]="signatureSourceDbFieldFilter.options"
                           [(filter)]="signatureSourceDbFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_SIGNATURE_SOURCE_DB"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -125,6 +135,7 @@
                           [options]="pubMedIdFieldFilter.options"
                           [(filter)]="pubMedIdFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_SIGNATURE_PUBMED"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -134,6 +145,7 @@
                           [(filter)]="experimentalDesignFilter.filter"
                           fixedValues="true"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_SIGNATURE_EXPERIMENTAL_DESIGN"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -142,7 +154,7 @@
                           [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
                           (filterChange)="updateFilterValues()"
                           [debounceTime]="debounceTime"
-                          [showOptionsTooltip]="true"
+                          [matTooltip]="TOOLTIP_CELL_TYPE_1"
                           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field #cellType1Disease
@@ -150,7 +162,7 @@
                           [options]="cellType1DiseaseFieldFilter.options"
                           [(filter)]="cellType1DiseaseFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
-                          [matTooltip]="getCellType1DependentTooltip()"
+                          [matTooltip]="getCellType1DependentTooltip(TOOLTIP_SIGNATURE_CELL_TYPE_1_DISEASE)"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -159,7 +171,7 @@
                           [options]="cellType1TreatmentFieldFilter.options"
                           [(filter)]="cellType1TreatmentFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
-                          [matTooltip]="getCellType1DependentTooltip()"
+                          [matTooltip]="getCellType1DependentTooltip(TOOLTIP_SIGNATURE_CELL_TYPE_1_TREATMENT)"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -169,13 +181,14 @@
                           [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
                           (filterChange)="updateFilterValues()"
                           [debounceTime]="debounceTime"
-                          [showOptionsTooltip]="true"
+                          [matTooltip]="TOOLTIP_SIGNATURE_CELL_TYPE_2"
                           [maxOptions]="maxOptions"></app-filter-field>
 
         <app-filter-field label="Condition"
                           [options]="diseaseFieldFilter.options"
                           [(filter)]="diseaseFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_SIGNATURE_CONDITION"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
 
@@ -183,6 +196,7 @@
                           [options]="organismFieldFilter.options"
                           [(filter)]="organismFieldFilter.filter"
                           (filterChange)="updateFilterValues()"
+                          [matTooltip]="TOOLTIP_SIGNATURE_ORGANISM"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"></app-filter-field>
       </div>

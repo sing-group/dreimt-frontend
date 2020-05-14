@@ -18,7 +18,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 @import '~@angular/material/theming';
 
 @mixin app-component-theme($theme) {
@@ -34,11 +33,7 @@
   div#app-container {
     display: grid;
     min-height: 100vh;
-    grid-template-areas:
-      'header'
-      'main'
-      'footer'
-    ;
+    grid-template-areas: 'header' 'main' 'footer';
     grid-template-rows: 80px auto $footer-height;
     justify-items: stretch;
     align-items: stretch;
@@ -121,10 +116,21 @@
 
   .mat-tooltip {
     font-size: 14px !important;
+    white-space: pre-line;
+    word-wrap: break-word;
+    line-height: 1.5;
   }
 
   .mat-input-element:disabled {
     cursor: not-allowed;
+  }
+
+  .mat-select-disabled {
+    cursor: not-allowed;
+
+    .mat-select-placeholder {
+      cursor: not-allowed;
+    }
   }
 
   .mat-icon.info-icon {

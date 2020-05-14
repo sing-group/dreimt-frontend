@@ -41,6 +41,17 @@ import {formatTitle} from '../../../../utils/types';
   styleUrls: ['./jaccard-query-panel.component.scss']
 })
 export class JaccardQueryPanelComponent implements OnInit {
+  public readonly TOOLTIP_WARNING_CELL_TYPE_1 = 'This filter is disabled, the cell type/subtype 1 must be selected to enable it.';
+  public readonly TOOLTIP_CELL_TYPE_1 = 'Specify an immune cell type of interest.';
+  public readonly TOOLTIP_SIGNATURE_SOURCE_DB = 'Specify a database source of signatures.';
+  public readonly TOOLTIP_SIGNATURE_EXPERIMENTAL_DESIGN = 'Specify the experimental design to retrieve the signature ' +
+    '(in vitro, in vivo, patient...).';
+  public readonly TOOLTIP_SIGNATURE_CELL_TYPE_2 = 'Specify an immune cell type of interest. This filter is used in combination with the ' +
+    'cell type/subtype 1 filter. With both filters applied results will display signatures derived from the comparison of the two ' +
+    'specific cell types.';
+  public readonly TOOLTIP_SIGNATURE_CONDITION = 'Specify a treatment or disease applied to generate the signature.';
+  public readonly TOOLTIP_SIGNATURE_ORGANISM = 'Specify the organism source of the immune cells. ';
+
   private static readonly DEFAULT_VALUES = {
     debounceTime: 500,
     maxOptions: 100,
@@ -180,7 +191,9 @@ export class JaccardQueryPanelComponent implements OnInit {
   private loadSignatureSourceDbValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listSignatureSourceDbValues(queryParams)
       .subscribe(values => this.signatureSourceDbFieldFilter.update(values));
-  }ff
+  }
+
+  ff;
 
   private createQueryParameters(): JaccardCalculateInteractionsQueryParams {
     const experimentalDesign = this.experimentalDesignFieldFilter.hasValue()
@@ -234,5 +247,13 @@ export class JaccardQueryPanelComponent implements OnInit {
 
   private navigateToWork(work: Work): void {
     this.router.navigate(['../calculated', work.id.id], {relativeTo: this.activatedRoute});
+  }
+
+  public getCellType1DependentTooltip(tooltip: string): string {
+    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
+      return tooltip;
+    } else {
+      return tooltip + '\n\n' + this.TOOLTIP_WARNING_CELL_TYPE_1;
+    }
   }
 }
