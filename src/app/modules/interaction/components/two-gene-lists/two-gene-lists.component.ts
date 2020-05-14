@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {GeneListComponent} from '../gene-list/gene-list.component';
 import {DreimtError} from '../../../notification/entities';
+import {InteractionType} from '../../../../models/interaction-type.enum';
 
 @Component({
   selector: 'app-two-gene-lists',
@@ -11,6 +12,7 @@ export class TwoGeneListsComponent implements OnInit {
 
   @Output() public readonly upGenesChanged: EventEmitter<string>;
   @Output() public readonly downGenesChanged: EventEmitter<string>;
+  @Output() public readonly queryTypeChanged: EventEmitter<InteractionType>;
 
   @Input() public upGenesInputEnabled: true;
   @Input() public downGenesInputEnabled: true;
@@ -23,6 +25,7 @@ export class TwoGeneListsComponent implements OnInit {
   constructor() {
     this.upGenesChanged = new EventEmitter<string>();
     this.downGenesChanged = new EventEmitter<string>();
+    this.queryTypeChanged = new EventEmitter<InteractionType>();
   }
 
   ngOnInit() {
@@ -62,7 +65,21 @@ export class TwoGeneListsComponent implements OnInit {
           .map(line => line.trim())
           .filter(line => line.length > 0);
 
+        if (lines.length === 0) {
+          throw new DreimtError(
+            'Invalid genes file',
+            `The selected genes file (${files[0].name}) is empty.`
+          );
+        }
+
         const genesetNamesLine = TwoGeneListsComponent.splitLine(lines[0]);
+        if (genesetNamesLine.length > 2) {
+          throw new DreimtError(
+            'Invalid genes file',
+            `The selected genes file (${files[0].name}) contains ${genesetNamesLine.length} columns. It can contain only one or two columns.`
+          );
+        }
+
         const firstColumnGenes = [];
         const secondColumnGenes = [];
 
@@ -77,12 +94,19 @@ export class TwoGeneListsComponent implements OnInit {
         }
 
         if (secondColumnGenes.length === 0) {
-          if (genesetNamesLine[0].endsWith('_DN')) {
+          if (genesetNamesLine[0].toUpperCase() === 'GENES_DN') {
             this.downGenesComponent.updateGenes(firstColumnGenes.join('\t'));
             this.upGenesComponent.updateGenes('');
-          } else {
+            this.queryTypeChanged.emit(InteractionType.SIGNATURE_DOWN);
+          } else if (genesetNamesLine[0].toUpperCase() === 'GENES_UP' || genesetNamesLine[0].toUpperCase() === 'GENES') {
             this.upGenesComponent.updateGenes(firstColumnGenes.join('\t'));
             this.downGenesComponent.updateGenes('');
+            this.queryTypeChanged.emit(genesetNamesLine[0].toUpperCase() === 'GENES_UP' ? InteractionType.SIGNATURE_UP : InteractionType.GENESET);
+          } else {
+            throw new DreimtError(
+              'Invalid genes file',
+              `The selected genes file (${files[0].name}) must contain one geneset named 'Genes_UP', 'Genes_DN', or 'Genes'.`
+            );
           }
         } else {
           this.updateGeneListComponents(
@@ -90,7 +114,7 @@ export class TwoGeneListsComponent implements OnInit {
             genesetNamesLine[1], secondColumnGenes,
             new DreimtError(
               'Invalid genes file',
-              `The selected genes file (${files[0].name}) must contain one geneset ending with '_UP' and one ending with '_DN'.`
+              `The selected genes file (${files[0].name}) must contain one geneset ending with 'Genes_UP' and one ending with 'Genes_DN'.`
             )
           );
         }
@@ -115,8 +139,8 @@ export class TwoGeneListsComponent implements OnInit {
     } else {
       throw error;
     }
-
     this.upGenesComponent.updateGenes(upGenes);
     this.downGenesComponent.updateGenes(downGenes);
+    this.queryTypeChanged.emit(InteractionType.SIGNATURE);
   }
 }

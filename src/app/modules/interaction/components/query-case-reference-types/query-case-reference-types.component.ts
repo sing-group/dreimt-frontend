@@ -74,11 +74,15 @@ export class QueryCaseReferenceTypesComponent implements OnInit {
     this.queryTypeChanged.emit(value);
   }
 
-  private checkReferenceTypeStatus(queryType: InteractionType) {
+  private checkReferenceTypeStatus(queryType: InteractionType): void {
     if (queryType === InteractionType.GENESET) {
       this.referenceTypeFormControl.disable();
     } else {
       this.referenceTypeFormControl.enable();
     }
+  }
+
+  public updateQueryType(queryType: InteractionType): void {
+    this.queryTypeFilter.filter = queryType;
   }
 }

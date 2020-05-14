@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {CmapCalculateInteractionsQueryParams} from '../../../../models/interactions/cmap/cmap-calculate-interactions-query-params.model';
 import {UpDownGenes} from '../../../../models/interactions/up-down-gene-set.model';
 import {CalculateInteractionsQueryParamsModel} from '../../../../models/interactions/calculate-interactions-query.params.model';
@@ -29,6 +29,8 @@ import {PrecalculatedExampleService} from '../../services/precalculated-example.
 import {PrecalculatedExample} from '../../../../models/interactions/precalculated-example.model';
 import {Work} from '../../../../models/work/work.model';
 import {InteractionType} from '../../../../models/interaction-type.enum';
+import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
+import {QueryCaseReferenceTypesComponent} from '../query-case-reference-types/query-case-reference-types.component';
 
 @Component({
   selector: 'app-cmap-query-panel',
@@ -50,6 +52,8 @@ export class CmapQueryPanelComponent {
   public readonly debounceTime: number;
 
   private precalculatedExamples: PrecalculatedExample[];
+
+  @ViewChild('queryTypesComponent', {static: false}) queryTypesComponent: QueryCaseReferenceTypesComponent;
 
   public constructor(
     private router: Router,
@@ -83,6 +87,10 @@ export class CmapQueryPanelComponent {
 
   public onQueryTypeChanged(queryType: InteractionType): void {
     this.queryType = queryType;
+  }
+
+  public onGenesQueryTypeEvent(queryType: InteractionType): void {
+    this.queryTypesComponent.updateQueryType(queryType);
   }
 
   public onUpGenesChanged(genes: string): void {
@@ -124,9 +132,9 @@ export class CmapQueryPanelComponent {
 
   public launchQuery(): void {
     const genes: UpDownGenes = {
-        up: this.upGenes,
-        down: this.downGenes
-      };
+      up: this.upGenes,
+      down: this.downGenes
+    };
 
     const queryParams: CalculateInteractionsQueryParamsModel = {
       params: this.getQueryConfiguration(),
