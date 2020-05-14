@@ -33,8 +33,15 @@
       <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
     </mat-form-field>
 
+    <app-query-case-reference-types class="query-types" [debounceTime]="750"
+                                    (caseTypeChanged)="onCaseTypeChanged($event)"
+                                    (referenceTypeChanged)="onReferenceTypeChanged($event)"
+                                    (queryTypeChanged)="onQueryTypeChanged($event)"></app-query-case-reference-types>
+
     <app-two-gene-lists class="query-genes" (upGenesChanged)="onUpGenesChanged($event)"
-                        (downGenesChanged)="onDownGenesChanged($event)"></app-two-gene-lists>
+                        (downGenesChanged)="onDownGenesChanged($event)"
+                        [upGenesInputEnabled]="isUpGenesInputEnabled()"
+                        [downGenesInputEnabled]="isDownGenesInputEnabled()"></app-two-gene-lists>
   </mat-card-content>
 
   <mat-card-actions>

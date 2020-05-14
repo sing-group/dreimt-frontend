@@ -31,58 +31,78 @@ export class SignaturesSummaryHelper {
   constructor() {
   }
 
-  public getSummary(interaction: DrugCellDatabaseInteraction): string {
+  public getInteractionSummary(interaction: DrugCellDatabaseInteraction): string {
+    return this.getSummary(
+      interaction.interactionType, interaction.signature.signatureName, interaction.drug.commonName, interaction.tau,
+      interaction.signature.stateA, interaction.signature.cellTypeA,
+      interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA,
+      interaction.signature.stateB, interaction.signature.cellTypeB,
+      interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB
+    );
+  }
+
+  public getSummary(
+    interactionType: InteractionType, signatureName: string, drugCommonName: string, tau: number,
+    stateA: string, cellTypeA: string[], cellSubTypeA: string[], treatmentA: string[], diseaseA: string[],
+    stateB: string, cellTypeB: string[], cellSubTypeB: string[], treatmentB: string[], diseaseB: string[]
+  ): string {
     let first = 'A';
-    if (interaction.interactionType === InteractionType.SIGNATURE_DOWN) {
+    if (interactionType === InteractionType.SIGNATURE_DOWN) {
       first = 'B';
     }
 
+    let addComparedTo = true;
+    if (interactionType === InteractionType.GENESET) {
+      addComparedTo = false;
+    }
+
     let effect = 'boosts';
-    if (interaction.tau < 0) {
+    if (tau < 0) {
       effect = 'inhibits';
     }
 
     if (first === 'A') {
       return SignaturesSummaryHelper._getExplanation(
-        interaction.signature.signatureName, effect, interaction.drug.commonName,
-        interaction.signature.stateA, interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA,
-        this.mapTreatmentA,
-        interaction.signature.stateB, interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB,
-        this.mapTreatmentB
+        signatureName, effect, drugCommonName, addComparedTo,
+        stateA, cellSubTypeA, treatmentA, diseaseA, this.mapTreatmentA,
+        stateB, cellSubTypeB, treatmentB, diseaseB, this.mapTreatmentB
       );
     } else {
       return SignaturesSummaryHelper._getExplanation(
-        interaction.signature.signatureName, effect, interaction.drug.commonName,
-        interaction.signature.stateB, interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB,
-        this.mapTreatmentB,
-        interaction.signature.stateA, interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA,
-        this.mapTreatmentA
+        signatureName, effect, drugCommonName, addComparedTo,
+        stateB, cellSubTypeB, treatmentB, diseaseB, this.mapTreatmentB,
+        stateA, cellSubTypeA, treatmentA, diseaseA, this.mapTreatmentA
       );
     }
   }
 
   private static _getExplanation(
-    signatureName: string, effect: string, drug: string,
+    signatureName: string, effect: string, drug: string, addComparedTo: boolean,
     stateA: string, subTypeA: string[], treatmentA: string[], diseaseA: string[], mapTreatmentA,
     stateB: string, subTypeB: string[], treatmentB: string[], diseaseB: string[], mapTreatmentB
   ): string {
 
     const treatmentAStr = treatmentA.length > 0 ?
-      ` <span class="explanation-treatment">stimulated with ${
+      ` <span class="prediction-summary-treatment">stimulated with ${
         this.concat(SignaturesSummaryHelper.collapseTreatments(treatmentA, signatureName, mapTreatmentA))
         } </span> ` : '';
+    const diseaseAStr = diseaseA.length > 0 ? ` <span class="prediction-summary-disease">in ${this.concat(diseaseA)} </span>` : '';
 
-    const treatmentBStr = treatmentB.length > 0 ?
-      ` <span class="explanation-treatment">stimulated with ${
-        this.concat(SignaturesSummaryHelper.collapseTreatments(treatmentB, signatureName, mapTreatmentB))
-        } </span> ` : '';
+    let explanation = `<span class="prediction-summary-drug"> ${drug} </span> <span class="prediction-summary-${effect}">${effect}</span> ${stateA} <b>
+        ${subTypeA.join('/')}</b> ${treatmentAStr}${diseaseAStr}`;
 
-    const diseaseAStr = diseaseA.length > 0 ? ` <span class="explanation-disease">in ${this.concat(diseaseA)} </span>` : '';
-    const diseaseBStr = diseaseB.length > 0 ? ` <span class="explanation-disease">in ${this.concat(diseaseB)} </span>` : '';
+    if (addComparedTo) {
+      const treatmentBStr = treatmentB.length > 0 ?
+        ` <span class="prediction-summary-treatment">stimulated with ${
+          this.concat(SignaturesSummaryHelper.collapseTreatments(treatmentB, signatureName, mapTreatmentB))
+          } </span> ` : '';
+      const diseaseBStr = diseaseB.length > 0 ? ` <span class="prediction-summary-disease">in ${this.concat(diseaseB)} </span>` : '';
 
-    return `<span class="explanation-drug"> ${drug} </span> <span class="explanation-${effect}">${effect}</span> ${stateA} <b>
-        ${subTypeA.join('/')}</b> ${treatmentAStr}${diseaseAStr}<span class="explanation"> compared to</span> ${stateB} <b>
+      explanation = explanation + `<span class="prediction-summary"> compared to</span> ${stateB} <b>
         ${subTypeB.join('/')}</b> ${treatmentBStr}${diseaseBStr}`;
+    }
+
+    return explanation;
   }
 
   private static collapseTreatments(treatments: string[], signatureName: string, treatmentsMap): string[] {

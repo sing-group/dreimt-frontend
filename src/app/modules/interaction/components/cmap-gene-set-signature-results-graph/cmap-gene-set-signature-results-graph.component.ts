@@ -28,6 +28,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {formatTitle} from '../../../../utils/types';
+import {GeneSetType} from '../../../../models/geneset-type.enum';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -63,7 +64,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
   private static NEGATIVE_TAU_MARKER_FILL_COLOR = 'lightgreen';
 
   @Input() public dataSource: CmapGeneSetSignatureResultsDataSource;
-  @Input() public geneSetType: string;
+  @Input() public geneSetType: GeneSetType;
 
   private dataSourceSubscription: Subscription;
   private loadingSubscription: Subscription;
@@ -197,7 +198,8 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
         style: {
           color: 'black',
           fontSize: '15px'
-        }
+        },
+        margin: 20,
       },
       visible: true,
       max: CmapGeneSetSignatureResultsGraphComponent.Y_AXIS_MAX,
@@ -269,13 +271,20 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
   public ngOnChanges(): void {
     if (this.geneSetType) {
       let marker = 'circle';
-      if (this.geneSetType === 'UP') {
-        marker = 'triangle';
-      } else {
-        marker = 'triangle-down';
+      switch (this.geneSetType) {
+        case GeneSetType.UP:
+          marker = 'triangle';
+          this.options.series[0]['name'] = formatTitle('Geneset ' + this.geneSetType);
+          break;
+        case GeneSetType.DOWN:
+          marker = 'triangle-down';
+          this.options.series[0]['name'] = formatTitle('Geneset ' + this.geneSetType);
+          break;
+        case GeneSetType.GENESET:
+          marker = 'square';
+          this.options.series[0]['name'] = 'Geneset';
+          break;
       }
-
-      this.options.series[0]['name'] = formatTitle('Geneset ' + this.geneSetType);
 
       this.options.series[0]['marker']['symbol'] = marker;
       this.options.series[1]['marker']['symbol'] = marker;

@@ -27,6 +27,8 @@ export class CmapQueryUpDownSignatureResultsMetadata {
   public readonly upUniverseGenesCount: number;
   public readonly downGenesCount: number;
   public readonly downUniverseGenesCount: number;
+  public readonly caseType: string;
+  public readonly referenceType: string;
 
   public set id(id: string) {
     if (this.resultId === undefined) {
@@ -41,8 +43,14 @@ export class CmapQueryUpDownSignatureResultsMetadata {
   }
 
   public static isA(object: any): object is CmapQueryUpDownSignatureResultsMetadata {
-    return object !== undefined && object !== null && object.numPerm !== undefined &&
-      object.upGenesCount !== undefined && object.upUniverseGenesCount !== undefined &&
-      object.downGenesCount !== undefined && object.downUniverseGenesCount !== undefined;
+    return object !== undefined &&
+      object !== null &&
+      object.numPerm !== undefined &&
+      object.upGenesCount !== undefined &&
+      object.upUniverseGenesCount !== undefined &&
+      object.downGenesCount !== undefined &&
+      object.downUniverseGenesCount !== undefined &&
+      object.caseType !== undefined &&
+      object.referenceType !== undefined;
   }
 }

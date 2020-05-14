@@ -347,6 +347,6 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   }
 
   public getSummary(interaction: DrugCellDatabaseInteraction): string {
-    return this.signaturesSummaryHelper.getSummary(interaction);
+    return this.signaturesSummaryHelper.getInteractionSummary(interaction);
   }
 }

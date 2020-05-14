@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,8 +19,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class CmapCalculateInteractionsQueryParams {
-  public readonly queryTitle?: string;
-  public readonly caseType: string;
-  public readonly referenceType?: string;
+export enum GeneSetType {
+  GENESET = 'GENESET',
+  UP = 'UP',
+  DOWN = 'DOWN'
 }

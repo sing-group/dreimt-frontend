@@ -38,6 +38,7 @@ export class FilterFieldComponent implements OnInit {
   @Input() public maxOptions: number;
   @Input() public fixedValues: boolean;
   @Input() public showOptionsTooltip: boolean;
+  @Input() public clearable: boolean;
 
   @Output() public filterChange: EventEmitter<string>;
 
@@ -51,6 +52,7 @@ export class FilterFieldComponent implements OnInit {
     this.maxOptions = 100;
     this.fixedValues = false;
     this.showOptionsTooltip = false;
+    this.clearable = true;
     this.optionLabelMapper = value => value;
 
     this.formControl = new FormControl('');

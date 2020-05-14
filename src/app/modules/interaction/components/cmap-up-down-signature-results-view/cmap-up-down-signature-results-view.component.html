@@ -52,10 +52,13 @@
         </mat-expansion-panel-header>
 
         <mat-list>
+          <mat-list-item> Query up genes description: {{metadata.caseType}}</mat-list-item>
           <mat-list-item> Query up genes: {{metadata.upGenesCount}}</mat-list-item>
           <mat-list-item> Query up genes in DREIMT: {{metadata.upUniverseGenesCount}}
           </mat-list-item>
 
+          <mat-list-item *ngIf="metadata.referenceType"> Query down genes description: {{metadata.referenceType}}
+          </mat-list-item>
           <mat-list-item *ngIf="metadata.downGenesCount"> Query down genes:
             {{metadata.downGenesCount}}
           </mat-list-item>

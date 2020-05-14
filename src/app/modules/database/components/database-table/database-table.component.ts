@@ -232,7 +232,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   }
 
   public getSummary(interaction: DrugCellDatabaseInteraction): string {
-    return this.signaturesSummaryHelper.getSummary(interaction);
+    return this.signaturesSummaryHelper.getInteractionSummary(interaction);
   }
 
   public downloadCsv() {
@@ -244,7 +244,8 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   }
 
   public downloadCsvTooltip(): string {
-    return this.isDownloadCsvDisabled() ? 'Please, select upt to 1000 predictions to download them as CSV. For larger queries, use the API.' : '';
+    return this.isDownloadCsvDisabled() ?
+      'Please, select upt to 1000 predictions to download them as CSV. For larger queries, use the API.' : '';
   }
 
   public isDownloadCsvDisabled(): boolean {

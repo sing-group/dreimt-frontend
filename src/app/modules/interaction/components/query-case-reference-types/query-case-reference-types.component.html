@@ -1,0 +1,31 @@
+<div class="types-container">
+  <div class="types-info">
+    <p class="types-info-title">Case/reference types
+      <mat-icon [inline]="true" class="info-icon" [matTooltip]="getInfoTooltip()">info
+      </mat-icon>
+    </p>
+    <div class="query-type-container">
+      <app-filter-field #queryType label="Input type"
+                        [options]="queryTypeFilter.options"
+                        [optionLabelMapper]="mapQueryType"
+                        [(filter)]="queryTypeFilter.filter"
+                        fixedValues="true"
+                        (filterChange)="queryTypeFilterChanged()"
+                        [debounceTime]="debounceTime"
+                        [clearable]="false"
+                        [maxOptions]="100"></app-filter-field>
+    </div>
+  </div>
+
+  <div class="case-type type-container">
+    <mat-form-field>
+      <input matInput placeholder="Description genes up" [formControl]="caseTypeFormControl">
+    </mat-form-field>
+  </div>
+  <div class="reference-type type-container">
+    <mat-form-field>
+      <input #referenceTypeComponent matInput placeholder="Description genes down"
+             [formControl]="referenceTypeFormControl">
+    </mat-form-field>
+  </div>
+</div>

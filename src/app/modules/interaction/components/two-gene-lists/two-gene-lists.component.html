@@ -1,15 +1,15 @@
 <div class="genes-container">
   <div class="genes-info">
     <p class="genes-info-title">Query genes
-      <mat-icon [inline]="true" [matTooltip]="getInfoTooltip()">info
+      <mat-icon [inline]="true" class="info-icon" [matTooltip]="getInfoTooltip()">info
       </mat-icon>
     </p>
   </div>
 
   <app-gene-list #upGenes class="up-genes" title="Up genes / Geneset"
-                 (genesChanged)="onUpGenesChanged($event)"></app-gene-list>
+                 (genesChanged)="onUpGenesChanged($event)" [inputEnabled]="upGenesInputEnabled"></app-gene-list>
   <app-gene-list #downGenes class="down-genes" title="Down genes"
-                 (genesChanged)="onDownGenesChanged($event)"></app-gene-list>
+                 (genesChanged)="onDownGenesChanged($event)" [inputEnabled]="downGenesInputEnabled"></app-gene-list>
 
   <div class="genes-info-buttons">
     <input id="file-selection" type="file" name="files" (change)="onImportFileChange($event)" style="display: none"/>

@@ -41,6 +41,9 @@ import {Subscription} from 'rxjs';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {Router} from '@angular/router';
+import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import {SignaturesSummaryHelper} from '../../../database/helpers/SignaturesSummaryHelper';
+import {InteractionType} from '../../../../models/interaction-type.enum';
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-table',
@@ -79,6 +82,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   private positiveTauColorMap;
   private negativeTauColorMap;
 
+  private readonly signaturesSummaryHelper = new SignaturesSummaryHelper();
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -90,7 +95,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     this.maxOptions = 100;
 
     this.columns = [
-      'drug', 'drugEffect', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
+      'drug', 'summary', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
@@ -319,6 +324,14 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
 
     const blob = new Blob([fileContents], {type: 'text/plain'});
     saveAs(blob, fileName);
+  }
+
+  public getSummary(interaction: CmapUpDownSignatureDrugInteraction): string {
+    return this.signaturesSummaryHelper.getSummary(
+      InteractionType.SIGNATURE, 'query', interaction.drug.commonName, interaction.tau,
+      '', [], [this.metadata.caseType], [], [],
+      '', [], [this.metadata.referenceType], [], [],
+    );
   }
 
   public getTauStyleColor(tau: number): string {

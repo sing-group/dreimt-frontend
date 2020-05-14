@@ -52,6 +52,10 @@
         </mat-expansion-panel-header>
 
         <mat-list>
+          <mat-list-item> {{getQueryUpGenesDescription()}}</mat-list-item>
+          <mat-list-item *ngIf="metadata.referenceType"> Query down genes description: {{metadata.referenceType}}
+          </mat-list-item>
+
           <mat-list-item> Query geneset type: {{metadata.geneSetType}}</mat-list-item>
           <mat-list-item> Query geneset genes: {{metadata.genesCount}}</mat-list-item>
           <mat-list-item> Query geneset genes in DREIMT: {{metadata.universeGenesCount}}

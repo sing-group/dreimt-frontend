@@ -1,0 +1,58 @@
+.types-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "row-1 row-1"
+    "row-2-col-1 row-2-col-2";
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
+}
+
+.case-type {
+  grid-area: row-2-col-1;
+}
+
+.reference-type {
+  grid-area: row-2-col-2;
+}
+
+.type-container {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  border: 1px solid lightgray;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  border-radius: 5px;
+}
+
+.types-info {
+  grid-area: row-1;
+
+  display: grid;
+  grid-template-columns: 87% 13%;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "col1 col2";
+}
+
+.types-info-title {
+  grid-area: col1;
+  font-size: 1.25em;
+  margin: 0px;
+}
+
+.query-type-container {
+  grid-area: col2;
+}
+
+::ng-deep .mat-tooltip {
+  white-space: pre-line;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+mat-form-field {
+  width: 100%;
+}

@@ -41,6 +41,10 @@ import {NumberFieldComponent} from '../../../shared/components/number-field/numb
 import {Subscription} from 'rxjs';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {Router} from '@angular/router';
+import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import {InteractionType} from '../../../../models/interaction-type.enum';
+import {SignaturesSummaryHelper} from '../../../database/helpers/SignaturesSummaryHelper';
+import {GeneSetType} from '../../../../models/geneset-type.enum';
 
 @Component({
   selector: 'app-cmap-gene-set-signature-results-table',
@@ -77,6 +81,8 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
   private positiveTauColorMap;
   private negativeTauColorMap;
 
+  private readonly signaturesSummaryHelper = new SignaturesSummaryHelper();
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -88,7 +94,7 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     this.maxOptions = 100;
 
     this.columns = [
-      'drug', 'drugEffect', 'fdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
+      'drug', 'summary', 'fdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
     ];
 
     this.drugCommonNameFieldFilter = new FieldFilterModel();
@@ -310,6 +316,27 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
 
     const blob = new Blob([fileContents], {type: 'text/plain'});
     saveAs(blob, fileName);
+  }
+
+  public getSummary(interaction: CmapUpDownSignatureDrugInteraction): string {
+    let interactionType;
+    switch (this.metadata.geneSetType) {
+      case GeneSetType.GENESET:
+        interactionType = InteractionType.GENESET;
+        break;
+      case GeneSetType.UP:
+        interactionType = InteractionType.SIGNATURE_UP;
+        break;
+      case GeneSetType.DOWN:
+        interactionType = InteractionType.SIGNATURE_DOWN;
+        break;
+    }
+
+    return this.signaturesSummaryHelper.getSummary(
+      interactionType, 'query', interaction.drug.commonName, interaction.tau,
+      '', [], [this.metadata.caseType], [], [],
+      '', [], [this.metadata.referenceType], [], [],
+    );
   }
 
   public getTauStyleColor(tau: number): string {

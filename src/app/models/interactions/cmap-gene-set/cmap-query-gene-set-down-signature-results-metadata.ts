@@ -19,13 +19,17 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {GeneSetType} from '../../geneset-type.enum';
+
 export class CmapQueryGeneSetSignatureResultsMetadata {
   private resultId: string;
   public readonly queryTitle: string;
   public readonly numPerm: number;
   public readonly genesCount: number;
   public readonly universeGenesCount: number;
-  public readonly geneSetType: string;
+  public readonly geneSetType: GeneSetType;
+  public readonly caseType: string;
+  public readonly referenceType?: string;
 
   public set id(id: string) {
     if (this.resultId === undefined) {
@@ -40,10 +44,12 @@ export class CmapQueryGeneSetSignatureResultsMetadata {
   }
 
   public static isA(object: any): object is CmapQueryGeneSetSignatureResultsMetadata {
-    return object !== undefined && object !== null
-      && object.numPerm !== undefined &&
-      object.genesCount !== undefined
-      && object.universeGenesCount !== undefined
-      && object.geneSetType !== undefined;
+    return object !== undefined &&
+      object !== null &&
+      object.numPerm !== undefined &&
+      object.genesCount !== undefined &&
+      object.universeGenesCount !== undefined &&
+      object.geneSetType !== undefined &&
+      object.caseType !== undefined;
   }
 }

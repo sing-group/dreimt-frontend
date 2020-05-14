@@ -77,23 +77,3 @@ td.mat-cell {
   word-wrap: break-word;
   line-height: 1.5;
 }
-
-::ng-deep .explanation-drug {
-  color: orange;
-}
-
-::ng-deep .explanation-boosts {
-  color: red;
-}
-
-::ng-deep .explanation-inhibits {
-  color: green;
-}
-
-::ng-deep .explanation-treatment {
-  color: blue;
-}
-
-::ng-deep .explanation-disease {
-  color: #3cb371;
-}

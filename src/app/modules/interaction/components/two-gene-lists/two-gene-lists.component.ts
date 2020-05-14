@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {GeneListComponent} from '../gene-list/gene-list.component';
 import {DreimtError} from '../../../notification/entities';
 
@@ -11,6 +11,9 @@ export class TwoGeneListsComponent implements OnInit {
 
   @Output() public readonly upGenesChanged: EventEmitter<string>;
   @Output() public readonly downGenesChanged: EventEmitter<string>;
+
+  @Input() public upGenesInputEnabled: true;
+  @Input() public downGenesInputEnabled: true;
 
   @ViewChild('upGenes', {static: false}) upGenesComponent: GeneListComponent;
   @ViewChild('downGenes', {static: false}) downGenesComponent: GeneListComponent;

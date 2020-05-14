@@ -31,7 +31,8 @@ mat-card {
   grid-template-areas:
     "query-row-1"
     "query-row-2"
-    "query-row-3";
+    "query-row-3"
+    "query-row-4";
   grid-column-gap: 40px;
 }
 
@@ -50,11 +51,20 @@ mat-card {
   border-radius: 5px;
 }
 
-.query-genes {
+.query-types {
   grid-area: query-row-3;
 }
 
+.query-genes {
+  grid-area: query-row-4;
+}
+
 app-gene-list {
+  width: 100%;
+}
+
+app-query-case-reference-types {
+  margin-top: 15px;
   width: 100%;
 }
 
@@ -82,7 +92,7 @@ app-two-gene-lists {
 .launch-query.mat-button {
   background-color: #f5085c;
   color: white;
-  width: 232px;
+  width: 207px;
 }
 
 .launch-query.mat-button[disabled] {

@@ -26,6 +26,7 @@ import {CmapGeneSetResultsService} from '../../services/cmap-gene-set-results.se
 import {ActivatedRoute} from '@angular/router';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
+import {GeneSetType} from '../../../../models/geneset-type.enum';
 
 @Component({
   selector: 'app-cmap-gene-set-signature-results-view',
@@ -72,5 +73,14 @@ export class CmapGeneSetSignatureResultsViewComponent {
 
   public isError(): boolean {
     return this.errorMessage !== undefined;
+  }
+
+  public getQueryUpGenesDescription(): string {
+    switch (this.metadata.geneSetType) {
+      case GeneSetType.GENESET:
+        return `Query genes description: ${this.metadata.caseType}`;
+      default:
+        return `Query up genes description: ${this.metadata.caseType}`;
+    }
   }
 }

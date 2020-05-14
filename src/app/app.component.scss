@@ -122,4 +122,32 @@
   .mat-tooltip {
     font-size: 14px !important;
   }
+
+  .mat-input-element:disabled {
+    cursor: not-allowed;
+  }
+
+  .mat-icon.info-icon {
+    cursor: help;
+  }
+
+  .prediction-summary-drug {
+    color: orange;
+  }
+
+  .prediction-summary-boosts {
+    color: red;
+  }
+
+  .prediction-summary-inhibits {
+    color: green;
+  }
+
+  .prediction-summary-treatment {
+    color: blue;
+  }
+
+  .prediction-summary-disease {
+    color: #3cb371;
+  }
 }

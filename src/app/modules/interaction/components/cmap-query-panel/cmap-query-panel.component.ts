@@ -28,6 +28,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {PrecalculatedExampleService} from '../../services/precalculated-example.service';
 import {PrecalculatedExample} from '../../../../models/interactions/precalculated-example.model';
 import {Work} from '../../../../models/work/work.model';
+import {InteractionType} from '../../../../models/interaction-type.enum';
 
 @Component({
   selector: 'app-cmap-query-panel',
@@ -40,6 +41,9 @@ export class CmapQueryPanelComponent {
   };
 
   public queryTitle: string;
+  private caseType: string;
+  private referenceType: string;
+  private queryType: InteractionType;
   private upGenes: string[];
   private downGenes: string[];
 
@@ -69,6 +73,18 @@ export class CmapQueryPanelComponent {
       .filter(gene => gene.length > 0);
   }
 
+  public onCaseTypeChanged(caseType: string): void {
+    this.caseType = caseType;
+  }
+
+  public onReferenceTypeChanged(referenceType: string): void {
+    this.referenceType = referenceType;
+  }
+
+  public onQueryTypeChanged(queryType: InteractionType): void {
+    this.queryType = queryType;
+  }
+
   public onUpGenesChanged(genes: string): void {
     this.upGenes = CmapQueryPanelComponent.cleanAndFilterGenes(genes);
   }
@@ -77,13 +93,32 @@ export class CmapQueryPanelComponent {
     this.downGenes = CmapQueryPanelComponent.cleanAndFilterGenes(genes);
   }
 
+  public isUpGenesInputEnabled(): boolean {
+    return this.queryType !== InteractionType.SIGNATURE_DOWN;
+  }
+
+  public isDownGenesInputEnabled(): boolean {
+    return this.queryType === InteractionType.SIGNATURE_DOWN || this.queryType === InteractionType.SIGNATURE;
+  }
+
   public isValid(): boolean {
-    return this.upGenes.length > 0 || this.downGenes.length > 0;
+    switch (this.queryType) {
+      case InteractionType.SIGNATURE:
+        return this.upGenes.length > 0 && this.downGenes.length > 0;
+      case InteractionType.SIGNATURE_UP:
+        return this.upGenes.length > 0;
+      case InteractionType.SIGNATURE_DOWN:
+        return this.downGenes.length > 0;
+      case InteractionType.GENESET:
+        return this.upGenes.length > 0;
+    }
   }
 
   private getQueryConfiguration(): CmapCalculateInteractionsQueryParams {
     return {
-      queryTitle: this.queryTitle
+      queryTitle: this.queryTitle,
+      caseType: this.getCaseType(),
+      referenceType: this.getReferenceType()
     };
   }
 
@@ -98,10 +133,19 @@ export class CmapQueryPanelComponent {
       genes: genes
     };
 
+    console.log(this.getQueryConfiguration());
     this.interactionsService.launchCmapQuery(queryParams)
       .subscribe(work => {
         this.navigateToWork(work);
       });
+  }
+
+  private getCaseType(): string {
+    return this.caseType ? this.caseType : 'case type';
+  }
+
+  private getReferenceType(): string {
+    return this.referenceType ? this.referenceType : (this.queryType === InteractionType.GENESET ? undefined : 'reference type');
   }
 
   public hasPrecalculatedExamples(): boolean {

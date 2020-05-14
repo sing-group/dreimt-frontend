@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
@@ -28,15 +28,17 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
   templateUrl: './gene-list.component.html',
   styleUrls: ['./gene-list.component.scss']
 })
-export class GeneListComponent implements OnInit {
+export class GeneListComponent implements OnInit, OnChanges {
   private static readonly DEFAULT_VALUES = {
     rows: 8,
-    debounceTime: 500
+    debounceTime: 500,
+    inputEnabled: true
   };
 
   @Input() public readonly title: string;
   @Input() public readonly rows: number;
   @Input() public readonly debounceTime: number;
+  @Input() public readonly inputEnabled: boolean;
 
   @Output() public readonly genesChanged: EventEmitter<string>;
 
@@ -44,6 +46,7 @@ export class GeneListComponent implements OnInit {
 
   public constructor() {
     this.rows = GeneListComponent.DEFAULT_VALUES.rows;
+    this.inputEnabled = GeneListComponent.DEFAULT_VALUES.inputEnabled;
     this.debounceTime = GeneListComponent.DEFAULT_VALUES.debounceTime;
 
     this.genesChanged = new EventEmitter<string>();
@@ -57,7 +60,15 @@ export class GeneListComponent implements OnInit {
         debounceTime(this.debounceTime),
         distinctUntilChanged()
       )
-    .subscribe(this.genesChanged);
+      .subscribe(this.genesChanged);
+  }
+
+  public ngOnChanges(): void {
+    if (this.inputEnabled) {
+      this.formControl.enable();
+    } else {
+      this.formControl.disable();
+    }
   }
 
   public updateGenes(genes): void {

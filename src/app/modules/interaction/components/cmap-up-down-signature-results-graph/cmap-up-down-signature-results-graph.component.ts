@@ -200,7 +200,8 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
         style: {
           color: 'black',
           fontSize: '15px'
-        }
+        },
+        margin: 20,
       },
       visible: true,
       max: CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX,

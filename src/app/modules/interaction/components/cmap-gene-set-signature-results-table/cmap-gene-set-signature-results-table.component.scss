@@ -63,18 +63,6 @@ table {
   color: blue;
 }
 
-.mat-column-drugEffect div {
-  margin-bottom: 28px;
-}
-
-.mat-column-drugEffect .boosting {
-  color: red;
-}
-
-.mat-column-drugEffect .inhibition {
-  color: green;
-}
-
 .mat-column-tau, .mat-column-fdr, .mat-column-drugDss {
   max-width: 65px;
   width: 65px;
@@ -94,9 +82,13 @@ table {
   width: 110px;
 }
 
-.mat-column-drugEffect {
-  max-width: 65px;
-  width: 65px;
+.mat-column-summary {
+  max-width: 220px;
+  width: 220px;
+}
+
+.mat-column-summary #titleDiv {
+  margin-bottom: 28px;
 }
 
 .mat-column-drugStatus {

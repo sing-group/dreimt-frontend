@@ -181,7 +181,8 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
         style: {
           color: 'black',
           fontSize: '15px'
-        }
+        },
+        margin: 20,
       },
       visible: true,
       max: SignatureViewGraphComponent.Y_AXIS_MAX,
