@@ -20,6 +20,7 @@
   -->
 
 <mat-form-field>
-  <mat-label>{{title}}</mat-label>
-  <textarea class="textarea-genes" matInput [rows]="rows" [formControl]="formControl"></textarea>
+  <mat-label>{{geneListTitle}}</mat-label>
+  <textarea class="textarea-genes" matInput [rows]="rows" [formControl]="formControl"
+            [matTooltip]="tooltipText"></textarea>
 </mat-form-field>

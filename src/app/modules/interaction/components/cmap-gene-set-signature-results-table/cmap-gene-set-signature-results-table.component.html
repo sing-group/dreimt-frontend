@@ -60,7 +60,8 @@
       </ng-container>
 
       <ng-container matColumnDef="tau">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Drug prioritization score (range 75 to 100)">
+        <th mat-header-cell *matHeaderCellDef
+            matTooltip="Drug prioritization score (ranges from 100 to -100). A high |tau| score denotes high specificity between the drug and the immune signature.">
           <span mat-sort-header="TAU">Tau</span>
 
           <app-number-field #minTau label="Min." [debounceTime]="debounceTime" [min]="75" [max]="100" [step]="1.0"
@@ -88,7 +89,8 @@
       </ng-container>
 
       <ng-container matColumnDef="drugDss">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Drug specificity score">
+        <th mat-header-cell *matHeaderCellDef
+            matTooltip="Drug specificity score (ranges 0 to 1). A high DSS denotes that the transcriptomic effect of the drug in LINCS is found to be similar across a large number of cancer cell lines in LINCS database.">
           <span mat-sort-header="DRUG_DSS">DSS</span>
 
           <app-number-field #minDrugDss label="Min. DSS" [debounceTime]="debounceTime" [min]="0" [max]="1" [step]="0.05"

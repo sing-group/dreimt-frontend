@@ -6,9 +6,11 @@
     </p>
   </div>
 
-  <app-gene-list #upGenes class="up-genes" title="Up genes / Geneset"
+  <app-gene-list #upGenes class="up-genes" geneListTitle="Up genes / Geneset"
+                 [tooltipText]="getGeneListTooltip('Paste your upregulated genes / geneset in this box.')"
                  (genesChanged)="onUpGenesChanged($event)" [inputEnabled]="upGenesInputEnabled"></app-gene-list>
-  <app-gene-list #downGenes class="down-genes" title="Down genes"
+  <app-gene-list #downGenes class="down-genes" geneListTitle="Down genes"
+                 [tooltipText]="getGeneListTooltip('Paste your downregulated genes in this box.')"
                  (genesChanged)="onDownGenesChanged($event)" [inputEnabled]="downGenesInputEnabled"></app-gene-list>
 
   <div class="genes-info-buttons">

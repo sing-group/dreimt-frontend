@@ -45,7 +45,7 @@ export class SignatureSummaryInfoComponent {
     }
 
     if (this.signature.articleTitle) {
-      tooltip = tooltip + '\nArticle title: ' + this.signature.articleTitle;
+      tooltip = tooltip + '\nArticle geneListTitle: ' + this.signature.articleTitle;
     }
 
     if (this.signature.articleAuthors) {

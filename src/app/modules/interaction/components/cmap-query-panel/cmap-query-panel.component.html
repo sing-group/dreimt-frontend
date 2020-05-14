@@ -30,7 +30,8 @@
                                 [examples]="precalculatedExamples"></app-precalculated-examples>
 
     <mat-form-field class="query-title">
-      <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
+      <input matInput placeholder="Query title" [(ngModel)]="queryTitle"
+             matTooltip="This title will be used to identify your query in the queries history panel.">
     </mat-form-field>
 
     <app-query-case-reference-types #queryTypesComponent class="query-types" [debounceTime]="750"

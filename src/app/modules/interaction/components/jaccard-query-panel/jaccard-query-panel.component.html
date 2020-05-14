@@ -30,13 +30,14 @@
                                 [examples]="precalculatedExamples"></app-precalculated-examples>
 
     <mat-form-field class="query-title">
-      <input matInput placeholder="Query title" [(ngModel)]="queryTitle">
+      <input matInput placeholder="Query title" [(ngModel)]="queryTitle"
+             matTooltip="This title will be used to identify your query in the queries history panel.">
     </mat-form-field>
 
     <div class="query-configuration">
       <p>Filter my query by:
         <mat-icon [inline]="true" class="info-icon"
-                  matTooltip="The filters below allow you to filter the signatures against which your query should be compared">
+                  matTooltip="The filters below allow you to filter the signatures against which your query should be compared.">
           info
         </mat-icon>
       </p>

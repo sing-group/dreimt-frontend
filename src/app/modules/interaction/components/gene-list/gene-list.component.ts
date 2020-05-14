@@ -35,7 +35,8 @@ export class GeneListComponent implements OnInit, OnChanges {
     inputEnabled: true
   };
 
-  @Input() public readonly title: string;
+  @Input() public readonly geneListTitle: string;
+  @Input() public readonly tooltipText: string;
   @Input() public readonly rows: number;
   @Input() public readonly debounceTime: number;
   @Input() public readonly inputEnabled: boolean;
@@ -64,10 +65,12 @@ export class GeneListComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges(): void {
-    if (this.inputEnabled) {
-      this.formControl.enable();
-    } else {
-      this.formControl.disable();
+    if (this.inputEnabled !== undefined) {
+      if (this.inputEnabled) {
+        this.formControl.enable();
+      } else {
+        this.formControl.disable();
+      }
     }
   }
 

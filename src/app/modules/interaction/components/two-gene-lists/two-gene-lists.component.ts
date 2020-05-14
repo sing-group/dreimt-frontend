@@ -9,6 +9,8 @@ import {InteractionType} from '../../../../models/interaction-type.enum';
   styleUrls: ['./two-gene-lists.component.scss']
 })
 export class TwoGeneListsComponent implements OnInit {
+  private static readonly TOOLTIP_GENE_LIST = 'When introducing genes in the boxes, you can introduce one gene by line or one line ' +
+    'containing all genes separated by whitespaces or tabs.';
 
   @Output() public readonly upGenesChanged: EventEmitter<string>;
   @Output() public readonly downGenesChanged: EventEmitter<string>;
@@ -41,8 +43,11 @@ export class TwoGeneListsComponent implements OnInit {
   }
 
   public getInfoTooltip(): string {
-    return 'Paste the genes in the boxes or use the button to import them from a file.\n\nWhen introducing genes in the boxes, you can ' +
-      'introduce one gene by line or one line containing all genes separated by whitespaces or tabs.';
+    return 'Paste the genes in the boxes or use the button to import them from a file.\n\n' + TwoGeneListsComponent.TOOLTIP_GENE_LIST;
+  }
+
+  public getGeneListTooltip(tooltip: string) {
+    return tooltip + '\n\n' + TwoGeneListsComponent.TOOLTIP_GENE_LIST;
   }
 
   public importFile(): void {
