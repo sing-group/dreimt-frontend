@@ -420,11 +420,13 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
       const cellType1Disease = params.get('cellType1Disease');
       if (cellType1Disease) {
+        openAdvancedPanel = true;
         this.cellType1DiseaseFieldFilter.filter = cellType1Disease;
       }
 
       const cellType1Treatment = params.get('cellType1Treatment');
       if (cellType1Treatment) {
+        openAdvancedPanel = true;
         this.cellType1TreatmentFieldFilter.filter = cellType1Treatment;
       }
 
