@@ -27,8 +27,10 @@ export class JaccardCalculateInteractionsQueryParams {
   public readonly queryTitle?: string;
   public readonly cellType1?: string;
   public readonly cellSubType1?: string;
+  public readonly cellTypeOrSubType1?: string;
   public readonly cellType2?: string;
   public readonly cellSubType2?: string;
+  public readonly cellTypeOrSubType2?: string;
   public readonly experimentalDesign?: ExperimentalDesign;
   public readonly disease?: string;
   public readonly organism?: string;
@@ -46,6 +48,8 @@ export class JaccardCalculateInteractionsQueryParams {
         a.cellType2 === b.cellType2 &&
         a.cellSubType1 === b.cellSubType1 &&
         a.cellSubType2 === b.cellSubType2 &&
+        a.cellTypeOrSubType1 === b.cellTypeOrSubType1 &&
+        a.cellTypeOrSubType2 === b.cellTypeOrSubType2 &&
         a.experimentalDesign === b.experimentalDesign &&
         a.disease === b.disease &&
         a.organism === b.organism &&

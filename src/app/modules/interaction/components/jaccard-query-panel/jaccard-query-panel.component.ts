@@ -69,6 +69,7 @@ export class JaccardQueryPanelComponent implements OnInit {
 
   public readonly cellTypeAndSubtype1FieldFilter: FieldFilterCellTypeModel;
   public readonly cellTypeAndSubtype2FieldFilter: FieldFilterCellTypeModel;
+  private lastCellType1RawFilterValue: string;
 
   public readonly experimentalDesignFieldFilter: FieldFilterModel;
   public readonly organismFieldFilter: FieldFilterModel;
@@ -142,7 +143,13 @@ export class JaccardQueryPanelComponent implements OnInit {
       this.loadDiseaseValues(queryParams);
       this.loadSignatureSourceDbValues(queryParams);
 
-      if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
+      const newCellType1RawFilterValue = this.cellTypeAndSubtype1FieldFilter.getClearedFilter();
+      if (newCellType1RawFilterValue) {
+        if (this.lastCellType1RawFilterValue !== undefined &&
+          this.lastCellType1RawFilterValue !== newCellType1RawFilterValue) {
+          this.cellTypeAndSubtype2FieldFilter.filter = '';
+        }
+        this.lastCellType1RawFilterValue = newCellType1RawFilterValue;
         this.loadCellTypeAndSubtype2Values(queryParams);
       }
 
@@ -161,16 +168,16 @@ export class JaccardQueryPanelComponent implements OnInit {
 
   private loadCellTypeAndSubtype1Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listCellTypeAndSubtype1Values(queryParams)
-      .subscribe(values => this.cellTypeAndSubtype1FieldFilter.updateCellTypeAndSubtypeValues(values, true));
+      .subscribe(values => this.cellTypeAndSubtype1FieldFilter.updateCellTypeAndSubTypeValues(values, true));
   }
 
   private loadCellTypeAndSubtype2Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
     this.service.listCellTypeAndSubtype2Values(queryParams)
-      .subscribe(values => this.cellTypeAndSubtype2FieldFilter.updateCellTypeAndSubtypeValues(values, this.isAllowedCellSubtype2()));
+      .subscribe(values => this.cellTypeAndSubtype2FieldFilter.updateCellTypeAndSubTypeValues(values, this.isAllowedCellSubtype2()));
   }
 
   private isAllowedCellSubtype2(): boolean {
-    return this.cellTypeAndSubtype1FieldFilter.getCellSubtypeFilter() !== undefined;
+    return true;
   }
 
   private loadDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
@@ -201,15 +208,49 @@ export class JaccardQueryPanelComponent implements OnInit {
       : undefined;
 
     return {
-      cellType1: this.cellTypeAndSubtype1FieldFilter.getCellTypeFilter(),
-      cellSubType1: this.cellTypeAndSubtype1FieldFilter.getCellSubtypeFilter(),
-      cellType2: this.cellTypeAndSubtype2FieldFilter.getCellTypeFilter(),
-      cellSubType2: this.cellTypeAndSubtype2FieldFilter.getCellSubtypeFilter(),
       disease: this.diseaseFieldFilter.getClearedFilter(),
       experimentalDesign: experimentalDesign,
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: this.signatureSourceDbFieldFilter.getClearedFilter(),
-      onlyUniverseGenes: this.considerOnlyUniverseGenes
+      onlyUniverseGenes: this.considerOnlyUniverseGenes,
+      ...this.getCellTypeFilters()
+    };
+  }
+
+  private getCellTypeFilters() {
+    let cellType1Filters = {};
+    let cellType2Filters = {};
+
+    if (this.cellTypeAndSubtype1FieldFilter.hasValue()) {
+
+      if (this.cellTypeAndSubtype1FieldFilter.isOr()) {
+        cellType1Filters = {
+          cellTypeOrSubType1: this.cellTypeAndSubtype1FieldFilter.getCellTypeOrSubTypeFilter()
+        };
+      } else {
+        cellType1Filters = {
+          cellType1: this.cellTypeAndSubtype1FieldFilter.getCellTypeFilter(),
+          cellSubType1: this.cellTypeAndSubtype1FieldFilter.getCellSubTypeFilter()
+        };
+      }
+
+      if (this.cellTypeAndSubtype2FieldFilter.hasValue()) {
+        if (this.cellTypeAndSubtype2FieldFilter.isOr()) {
+          cellType2Filters = {
+            cellTypeOrSubType2: this.cellTypeAndSubtype2FieldFilter.getCellTypeOrSubTypeFilter()
+          };
+        } else {
+          cellType2Filters = {
+            cellType2: this.cellTypeAndSubtype2FieldFilter.getCellTypeFilter(),
+            cellSubType2: this.cellTypeAndSubtype2FieldFilter.getCellSubTypeFilter(),
+          };
+        }
+      }
+    }
+
+    return {
+      ...cellType1Filters,
+      ...cellType2Filters
     };
   }
 

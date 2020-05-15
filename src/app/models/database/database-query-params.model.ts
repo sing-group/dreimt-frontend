@@ -37,6 +37,8 @@ export class DatabaseQueryParams {
   public readonly cellType2?: string;
   public readonly cellSubType1?: string;
   public readonly cellSubType2?: string;
+  public readonly cellTypeOrSubType1?: string;
+  public readonly cellTypeOrSubType2?: string;
   public readonly cellType1Effect?: string;
   public readonly cellType1Disease?: string;
   public readonly cellType1Treatment?: string;
@@ -71,6 +73,8 @@ export class DatabaseQueryParams {
         a.cellType2 === b.cellType2 &&
         a.cellSubType1 === b.cellSubType1 &&
         a.cellSubType2 === b.cellSubType2 &&
+        a.cellTypeOrSubType1 === b.cellTypeOrSubType1 &&
+        a.cellTypeOrSubType2 === b.cellTypeOrSubType2 &&
         a.cellType1Effect === b.cellType1Effect &&
         a.cellType1Disease === b.cellType1Disease &&
         a.cellType1Treatment === b.cellType1Treatment &&

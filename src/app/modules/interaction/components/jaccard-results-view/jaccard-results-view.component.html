@@ -53,13 +53,19 @@
           <mat-list style="margin-left:30px;">
             <mat-list-item *ngIf="metadata.cellType1"> Cell type 1: {{formatQueryParameter(metadata.cellType1)}}
             </mat-list-item>
-            <mat-list-item *ngIf="metadata.cellType2"> Cell type 2: {{formatQueryParameter(metadata.cellType2)}}
-            </mat-list-item>
             <mat-list-item *ngIf="metadata.cellSubType1"> Cell subtype 1:
               {{formatQueryParameter(metadata.cellSubType1)}}
             </mat-list-item>
+            <mat-list-item *ngIf="metadata.cellTypeOrSubType1"> Cell type or subtype 1:
+              {{formatQueryParameter(metadata.cellTypeOrSubType1)}}
+            </mat-list-item>
+            <mat-list-item *ngIf="metadata.cellType2"> Cell type 2: {{formatQueryParameter(metadata.cellType2)}}
+            </mat-list-item>
             <mat-list-item *ngIf="metadata.cellSubType2"> Cell subtype 2:
               {{formatQueryParameter(metadata.cellSubType2)}}
+            </mat-list-item>
+            <mat-list-item *ngIf="metadata.cellTypeOrSubType2"> Cell type or subtype 2:
+              {{formatQueryParameter(metadata.cellTypeOrSubType2)}}
             </mat-list-item>
             <mat-list-item *ngIf="metadata.experimentalDesign"> Experimental design:
               {{formatQueryParameter(metadata.experimentalDesign)}}

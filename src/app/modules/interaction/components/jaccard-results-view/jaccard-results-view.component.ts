@@ -46,6 +46,8 @@ export class JaccardResultsViewComponent {
       || this.hasValue(this.metadata.cellType2)
       || this.hasValue(this.metadata.cellSubType1)
       || this.hasValue(this.metadata.cellSubType2)
+      || this.hasValue(this.metadata.cellTypeOrSubType1)
+      || this.hasValue(this.metadata.cellTypeOrSubType1)
       || this.hasValue(this.metadata.disease)
       || this.hasValue(this.metadata.experimentalDesign)
       || this.hasValue(this.metadata.organism)

@@ -27,8 +27,10 @@ export class JaccardQueryResultMetadata {
   public readonly onlyUniverseGenes: boolean;
   public readonly cellType1?: string;
   public readonly cellSubType1?: string;
+  public readonly cellTypeOrSubType1?: string;
   public readonly cellType2?: string;
   public readonly cellSubType2?: string;
+  public readonly cellTypeOrSubType2?: string;
   public readonly experimentalDesign?: ExperimentalDesign;
   public readonly organism?: string;
   public readonly disease?: string;

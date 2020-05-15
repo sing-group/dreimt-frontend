@@ -28,7 +28,7 @@ export class FieldFilterCellTypeModel extends FieldFilterModel {
     super();
   }
 
-  public updateCellTypeAndSubtypeValues(values: CellTypeAndSubtype[], isAllowedCellSubtype: boolean): void {
+  public updateCellTypeAndSubTypeValues(values: CellTypeAndSubtype[], isAllowedCellSubtype: boolean): void {
     const cellTypes = new Set<string>();
     values.map(cts => cts.type).forEach(val => cellTypes.add(val));
     if (isAllowedCellSubtype) {
@@ -37,7 +37,7 @@ export class FieldFilterCellTypeModel extends FieldFilterModel {
     super.update(Array.from(cellTypes.values()));
   }
 
-  public setCellTypeAndSubtype(cellType: string, cellSubtype: string) {
+  public setCellTypeAndSubType(cellType: string, cellSubtype: string) {
     if (!cellSubtype) {
       this.filter = cellType;
     } else {
@@ -61,7 +61,7 @@ export class FieldFilterCellTypeModel extends FieldFilterModel {
     return clearedFilter;
   }
 
-  public getCellSubtypeFilter(): string {
+  public getCellSubTypeFilter(): string {
     let clearedFilter = super.getClearedFilter();
     if (clearedFilter !== undefined) {
       const index = clearedFilter.indexOf('/');
@@ -75,5 +75,14 @@ export class FieldFilterCellTypeModel extends FieldFilterModel {
       }
     }
     return clearedFilter;
+  }
+
+  public isOr(): boolean {
+    const clearedFilter = super.getClearedFilter();
+    return clearedFilter !== undefined && clearedFilter.indexOf('/') === -1;
+  }
+
+  public getCellTypeOrSubTypeFilter(): string {
+    return super.getClearedFilter();
   }
 }
