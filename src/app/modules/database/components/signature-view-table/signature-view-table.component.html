@@ -163,6 +163,10 @@
   </mat-card-content>
 
   <mat-card-actions>
+    <button mat-button (click)="downloadCsv()">
+      <mat-icon>save_alt</mat-icon>
+      Download as CSV
+    </button>
     <button mat-button (click)="openDownloadGenesDialog()">
       <mat-icon>save_alt</mat-icon>
       Download signature genes

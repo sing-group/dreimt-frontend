@@ -202,7 +202,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     this.paginator.pageIndex = 0;
   }
 
-  private updatePage(queryParams = this.createQueryParameters()): void {
+  private updatePage(queryParams = this.createPaginatedQueryParameters()): void {
     this.dataSource.list(queryParams);
     this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
   }
@@ -210,7 +210,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   public updateResults(): void {
     this.resetPage();
 
-    const queryParams = this.createQueryParameters();
+    const queryParams = this.createPaginatedQueryParameters();
 
     this.updatePage(queryParams);
     this.loadDrugCommonNameValues(queryParams);
@@ -262,14 +262,12 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
       .subscribe(values => this.interactionTypeFilter.update(values));
   }
 
-  private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): DatabaseQueryParams {
+  private createQueryParameters(): DatabaseQueryParams {
     const interactionType = this.interactionTypeFilter.hasValue()
       ? InteractionType[this.interactionTypeFilter.getClearedFilter()]
       : undefined;
 
     return {
-      page: this.paginator.pageIndex || defaultPageIndex,
-      pageSize: this.paginator.pageSize || defaultPageSize,
       sortDirection: this.sortDirection(),
       orderField: this.orderField(),
       minTau: this.minTauFilter.value,
@@ -281,6 +279,14 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
       minDrugDss: this.minDrugDssFilter.value,
       signatureName: this.signature.signatureName,
       interactionType: interactionType
+    };
+  }
+
+  private createPaginatedQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): DatabaseQueryParams {
+    return {
+      page: this.paginator.pageIndex || defaultPageIndex,
+      pageSize: this.paginator.pageSize || defaultPageSize,
+      ...this.createQueryParameters()
     };
   }
 
@@ -380,5 +386,10 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
 
   public mapInteractionType(interactionType: string): string {
     return formatTitle(interactionType);
+  }
+
+
+  public downloadCsv() {
+    this.service.downloadCsv(this.createQueryParameters());
   }
 }
