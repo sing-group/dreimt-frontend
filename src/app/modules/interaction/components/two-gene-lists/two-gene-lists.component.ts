@@ -119,7 +119,7 @@ export class TwoGeneListsComponent implements OnInit {
             genesetNamesLine[1], secondColumnGenes,
             new DreimtError(
               'Invalid genes file',
-              `The selected genes file (${files[0].name}) must contain one geneset ending with 'Genes_UP' and one ending with 'Genes_DN'.`
+              `The selected genes file (${files[0].name}) must contain one geneset named 'Genes_UP' and one named 'Genes_DN'.`
             )
           );
         }
@@ -135,10 +135,10 @@ export class TwoGeneListsComponent implements OnInit {
   ): void {
     let upGenes;
     let downGenes;
-    if (firstGenesetName.endsWith('_UP') && secondGenesetName.endsWith('_DN')) {
+    if (firstGenesetName.toUpperCase() === 'GENES_UP' && secondGenesetName.toUpperCase() === 'GENES_DN') {
       upGenes = firstGeneset.join('\t');
       downGenes = secondGeneset.join('\t');
-    } else if (firstGenesetName.endsWith('_DN') && secondGenesetName.endsWith('_UP')) {
+    } else if (firstGenesetName.toUpperCase() === 'GENES_DN' && secondGenesetName.toUpperCase() === 'GENES_UP') {
       downGenes = firstGeneset.join('\t');
       upGenes = secondGeneset.join('\t');
     } else {
