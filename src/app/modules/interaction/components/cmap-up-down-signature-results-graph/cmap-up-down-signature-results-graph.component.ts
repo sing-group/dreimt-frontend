@@ -192,7 +192,8 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
           value: 75,
           width: 2
         }
-      ]
+      ],
+      tickInterval: 10
     },
     yAxis: {
       title: {

@@ -173,7 +173,8 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
           value: SignatureViewGraphComponent.TAU_THRESHOLD,
           width: 2
         }
-      ]
+      ],
+      tickInterval: 10
     },
     yAxis: {
       title: {

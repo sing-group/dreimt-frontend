@@ -190,7 +190,8 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
           value: 75,
           width: 2
         }
-      ]
+      ],
+      tickInterval: 10
     },
     yAxis: {
       title: {
