@@ -175,7 +175,7 @@ export class InteractionsService {
     return this.listValues('experimental-design', queryParams);
   }
 
-  public listInteractionTypes(queryParams: DatabaseQueryParams): Observable<string[]> {
+  public listInteractionTypeValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('interaction-type', queryParams);
   }
 

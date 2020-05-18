@@ -22,7 +22,10 @@
         </mat-expansion-panel-header>
 
         <mat-list>
-          <mat-list-item> Source database: {{signature.sourceDb}}</mat-list-item>
+          <mat-list-item> Source database: {{signature.sourceDb}}<a *ngIf="signature.sourceDbUrl"
+                                                                    href="{{signature.sourceDbUrl}}" target="_blank">
+            <mat-icon inline="true">link</mat-icon>
+          </a></mat-list-item>
           <mat-list-item> Organism: {{signature.organism}}</mat-list-item>
           <mat-list-item *ngIf="signature.disease.length > 0"> Disease: {{signature.disease}}</mat-list-item>
           <mat-list-item *ngIf="signature.cellTypeA.length > 0"> Case type: {{signature.cellTypeA}}</mat-list-item>

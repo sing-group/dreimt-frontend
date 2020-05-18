@@ -140,10 +140,12 @@
         <td mat-cell *matCellDef="let interaction">
           <mat-icon [matTooltip]="interaction.signature.organism"
                     svgIcon="{{interaction.signature.organism | organismIcon}}"></mat-icon>
-          <div class="text-experimental-design" [matTooltip]="interaction.signature.experimentalDesign">
+          <div class="text-experimental-design"
+               [matTooltip]="interaction.signature.experimentalDesign | capitalize | replacePipe:'_':' '">
             {{getExperimentalDesignAcronym(interaction.signature.experimentalDesign)}}
           </div>
-          <div class="text-interaction-type" [matTooltip]="interaction.interactionType">
+          <div class="text-interaction-type"
+               [matTooltip]="interaction.interactionType | capitalize | replacePipe:'_':' '">
             {{getInteractionTypeAcronym(interaction.interactionType)}}
           </div>
         </td>

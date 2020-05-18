@@ -75,7 +75,8 @@ export class SignatureViewDataSource extends PaginatedDataSource<DrugCellDatabas
         || this.queryParams.drugCommonName !== queryParams.drugCommonName
         || this.queryParams.drugMoa !== queryParams.drugMoa
         || this.queryParams.drugStatus !== queryParams.drugStatus
-        || this.queryParams.minDrugDss !== queryParams.minDrugDss;
+        || this.queryParams.minDrugDss !== queryParams.minDrugDss
+        || this.queryParams.interactionType !== queryParams.interactionType;
     }
   }
 }

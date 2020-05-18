@@ -41,9 +41,14 @@ td.mat-cell {
   padding-bottom: 9px;
 }
 
-.mat-column-tau, .mat-column-upFdr, .mat-column-downFdr, .mat-column-drugDss {
+.mat-column-upFdr, .mat-column-downFdr {
   max-width: 55px;
   width: 55px;
+}
+
+.mat-column-tau, .mat-column-drugDss {
+  max-width: 40px;
+  width: 40px;
 }
 
 .mat-column-summary {
@@ -59,8 +64,8 @@ td.mat-cell {
 
 .mat-column-drugMoa {
   word-wrap: break-word;
-  max-width: 110px;
-  width: 110px;
+  max-width: 80px;
+  width: 80px;
 }
 
 .mat-column-summary #titleDiv {
@@ -70,4 +75,20 @@ td.mat-cell {
 .mat-column-drugStatus {
   max-width: 92px;
   width: 92px;
+}
+
+.mat-column-interactionType {
+  max-width: 54px;
+  width: 54px;
+}
+
+.text-interaction-type {
+  border-radius: 4px;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
+  text-decoration: none;
+  margin: 1px;
+  display: inline-block;
+  background-color: lightyellow;
 }

@@ -1,8 +1,8 @@
-import { DrugStatusPipePipe } from './drug-status-pipe.pipe';
+import { DrugStatusPipe } from './drug-status.pipe';
 
-describe('DrugStatusPipePipe', () => {
+describe('DrugStatusPipe', () => {
   it('create an instance', () => {
-    const pipe = new DrugStatusPipePipe();
+    const pipe = new DrugStatusPipe();
     expect(pipe).toBeTruthy();
   });
 });

@@ -33,5 +33,4 @@ export class HighlightPipe implements PipeTransform {
       return value.replace(new RegExp(toReplace, 'gi'), match => `<span class="highlighted">${match}</span>`);
     }
   }
-
 }

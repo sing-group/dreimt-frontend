@@ -44,8 +44,9 @@ import {HtmlDialogComponent} from './components/html-dialog/html-dialog.componen
 import {SignatureSummaryInfoComponent} from './components/database-table-signature-info/signature-summary-info.component';
 import {CapitalizePipe} from './pipes/capitalize.pipe';
 import {PrecalculatedExamplesComponent} from './components/precalculated-examples/precalculated-examples.component';
-import { DrugStatusPipePipe } from './pipes/drug-status-pipe.pipe';
+import { DrugStatusPipe } from './pipes/drug-status.pipe';
 import {MatMenuModule} from '@angular/material/menu';
+import { ReplacePipe } from './pipes/replace.pipe';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {MatMenuModule} from '@angular/material/menu';
     SignatureSummaryInfoComponent,
     CapitalizePipe,
     PrecalculatedExamplesComponent,
-    DrugStatusPipePipe
+    DrugStatusPipe,
+    ReplacePipe
   ],
     imports: [
         CommonModule,
@@ -88,7 +90,8 @@ import {MatMenuModule} from '@angular/material/menu';
     SignatureSummaryInfoComponent,
     CapitalizePipe,
     PrecalculatedExamplesComponent,
-    DrugStatusPipePipe
+    DrugStatusPipe,
+    ReplacePipe
   ]
 })
 export class SharedModule {

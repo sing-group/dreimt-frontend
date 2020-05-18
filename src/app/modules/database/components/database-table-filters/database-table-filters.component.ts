@@ -313,7 +313,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   private loadInteractionTypes(queryParams: DatabaseQueryParams): void {
-    this.service.listInteractionTypes(queryParams)
+    this.service.listInteractionTypeValues(queryParams)
       .subscribe(values => this.interactionTypeFilter.update(values));
   }
 

@@ -20,6 +20,8 @@ import {DatabaseQueryParams} from '../../../../models/database/database-query-pa
 import {DrugSignatureInteractionField} from '../../../../models/drug-signature-interaction-field.enum';
 import {SignaturesSummaryHelper} from '../../helpers/SignaturesSummaryHelper';
 import {CellSignature} from '../../../../models/database/cell-signature.model';
+import {InteractionType} from '../../../../models/interaction-type.enum';
+import {formatTitle} from '../../../../utils/types';
 
 @Component({
   selector: 'app-signature-view-table',
@@ -48,6 +50,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
+  public readonly interactionTypeFilter: FieldFilterModel;
 
   @ViewChild('minDrugDss', {static: false}) minDrugDssFilterComponent: NumberFieldComponent;
   @ViewChild('minTau', {static: false}) minTauFilterComponent: NumberFieldComponent;
@@ -71,6 +74,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     this.drugCommonNameFieldFilter = new FieldFilterModel();
     this.drugMoaFieldFilter = new FieldFilterModel();
     this.drugStatusFieldFilter = new FieldFilterModel();
+    this.interactionTypeFilter = new FieldFilterModel();
     this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
@@ -119,11 +123,11 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     if (!this.columns) {
       if (this.signature.signatureType === 'UPDOWN') {
         this.columns = [
-          'drug', 'summary', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
+          'drug', 'summary', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa', 'interactionType'
         ];
       } else {
         this.columns = [
-          'drug', 'summary', 'upFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
+          'drug', 'summary', 'upFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa', 'interactionType'
         ];
       }
     }
@@ -212,6 +216,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     this.loadDrugCommonNameValues(queryParams);
     this.loadDrugMoaValues(queryParams);
     this.loadDrugStatusValues(queryParams);
+    this.loadInteractionTypeValues(queryParams);
   }
 
   public ngOnDestroy(): void {
@@ -252,7 +257,16 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
       .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
 
+  private loadInteractionTypeValues(queryParams: DatabaseQueryParams): void {
+    this.service.listInteractionTypeValues(queryParams)
+      .subscribe(values => this.interactionTypeFilter.update(values));
+  }
+
   private createQueryParameters(defaultPageIndex = 0, defaultPageSize = 10): DatabaseQueryParams {
+    const interactionType = this.interactionTypeFilter.hasValue()
+      ? InteractionType[this.interactionTypeFilter.getClearedFilter()]
+      : undefined;
+
     return {
       page: this.paginator.pageIndex || defaultPageIndex,
       pageSize: this.paginator.pageSize || defaultPageSize,
@@ -265,7 +279,8 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
       drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
       drugStatus: this.drugStatusFieldFilter.getClearedFilter(),
       minDrugDss: this.minDrugDssFilter.value,
-      signatureName: this.signature.signatureName
+      signatureName: this.signature.signatureName,
+      interactionType: interactionType
     };
   }
 
@@ -348,5 +363,22 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
 
   public getSummary(interaction: DrugCellDatabaseInteraction): string {
     return this.signaturesSummaryHelper.getInteractionSummary(interaction);
+  }
+
+  public getInteractionTypeAcronym(interactionType: InteractionType): string {
+    switch (interactionType) {
+      case InteractionType.GENESET:
+        return 'G';
+      case InteractionType.SIGNATURE:
+        return 'S';
+      case InteractionType.SIGNATURE_UP:
+        return 'UP';
+      case InteractionType.SIGNATURE_DOWN:
+        return 'DN';
+    }
+  }
+
+  public mapInteractionType(interactionType: string): string {
+    return formatTitle(interactionType);
   }
 }

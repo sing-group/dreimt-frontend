@@ -3,7 +3,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 @Pipe({
   name: 'drugStatusPipe'
 })
-export class DrugStatusPipePipe implements PipeTransform {
+export class DrugStatusPipe implements PipeTransform {
 
   transform(value: string, ...args: unknown[]): unknown {
     if (value.toLowerCase() === 'approved') {
