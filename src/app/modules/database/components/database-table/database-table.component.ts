@@ -34,6 +34,7 @@ import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {DatabaseTableFiltersComponent} from '../database-table-filters/database-table-filters.component';
 import {InteractionType} from '../../../../models/interaction-type.enum';
 import {SignaturesSummaryHelper} from '../../helpers/SignaturesSummaryHelper';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-database',
@@ -45,7 +46,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   public readonly maxOptions: number;
 
   public readonly columns: string[];
-  public readonly dataSource: DatabaseDataSource;
+  public dataSource: DatabaseDataSource;
 
   public totalResultsSize: number;
 
@@ -58,6 +59,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   private readonly negativeTauColorMap;
 
   private readonly signaturesSummaryHelper = new SignaturesSummaryHelper();
+  private countSubscription: Subscription;
 
   constructor(
     private service: InteractionsService,
@@ -80,7 +82,7 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   public ngOnInit(): void {
     this.initSort();
 
-    this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
+    this.countSubscription = this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
     this.setInitialQueryParams(this.route.snapshot.queryParamMap);
   }
 
@@ -139,6 +141,20 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
   }
 
   public applyDatabaseFilters(newFilterParams: DatabaseQueryParams): void {
+    this.updateParams(newFilterParams);
+    this.updatePage(this.createQueryParameters());
+  }
+
+  public invalidDatabaseFilters(invalid: boolean): void {
+    setTimeout(() => {
+      this.updateParams({});
+      this.countSubscription.unsubscribe();
+      this.dataSource = new DatabaseDataSource(this.service);
+      this.countSubscription = this.dataSource.count$.subscribe(count => this.totalResultsSize = count);
+    });
+  }
+
+  private updateParams(newFilterParams: DatabaseQueryParams): void {
     this.filterParams = newFilterParams;
     this.router.navigate(
       [],
@@ -149,7 +165,6 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     if (this.paginator !== undefined) {
       this.paginator.pageIndex = 0;
     }
-    this.updatePage(this.createQueryParameters());
   }
 
   public createQueryParameters(defaultPageIndex = 0, defaultPageSize = 50): DatabaseQueryParams {

@@ -95,5 +95,33 @@ export class DatabaseQueryParams {
         a.maxDownFdr === b.maxDownFdr;
     }
   }
+
+  public static hasModifiers(params: DatabaseQueryParams): boolean {
+    return params.signatureName !== undefined ||
+      params.cellType1 !== undefined ||
+      params.cellType2 !== undefined ||
+      params.cellSubType1 !== undefined ||
+      params.cellSubType2 !== undefined ||
+      params.cellTypeOrSubType1 !== undefined ||
+      params.cellTypeOrSubType2 !== undefined ||
+      params.cellType1Effect !== undefined ||
+      params.cellType1Disease !== undefined ||
+      params.cellType1Treatment !== undefined ||
+      params.experimentalDesign !== undefined ||
+      params.disease !== undefined ||
+      params.organism !== undefined ||
+      params.signaturePubMedId !== undefined ||
+      params.drugSourceName !== undefined ||
+      params.drugSourceDb !== undefined ||
+      params.drugCommonName !== undefined ||
+      params.drugMoa !== undefined ||
+      params.drugStatus !== undefined ||
+      params.minDrugDss !== null ||
+      params.signatureSourceDb !== undefined ||
+      params.interactionType !== undefined ||
+      params.minTau !== null ||
+      params.maxUpFdr !== null ||
+      params.maxDownFdr !== null;
+  }
 }
 

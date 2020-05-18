@@ -71,7 +71,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
   public isAdvancedPanelOpened: boolean;
   private previousDatabaseQueryParams: DatabaseQueryParams = undefined;
-  private isClearFiltersAction = false;
+  private lastCellType1RawFilterValue: string;
 
   public readonly drugCommonNameFieldFilter: FieldFilterModel;
   public readonly drugMoaFieldFilter: FieldFilterModel;
@@ -94,8 +94,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
-  private lastCellType1RawFilterValue: string;
-
   @ViewChild('cellType1EffectBasic', {static: true}) private cellType1EffectBasicComponent: FilterFieldComponent;
   @ViewChild('cellType1EffectAdvanced', {static: true}) private cellType1EffectAdvancedComponent: FilterFieldComponent;
   @ViewChild('cellType1Treatment', {static: true}) private cellType1TreatmentComponent: FilterFieldComponent;
@@ -107,6 +105,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
   @ViewChild('maxDownFdr', {static: true}) maxDownFdrFilterComponent: NumberFieldComponent;
 
   @Output() public readonly applyDatabaseFilters: EventEmitter<DatabaseQueryParams>;
+  @Output() public readonly invalidDatabaseFilters: EventEmitter<boolean>;
 
   constructor(private service: InteractionsService) {
     this.debounceTime = 500;
@@ -135,6 +134,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.cellType1EffectFieldFilter.update(Object.keys(DrugEffect));
 
     this.applyDatabaseFilters = new EventEmitter<DatabaseQueryParams>();
+    this.invalidDatabaseFilters = new EventEmitter<boolean>();
   }
 
   ngOnInit() {
@@ -211,16 +211,11 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   private emitDatabaseFiltersEvent(queryParams: DatabaseQueryParams): void {
-    if (this.isValidFiltersConfiguration() || this.isClearFiltersAction) {
-      this.isClearFiltersAction = false;
+    if (DatabaseQueryParams.hasModifiers(queryParams)) {
       this.applyDatabaseFilters.emit(queryParams);
+    } else {
+      this.invalidDatabaseFilters.emit(true);
     }
-  }
-
-  private isValidFiltersConfiguration(): boolean {
-    return this.isAdvancedPanelOpened ||
-      this.drugCommonNameFieldFilter.getClearedFilter() !== undefined ||
-      this.cellTypeAndSubtype1FieldFilter.getClearedFilter() !== undefined;
   }
 
   private checkCellType1DependentFilterStatus(fieldFilter: FieldFilterModel, component: FilterFieldComponent): void {
@@ -438,7 +433,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.maxUpFdrFilterComponent.clearValue();
     this.maxDownFdrFilterComponent.clearValue();
 
-    this.isClearFiltersAction = true;
+    this.isAdvancedPanelOpened = false;
   }
 
   public setFilters(params: ParamMap): void {
@@ -584,7 +579,8 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   public isFiltersWarningMessageHidden(): boolean {
-    return this.isValidFiltersConfiguration();
+    return this.drugCommonNameFieldFilter.getClearedFilter() !== undefined ||
+      this.cellTypeAndSubtype1FieldFilter.getClearedFilter() !== undefined;
   }
 
   public getCellType1DependentTooltip(tooltip: string): string {

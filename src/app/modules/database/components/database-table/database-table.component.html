@@ -22,7 +22,8 @@
 <mat-card>
   <mat-card-title>Database</mat-card-title>
   <mat-card-content>
-    <app-database-table-filters (applyDatabaseFilters)="applyDatabaseFilters($event)"></app-database-table-filters>
+    <app-database-table-filters (applyDatabaseFilters)="applyDatabaseFilters($event)"
+                                (invalidDatabaseFilters)="invalidDatabaseFilters($event)"></app-database-table-filters>
 
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="drug">
