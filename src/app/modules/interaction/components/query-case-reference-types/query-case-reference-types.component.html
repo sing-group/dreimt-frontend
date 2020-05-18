@@ -10,6 +10,7 @@
                         [optionLabelMapper]="mapQueryType"
                         [(filter)]="queryTypeFilter.filter"
                         fixedValues="true"
+                        [matTooltip]="getQueryFilterTypeTooltip()"
                         (filterChange)="queryTypeFilterChanged()"
                         [debounceTime]="debounceTime"
                         [clearable]="false"

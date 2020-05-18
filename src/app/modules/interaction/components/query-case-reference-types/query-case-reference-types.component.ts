@@ -68,6 +68,11 @@ export class QueryCaseReferenceTypesComponent implements OnInit {
     return formatTitle(interactionType);
   }
 
+  public getQueryFilterTypeTooltip(): string {
+    return 'Specify the input type:\n\t- Signature (upregulated and downregulated genes)\n\t-Signature up (only upregulated genes)' +
+      '\n\t-Signature down (downregulated genes)\n\t-Geneset (gene list without specified direction).';
+  }
+
   public queryTypeFilterChanged(): void {
     const value = InteractionType[this.queryTypeFilter.getClearedFilter()];
     this.checkReferenceTypeStatus(value);
