@@ -36,6 +36,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {AppRoutingModule} from './app-routing.module';
 import {WorkModule} from './modules/work/work.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
     MatListModule,
     MatSidenavModule,
     MatToolbarModule,
+    MatTooltipModule,
     NotificationModule,
     SimpleNotificationsModule.forRoot({
       timeOut: 10000,

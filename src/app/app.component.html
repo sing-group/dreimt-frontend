@@ -26,19 +26,25 @@
     </div>
     <div class="app-header-right">
       <button mat-button routerLink="/interactions/drug-prioritization" routerLinkActive="active-route"
-              routerLinkActiveOptions="{exact:true}">Drug prioritization
+              routerLinkActiveOptions="{exact:true}"
+              matTooltip="Opens a query panel to get drug prioritizations for a custom signature or geneset.">Drug
+        prioritization
       </button>
       <button mat-button routerLink="/interactions/signatures-comparison" routerLinkActive="active-route"
-              routerLinkActiveOptions="{exact:true}">Signatures comparison
+              routerLinkActiveOptions="{exact:true}"
+              matTooltip="Opens a query panel to find similar signatures or geneset in the database to a custom signature or geneset by calculating the Jaccard index.">
+        Signatures comparison
       </button>
-      <button mat-button routerLink="/database" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}">
+      <button mat-button routerLink="/database" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}"
+              matTooltip="Opens the view to explore the database of calculated drug prioritizations.">
         Database
       </button>
-      <button mat-button routerLink="/api" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}">
+      <button mat-button routerLink="/api" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}"
+              matTooltip="Opens the REST API documentation.">
         REST API
       </button>
       <button mat-button [matBadge]="workCount" matBadgePosition="after" matBadgeColor="accent"
-              (click)="queriesList.toggle()">
+              (click)="queriesList.toggle()" matTooltip="Opens the browser queries history list.">
         Queries history
       </button>
     </div>
@@ -69,16 +75,20 @@
       <img src="assets/images/uvigo-logo.png" alt="Universidade de Vigo">
     </a>
     <a mat-button disableRipple="true" href="https://twitter.com/dreimt_cnio" target="_blank">
-      <fa-icon [icon]="faTwitter"></fa-icon> DREIMT
+      <fa-icon [icon]="faTwitter"></fa-icon>
+      DREIMT
     </a>
     <a mat-button disableRipple="true" href="https://twitter.com/bu_cnio" target="_blank">
-      <fa-icon [icon]="faTwitter"></fa-icon> BU@CNIO
+      <fa-icon [icon]="faTwitter"></fa-icon>
+      BU@CNIO
     </a>
     <a mat-button disableRipple="true" href="https://twitter.com/SINGgroup" target="_blank">
-      <fa-icon [icon]="faTwitter"></fa-icon> SING
+      <fa-icon [icon]="faTwitter"></fa-icon>
+      SING
     </a>
     <a mat-button disableRipple="true" href="https://github.com/sing-group/dreimt-frontend/issues" target="_blank">
-      <fa-icon [icon]="faEnvelopeOpen"></fa-icon> Issues and feedback
+      <fa-icon [icon]="faEnvelopeOpen"></fa-icon>
+      Issues and feedback
     </a>
     <span><fa-icon [icon]="faDatabase"></fa-icon> {{this.currentDatabaseVersion}}</span>
   </footer>
