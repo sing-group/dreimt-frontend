@@ -122,4 +122,19 @@ export class SignaturesService {
         )
       );
   }
+
+  public countSignatures(queryParams: JaccardCalculateInteractionsQueryParams): Observable<number> {
+    const options = {
+      params: new HttpParams({
+        fromObject: toPlainObject(queryParams)
+      })
+    };
+
+    return this.http.get<number>(`${environment.dreimtUrl}/signature/list/count`, options)
+      .pipe(
+        DreimtError.throwOnError(
+          'Error counting signatures', 'The signatures count could not be retrieved from the backend.'
+        )
+      );
+  }
 }

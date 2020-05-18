@@ -99,9 +99,15 @@
           [debounceTime]="debounceTime"
           [maxOptions]="maxOptions"></app-filter-field>
 
-        <mat-checkbox class="full-row" [(ngModel)]="considerOnlyUniverseGenes" (change)="updateFieldValues()">
+        <mat-checkbox [(ngModel)]="considerOnlyUniverseGenes" (change)="updateFieldValues()">
           Perform analysis using only genes in DREIMT
         </mat-checkbox>
+
+        <div></div>
+
+        <div class="matching-signatures">
+          <p>Matching signatures: {{signaturesCount}}</p>
+        </div>
       </div>
     </div>
 

@@ -79,6 +79,7 @@ export class JaccardQueryPanelComponent implements OnInit {
   public considerOnlyUniverseGenes: boolean;
 
   private precalculatedExamples: PrecalculatedExample[];
+  public signaturesCount: number;
 
   @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent;
 
@@ -107,6 +108,11 @@ export class JaccardQueryPanelComponent implements OnInit {
 
     this.precalculatedExampleService.listJaccardPrecalculatedExamples()
       .subscribe(examples => this.precalculatedExamples = examples);
+    this.updateSignaturesCount();
+  }
+
+  private updateSignaturesCount() {
+    this.service.countSignatures(this.createQueryParameters()).subscribe(count => this.signaturesCount = count);
   }
 
   private static cleanAndFilterGenes(genes: string): string[] {
@@ -152,6 +158,8 @@ export class JaccardQueryPanelComponent implements OnInit {
         this.lastCellType1RawFilterValue = newCellType1RawFilterValue;
         this.loadCellTypeAndSubtype2Values(queryParams);
       }
+
+      this.updateSignaturesCount();
 
       this.previousQueryParams = queryParams;
     }

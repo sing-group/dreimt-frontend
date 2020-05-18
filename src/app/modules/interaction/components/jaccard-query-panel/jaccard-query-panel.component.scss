@@ -87,6 +87,12 @@ app-gene-list {
   .full-row {
     grid-column: 1 / span 3;
   }
+
+  .matching-signatures {
+    text-align: right;
+    font-size: 12px;
+    margin-top: 1px;
+  }
 }
 
 .btn-load-genes {
