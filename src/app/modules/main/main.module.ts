@@ -28,9 +28,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MainRoutingModule} from './main-routing.module';
 import {SwaggerComponent} from './components/swagger/swagger.component';
 import {MatListModule} from '@angular/material/list';
+import { DataPolicyDialogComponent } from './components/data-policy-dialog/data-policy-dialog.component';
 
 @NgModule({
-  declarations: [MainComponent, SwaggerComponent],
+  declarations: [MainComponent, SwaggerComponent, DataPolicyDialogComponent],
   imports: [
     CommonModule,
     MainRoutingModule,

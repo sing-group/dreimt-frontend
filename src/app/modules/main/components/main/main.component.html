@@ -39,23 +39,38 @@
   </div>
 
   <div id="what-is-dreimt">
-    <h3>What is DREIMT?</h3>
+    <h2>What is DREIMT?</h2>
     <p>
-      DREIMT is a bioinformatics tool for hypothesis generation and <strong>prioritization of drugs capable of
-      modulating immune cells activity</strong>. The current version integrates
-      <strong>{{stats.signaturesCount}}</strong> immune cell signatures and <strong>{{stats.drugCount}}</strong>
-      compound profiles.
+      DREIMT is a bioinformatics tool for <strong>hypothesis generation</strong> and prioritization of
+      <strong>drugs</strong> capable of <strong>modulating immune cells</strong> activity from transcriptomics data.
     </p>
-
+    <p *ngIf="stats">
+      DREIMT integrates <strong>{{stats.drugCount | number}} drug profiles</strong> from The Library of Network-Based
+      Cellular Signatures (LINCS) L1000 data set and <strong>{{stats.signaturesCount | number}} manually curated immune
+      gene expression signatures</strong> from multiple resources to generate a <strong>drug-immune signature
+      association database</strong>.
+    </p>
     <p>
-      DREIMT accepts users own immune cell signature for drug prioritization.
+      DREIMT can also prioritize drug associations from user-provided immune signatures.
+    </p>
+    <p>
+      Uses of DREIMTdb:
     </p>
     <mat-nav-list role="navigation" dense>
-      <a mat-list-item [routerLink]="sample.route" [queryParams]="sample.queryParams" *ngFor="let sample of SAMPLES">{{sample.title}}</a>
+      <a mat-list-item [routerLink]="sample.route" [queryParams]="sample.queryParams" *ngFor="let sample of samples">
+        {{sample.title}}
+      </a>
     </mat-nav-list>
   </div>
 
   <div id="home-image-container">
+    <h2>DREIMT workflow</h2>
     <img src="../../../../../../../assets/images/home-dreimt.png" alt="How it works?">
+  </div>
+
+  <div id="disclaimer">
+    Disclaimer: this resource is intended for research purposes exclusively. It should not be used for medical or
+    professional advice.
+    <button mat-button (click)="onShowDataPolicy()">Read our data policy</button>
   </div>
 </div>

@@ -23,6 +23,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DreimtInformationService} from '../../../../services/dreimt-information.service';
 import {DreimtStatsModel} from '../../../../models/dreimt-stats.model';
+import {MatDialog} from '@angular/material/dialog';
+import {DataPolicyDialogComponent} from '../data-policy-dialog/data-policy-dialog.component';
 
 class SampleLink {
   constructor(
@@ -39,28 +41,61 @@ class SampleLink {
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  public readonly SAMPLES = [
+  public readonly samples = [
     new SampleLink(
-      'Which drugs inhibit macrophages?',
+      'Which drugs can inhibit TOX overexpression in T CD8+ cells?',
       '/database',
-      {cellType1: 'MACROPHAGE', cellType1Effect: 'INHIBIT'}
+      {
+        cellType1: 'T cell',
+        cellSubType1: 'TCD8+',
+        cellType1Effect: 'INHIBIT',
+        cellType1Treatment: 'Overexpression[TOX]',
+        interactionType: 'SIGNATURE'
+      }
     ),
     new SampleLink(
-      'Which drugs inhibit T cells?',
+      'Which drugs can inhibit macrophage M2 polarization?',
       '/database',
-      {cellType1: 'T CELL', cellType1Effect: 'INHIBIT'}
+      {
+        cellType1: 'Macrophage',
+        cellSubType1: 'Macrophage M2',
+        cellType2: 'Macrophage',
+        cellSubType2: 'Macrophage M1',
+        cellType1Effect: 'INHIBIT'
+      }
     ),
     new SampleLink(
-      'Which drugs boost dendritic cells?',
+      'Which immune signatures are modulated by Vinorelbine?',
       '/database',
-      {cellType1: 'DENDRITIC CELL', cellType1Effect: 'BOOST'}
-    )
+      {drugCommonName: 'vinorelbine'}
+    ),
+    new SampleLink(
+      'Which drugs can inhibit Colorectal cancer T-regulatory cells in humans?',
+      '/database',
+      {
+        cellType1: 'T cell',
+        cellSubType1: 'T regulatory',
+        cellType1Effect: 'INHIBIT',
+        disease: 'Colorectal cancer',
+        organism: 'Homo sapiens'
+      }
+    ),
+    new SampleLink(
+      'Which drugs can boost anti-LIF treatment in macrophages?',
+      '/database',
+      {
+        cellType1: 'Macrophage',
+        cellType1Effect: 'BOOST',
+        cellType1Treatment: 'anti-LIF'
+      }
+    ),
   ];
 
   public stats: DreimtStatsModel;
 
   public constructor(
     private router: Router,
+    private dialog: MatDialog,
     private dreimtInformationService: DreimtInformationService
   ) {
   }
@@ -80,5 +115,9 @@ export class MainComponent implements OnInit {
 
   public onNavigateToSignaturesComparison(): void {
     this.router.navigateByUrl('/interactions/signatures-comparison');
+  }
+
+  onShowDataPolicy() {
+    this.dialog.open(DataPolicyDialogComponent);
   }
 }

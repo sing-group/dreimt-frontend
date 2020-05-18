@@ -80,18 +80,10 @@
       grid-area: main;
 
       #app-main-container {
+        display: grid;
+        justify-items: center;
         height: 100%;
         width: 100%;
-        padding: 20px 40px;
-        margin-bottom: 2px;
-      }
-
-      #app-main-content {
-        display: grid;
-        grid-area: main-container;
-        grid-template-areas: '. content .';
-        grid-template-columns: 1fr 10fr 1fr;
-        justify-items: center;
       }
 
       mat-sidenav {
