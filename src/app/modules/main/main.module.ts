@@ -28,13 +28,16 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MainRoutingModule} from './main-routing.module';
 import {SwaggerComponent} from './components/swagger/swagger.component';
 import {MatListModule} from '@angular/material/list';
-import { DataPolicyDialogComponent } from './components/data-policy-dialog/data-policy-dialog.component';
+import {DataPolicyDialogComponent} from './components/data-policy-dialog/data-policy-dialog.component';
+import {HelpComponent} from './components/help/help.component';
+import {MarkdownModule} from 'ngx-markdown';
 
 @NgModule({
-  declarations: [MainComponent, SwaggerComponent, DataPolicyDialogComponent],
+  declarations: [MainComponent, SwaggerComponent, DataPolicyDialogComponent, HelpComponent],
   imports: [
     CommonModule,
     MainRoutingModule,
+    MarkdownModule.forChild(),
     MatCardModule,
     MatButtonModule,
     MatListModule,

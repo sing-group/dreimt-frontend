@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ErrorHandler, NgModule} from '@angular/core';
+import {ErrorHandler, NgModule, SecurityContext} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {BrowserModule} from '@angular/platform-browser';
@@ -37,6 +37,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {WorkModule} from './modules/work/work.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MarkdownModule} from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     BrowserModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    MarkdownModule.forRoot({
+      sanitize: SecurityContext.NONE
+    }),
     MatBadgeModule,
     MatButtonModule,
     MatIconModule,

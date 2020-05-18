@@ -23,6 +23,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {MainComponent} from './components/main/main.component';
 import {SwaggerComponent} from './components/swagger/swagger.component';
+import {HelpComponent} from './components/help/help.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'api',
     component: SwaggerComponent
+  },
+  {
+    path: 'help',
+    component: HelpComponent
   }
 ];
 

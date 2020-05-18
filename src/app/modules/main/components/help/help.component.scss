@@ -1,0 +1,18 @@
+#help-container {
+  overflow: scroll;
+  width: 90%;
+  padding: 5%;
+}
+
+markdown#help {
+  display: block;
+  max-width: 100vw;
+
+  ::ng-deep img {
+    max-width: 90vw;
+  }
+
+  ::ng-deep p {
+    white-space: normal;
+  }
+}
