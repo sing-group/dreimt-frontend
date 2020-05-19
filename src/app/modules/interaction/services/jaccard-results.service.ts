@@ -33,6 +33,7 @@ import {GeneOverlap} from '../../../models/interactions/jaccard/gene-overlap.mod
 import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
+import {JaccardComparisonType} from '../../../models/interactions/jaccard/jaccard-comparison-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,7 @@ export class JaccardResultsService {
     );
   }
 
-  public downloadCsv(resultId: string, queryTitle: string, queryParams: JaccardOverlapsQueryParams) {
+  public downloadCsv(resultId: string, queryTitle: string, queryParams: JaccardOverlapsQueryParams): void {
     this.http.get(`${environment.dreimtUrl}/results/jaccard/` + resultId + `/overlaps`, {
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
@@ -89,7 +90,7 @@ export class JaccardResultsService {
         )
       )
       .subscribe(res => {
-        var fileName = '';
+        let fileName = '';
         if (!queryTitle) {
           fileName = 'Jaccard_' + resultId + '.csv';
         } else {
@@ -116,5 +117,41 @@ export class JaccardResultsService {
       DreimtError.throwOnError('Signature comparison results error', 'Jaccard query genes could not be retrieved.'),
       map((response: HttpResponse<UpDownGenes>) => (response.body.down ? response.body : {genes: response.body.up}))
     );
+  }
+
+  public downloadInteractionGenes(
+    queryTitle: string, resultId: string, signatureName: string,
+    sourceComparisonType: JaccardComparisonType, targetComparisonType: JaccardComparisonType
+  ): void {
+    this.http.get(`${environment.dreimtUrl}/results/jaccard/` + resultId + `/genes/intersection/` + signatureName, {
+      params: new HttpParams({
+        fromObject: toPlainObject({
+          sourceComparisonType: sourceComparisonType,
+          targetComparisonType: targetComparisonType
+        })
+      }),
+      headers: new HttpHeaders({
+        'Accept': 'text/plain'
+      }), responseType: 'blob'
+    })
+      .pipe(
+        DreimtError.throwOnError(
+          'Error requesting Jaccard result genes',
+          `Interesection genes for Jaccard result '${resultId}' could not be retrieved from the backend.`
+        )
+      )
+      .subscribe(res => {
+        let fileName = '';
+        const interactionTitle = `${sourceComparisonType}_VS_${signatureName}_${targetComparisonType}`;
+        if (!queryTitle) {
+          fileName = `Jaccard_${resultId}_${interactionTitle}.txt`;
+        } else {
+          const queryTitleFixed = queryTitle.replace(/\s/g, '_');
+          fileName = `${queryTitleFixed}_${interactionTitle}.txt`;
+        }
+
+        const blob = new Blob([res], {type: 'text/plain'});
+        saveAs(blob, fileName);
+      });
   }
 }

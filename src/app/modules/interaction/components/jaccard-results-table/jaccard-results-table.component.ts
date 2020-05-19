@@ -38,6 +38,7 @@ import {ExportGenesDialogComponent} from '../../../shared/components/export-gene
 import {FileFormat, GenesHelper} from '../../../../models/helpers/genes.helper';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {Subscription} from 'rxjs';
+import {GeneOverlap} from '../../../../models/interactions/jaccard/gene-overlap.model';
 
 @Component({
   selector: 'app-jaccard-results-table',
@@ -297,5 +298,12 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
     if (filter.value !== undefined && filter.value !== event) {
       filter.setValue(event);
     }
+  }
+
+  private downloadIntersectionGenes(overlap: GeneOverlap): void {
+    this.service.downloadInteractionGenes(
+      this.metadata.queryTitle, this.metadata.id,
+      overlap.targetSignatureData.signatureName, overlap.sourceComparisonType, overlap.targetComparisonType
+    );
   }
 }

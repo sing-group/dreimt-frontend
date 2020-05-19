@@ -75,6 +75,10 @@ td.mat-cell {
   padding-right: 5px;
 }
 
+.mat-column-jaccard .mat-button {
+  min-width: 0px;
+}
+
 .mat-column-targetSignature {
   word-wrap: break-word;
   max-width: 350px;
