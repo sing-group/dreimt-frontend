@@ -121,7 +121,7 @@
           <span mat-sort-header="CELL_TYPE_A">Case type</span>
         </th>
         <td mat-cell *matCellDef="let interaction"
-            [innerHTML]="getCellType(interaction.signature.cellTypeA, interaction.signature.cellSubTypeA)">
+            [innerHTML]="getCaseCellType(interaction.signature.cellTypeA, interaction.signature.cellSubTypeA)">
         </td>
       </ng-container>
 
@@ -130,7 +130,7 @@
           <span mat-sort-header="CELL_TYPE_B">Reference type</span>
         </th>
         <td mat-cell *matCellDef="let interaction"
-            [innerHTML]="getCellType(interaction.signature.cellTypeB, interaction.signature.cellSubTypeB)">
+            [innerHTML]="getReferenceCellType(interaction.signature.cellTypeB, interaction.signature.cellSubTypeB, interaction.interactionType)">
         </td>
       </ng-container>
 
