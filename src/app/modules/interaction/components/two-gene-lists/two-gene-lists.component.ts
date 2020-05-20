@@ -18,6 +18,7 @@ export class TwoGeneListsComponent implements OnInit {
 
   @Input() public upGenesInputEnabled: true;
   @Input() public downGenesInputEnabled: true;
+  @Input() public genesTooltip: string;
 
   @ViewChild('upGenes', {static: false}) upGenesComponent: GeneListComponent;
   @ViewChild('downGenes', {static: false}) downGenesComponent: GeneListComponent;
@@ -47,7 +48,7 @@ export class TwoGeneListsComponent implements OnInit {
   }
 
   public getGeneListTooltip(tooltip: string) {
-    return tooltip + '\n\n' + TwoGeneListsComponent.TOOLTIP_GENE_LIST;
+    return tooltip + ' ' + this.genesTooltip + '\n\n' + TwoGeneListsComponent.TOOLTIP_GENE_LIST;
   }
 
   public importFile(): void {
