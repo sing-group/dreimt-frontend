@@ -46,11 +46,12 @@ export class MainComponent implements OnInit {
       'Which drugs can inhibit TOX overexpression in T CD8+ cells?',
       '/database',
       {
-        cellType1: 'T cell',
-        cellSubType1: 'TCD8+',
         cellType1Effect: 'INHIBIT',
-        cellType1Treatment: 'Overexpression[TOX]',
-        interactionType: 'SIGNATURE'
+        cellType1Treatment: 'Overexpression [TOX]',
+        interactionType: 'SIGNATURE',
+        cellType1: 'T cell',
+        cellSubType1: 'T CD8+',
+        minTau: 90
       }
     ),
     new SampleLink(
@@ -61,13 +62,17 @@ export class MainComponent implements OnInit {
         cellSubType1: 'Macrophage M2',
         cellType2: 'Macrophage',
         cellSubType2: 'Macrophage M1',
-        cellType1Effect: 'INHIBIT'
+        cellType1Effect: 'INHIBIT',
+        minTau: 90
       }
     ),
     new SampleLink(
       'Which immune signatures are modulated by Vinorelbine?',
       '/database',
-      {drugCommonName: 'vinorelbine'}
+      {
+        drugCommonName: 'vinorelbine',
+        minTau: 90
+      }
     ),
     new SampleLink(
       'Which drugs can inhibit Colorectal cancer T-regulatory cells in humans?',
@@ -77,18 +82,30 @@ export class MainComponent implements OnInit {
         cellSubType1: 'T regulatory',
         cellType1Effect: 'INHIBIT',
         disease: 'Colorectal cancer',
-        organism: 'Homo sapiens'
+        organism: 'Homo sapiens',
+        minTau: 90
       }
     ),
     new SampleLink(
       'Which drugs can boost anti-LIF treatment in macrophages?',
       '/database',
       {
-        cellType1: 'Macrophage',
         cellType1Effect: 'BOOST',
-        cellType1Treatment: 'anti-LIF'
+        cellType1Treatment: 'anti-LIF',
+        cellTypeOrSubType1: 'Macrophage',
+        minTau: 90
       }
     ),
+    new SampleLink(
+      'Which approved drugs can modulate signature expression from Hugo et al. 2016 (PubMed ID: 26997480)?',
+      '/database',
+      {
+        drugStatus: 'APPROVED',
+        disease: 'Immunotherapy',
+        signaturePubMedId: 26997480,
+        minTau: 90
+      }
+    )
   ];
 
   public stats: DreimtStatsModel;
