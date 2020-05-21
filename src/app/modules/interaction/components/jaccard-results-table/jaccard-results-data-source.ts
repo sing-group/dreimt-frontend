@@ -23,8 +23,13 @@ import {JaccardOverlapsQueryParams} from '../../../../models/interactions/jaccar
 import {PartialDataSource} from '../../../../models/data-source/partial-data-source';
 import {GeneOverlap} from '../../../../models/interactions/jaccard/gene-overlap.model';
 import {JaccardResultsService} from '../../services/jaccard-results.service';
+import {PaginatedDataSource} from '../../../../models/data-source/paginated-data-source';
+import {Pagination} from '../../../../models/data-source/pagination';
+import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
 
-export class JaccardResultsDataSource extends PartialDataSource<GeneOverlap> {
+export class JaccardResultsDataSource extends PaginatedDataSource<GeneOverlap> {
+  private queryParams?: JaccardOverlapsQueryParams;
+
   public constructor(
     private service: JaccardResultsService
   ) {
@@ -32,6 +37,41 @@ export class JaccardResultsDataSource extends PartialDataSource<GeneOverlap> {
   }
 
   public list(resultId: string, queryParams: JaccardOverlapsQueryParams): void {
-    this.update(this.service.list(resultId, queryParams));
+    if (this.haveFiltersChanged(queryParams)) {
+      const pagination = new Pagination(queryParams.page, queryParams.pageSize);
+
+      const unpaginatedQueryParams = {...queryParams};
+      unpaginatedQueryParams.page = undefined;
+      unpaginatedQueryParams.pageSize = undefined;
+
+      this.queryParams = queryParams;
+      this.update(this.service.list(resultId, unpaginatedQueryParams), pagination);
+    } else if (this.hasPaginationChanged(queryParams)) {
+      const pagination = new Pagination(queryParams.page, queryParams.pageSize);
+
+      this.queryParams = queryParams;
+      this.updatePage(pagination);
+    }
+  }
+
+  private hasPaginationChanged(queryParams: JaccardOverlapsQueryParams): boolean {
+    if (this.queryParams === undefined) {
+      return queryParams !== undefined;
+    } else {
+      return this.queryParams.page !== queryParams.page
+        || this.queryParams.pageSize !== queryParams.pageSize;
+    }
+  }
+
+  private haveFiltersChanged(queryParams: JaccardOverlapsQueryParams): boolean {
+    if (this.queryParams === undefined) {
+      return queryParams !== undefined;
+    } else {
+      return this.queryParams.orderField !== queryParams.orderField
+        || this.queryParams.sortDirection !== queryParams.sortDirection
+        || this.queryParams.minJaccard !== queryParams.minJaccard
+        || this.queryParams.maxPvalue !== queryParams.maxPvalue
+        || this.queryParams.maxFdr !== queryParams.maxFdr;
+    }
   }
 }

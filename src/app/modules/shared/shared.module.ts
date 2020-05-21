@@ -44,9 +44,10 @@ import {HtmlDialogComponent} from './components/html-dialog/html-dialog.componen
 import {SignatureSummaryInfoComponent} from './components/database-table-signature-info/signature-summary-info.component';
 import {CapitalizePipe} from './pipes/capitalize.pipe';
 import {PrecalculatedExamplesComponent} from './components/precalculated-examples/precalculated-examples.component';
-import { DrugStatusPipe } from './pipes/drug-status.pipe';
+import {DrugStatusPipe} from './pipes/drug-status.pipe';
 import {MatMenuModule} from '@angular/material/menu';
-import { ReplacePipe } from './pipes/replace.pipe';
+import {ReplacePipe} from './pipes/replace.pipe';
+import {StatisticalTestsService} from './service/statistical-tests.service';
 
 @NgModule({
   declarations: [
@@ -62,25 +63,25 @@ import { ReplacePipe } from './pipes/replace.pipe';
     DrugStatusPipe,
     ReplacePipe
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatAutocompleteModule,
-        MatButtonModule,
-        MatCardModule,
-        MatExpansionModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatListModule,
-        MatRadioModule,
-        MatSelectModule,
-        MatSlideToggleModule,
-        MatTooltipModule,
-        ReactiveFormsModule,
-        MatMenuModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatTooltipModule,
+    ReactiveFormsModule,
+    MatMenuModule
+  ],
   exports: [
     FilterFieldComponent,
     NumberFieldComponent,

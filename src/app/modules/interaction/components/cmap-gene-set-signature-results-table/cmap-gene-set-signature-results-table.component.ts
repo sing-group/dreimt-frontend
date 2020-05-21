@@ -52,7 +52,7 @@ import {GeneSetType} from '../../../../models/geneset-type.enum';
   styleUrls: ['./cmap-gene-set-signature-results-table.component.scss']
 })
 export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnChanges {
-  private static DEFAULT_TAU_FILTER = 75;
+  public static DEFAULT_TAU_FILTER = 75;
 
   public readonly debounceTime: number;
   public readonly maxOptions: number;

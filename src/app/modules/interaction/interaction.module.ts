@@ -67,6 +67,8 @@ import {CmapDrugResultsSummaryComponent} from './components/cmap-results-summary
 import {HtmlDialogComponent} from '../shared/components/html-dialog/html-dialog.component';
 import {JaccardResultsViewComponent} from './components/jaccard-results-view/jaccard-results-view.component';
 import { QueryCaseReferenceTypesComponent } from './components/query-case-reference-types/query-case-reference-types.component';
+import { JaccardResultsSignatureSummaryGraphComponent } from './components/jaccard-results-signature-summary-graph/jaccard-results-signature-summary-graph.component';
+import { MapBarChartComponent } from './components/map-bar-chart/map-bar-chart.component';
 
 @NgModule({
   imports: [
@@ -116,7 +118,9 @@ import { QueryCaseReferenceTypesComponent } from './components/query-case-refere
     PlotDrugMoaComponent,
     CmapDrugResultsSummaryComponent,
     JaccardResultsViewComponent,
-    QueryCaseReferenceTypesComponent
+    QueryCaseReferenceTypesComponent,
+    JaccardResultsSignatureSummaryGraphComponent,
+    MapBarChartComponent
   ],
   exports: [
     CmapDrugResultsSummaryComponent

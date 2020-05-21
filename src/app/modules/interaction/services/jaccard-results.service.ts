@@ -34,6 +34,7 @@ import {GeneSet} from '../../../models/interactions/gene-set.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import {JaccardQueryResultMetadata} from '../../../models/interactions/jaccard/jaccard-query-result-metadata';
 import {JaccardComparisonType} from '../../../models/interactions/jaccard/jaccard-comparison-type.enum';
+import {CellTypeAndSubtypeDistributions} from '../../../models/cell-type-and-subtype-distributions.model';
 
 @Injectable({
   providedIn: 'root'
@@ -52,12 +53,11 @@ export class JaccardResultsService {
       );
   }
 
-  public list(resultId: string, queryParams: JaccardOverlapsQueryParams): Observable<GeneOverlapResults> {
+  public list(resultId: string, queryParams: JaccardOverlapsQueryParams): Observable<GeneOverlap[]> {
     const options = {
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
       }),
-      observe: 'response' as 'response',
       headers: new HttpHeaders({
         'Accept': 'application/json'
       })
@@ -66,11 +66,7 @@ export class JaccardResultsService {
     return this.http.get<GeneOverlap[]>(
       `${environment.dreimtUrl}/results/jaccard/` + resultId + `/overlaps`, options
     ).pipe(
-      DreimtError.throwOnError('Signature comparison results error', 'Signature comparison results could not be retrieved.'),
-      map((response: HttpResponse<GeneOverlap[]>) => ({
-        result: response.body,
-        count: Number(response.headers.get('X-Count'))
-      }))
+      DreimtError.throwOnError('Signature comparison results error', 'Signature comparison results could not be retrieved.')
     );
   }
 
@@ -153,5 +149,20 @@ export class JaccardResultsService {
         const blob = new Blob([res], {type: 'text/plain'});
         saveAs(blob, fileName);
       });
+  }
+
+  public cellTypeAndSubTypeDistribution(resultId: string): Observable<CellTypeAndSubtypeDistributions> {
+    const options = {
+      params: new HttpParams().set('id', resultId),
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+
+    return this.http.get<CellTypeAndSubtypeDistributions>(
+      `${environment.dreimtUrl}/results/jaccard/` + resultId + `/distribution/cell-type-and-subtype`, options
+    ).pipe(
+      DreimtError.throwOnError('Signature comparison results error', 'Jaccard query genes could not be retrieved.')
+    );
   }
 }

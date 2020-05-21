@@ -46,6 +46,7 @@ import {GeneOverlap} from '../../../../models/interactions/jaccard/gene-overlap.
   styleUrls: ['./jaccard-results-table.component.scss']
 })
 export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
+  public static readonly DEFAULT_FDR_FILTER = 0.05;
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -141,7 +142,7 @@ export class JaccardResultsTableComponent implements OnDestroy, OnChanges {
 
     this.minJaccardFilter.setValue(null);
     this.maxPvalueFilter.setValue(null);
-    this.maxFdrFilter.setValue(null);
+    this.maxFdrFilter.setValue(JaccardResultsTableComponent.DEFAULT_FDR_FILTER);
   }
 
   private initSort(): void {

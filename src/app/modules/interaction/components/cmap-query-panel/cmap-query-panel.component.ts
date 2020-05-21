@@ -141,7 +141,6 @@ export class CmapQueryPanelComponent {
       genes: genes
     };
 
-    console.log(this.getQueryConfiguration());
     this.interactionsService.launchCmapQuery(queryParams)
       .subscribe(work => {
         this.navigateToWork(work);

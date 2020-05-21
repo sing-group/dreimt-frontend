@@ -19,8 +19,14 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {isArrayOfStrings} from '../../../utils/types';
+
 export class SignatureSummary {
   public readonly signatureName: string;
+  public readonly cellTypeA: string[];
+  public readonly cellSubTypeA: string[];
+  public readonly cellTypeB: string[];
+  public readonly cellSubTypeB: string[];
   public readonly signatureGenesUri: string;
   public readonly articleMetadataUri: string;
   public readonly sourceDb: string;
@@ -32,6 +38,10 @@ export class SignatureSummary {
   public static isA(object: any): object is SignatureSummary {
     return object !== undefined && object !== null
       && object.signatureName !== undefined
+      && isArrayOfStrings(object.cellTypeA)
+      && isArrayOfStrings(object.cellSubTypeA)
+      && isArrayOfStrings(object.cellTypeB)
+      && isArrayOfStrings(object.cellSubTypeB)
       && object.signatureGenesUri !== undefined
       && object.articleMetadataUri !== undefined
       && object.sourceDb !== undefined
