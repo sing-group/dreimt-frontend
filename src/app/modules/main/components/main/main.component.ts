@@ -127,11 +127,11 @@ export class MainComponent implements OnInit {
   }
 
   public onNavigateToDrugPrioritization(): void {
-    this.router.navigateByUrl('/interactions/drug-prioritization');
+    this.router.navigateByUrl('/query/drug-prioritization');
   }
 
   public onNavigateToSignaturesComparison(): void {
-    this.router.navigateByUrl('/interactions/signatures-comparison');
+    this.router.navigateByUrl('/query/signatures-comparison');
   }
 
   onShowDataPolicy() {

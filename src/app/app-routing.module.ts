@@ -33,7 +33,7 @@ const routes: Routes = [
     loadChildren: () => import('./modules/database/database.module').then(m => m.DatabaseModule)
   },
   {
-    path: 'interactions',
+    path: 'query',
     loadChildren: () => import('./modules/interaction/interaction.module').then(m => m.InteractionModule)
   }
 ];
