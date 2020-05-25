@@ -54,12 +54,13 @@
       DREIMT can also prioritize drug associations from user-provided immune signatures.
     </p>
     <p>
-      Uses of DREIMTdb:
+      DREIMTdb examples:
     </p>
-    <mat-nav-list role="navigation" dense>
-      <a mat-list-item [routerLink]="sample.route" [queryParams]="sample.queryParams" *ngFor="let sample of samples">
-        {{sample.title}}
-      </a>
+    <mat-nav-list role="navigation">
+      <mat-list-item *ngFor="let sample of samples" [routerLink]="sample.route" [queryParams]="sample.queryParams">
+        <mat-icon matListIcon>search</mat-icon>
+        <p mat-line>{{sample.title}}</p>
+      </mat-list-item>
     </mat-nav-list>
   </div>
 

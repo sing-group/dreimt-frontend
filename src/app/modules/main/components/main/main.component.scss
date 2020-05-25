@@ -62,11 +62,13 @@ $highlight: #f5085c;
     }
 
     button {
-      background-color: $highlight;
+      background-color: $primary;
       white-space: normal;
       font-size: 0.8em;
       width: 100%;
       padding: 8px;
+      border-radius: 12px;
+      border: 2px solid lightgray;
     }
   }
 
@@ -75,18 +77,23 @@ $highlight: #f5085c;
 
     font-size: 1.1em;
 
-    p {
-      text-align: justify;
-    }
-
     a {
       font-size: 1em;
+      height: 32px;
+    }
+
+    .mat-line {
+      font-size: 1.1em;
+    }
+
+    .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
       height: 32px;
     }
   }
 
   div#home-image-container {
     grid-column: 1 / span 2;
+    font-size: 1.1em;
 
     img {
       width: 960px;
