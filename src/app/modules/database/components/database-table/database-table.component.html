@@ -170,7 +170,7 @@
     </mat-toolbar>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button (click)="downloadCsv()" [disabled]="isDownloadCsvDisabled()" [matTooltip]="downloadCsvTooltip()">
+    <button mat-button class="mat-button-border" (click)="downloadCsv()" [disabled]="isDownloadCsvDisabled()" [matTooltip]="downloadCsvTooltip()">
       <mat-icon>save_alt</mat-icon>
       Download as CSV
     </button>

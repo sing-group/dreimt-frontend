@@ -16,7 +16,7 @@
   <div class="genes-info-buttons">
     <input id="file-selection" type="file" name="files" (change)="onImportFileChange($event)" style="display: none"/>
 
-    <button mat-button class="import-file" (click)="importFile()"
+    <button mat-button class="mat-button-border" (click)="importFile()"
             matTooltip="Import a geneset/signature from a plain text file.">
       <mat-icon>cloud_upload</mat-icon>
       Load from file (.csv, .tsv)
