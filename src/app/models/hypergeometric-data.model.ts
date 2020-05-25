@@ -26,4 +26,6 @@ export class HypergeometricDataModel {
   public sampleSize: number;
   public sampleSuccess: number;
   public pvalue?: number;
+  public qvalue?: number;
+  public oddsRatio?: number;
 }

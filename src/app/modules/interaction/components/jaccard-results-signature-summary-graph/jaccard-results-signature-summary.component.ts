@@ -5,11 +5,11 @@ import {Subscription} from 'rxjs';
 import {JaccardResultsService} from '../../services/jaccard-results.service';
 
 @Component({
-  selector: 'app-jaccard-results-signature-summary-graph',
-  templateUrl: './jaccard-results-signature-summary-graph.component.html',
-  styleUrls: ['./jaccard-results-signature-summary-graph.component.scss']
+  selector: 'app-jaccard-results-signature-summary',
+  templateUrl: './jaccard-results-signature-summary.component.html',
+  styleUrls: ['./jaccard-results-signature-summary.component.scss']
 })
-export class JaccardResultsSignatureSummaryGraphComponent implements OnInit, OnChanges {
+export class JaccardResultsSignatureSummaryComponent implements OnInit, OnChanges {
 
   @Input() public resultId: string;
   @Input() public title = 'Signatures summary';

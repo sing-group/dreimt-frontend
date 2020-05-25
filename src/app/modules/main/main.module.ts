@@ -31,6 +31,7 @@ import {MatListModule} from '@angular/material/list';
 import {DataPolicyDialogComponent} from './components/data-policy-dialog/data-policy-dialog.component';
 import {HelpComponent} from './components/help/help.component';
 import {MarkdownModule} from 'ngx-markdown';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [MainComponent, SwaggerComponent, DataPolicyDialogComponent, HelpComponent],
@@ -40,6 +41,7 @@ import {MarkdownModule} from 'ngx-markdown';
     MarkdownModule.forChild(),
     MatCardModule,
     MatButtonModule,
+    MatIconModule,
     MatListModule,
     MatTooltipModule
   ]

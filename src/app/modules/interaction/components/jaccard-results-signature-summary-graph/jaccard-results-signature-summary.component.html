@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="isLoading()">
+      <p>Loading summary...</p>
+      <mat-spinner diameter="100"></mat-spinner>
+    </div>
+    <div id="container" [hidden]="isLoading()">
+
+      <app-hypergeometric-distribution-view [data]="cellTypeMap" [dataDistribution]="cellTypeDistribution"
+                                            distributionName="Cell type"></app-hypergeometric-distribution-view>
+      <app-hypergeometric-distribution-view [data]="cellSubTypeMap" [dataDistribution]="cellSubTypeDistribution"
+                                            distributionName="Cell subtype"></app-hypergeometric-distribution-view>
+    </div>
+  </mat-card-content>
+</mat-card>

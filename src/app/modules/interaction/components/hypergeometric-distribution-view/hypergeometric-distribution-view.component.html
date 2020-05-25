@@ -1,0 +1,22 @@
+<div class="hypergeometric-distribution-container">
+  <p>{{this.distributionName}} distribution
+    <mat-icon [inline]="true" class="info-icon"
+              [matTooltip]="getInfoTooltip()">
+      info
+    </mat-icon>
+    <mat-icon [inline]="true" (click)="downloadCsv()" class="download-csv-button"
+              matTooltip="Downloads the raw data in CSV format.">
+      save_alt
+    </mat-icon>
+  </p>
+  <mat-tab-group [(selectedIndex)]="tabIndex" mat-align-tabs="center">
+    <mat-tab label="Bar graph">
+      <app-hypergeometric-distribution-plot [data]="hypergeometricDistributionData"
+                                            [chartTitle]="distributionName"></app-hypergeometric-distribution-plot>
+    </mat-tab>
+    <mat-tab label="Table">
+      <app-hypergeometric-distribution-table
+        [data]="hypergeometricDistributionData"></app-hypergeometric-distribution-table>
+    </mat-tab>
+  </mat-tab-group>
+</div>

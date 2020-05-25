@@ -1,0 +1,18 @@
+.hypergeometric-distribution-container {
+  p {
+    text-align: center;
+    font-size: 1.3em;
+  }
+}
+
+::ng-deep app-hypergeometric-distribution-table .mat-table {
+  width: 100%;
+}
+
+.download-csv-button {
+  margin-left: 5px;
+}
+
+.download-csv-button:hover {
+  cursor: pointer;
+}
