@@ -43,7 +43,7 @@ export class CmapUpDownResultsService {
   }
 
   public getMetadata(resultId: string): Observable<CmapQueryUpDownSignatureResultsMetadata> {
-    return this.http.get<CmapQueryUpDownSignatureResultsMetadata>(`${environment.dreimtUrl}/results/cmap/signature/` + resultId)
+    return this.http.get<CmapQueryUpDownSignatureResultsMetadata>(`${environment.dreimtUrl}/results/drug-prioritization/signature/` + resultId)
       .pipe(
         DreimtError.throwOnError('Drug prioritization results error', 'Drug prioritization results could not be retrieved.')
       );
@@ -65,14 +65,14 @@ export class CmapUpDownResultsService {
     };
 
     return this.http.get<CmapUpDownSignatureDrugInteraction[]>(
-      `${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, options
+      `${environment.dreimtUrl}/results/drug-prioritization/signature/` + resultId + `/associations`, options
     ).pipe(
       DreimtError.throwOnError('Drug prioritization results error', 'Drug prioritization results could not be retrieved.')
     );
   }
 
   public downloadCsv(resultId: string, queryTitle: string, queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams) {
-    this.http.get(`${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/interactions`, {
+    this.http.get(`${environment.dreimtUrl}/results/drug-prioritization/signature/` + resultId + `/associations`, {
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
       }),
@@ -89,7 +89,7 @@ export class CmapUpDownResultsService {
       .subscribe(res => {
         var fileName = '';
         if (!queryTitle) {
-          fileName = 'Cmap_' + resultId + '.csv';
+          fileName = 'drug-prioritization_' + resultId + '.csv';
         } else {
           fileName = queryTitle.replace(/\s/g, '_') + '.csv';
         }
@@ -130,7 +130,7 @@ export class CmapUpDownResultsService {
       })
     };
 
-    return this.http.get<A>(`${environment.dreimtUrl}/results/cmap/signature/params/${resultId}/${resource}/values`, options)
+    return this.http.get<A>(`${environment.dreimtUrl}/results/drug-prioritization/signature/params/${resultId}/${resource}/values`, options)
       .pipe(
         mapper,
         DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.')
@@ -147,7 +147,7 @@ export class CmapUpDownResultsService {
     };
 
     return this.http.get<UpDownGenes>(
-      `${environment.dreimtUrl}/results/cmap/signature/` + resultId + `/genes`, options
+      `${environment.dreimtUrl}/results/drug-prioritization/signature/` + resultId + `/genes`, options
     ).pipe(
       DreimtError.throwOnError('Drug prioritization query results error', 'Drug prioritization query genes could not be retrieved.'),
       map((response: HttpResponse<UpDownGenes>) => (response.body))

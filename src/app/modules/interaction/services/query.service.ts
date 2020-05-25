@@ -42,20 +42,12 @@ export class QueryService {
   ) {
   }
 
-  public list(): Observable<CalculatedInterationQueryResult[]> {
-    return this.http.get<CalculatedInterationQueryResult[]>(
-      `${environment.dreimtUrl}/interaction`
-    ).pipe(
-      DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.')
-    );
-  }
-
   public launchCmapQuery(queryParams: CalculateInteractionsQueryParamsModel): Observable<Work> {
-    return this.launchQuery(queryParams, 'cmap');
+    return this.launchQuery(queryParams, 'drug-prioritization');
   }
 
   public launchJaccardQuery(queryParams: CalculateInteractionsQueryParamsModel): Observable<Work> {
-    return this.launchQuery(queryParams, 'jaccard');
+    return this.launchQuery(queryParams, 'signatures-comparison');
   }
 
   private launchQuery(queryParams: CalculateInteractionsQueryParamsModel, analysisResource: string): Observable<Work> {
@@ -75,7 +67,7 @@ export class QueryService {
     Object.assign(body, body, queryParams.params);
 
     return this.http.post<Work>(
-      `${environment.dreimtUrl}/interactions/query/${analysisResource}`, body
+      `${environment.dreimtUrl}/query/${analysisResource}`, body
     ).pipe(
       tap(work => this.workService.addUserWork(work.id.id)),
       DreimtError.throwOnError('Query error',

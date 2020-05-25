@@ -47,7 +47,7 @@ export class JaccardResultsService {
   }
 
   public getMetadata(resultId: string): Observable<JaccardQueryResultMetadata> {
-    return this.http.get<JaccardQueryResultMetadata>(`${environment.dreimtUrl}/results/jaccard/` + resultId)
+    return this.http.get<JaccardQueryResultMetadata>(`${environment.dreimtUrl}/results/signatures-comparison/` + resultId)
       .pipe(
         DreimtError.throwOnError('Signature comparison information error', 'Signature comparison information could not be retrieved.')
       );
@@ -64,14 +64,14 @@ export class JaccardResultsService {
     };
 
     return this.http.get<GeneOverlap[]>(
-      `${environment.dreimtUrl}/results/jaccard/` + resultId + `/overlaps`, options
+      `${environment.dreimtUrl}/results/signatures-comparison/` + resultId + `/overlaps`, options
     ).pipe(
       DreimtError.throwOnError('Signature comparison results error', 'Signature comparison results could not be retrieved.')
     );
   }
 
   public downloadCsv(resultId: string, queryTitle: string, queryParams: JaccardOverlapsQueryParams): void {
-    this.http.get(`${environment.dreimtUrl}/results/jaccard/` + resultId + `/overlaps`, {
+    this.http.get(`${environment.dreimtUrl}/results/signatures-comparison/` + resultId + `/overlaps`, {
       params: new HttpParams({
         fromObject: toPlainObject(queryParams)
       }),
@@ -88,7 +88,7 @@ export class JaccardResultsService {
       .subscribe(res => {
         let fileName = '';
         if (!queryTitle) {
-          fileName = 'Jaccard_' + resultId + '.csv';
+          fileName = 'signatures-comparison_' + resultId + '.csv';
         } else {
           fileName = queryTitle.replace(/\s/g, '_') + '.csv';
         }
@@ -108,7 +108,7 @@ export class JaccardResultsService {
     };
 
     return this.http.get<UpDownGenes>(
-      `${environment.dreimtUrl}/results/jaccard/` + resultId + `/genes`, options
+      `${environment.dreimtUrl}/results/signatures-comparison/` + resultId + `/genes`, options
     ).pipe(
       DreimtError.throwOnError('Signature comparison results error', 'Jaccard query genes could not be retrieved.'),
       map((response: HttpResponse<UpDownGenes>) => (response.body.down ? response.body : {genes: response.body.up}))
@@ -119,7 +119,7 @@ export class JaccardResultsService {
     queryTitle: string, resultId: string, signatureName: string,
     sourceComparisonType: JaccardComparisonType, targetComparisonType: JaccardComparisonType
   ): void {
-    this.http.get(`${environment.dreimtUrl}/results/jaccard/` + resultId + `/genes/intersection/` + signatureName, {
+    this.http.get(`${environment.dreimtUrl}/results/signatures-comparison/` + resultId + `/genes/intersection/` + signatureName, {
       params: new HttpParams({
         fromObject: toPlainObject({
           sourceComparisonType: sourceComparisonType,
@@ -160,7 +160,7 @@ export class JaccardResultsService {
     };
 
     return this.http.get<CellTypeAndSubtypeDistributions>(
-      `${environment.dreimtUrl}/results/jaccard/` + resultId + `/distribution/cell-type-and-subtype`, options
+      `${environment.dreimtUrl}/results/signatures-comparison/` + resultId + `/distribution/cell-type-and-subtype`, options
     ).pipe(
       DreimtError.throwOnError('Signature comparison results error', 'Jaccard query genes could not be retrieved.')
     );

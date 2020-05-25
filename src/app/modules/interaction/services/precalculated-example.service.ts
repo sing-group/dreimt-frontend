@@ -10,18 +10,17 @@ import {PrecalculatedExample} from '../../../models/interactions/precalculated-e
 })
 export class PrecalculatedExampleService {
 
-
   constructor(
     private http: HttpClient
   ) {
   }
 
   public listJaccardPrecalculatedExamples(): Observable<PrecalculatedExample[]> {
-    return this.listPrecalculatedExamples('jaccard');
+    return this.listPrecalculatedExamples('signatures-comparison');
   }
 
   public listCmapPrecalculatedExamples(): Observable<PrecalculatedExample[]> {
-    return this.listPrecalculatedExamples('cmap');
+    return this.listPrecalculatedExamples('drug-prioritization');
   }
 
   private listPrecalculatedExamples(type: string): Observable<PrecalculatedExample[]> {

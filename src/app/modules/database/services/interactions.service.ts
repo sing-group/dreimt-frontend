@@ -55,7 +55,7 @@ export class InteractionsService {
     };
 
     return this.http.get<DrugCellDatabaseInteraction[]>(
-      `${environment.dreimtUrl}/interactions`, options
+      `${environment.dreimtUrl}/database/associations`, options
     ).pipe(
       DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.'),
       map((response: HttpResponse<DrugCellDatabaseInteraction[]>) => ({
@@ -76,7 +76,7 @@ export class InteractionsService {
     };
 
     return this.http.get<DrugCellDatabaseInteraction[]>(
-      `${environment.dreimtUrl}/interactions`, options
+      `${environment.dreimtUrl}/database/associations`, options
     ).pipe(
       DreimtError.throwOnError('Drug-Cell error', 'Drug-cell results could not be retrieved.')
     );
@@ -97,7 +97,7 @@ export class InteractionsService {
       })
     };
 
-    return this.http.get<CellTypeAndSubtype[]>(`${environment.dreimtUrl}/interactions/params/${resource}/values`, options)
+    return this.http.get<CellTypeAndSubtype[]>(`${environment.dreimtUrl}/database/associations/params/${resource}/values`, options)
       .pipe(
         DreimtError.throwOnError(
           'Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.'
@@ -193,7 +193,7 @@ export class InteractionsService {
       })
     };
 
-    return this.http.get<A>(`${environment.dreimtUrl}/interactions/params/${resource}/values`, options)
+    return this.http.get<A>(`${environment.dreimtUrl}/database/associations/params/${resource}/values`, options)
       .pipe(
         mapper,
         DreimtError.throwOnError('Error retrieving filtering values', 'Filtering values could not be retrieved from the backend.')
@@ -216,7 +216,7 @@ export class InteractionsService {
   }
 
   public downloadCsv(queryParams: DatabaseQueryParams) {
-    this.http.get(`${environment.dreimtUrl}/interactions`, {
+    this.http.get(`${environment.dreimtUrl}/database/associations`, {
       headers: new HttpHeaders({
         'Accept': 'text/csv'
       }),
