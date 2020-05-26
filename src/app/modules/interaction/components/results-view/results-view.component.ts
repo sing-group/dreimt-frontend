@@ -114,11 +114,11 @@ export class ResultsViewComponent implements OnInit {
   private updateResults(results) {
     this.results = results;
     if (CmapQueryUpDownSignatureResultsMetadata.isA(this.results)) {
-      this.router.navigate(['/interactions/drug-prioritization/results/signature/' + this.uuid]);
+      this.router.navigate(['/query/drug-prioritization/results/signature/' + this.uuid]);
     } else if (CmapQueryGeneSetSignatureResultsMetadata.isA(this.results)) {
-      this.router.navigate(['/interactions/drug-prioritization/results/geneset/' + this.uuid]);
+      this.router.navigate(['/query/drug-prioritization/results/geneset/' + this.uuid]);
     } else if (JaccardQueryResultMetadata.isA(this.results)) {
-      this.router.navigate(['/interactions/signatures-comparison/results/' + this.uuid]);
+      this.router.navigate(['/query/signatures-comparison/results/' + this.uuid]);
     }
   }
 }

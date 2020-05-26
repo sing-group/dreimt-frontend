@@ -58,7 +58,7 @@ export class WorkListComponent implements OnInit {
   }
 
   public goToWork(uuid: string): void {
-    this.router.navigate(['interactions', 'calculated', uuid]);
+    this.router.navigate(['query', 'calculated', uuid]);
   }
 
   public deleteWork(uuid: string): void {
