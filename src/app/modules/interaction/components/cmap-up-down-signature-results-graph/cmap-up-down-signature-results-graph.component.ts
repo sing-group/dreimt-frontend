@@ -480,6 +480,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
 
   private static interactionTooltip(interaction: CmapUpDownSignatureDrugInteraction): string {
     const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
+    const moa = interaction.drug.moa.length > 0 ? interaction.drug.moa.join(', ') : 'NA';
 
     return `
             <b>Drug effect</b>: ${interaction.drugEffect} <br/>
@@ -488,7 +489,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
             <b>Down Genes FDR</b>: ${interaction.downFdr.toFixed(4)} <br/>
             <b>Drug</b>: ${interaction.drug.commonName} <br/>
             <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
-            <b>&nbsp&nbspMOA</b>: ${interaction.drug.moa} <br/>
+            <b>&nbsp&nbspMOA</b>: ${moa} <br/>
             <b>&nbsp&nbspDSS</b>: ${dss} <br/>
           `;
   }

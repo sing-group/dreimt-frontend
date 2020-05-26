@@ -497,6 +497,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
 
   private static interactionTooltip(interaction: CmapGeneSetSignatureDrugInteraction): string {
     const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
+    const moa = interaction.drug.moa.length > 0 ? interaction.drug.moa.join(', ') : 'NA';
 
     return `
             <b>Drug effect</b>: ${interaction.drugEffect} <br/>
@@ -504,7 +505,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
             <b>FDR</b>: ${interaction.fdr.toFixed(4)} <br/>
             <b>Drug</b>: ${interaction.drug.commonName} <br/>
             <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
-            <b>&nbsp&nbspMOA</b>: ${interaction.drug.moa} <br/>
+            <b>&nbsp&nbspMOA</b>: ${moa} <br/>
             <b>&nbsp&nbspDSS</b>: ${dss} <br/>
           `;
   }

@@ -569,6 +569,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
 
   private static interactionTooltip(interaction: CmapUpDownSignatureDrugInteraction): string {
     const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
+    const moa = interaction.drug.moa.length > 0 ? interaction.drug.moa.join(', ') : 'NA';
 
     let tooltip = `<b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>`;
     if (interaction.upFdr !== null) {
@@ -580,7 +581,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
     return tooltip.concat(`
             <b>Drug</b>: ${interaction.drug.commonName} <br/>
             <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
-            <b>&nbsp&nbspMOA</b>: ${interaction.drug.moa} <br/>
+            <b>&nbsp&nbspMOA</b>: ${moa} <br/>
             <b>&nbsp&nbspDSS</b>: ${dss} <br/>
           `);
   }

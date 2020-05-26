@@ -134,7 +134,7 @@ export class HypergeometricDistributionPlotComponent implements OnInit, OnChange
     this.options.tooltip.formatter = function () {
       return `${this.point.data.name}: ${this.point.data.sampleSuccess}` +
         `<br/> p-value: ${this.point.data.pvalue.toFixed(4)}` +
-        `<br/> q-value: ${this.point.data.qvalue.toFixed(4)}` +
+        `<br/> FDR: ${this.point.data.qvalue.toFixed(4)}` +
         `<br/> Odds ratio: ${this.point.data.oddsRatio.toFixed(4)}`;
     };
   }
