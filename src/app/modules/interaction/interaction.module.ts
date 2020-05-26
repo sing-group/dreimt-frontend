@@ -67,7 +67,7 @@ import {CmapDrugResultsSummaryComponent} from './components/cmap-results-summary
 import {HtmlDialogComponent} from '../shared/components/html-dialog/html-dialog.component';
 import {JaccardResultsViewComponent} from './components/jaccard-results-view/jaccard-results-view.component';
 import { QueryCaseReferenceTypesComponent } from './components/query-case-reference-types/query-case-reference-types.component';
-import { JaccardResultsSignatureSummaryComponent } from './components/jaccard-results-signature-summary-graph/jaccard-results-signature-summary.component';
+import { JaccardResultsSignatureSummaryComponent } from './components/jaccard-results-signature-summary/jaccard-results-signature-summary.component';
 import { HypergeometricDistributionViewComponent } from './components/hypergeometric-distribution-view/hypergeometric-distribution-view.component';
 import { HypergeometricDistributionPlotComponent } from './components/hypergeometric-distribution-plot/hypergeometric-distribution-plot.component';
 import { HypergeometricDistributionTableComponent } from './components/hypergeometric-distribution-table/hypergeometric-distribution-table.component';

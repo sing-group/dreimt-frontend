@@ -40,7 +40,7 @@ export class JaccardResultsSignatureSummaryComponent implements OnInit, OnChange
           data.map(gO => gO.targetSignatureData).forEach(signature => {
             if (!signaturesSet.has(signature.signatureName)) {
               tmpCellTypeMap.set(signature.signatureName, new Set<string>(signature.cellTypeA.concat(signature.cellTypeB)));
-              tmpCellSubTypeMap.set(signature.signatureName, new Set<string>(signature.cellSubTypeA.concat(signature.cellSubTypeA)));
+              tmpCellSubTypeMap.set(signature.signatureName, new Set<string>(signature.cellSubTypeA.concat(signature.cellSubTypeB)));
               signaturesSet.add(signature.signatureName);
             }
           });

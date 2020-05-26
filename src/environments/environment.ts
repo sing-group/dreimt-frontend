@@ -25,7 +25,8 @@
 
 export const environment = {
   production: false,
-  dreimtUrl: 'http://localhost:8080/dreimt-backend/rest/api'
+  //dreimtUrl: 'http://localhost:8080/dreimt-backend/rest/api'
+  dreimtUrl: 'http://dreimt.org/dreimt-backend/rest/api'
 };
 
 /*
