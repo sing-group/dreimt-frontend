@@ -2,6 +2,12 @@
   <mat-card-title>Filter Database Fields</mat-card-title>
   <mat-card-content>
     <div id="basic-filters-form" [className]="isAdvancedPanelOpened ? 'invisible' : 'visible'">
+      <div class="filters-warning-message" [hidden]="isFiltersWarningMessageHidden()">
+        <mat-icon inline="true">warning</mat-icon>
+        You must select the cell type/subtype 1 or the drug filters to filter the database or use the advanced filters
+        panel.
+      </div>
+
       <app-filter-field class="basic-filter-cell"
                         label="Cell type/subtype 1"
                         [options]="cellTypeAndSubtype1FieldFilter.options"
@@ -31,12 +37,6 @@
                         [matTooltip]="TOOLTIP_DRUG"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"></app-filter-field>
-
-      <div class="filters-warning-message" [hidden]="isFiltersWarningMessageHidden()">
-        <mat-icon inline="true">warning</mat-icon>
-        You must select the cell type/subtype 1 or the drug filters to filter the database or use the advanced filters
-        panel.
-      </div>
     </div>
 
     <mat-expansion-panel (opened)="advancedPanelOpened()" (closed)="advancedPanelClosed()"
