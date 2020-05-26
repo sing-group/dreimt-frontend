@@ -24,7 +24,12 @@
     <div class="app-header-left">
       <a routerLink="/"><img id="app-logo" src="assets/images/logo.svg" [alt]="title"></a>
     </div>
-    <div class="app-header-right">
+    <div class="app-header-right" *ngIf="isSmall">
+      <button mat-button (click)="queriesList.toggle()" matTooltip="Opens the menu.">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div class="app-header-right" *ngIf="!isSmall">
       <button mat-button routerLink="/query/drug-prioritization" routerLinkActive="active-route"
               routerLinkActiveOptions="{exact:true}"
               matTooltip="Opens a query panel to get drug prioritizations for a custom signature or geneset.">Drug
@@ -56,7 +61,38 @@
 
   <main>
     <mat-sidenav-container id="app-main-container">
-      <mat-sidenav #queriesList mode="side" position="end">
+      <mat-sidenav #queriesList mode="over" position="end">
+        <ng-template [ngIf]="isSmall">
+          <mat-nav-list id="navigation-small">
+            <a mat-list-item routerLink="/query/drug-prioritization" routerLinkActive="active-route"
+               routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
+               matTooltip="Opens a query panel to get drug prioritizations for a custom signature or geneset.">
+              Drug prioritization
+            </a>
+            <a mat-list-item routerLink="/query/signatures-comparison" routerLinkActive="active-route"
+               routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
+               matTooltip="Opens a query panel to find similar signatures or geneset in the database to a custom signature or geneset by calculating the Jaccard index.">
+              Signatures comparison
+            </a>
+            <a mat-list-item routerLink="/database" routerLinkActive="active-route"
+               routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
+               matTooltip="Opens the view to explore the database of calculated drug prioritizations.">
+              Database
+            </a>
+            <a mat-list-item routerLink="/help" routerLinkActive="active-route"
+               routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
+               matTooltip="Opens the application help.">
+              Help
+            </a>
+            <a mat-list-item routerLink="/api" routerLinkActive="active-route"
+               routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
+               matTooltip="Opens the REST API documentation.">
+              REST API
+            </a>
+          </mat-nav-list>
+          <hr/>
+          <h3 id="query-history-header-small">Queries history</h3>
+        </ng-template>
         <app-work-list></app-work-list>
       </mat-sidenav>
       <mat-sidenav-content id="app-main-content">
@@ -88,9 +124,11 @@
     </a>
     <a mat-button disableRipple="true" href="https://github.com/sing-group/dreimt-frontend/issues" target="_blank">
       <fa-icon [icon]="faEnvelopeOpen"></fa-icon>
-      Issues and feedback
+      Issues &amp; feedback
     </a>
-    <span><fa-icon [icon]="faDatabase"></fa-icon> {{this.currentDatabaseVersion}}</span>
+    <a mat-button disableRipple="true" (click)="$event.preventDefault(); $event.stopPropagation()">
+      <fa-icon [icon]="faDatabase"></fa-icon> {{this.currentDatabaseVersion}}
+    </a>
   </footer>
 </div>
 

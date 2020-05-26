@@ -25,6 +25,7 @@ import {DreimtInformationService} from '../../../../services/dreimt-information.
 import {DreimtStatsModel} from '../../../../models/dreimt-stats.model';
 import {MatDialog} from '@angular/material/dialog';
 import {DataPolicyDialogComponent} from '../data-policy-dialog/data-policy-dialog.component';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 class SampleLink {
   constructor(
@@ -109,12 +110,18 @@ export class MainComponent implements OnInit {
   ];
 
   public stats: DreimtStatsModel;
+  public isSmall: boolean;
 
   public constructor(
-    private router: Router,
-    private dialog: MatDialog,
-    private dreimtInformationService: DreimtInformationService
+    private readonly breakpointObserver: BreakpointObserver,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
+    private readonly dreimtInformationService: DreimtInformationService
   ) {
+    breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small
+    ]).subscribe(result => this.isSmall = result.matches);
   }
 
   ngOnInit(): void {

@@ -25,90 +25,196 @@
 $primary: #455a64;
 $highlight: #f5085c;
 
-#main-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 24px;
-  justify-items: stretch;
-  align-items: stretch;
-  padding: 2%;
-
-  div#welcome {
-    grid-column: 1 / span 1;
-    border-radius: 8px;
-    font-size: 1.8em;
-
+@media (max-width: 1279.99px) {
+  #main-content {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-column-gap: 24px;
-    grid-row-gap: 16px;
-    justify-items: center;
+    grid-template-columns: 1fr;
+
+    div#welcome {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 8px;
+      grid-row-gap: 4px;
+
+      background-color: lighten($primary, 25%);
+      color: white;
+
+      h2 {
+        grid-column: 1 / span 1;
+        justify-self: right;
+        align-self: center;
+      }
+
+      img {
+        grid-column: 2 / span 1;
+        justify-self: left;
+        align-self: center;
+        height: 36px;
+      }
+
+      div {
+        grid-column: 1 / span 2;
+        justify-self: center;
+        padding-bottom: 6px;
+      }
+
+      button {
+        grid-column: 1 / span 2;
+        background-color: $primary;
+        white-space: normal;
+        width: 100%;
+      }
+    }
+
+    div#what-is-dreimt {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 0 12px;
+
+      p {
+        white-space: normal;
+        text-align: justify;
+      }
+
+      mat-nav-list {
+        padding: 0;
+
+        mat-list-item {
+          ::ng-deep .mat-list-item-content {
+            padding: 0;
+          }
+
+          mat-icon {
+            padding: 0;
+          }
+
+          p {
+            word-break: normal;
+          }
+        }
+      }
+    }
+
+    div#home-image-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 0 12px;
+
+      p {
+        white-space: normal;
+        text-align: justify;
+      }
+
+      img {
+        width: 960px;
+        max-width: 100%;
+        display: block;
+        margin: auto;
+      }
+    }
+
+    div#disclaimer {
+      background-color: lightyellow;
+      padding: 1em;
+      border-radius: 4px;
+      border: 2px solid lightgoldenrodyellow;
+      text-align: justify;
+
+      button {
+        display: block;
+        margin: auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 1280px) {
+  #main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 24px;
+    justify-items: stretch;
     align-items: stretch;
-    padding: 24px;
+    padding: 2%;
 
-    background-color: lighten($primary, 25%);
-    color: white;
+    div#welcome {
+      grid-column: 1 / span 1;
+      border-radius: 8px;
+      font-size: 1.8em;
 
-    h2 {
-      margin: 0px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-column-gap: 24px;
+      grid-row-gap: 16px;
+      justify-items: center;
+      align-items: stretch;
+      padding: 24px;
+
+      background-color: lighten($primary, 25%);
+      color: white;
+
+      h2 {
+        margin: 0px;
+      }
+
+      img {
+        height: 100px;
+      }
+
+      h2, div, img {
+        grid-column: 1 / span 3;
+      }
+
+      button {
+        background-color: $primary;
+        white-space: normal;
+        font-size: 0.8em;
+        width: 100%;
+        padding: 8px;
+        border-radius: 12px;
+        border: 2px solid lightgray;
+      }
     }
 
-    img {
-      height: 100px;
-    }
+    div#what-is-dreimt {
+      grid-column: 2 / span 1;
 
-    h2, div, img {
-      grid-column: 1 / span 3;
-    }
-
-    button {
-      background-color: $primary;
-      white-space: normal;
-      font-size: 0.8em;
-      width: 100%;
-      padding: 8px;
-      border-radius: 12px;
-      border: 2px solid lightgray;
-    }
-  }
-
-  div#what-is-dreimt {
-    grid-column: 2 / span 1;
-
-    font-size: 1.1em;
-
-    a {
-      font-size: 1em;
-      height: 32px;
-    }
-
-    .mat-line {
       font-size: 1.1em;
+
+      a {
+        font-size: 1em;
+        height: 32px;
+      }
+
+      .mat-line {
+        font-size: 1.1em;
+        white-space: normal;
+      }
+
+      .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
+        height: 32px;
+      }
     }
 
-    .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
-      height: 32px;
+    div#home-image-container {
+      grid-column: 1 / span 2;
+      font-size: 1.1em;
+
+      img {
+        width: 960px;
+        max-width: 100%;
+        display: block;
+        margin: auto;
+      }
     }
-  }
 
-  div#home-image-container {
-    grid-column: 1 / span 2;
-    font-size: 1.1em;
+    div#disclaimer {
+      grid-column: 1 / span 2;
 
-    img {
-      width: 960px;
-      max-width: 100%;
-      display: block;
-      margin: auto;
+      background-color: lightyellow;
+      padding: 1em;
+      border-radius: 4px;
+      border: 2px solid lightgoldenrodyellow;
     }
-  }
-
-  div#disclaimer {
-    grid-column: 1 / span 2;
-
-    background-color: lightyellow;
-    padding: 1em;
-    border-radius: 4px;
-    border: 2px solid lightgoldenrodyellow;
   }
 }

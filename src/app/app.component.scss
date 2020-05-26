@@ -30,13 +30,27 @@
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
 
+  #navigation-small {
+    font-weight: bold;
+
+    .active-route {
+      background-color: $highlight;
+      color: white;
+    }
+  }
+
+  h3#query-history-header-small {
+    padding-left: 12px;
+  }
+
   div#app-container {
     display: grid;
     min-height: 100vh;
     grid-template-areas: 'header' 'main' 'footer';
-    grid-template-rows: 80px auto $footer-height;
+    grid-template-rows: 80px auto min-content;
     justify-items: stretch;
     align-items: stretch;
+    background-color: mat-color($background, background);
 
     header {
       @include mat-elevation(6);
@@ -46,7 +60,12 @@
       display: grid;
       grid-template-columns: 200px auto;
       align-items: center;
-      padding: 8px 24px;
+      @media (max-width: 1279.99px) {
+        padding-left: 8px;
+      }
+      @media (min-width: 1280px) {
+        padding: 8px 24px;
+      }
 
       .app-header-left {
         jutify-self: start;
@@ -64,10 +83,6 @@
 
       .app-header-right {
         justify-self: end;
-
-        .active-route {
-          background-color: $highlight;
-        }
 
         .mat-button-wrapper {
           font-size: 1.1em;
@@ -89,19 +104,49 @@
       mat-sidenav {
         min-width: 320px;
       }
+
+      #app-main-content {
+        width: 100%;
+      }
     }
 
     footer {
       grid-area: footer;
+      justify-self: center;
       padding: 0px 10px;
       text-align: center;
       background-color: mat-color($background, background);
       color: mat-color($foreground, foreground);
-      height: $footer-height;
-      line-height: $footer-height;
 
-      a img {
-        max-height: 30px;
+      @media (max-width: 719.99px) {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        grid-row-gap: 12px;
+        padding-top: 16px;
+
+        a img {
+          max-height: 24px;
+        }
+      }
+
+      @media (min-width: 720px) and (max-width: 1279.99px) {
+        display: grid;
+        grid-template-columns: max-content max-content max-content max-content;
+        grid-row-gap: 16px;
+        padding: 16px;
+
+        a img {
+          max-height: 24px;
+        }
+      }
+
+      @media(min-width: 1280px) {
+        height: $footer-height;
+        line-height: $footer-height;
+
+        a img {
+          max-height: 30px;
+        }
       }
     }
   }

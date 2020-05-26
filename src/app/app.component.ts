@@ -29,6 +29,7 @@ import {faTwitter} from '@fortawesome/free-brands-svg-icons';
 import {faEnvelopeOpen} from '@fortawesome/free-regular-svg-icons';
 import {faDatabase} from '@fortawesome/free-solid-svg-icons';
 import {DreimtInformationService} from './services/dreimt-information.service';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
@@ -45,7 +46,10 @@ export class AppComponent implements OnInit {
   public workCount: number;
   public currentDatabaseVersion = 'not available';
 
+  public isSmall: boolean;
+
   public constructor(
+    private breakpointObserver: BreakpointObserver,
     private workService: WorkService,
     private notificationService: NotificationService,
     private toastService: ToastService,
@@ -53,6 +57,11 @@ export class AppComponent implements OnInit {
     private dreimtInformationService: DreimtInformationService
   ) {
     this.workCount = 0;
+
+    this.breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small
+    ]).subscribe(result => this.isSmall = result.matches);
   }
 
   public ngOnInit(): void {
