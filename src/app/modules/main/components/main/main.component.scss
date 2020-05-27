@@ -25,7 +25,7 @@
 $primary: #455a64;
 $highlight: #f5085c;
 
-@media (max-width: 1279.99px) {
+@media (max-width: 959.99px) {
   #main-content {
     display: grid;
     grid-template-columns: 1fr;
@@ -128,7 +128,7 @@ $highlight: #f5085c;
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 960px) {
   #main-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -168,9 +168,9 @@ $highlight: #f5085c;
       button {
         background-color: $primary;
         white-space: normal;
-        font-size: 0.8em;
+        font-size: 1.4vw;
         width: 100%;
-        padding: 8px;
+        padding: 12px;
         border-radius: 12px;
         border: 2px solid lightgray;
       }
@@ -192,7 +192,7 @@ $highlight: #f5085c;
       }
 
       .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
-        height: 32px;
+        height: auto;
       }
     }
 

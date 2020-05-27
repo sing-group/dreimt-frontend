@@ -61,7 +61,10 @@ export class AppComponent implements OnInit {
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
       Breakpoints.Small
-    ]).subscribe(result => this.isSmall = result.matches);
+    ]).subscribe(result => {
+      console.log(result);
+      this.isSmall = result.matches;
+    });
   }
 
   public ngOnInit(): void {
