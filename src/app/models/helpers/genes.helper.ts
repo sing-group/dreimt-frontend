@@ -34,15 +34,15 @@ export class GenesHelper {
 
   private static toGmt(genes: UpDownGenes | GeneSet): string {
     if (UpDownGenes.isA(genes)) {
-      return 'UP\tNA\t' + genes.up.join('\t') + '\n' + 'DOWN\tNA\t' + genes.down.join('\t') + '\n';
+      return 'GENES_UP\tNA\t' + genes.up.join('\t') + '\n' + 'GENES_DN\tNA\t' + genes.down.join('\t') + '\n';
     } else if (GeneSet.isA(genes)) {
-      return 'GS\tNA\t' + genes.genes.join('\t') + '\n';
+      return 'GENES\tNA\t' + genes.genes.join('\t') + '\n';
     }
   }
 
   private static toGmx(genes: UpDownGenes | GeneSet): string {
     if (UpDownGenes.isA(genes)) {
-      let gmxString = 'UP\tDOWN\nNA\tNA\n';
+      let gmxString = 'GENES_UP\tGENES_DN\nNA\tNA\n';
       let up = 0;
       let down = 0;
       while (up < genes.up.length || down < genes.down.length) {
@@ -63,7 +63,7 @@ export class GenesHelper {
 
       return gmxString;
     } else if (GeneSet.isA(genes)) {
-      return 'GS\nNA\n' + genes.genes.join('\n');
+      return 'GENES\nNA\n' + genes.genes.join('\n');
     }
   }
 }
