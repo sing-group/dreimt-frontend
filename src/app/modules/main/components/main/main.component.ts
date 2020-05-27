@@ -31,6 +31,7 @@ class SampleLink {
   constructor(
     public readonly title: string,
     public readonly route: string,
+    public readonly order: number,
     public readonly queryParams: { [p: string]: any }
   ) {
   }
@@ -46,6 +47,7 @@ export class MainComponent implements OnInit {
     new SampleLink(
       'Which drugs can inhibit TOX overexpression in T CD8+ cells?',
       '/database',
+      3,
       {
         cellType1Effect: 'INHIBIT',
         cellType1Treatment: 'Overexpression [TOX]',
@@ -58,6 +60,7 @@ export class MainComponent implements OnInit {
     new SampleLink(
       'Which drugs can inhibit macrophage M2 polarization?',
       '/database',
+      1,
       {
         cellType1: 'Macrophage',
         cellSubType1: 'Macrophage M2',
@@ -70,6 +73,7 @@ export class MainComponent implements OnInit {
     new SampleLink(
       'Which immune signatures are modulated by Vinorelbine?',
       '/database',
+      2,
       {
         drugCommonName: 'vinorelbine',
         minTau: 90
@@ -78,6 +82,7 @@ export class MainComponent implements OnInit {
     new SampleLink(
       'Which drugs can inhibit Colorectal cancer T-regulatory cells in humans?',
       '/database',
+      5,
       {
         cellType1: 'T cell',
         cellSubType1: 'T regulatory',
@@ -90,6 +95,7 @@ export class MainComponent implements OnInit {
     new SampleLink(
       'Which drugs can boost anti-LIF treatment in macrophages?',
       '/database',
+      4,
       {
         cellType1Effect: 'BOOST',
         cellType1Treatment: 'anti-LIF',
@@ -100,6 +106,7 @@ export class MainComponent implements OnInit {
     new SampleLink(
       'Which approved drugs can modulate signature expression from Hugo et al. 2016 (PubMed ID: 26997480)?',
       '/database',
+      6,
       {
         drugStatus: 'APPROVED',
         disease: 'Immunotherapy',
@@ -108,6 +115,10 @@ export class MainComponent implements OnInit {
       }
     )
   ];
+
+  public sortSample = (a, b) => {
+    return a.order - b.order;
+  }
 
   public stats: DreimtStatsModel;
   public isSmall: boolean;

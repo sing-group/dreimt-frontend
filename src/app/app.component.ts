@@ -62,7 +62,6 @@ export class AppComponent implements OnInit {
       Breakpoints.XSmall,
       Breakpoints.Small
     ]).subscribe(result => {
-      console.log(result);
       this.isSmall = result.matches;
     });
   }

@@ -57,7 +57,7 @@
       DREIMTdb examples:
     </p>
     <mat-nav-list role="navigation">
-      <mat-list-item classList="small-list-item" *ngFor="let sample of samples" [routerLink]="sample.route" [queryParams]="sample.queryParams">
+      <mat-list-item classList="small-list-item" *ngFor="let sample of samples.sort(sortSample)" [routerLink]="sample.route" [queryParams]="sample.queryParams">
         <mat-icon matListIcon>search</mat-icon>
         <p mat-line>{{sample.title}}</p>
       </mat-list-item>
