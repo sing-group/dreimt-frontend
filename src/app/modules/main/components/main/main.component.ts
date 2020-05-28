@@ -80,7 +80,7 @@ export class MainComponent implements OnInit {
       }
     ),
     new SampleLink(
-      'Which drugs can inhibit Colorectal cancer T-regulatory cells in humans?',
+      'Which drugs can inhibit colorectal cancer T-regulatory cells in humans?',
       '/database',
       5,
       {

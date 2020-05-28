@@ -38,7 +38,7 @@
       <button mat-button routerLink="/query/signatures-comparison" routerLinkActive="active-route"
               routerLinkActiveOptions="{exact:true}"
               matTooltip="Opens a query panel to find similar signatures or geneset in the database to a custom signature or geneset by calculating the Jaccard index.">
-        Signatures comparison
+        Signature comparison
       </button>
       <button mat-button routerLink="/database" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}"
               matTooltip="Opens the view to explore the database of calculated drug prioritizations.">
@@ -53,8 +53,8 @@
         REST API
       </button>
       <button mat-button [matBadge]="workCount" matBadgePosition="after" matBadgeColor="accent"
-              (click)="queriesList.toggle()" matTooltip="Opens the browser queries history list.">
-        Queries history
+              (click)="queriesList.toggle()" matTooltip="Opens the browser query history list.">
+        Query history
       </button>
     </div>
   </header>
@@ -72,7 +72,7 @@
             <a mat-list-item routerLink="/query/signatures-comparison" routerLinkActive="active-route"
                routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
                matTooltip="Opens a query panel to find similar signatures or geneset in the database to a custom signature or geneset by calculating the Jaccard index.">
-              Signatures comparison
+              Signature comparison
             </a>
             <a mat-list-item routerLink="/database" routerLinkActive="active-route"
                routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
@@ -91,7 +91,7 @@
             </a>
           </mat-nav-list>
           <hr/>
-          <h3 id="query-history-header-small">Queries history</h3>
+          <h3 id="query-history-header-small">Query history</h3>
         </ng-template>
         <app-work-list></app-work-list>
       </mat-sidenav>

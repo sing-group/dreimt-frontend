@@ -29,7 +29,7 @@ export class JaccardResultsViewComponent {
         .pipe(
           catchError(
             (error: Error) => {
-              this.errorMessage = 'Error loading signatures comparison result with id = ' + uuid;
+              this.errorMessage = 'Error loading signature comparison result with id = ' + uuid;
               return throwError(error);
             }
           ))

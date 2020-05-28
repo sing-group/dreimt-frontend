@@ -21,8 +21,8 @@
 
 <mat-card>
   <mat-card-title>Drug prioritization query</mat-card-title>
-  <mat-card-subtitle>This panel allows you to provide a gene list (HUGO Gene Symbols) to retrieve a prioritized ranking
-    of drugs candidates to modulate the immune cell signature.
+  <mat-card-subtitle>This panel allows you to provide a gene list (HUGO gene symbols) to retrieve a prioritized ranking
+    of drug candidates to modulate the immune cell signature.
   </mat-card-subtitle>
 
   <mat-card-content class="query-container">
@@ -31,7 +31,7 @@
 
     <mat-form-field class="query-title">
       <input matInput placeholder="Query title" [(ngModel)]="queryTitle"
-             matTooltip="This title will be used to identify your query in the queries history panel.">
+             matTooltip="This title will be used to identify your query in the query history panel.">
     </mat-form-field>
 
     <app-query-case-reference-types #queryTypesComponent class="query-types" [debounceTime]="750"
