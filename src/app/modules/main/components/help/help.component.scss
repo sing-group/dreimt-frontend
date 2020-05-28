@@ -16,3 +16,32 @@ markdown#help {
     white-space: normal;
   }
 }
+
+markdown ::ng-deep {
+  table {
+    width: 50%;
+    overflow: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  table tr {
+    background-color: #fff;
+    border-top: 1px solid #c6cbd1;
+  }
+
+  table thead tr {
+    background-color: #E8E8E8;
+  }
+
+  table tr:nth-child(2n) {
+    background-color: #F8F8F8;
+  }
+
+  table td, table th {
+    padding: 6px 13px;
+    border: 1px solid #dfe2e5;
+  }
+}
