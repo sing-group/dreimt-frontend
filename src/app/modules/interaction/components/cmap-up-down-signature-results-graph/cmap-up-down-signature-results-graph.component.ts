@@ -27,6 +27,7 @@ import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interaction
 import {MatDialog} from '@angular/material/dialog';
 import {HtmlDialogComponent} from '../../../shared/components/html-dialog/html-dialog.component';
 import {CmapGeneSetSignatureDrugInteraction} from '../../../../models/interactions/cmap-gene-set/cmap-gene-set-signature-drug-interaction.model';
+import {CapitalizePipe} from '../../../shared/pipes/capitalize.pipe';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -65,6 +66,8 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
   private static POSITIVE_TAU_MARKER_FILL_COLOR = '#FF9994';
   private static NEGATIVE_TAU_COLOR = 'green';
   private static NEGATIVE_TAU_MARKER_FILL_COLOR = 'lightgreen';
+
+  private static CAPITALIZE_PIPE = new CapitalizePipe();
 
   @Input() public dataSource: CmapUpDownSignatureResultsDataSource;
 
@@ -481,16 +484,16 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
   private static interactionTooltip(interaction: CmapUpDownSignatureDrugInteraction): string {
     const dss = interaction.drug.dss ? interaction.drug.dss.toFixed(4) : 'NA';
     const moa = interaction.drug.moa.length > 0 ? interaction.drug.moa.join(', ') : 'NA';
+    const status = CmapUpDownSignatureResultsGraphComponent.CAPITALIZE_PIPE.transform(interaction.drug.status);
 
     return `
-            <b>Drug effect</b>: ${interaction.drugEffect} <br/>
+            <b>Drug</b>: ${interaction.drug.commonName} <br/>
+            <b>&nbsp&nbspStatus</b>: ${status} <br/>
+            <b>&nbsp&nbspMOA</b>: ${moa} <br/>
+            <b>&nbsp&nbspDSS</b>: ${dss} <br/>
             <b>TAU</b>: ${interaction.tau.toFixed(4)} <br/>
             <b>Up Genes FDR</b>: ${interaction.upFdr.toFixed(4)} <br/>
             <b>Down Genes FDR</b>: ${interaction.downFdr.toFixed(4)} <br/>
-            <b>Drug</b>: ${interaction.drug.commonName} <br/>
-            <b>&nbsp&nbspStatus</b>: ${interaction.drug.status} <br/>
-            <b>&nbsp&nbspMOA</b>: ${moa} <br/>
-            <b>&nbsp&nbspDSS</b>: ${dss} <br/>
           `;
   }
 

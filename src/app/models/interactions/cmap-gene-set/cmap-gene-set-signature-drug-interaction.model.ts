@@ -25,13 +25,11 @@ export class CmapGeneSetSignatureDrugInteraction {
   public readonly drug: Drug;
   public readonly tau: number;
   public readonly fdr: number;
-  public readonly drugEffect: string;
 
   public static isA(object: any): object is CmapGeneSetSignatureDrugInteraction {
     return object !== undefined && object !== null
       && Drug.isA(object.drug)
       && typeof object.tau === 'number'
-      && typeof object.fdr === 'number'
-      && typeof object.drugEffect === 'string';
+      && typeof object.fdr === 'number';
   }
 }
