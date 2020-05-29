@@ -87,7 +87,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
       enabled: false
     },
     legend: {
-      verticalAlign: 'bottom'
+      verticalAlign: 'top'
     },
     exporting: {
       enabled: true,
@@ -245,7 +245,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
       },
       {
         // Positive TAU (Up)
-        name: 'Geneset up',
+        name: 'Signature up',
         data: [],
         color: 'black',
         marker: {
@@ -265,7 +265,7 @@ export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDes
       },
       {
         // Positive TAU (Down)
-        name: 'Geneset down',
+        name: 'Signature down',
         data: [],
         color: 'black',
         marker: {

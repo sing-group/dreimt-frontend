@@ -43,7 +43,7 @@
     </mat-card-content>
   </mat-card>
 
-  <app-cmap-drug-results-summary [dataSource]="dataSource">
+  <app-cmap-drug-results-summary [dataSource]="dataSource" [titleInfoTooltip]="getTitleInfoTooltip()">
     <app-signature-view-graph [dataSource]="dataSource"></app-signature-view-graph>
   </app-cmap-drug-results-summary>
   <app-signature-view-table [signature]="signature" [dataSource]="dataSource"

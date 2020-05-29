@@ -66,4 +66,12 @@ export class SignatureViewComponent implements OnInit {
   public isError(): boolean {
     return this.errorMessage !== undefined;
   }
+
+  public getTitleInfoTooltip(): string {
+    return 'Signature: Gene list rank-ordered according to their differential expression, immune cells relative to control. Signatures ' +
+      'can be composed of either one or both of the follwing genesets:\n\n' +
+      '   - Signature up: geneset composed of the topmost signature upregulated genes.\n\n' +
+      '   - Signature down: geneset composed of the topmost signature downregulated genes.\n\n' +
+      '   - Geneset: group of genes representing an immune cell without specified control (e.g. macrophage core genes).';
+  }
 }

@@ -54,10 +54,11 @@
       DREIMT can also prioritize drug associations from user-provided immune signatures.
     </p>
     <p>
-      DREIMTdb examples:
+      DREIMTdb example queries:
     </p>
     <mat-nav-list role="navigation">
-      <mat-list-item classList="small-list-item" *ngFor="let sample of samples.sort(sortSample)" [routerLink]="sample.route" [queryParams]="sample.queryParams">
+      <mat-list-item classList="small-list-item" *ngFor="let sample of samples.sort(sortSample)"
+                     [routerLink]="sample.route" [queryParams]="sample.queryParams">
         <mat-icon matListIcon>search</mat-icon>
         <p mat-line>{{sample.title}}</p>
       </mat-list-item>
@@ -66,7 +67,8 @@
 
   <div id="home-image-container">
     <h2>DREIMT workflow</h2>
-    <p *ngIf="stats">DREIMT integrates <strong>{{stats.drugCount | number}}</strong> consensus drug profiles data set and
+    <p *ngIf="stats">DREIMT integrates <strong>{{stats.drugCount | number}}</strong> consensus drug profiles data set
+      and
       <strong>{{stats.signaturesCount | number}}</strong> manually curated immune gene expression signatures to generate
       pairwise drug profile-immune gene expression signature scores. Scores are prioritized to generate a drug
       profile-immune gene expression signature association score (tau). DREIMT uses tau score, FDR false discovery rate)

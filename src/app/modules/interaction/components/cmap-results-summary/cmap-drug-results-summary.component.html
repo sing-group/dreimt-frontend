@@ -21,7 +21,12 @@
 
 <mat-card>
   <mat-card-header>
-    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-title>{{title}}
+      <mat-icon *ngIf="titleInfoTooltip" [inline]="true" class="info-icon"
+                [matTooltip]="titleInfoTooltip">
+        info
+      </mat-icon>
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div *ngIf="isLoading()">

@@ -104,7 +104,7 @@ export class CmapGeneSetSignatureResultsGraphComponent implements AfterViewInit,
       enabled: false
     },
     legend: {
-      verticalAlign: 'bottom'
+      enabled: false
     },
     exporting: {
       enabled: true,

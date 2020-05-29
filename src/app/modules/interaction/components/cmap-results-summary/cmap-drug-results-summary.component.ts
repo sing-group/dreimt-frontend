@@ -36,6 +36,7 @@ export interface DrugContainer {
 export class CmapDrugResultsSummaryComponent implements OnInit, OnDestroy {
 
   @Input() public title = 'Drug summary';
+  @Input() public titleInfoTooltip;
   @Input() public dataSource: PaginatedDataSource<DrugContainer>;
 
   private dataSourceSubscription: Subscription;
