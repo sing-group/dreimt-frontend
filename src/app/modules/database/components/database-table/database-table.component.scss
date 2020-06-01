@@ -100,3 +100,9 @@ td.mat-cell {
 .mat-column-tau, .mat-column-upFdr, .mat-column-downFdr, .mat-column-drugDss {
   max-width: 65px;
 }
+
+app-database-table-filters {
+  display: block;
+  max-width: 960px;
+  margin: auto;
+}
