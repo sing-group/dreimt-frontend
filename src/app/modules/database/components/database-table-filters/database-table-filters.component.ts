@@ -33,6 +33,7 @@ import {FieldFilterCellTypeModel} from '../../../shared/components/filter-field/
 import {ParamMap} from '@angular/router';
 import {DrugEffect} from '../../../../models/database/drug-effect.enum';
 import {formatTitle} from '../../../../utils/types';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-database-table-filters',
@@ -93,6 +94,21 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
+
+  private drugCommonNameValuesObservable: Subscription;
+  private signatureNameSubscription: Subscription;
+  private cellTypeAndSubtype1ValuesSubscription: Subscription;
+  private cellTypeAndSubtype2ValuesSubscription: Subscription;
+  private cellType1DiseaseValuesSubscription: Subscription;
+  private cellType1TreatmentValuesSubscription: Subscription;
+  private diseasesSubscription: Subscription;
+  private organismsSubscription: Subscription;
+  private signatureSourceDbsSubscription: Subscription;
+  private signaturePubMedIdsSubscription: Subscription;
+  private experimentalDesignSubscription: Subscription;
+  private drugStatusValuesSubscription: Subscription;
+  private drugMoasSubscription: Subscription;
+  private interactionTypesSubscription: Subscription;
 
   @ViewChild('cellType1EffectBasic', {static: true}) private cellType1EffectBasicComponent: FilterFieldComponent;
   @ViewChild('cellType1EffectAdvanced', {static: true}) private cellType1EffectAdvancedComponent: FilterFieldComponent;
@@ -239,42 +255,81 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   private loadDrugCommonNames(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugCommonNameValues(queryParams)
-      .subscribe(values => this.drugCommonNameFieldFilter.update(values));
+    if (Boolean(this.drugCommonNameValuesObservable)) {
+      this.drugCommonNameValuesObservable.unsubscribe();
+      this.drugCommonNameValuesObservable = null;
+    }
+    this.drugCommonNameValuesObservable =
+      this.service.listDrugCommonNameValues(queryParams)
+        .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
 
   private loadDrugMoas(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugMoaValues(queryParams)
+    if (Boolean(this.drugMoasSubscription)) {
+      this.drugMoasSubscription.unsubscribe();
+      this.drugMoasSubscription = null;
+    }
+    this.drugMoasSubscription =
+      this.service.listDrugMoaValues(queryParams)
       .subscribe(values => this.drugMoaFieldFilter.update(values));
   }
 
   private loadDrugStatusValues(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugStatusValues(queryParams)
+    if (Boolean(this.drugStatusValuesSubscription)) {
+      this.drugStatusValuesSubscription.unsubscribe();
+      this.drugStatusValuesSubscription = null;
+    }
+    this.drugStatusValuesSubscription = this.service.listDrugStatusValues(queryParams)
       .subscribe(values => this.drugStatusFieldFilter.update(values));
   }
 
   private loadSignatureNames(queryParams: DatabaseQueryParams): void {
-    this.service.listSignatureNameValues(queryParams)
+    if (Boolean(this.signatureNameSubscription)) {
+      this.signatureNameSubscription.unsubscribe();
+      this.signatureNameSubscription = null;
+    }
+    this.signatureNameSubscription =
+      this.service.listSignatureNameValues(queryParams)
       .subscribe(values => this.signatureNameFieldFilter.update(values));
   }
 
   private loadCellTypeAndSubtype1Values(queryParams: DatabaseQueryParams): void {
-    this.service.listCellTypeAndSubtype1Values(queryParams)
+    if (Boolean(this.cellTypeAndSubtype1ValuesSubscription)) {
+      this.cellTypeAndSubtype1ValuesSubscription.unsubscribe();
+      this.cellTypeAndSubtype1ValuesSubscription = null;
+    }
+    this.cellTypeAndSubtype1ValuesSubscription =
+      this.service.listCellTypeAndSubtype1Values(queryParams)
       .subscribe(values => this.cellTypeAndSubtype1FieldFilter.updateCellTypeAndSubTypeValues(values, true));
   }
 
   private loadCellTypeAndSubtype2Values(queryParams: DatabaseQueryParams): void {
-    this.service.listCellTypeAndSubtype2Values(queryParams)
+    if (Boolean(this.cellTypeAndSubtype2ValuesSubscription)) {
+      this.cellTypeAndSubtype2ValuesSubscription.unsubscribe();
+      this.cellTypeAndSubtype2ValuesSubscription = null;
+    }
+    this.cellTypeAndSubtype2ValuesSubscription =
+      this.service.listCellTypeAndSubtype2Values(queryParams)
       .subscribe(values => this.cellTypeAndSubtype2FieldFilter.updateCellTypeAndSubTypeValues(values, this.isAllowedCellSubtype2()));
   }
 
   private loadCellType1DiseaseValues(queryParams: DatabaseQueryParams): void {
-    this.service.loadCellType1DiseaseValues(queryParams)
+    if (Boolean(this.cellType1DiseaseValuesSubscription)) {
+      this.cellType1DiseaseValuesSubscription.unsubscribe();
+      this.cellType1DiseaseValuesSubscription = null;
+    }
+    this.cellType1DiseaseValuesSubscription =
+      this.service.loadCellType1DiseaseValues(queryParams)
       .subscribe(values => this.cellType1DiseaseFieldFilter.update(values));
   }
 
   private loadCellType1TreatmentValues(queryParams: DatabaseQueryParams): void {
-    this.service.loadCellType1TreatmentValues(queryParams)
+    if (Boolean(this.cellType1TreatmentValuesSubscription)) {
+      this.cellType1TreatmentValuesSubscription.unsubscribe();
+      this.cellType1TreatmentValuesSubscription = null;
+    }
+    this.cellType1TreatmentValuesSubscription =
+      this.service.loadCellType1TreatmentValues(queryParams)
       .subscribe(values => this.cellType1TreatmentFieldFilter.update(values));
   }
 
@@ -283,32 +338,62 @@ export class DatabaseTableFiltersComponent implements OnInit {
   }
 
   private loadDiseases(queryParams: DatabaseQueryParams): void {
-    this.service.listDiseaseValues(queryParams)
+    if (Boolean(this.diseasesSubscription)) {
+      this.diseasesSubscription.unsubscribe();
+      this.diseasesSubscription = null;
+    }
+    this.diseasesSubscription =
+      this.service.listDiseaseValues(queryParams)
       .subscribe(values => this.diseaseFieldFilter.update(values));
   }
 
   private loadOrganisms(queryParams: DatabaseQueryParams): void {
-    this.service.listOrganismValues(queryParams)
+    if (Boolean(this.organismsSubscription)) {
+      this.organismsSubscription.unsubscribe();
+      this.organismsSubscription = null;
+    }
+    this.organismsSubscription =
+      this.service.listOrganismValues(queryParams)
       .subscribe(values => this.organismFieldFilter.update(values));
   }
 
   private loadSignatureSourceDbs(queryParams: DatabaseQueryParams): void {
-    this.service.listSignatureSourceDbValues(queryParams)
+    if (Boolean(this.signatureSourceDbsSubscription)) {
+      this.signatureSourceDbsSubscription.unsubscribe();
+      this.signatureSourceDbsSubscription = null;
+    }
+    this.signatureSourceDbsSubscription =
+      this.service.listSignatureSourceDbValues(queryParams)
       .subscribe(values => this.signatureSourceDbFieldFilter.update(values));
   }
 
   private loadSignaturePubMedIds(queryParams: DatabaseQueryParams): void {
-    this.service.listSignaturePubMedIdValues(queryParams)
+    if (Boolean(this.signaturePubMedIdsSubscription)) {
+      this.signaturePubMedIdsSubscription.unsubscribe();
+      this.signaturePubMedIdsSubscription = null;
+    }
+    this.signaturePubMedIdsSubscription =
+      this.service.listSignaturePubMedIdValues(queryParams)
       .subscribe(values => this.pubMedIdFieldFilter.update(values));
   }
 
   private loadExperimentalDesigns(queryParams: DatabaseQueryParams): void {
-    this.service.listExperimentalDesignValues(queryParams)
+    if (Boolean(this.experimentalDesignSubscription)) {
+      this.experimentalDesignSubscription.unsubscribe();
+      this.experimentalDesignSubscription = null;
+    }
+    this.experimentalDesignSubscription =
+      this.service.listExperimentalDesignValues(queryParams)
       .subscribe(values => this.experimentalDesignFilter.update(values));
   }
 
   private loadInteractionTypes(queryParams: DatabaseQueryParams): void {
-    this.service.listInteractionTypeValues(queryParams)
+    if (Boolean(this.interactionTypesSubscription)) {
+      this.interactionTypesSubscription.unsubscribe();
+      this.interactionTypesSubscription = null;
+    }
+    this.interactionTypesSubscription =
+      this.service.listInteractionTypeValues(queryParams)
       .subscribe(values => this.interactionTypeFilter.update(values));
   }
 
