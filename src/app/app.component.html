@@ -32,16 +32,16 @@
     <div class="app-header-right" *ngIf="!isSmall">
       <button mat-button routerLink="/query/drug-prioritization" routerLinkActive="active-route"
               routerLinkActiveOptions="{exact:true}"
-              matTooltip="Opens a query panel to get drug prioritizations for a custom signature or geneset.">Drug
-        prioritization
+              matTooltip="Opens a query panel to search for the best candidate drugs to boost or inhibit the user-defined immune gene expression signature of interest.">
+        Drug prioritization
       </button>
       <button mat-button routerLink="/query/signatures-comparison" routerLinkActive="active-route"
               routerLinkActiveOptions="{exact:true}"
-              matTooltip="Opens a query panel to find similar signatures or geneset in the database to a custom signature or geneset by calculating the Jaccard index.">
+              matTooltip="Opens a query panel to allow users to compare their own gene signatures against full DREIMTdb contents.">
         Signature comparison
       </button>
       <button mat-button routerLink="/database" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}"
-              matTooltip="Opens the view to explore the database of calculated drug prioritizations.">
+              matTooltip="Opens DREIMTdb interface allowing an easy interrogation of the drug-immune signature associations.">
         Database
       </button>
       <button mat-button routerLink="/help" routerLinkActive="active-route" routerLinkActiveOptions="{exact:true}"
@@ -66,17 +66,17 @@
           <mat-nav-list id="navigation-small">
             <a mat-list-item routerLink="/query/drug-prioritization" routerLinkActive="active-route"
                routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
-               matTooltip="Opens a query panel to get drug prioritizations for a custom signature or geneset.">
+               matTooltip="Opens a query panel to search for the best candidate drugs to boost or inhibit the user-defined immune gene expression signature of interest.">
               Drug prioritization
             </a>
             <a mat-list-item routerLink="/query/signatures-comparison" routerLinkActive="active-route"
                routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
-               matTooltip="Opens a query panel to find similar signatures or geneset in the database to a custom signature or geneset by calculating the Jaccard index.">
+               matTooltip="Opens a query panel to allow users to compare their own gene signatures against full DREIMTdb contents.">
               Signature comparison
             </a>
             <a mat-list-item routerLink="/database" routerLinkActive="active-route"
                routerLinkActiveOptions="{exact:true}" (click)="queriesList.toggle()"
-               matTooltip="Opens the view to explore the database of calculated drug prioritizations.">
+               matTooltip="Opens DREIMTdb interface allowing an easy interrogation of the drug-immune signature associations.">
               Database
             </a>
             <a mat-list-item routerLink="/help" routerLinkActive="active-route"
@@ -127,7 +127,8 @@
       Issues &amp; feedback
     </a>
     <a mat-button disableRipple="true" (click)="$event.preventDefault(); $event.stopPropagation()">
-      <fa-icon [icon]="faDatabase"></fa-icon> {{this.currentDatabaseVersion}}
+      <fa-icon [icon]="faDatabase"></fa-icon>
+      {{this.currentDatabaseVersion}}
     </a>
   </footer>
 </div>

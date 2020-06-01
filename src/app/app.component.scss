@@ -32,11 +32,11 @@
 
   #navigation-small {
     font-weight: bold;
+  }
 
-    .active-route {
-      background-color: $highlight;
-      color: white;
-    }
+  .active-route {
+    background-color: $highlight;
+    color: white;
   }
 
   h3#query-history-header-small {
