@@ -21,5 +21,5 @@
 
 export const environment = {
   production: true,
-  dreimtUrl: 'http://dreimt.sing-group.org/dreimt-backend/rest/api'
+  dreimtUrl: 'http://dreimt.org/dreimt-backend/rest/api'
 };

@@ -1,7 +1,7 @@
 {
   "name": "@dreimt/frontend",
-  "description": "DREIMT - Drug REpositioning for IMmuno Transcriptomics",
-  "version": "0.1.0-alpha.193",
+  "description": "DREIMT - A tool for immune modulation drug prioritization",
+  "version": "1.0.0",
   "license": "GPL-3.0",
   "author": {
     "name": "Hugo López-Fernández",
@@ -14,17 +14,17 @@
     "Kevin Troulé",
     "Gonzalo Gómez-López"
   ],
-  "repository": "https://dev.sing-group.org/gitlab/dreimt/frontend.git",
+  "repository": "https://github.com/sing-group/dreimt-frontend.git",
   "publishConfig": {
-    "registry": "https://maven.sing-group.org/repository/npm-snapshots/"
+    "registry": "https://maven.sing-group.org/repository/npm-releases/"
   },
   "scripts": {
-    "ng": "./node_modules/@angular/cli/bin/ng",
-    "start": "./node_modules/@angular/cli/bin/ng serve --open --host 0.0.0.0",
-    "build": "./node_modules/@angular/cli/bin/ng build --prod",
-    "test": "./node_modules/@angular/cli/bin/ng test",
-    "lint": "./node_modules/@angular/cli/bin/ng lint",
-    "e2e": "./node_modules/@angular/cli/bin/ng e2e"
+    "ng": "./node_modules/.bin/ng",
+    "start": "./node_modules/.bin/ng serve --open --host 0.0.0.0",
+    "build": "./node_modules/.bin/ng build --prod",
+    "test": "./node_modules/.bin/ng test",
+    "lint": "./node_modules/.bin/ng lint",
+    "e2e": "./node_modules/.bin/ng e2e"
   },
   "files": [
     "dist"
