@@ -1,7 +1,7 @@
 {
   "name": "@dreimt/frontend",
   "description": "DREIMT - A tool for immune modulation drug prioritization",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "GPL-3.0",
   "author": {
     "name": "Hugo López-Fernández",
@@ -22,6 +22,7 @@
     "ng": "./node_modules/.bin/ng",
     "start": "./node_modules/.bin/ng serve --open --host 0.0.0.0",
     "build": "./node_modules/.bin/ng build --prod",
+    "build-develop": "./node_modules/.bin/ng build --configuration development",
     "test": "./node_modules/.bin/ng test",
     "lint": "./node_modules/.bin/ng lint",
     "e2e": "./node_modules/.bin/ng e2e"

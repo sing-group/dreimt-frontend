@@ -77,7 +77,7 @@ export class QueryService {
 
   public getWorkResult(work: Work): Observable<JaccardQueryResultMetadata | CmapQueryUpDownSignatureResultsMetadata> {
     return this.http.get<JaccardQueryResultMetadata | CmapQueryUpDownSignatureResultsMetadata>(
-      work.resultReference
+      `${environment.dreimtUrl}/${work.resultReference}`
     )
       .pipe(
         tap(result => result.id = work.id.id),

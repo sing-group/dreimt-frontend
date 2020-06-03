@@ -209,7 +209,7 @@ export class InteractionsService {
       })
     };
 
-    return this.http.get<UpDownGenes>(signatureGenesUri, options).pipe(
+    return this.http.get<UpDownGenes>(`${environment.dreimtUrl}/${signatureGenesUri}`, options).pipe(
       DreimtError.throwOnError('Signature query error', 'Signature genes could not be retrieved.'),
       map((response: HttpResponse<UpDownGenes>) => (response.body))
     );
