@@ -46,8 +46,6 @@ export class DatabaseQueryParams {
   public readonly disease?: string;
   public readonly organism?: string;
   public readonly signaturePubMedId?: string;
-  public readonly drugSourceName?: string;
-  public readonly drugSourceDb?: string;
   public readonly drugCommonName?: string;
   public readonly drugMoa?: string;
   public readonly drugStatus?: string;
@@ -82,8 +80,6 @@ export class DatabaseQueryParams {
         a.disease === b.disease &&
         a.organism === b.organism &&
         a.signaturePubMedId === b.signaturePubMedId &&
-        a.drugSourceName === b.drugSourceName &&
-        a.drugSourceDb === b.drugSourceDb &&
         a.drugCommonName === b.drugCommonName &&
         a.drugMoa === b.drugMoa &&
         a.drugStatus === b.drugStatus &&
@@ -111,8 +107,6 @@ export class DatabaseQueryParams {
       params.disease !== undefined ||
       params.organism !== undefined ||
       params.signaturePubMedId !== undefined ||
-      params.drugSourceName !== undefined ||
-      params.drugSourceDb !== undefined ||
       params.drugCommonName !== undefined ||
       params.drugMoa !== undefined ||
       params.drugStatus !== undefined ||

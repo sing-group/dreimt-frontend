@@ -163,14 +163,6 @@ export class InteractionsService {
     );
   }
 
-  public listDrugSourceNameValues(queryParams: DatabaseQueryParams): Observable<string[]> {
-    return this.listValues('drug-source-name', queryParams);
-  }
-
-  public listDrugSourceDbValues(queryParams: DatabaseQueryParams): Observable<string[]> {
-    return this.listValues('drug-source-db', queryParams);
-  }
-
   public listExperimentalDesignValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('experimental-design', queryParams);
   }

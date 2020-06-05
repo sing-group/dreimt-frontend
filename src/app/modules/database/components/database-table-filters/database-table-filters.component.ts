@@ -449,7 +449,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
       organism: this.organismFieldFilter.getClearedFilter(),
       signatureSourceDb: undefined,
       signaturePubMedId: undefined,
-      drugSourceName: undefined,
       experimentalDesign: undefined,
       interactionType: undefined,
       minTau: null,
