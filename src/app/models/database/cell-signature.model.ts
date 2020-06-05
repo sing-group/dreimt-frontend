@@ -23,10 +23,10 @@ import {isArrayOfStrings} from '../../utils/types';
 
 export class CellSignature {
   public readonly signatureName: string;
-  public readonly cellTypeA: string[];
-  public readonly cellSubTypeA: string[];
-  public readonly cellTypeB: string[];
-  public readonly cellSubTypeB: string[];
+  public readonly cellTypeA: string;
+  public readonly cellSubTypeA: string;
+  public readonly cellTypeB: string;
+  public readonly cellSubTypeB: string;
   public readonly sourceDb: string;
   public readonly sourceDbUrl: string;
   public readonly experimentalDesign: string;
@@ -48,10 +48,10 @@ export class CellSignature {
   public static isA(object: any): object is CellSignature {
     return object !== undefined && object !== null
       && object.signatureName !== undefined
-      && isArrayOfStrings(object.cellTypeA)
-      && isArrayOfStrings(object.cellSubTypeA)
-      && isArrayOfStrings(object.cellTypeB)
-      && isArrayOfStrings(object.cellSubTypeB)
+      && object.cellTypeA !== undefined
+      && object.cellSubTypeA !== undefined
+      && object.cellTypeB !== undefined
+      && object.cellSubTypeB !== undefined
       && object.sourceDb !== undefined
       && object.sourceDbUrl !== undefined
       && object.experimentalDesign !== undefined

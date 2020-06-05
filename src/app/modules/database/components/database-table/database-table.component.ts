@@ -203,21 +203,19 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  public getCaseCellType(cellType: string[], cellSubType: string[]): string {
+  public getCaseCellType(cellType: string, cellSubType: string): string {
     return this.getCellType(cellType, cellSubType);
   }
 
-  public getReferenceCellType(cellType: string[], cellSubType: string[], interactionType: InteractionType): string {
+  public getReferenceCellType(cellType: string, cellSubType: string, interactionType: InteractionType): string {
     return interactionType === InteractionType.GENESET ? '' : this.getCellType(cellType, cellSubType);
   }
 
-  private getCellType(cellType: string[], cellSubType: string[]): string {
-    const cellTypeStr = cellType.join(', ');
-    const cellSubTypeStr = cellSubType.join(', ');
-    if (cellTypeStr === cellSubTypeStr) {
-      return cellTypeStr;
+  private getCellType(cellType: string, cellSubType: string): string {
+    if (cellType === cellSubType) {
+      return cellType;
     } else {
-      return `${cellTypeStr} <br> &#9;&#9;&boxur; ${cellSubTypeStr}`;
+      return `${cellSubType} <br> &#9;&#9;&boxur; ${cellSubType}`;
     }
   }
 

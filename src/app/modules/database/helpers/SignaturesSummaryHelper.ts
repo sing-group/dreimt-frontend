@@ -34,17 +34,15 @@ export class SignaturesSummaryHelper {
   public getInteractionSummary(interaction: DrugCellDatabaseInteraction): string {
     return this.getSummary(
       interaction.interactionType, interaction.signature.signatureName, interaction.drug.commonName, interaction.tau,
-      interaction.signature.stateA, interaction.signature.cellTypeA,
-      interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA,
-      interaction.signature.stateB, interaction.signature.cellTypeB,
-      interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB
+      interaction.signature.stateA, interaction.signature.cellSubTypeA, interaction.signature.treatmentA, interaction.signature.diseaseA,
+      interaction.signature.stateB, interaction.signature.cellSubTypeB, interaction.signature.treatmentB, interaction.signature.diseaseB
     );
   }
 
   public getSummary(
     interactionType: InteractionType, signatureName: string, drugCommonName: string, tau: number,
-    stateA: string, cellTypeA: string[], cellSubTypeA: string[], treatmentA: string[], diseaseA: string[],
-    stateB: string, cellTypeB: string[], cellSubTypeB: string[], treatmentB: string[], diseaseB: string[]
+    stateA: string, cellSubTypeA: string, treatmentA: string[], diseaseA: string[],
+    stateB: string, cellSubTypeB: string, treatmentB: string[], diseaseB: string[]
   ): string {
     let first = 'A';
     if (interactionType === InteractionType.SIGNATURE_DOWN) {
@@ -78,8 +76,8 @@ export class SignaturesSummaryHelper {
 
   private static _getExplanation(
     signatureName: string, effect: string, drug: string, addComparedTo: boolean,
-    stateA: string, subTypeA: string[], treatmentA: string[], diseaseA: string[], mapTreatmentA,
-    stateB: string, subTypeB: string[], treatmentB: string[], diseaseB: string[], mapTreatmentB
+    stateA: string, subTypeA: string, treatmentA: string[], diseaseA: string[], mapTreatmentA,
+    stateB: string, subTypeB: string, treatmentB: string[], diseaseB: string[], mapTreatmentB
   ): string {
 
     const treatmentAStr = treatmentA.length > 0 ?
@@ -89,7 +87,7 @@ export class SignaturesSummaryHelper {
     const diseaseAStr = diseaseA.length > 0 ? ` <span class="prediction-summary-disease">in ${this.concat(diseaseA)} </span>` : '';
 
     let explanation = `<span class="prediction-summary-drug"> ${drug} </span> <span class="prediction-summary-${effect}">${effect}</span> ${stateA} <b>
-        ${subTypeA.join('/')}</b> ${treatmentAStr}${diseaseAStr}`;
+        ${subTypeA}</b> ${treatmentAStr}${diseaseAStr}`;
 
     if (addComparedTo) {
       const treatmentBStr = treatmentB.length > 0 ?
@@ -99,7 +97,7 @@ export class SignaturesSummaryHelper {
       const diseaseBStr = diseaseB.length > 0 ? ` <span class="prediction-summary-disease">in ${this.concat(diseaseB)} </span>` : '';
 
       explanation = explanation + `<span class="prediction-summary"> compared to</span> ${stateB} <b>
-        ${subTypeB.join('/')}</b> ${treatmentBStr}${diseaseBStr}`;
+        ${subTypeB}</b> ${treatmentBStr}${diseaseBStr}`;
     }
 
     return explanation;

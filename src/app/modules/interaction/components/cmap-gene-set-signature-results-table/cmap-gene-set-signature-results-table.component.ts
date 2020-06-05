@@ -340,8 +340,8 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
 
     return this.signaturesSummaryHelper.getSummary(
       interactionType, 'query', interaction.drug.commonName, interaction.tau,
-      '', [], [this.metadata.caseType], [], [],
-      '', [], [this.metadata.referenceType], [], [],
+      '', this.metadata.caseType, [], [],
+      '', this.metadata.referenceType, [], [],
     );
   }
 

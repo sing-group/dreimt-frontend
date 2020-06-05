@@ -335,8 +335,8 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   public getSummary(interaction: CmapUpDownSignatureDrugInteraction): string {
     return this.signaturesSummaryHelper.getSummary(
       InteractionType.SIGNATURE, 'query', interaction.drug.commonName, interaction.tau,
-      '', [], [this.metadata.caseType], [], [],
-      '', [], [this.metadata.referenceType], [], [],
+      '', this.metadata.caseType, [], [],
+      '', this.metadata.referenceType, [], [],
     );
   }
 
