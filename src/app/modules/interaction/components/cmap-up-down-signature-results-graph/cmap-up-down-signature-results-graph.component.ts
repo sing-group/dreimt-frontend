@@ -59,7 +59,8 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
   private static DIALOG: MatDialog;
 
   private static TAU_THRESHOLD = 75;
-  private static Y_AXIS_MAX = 2.42;
+  private static Y_AXIS_MAX = 3.1;
+  private static Y_AXIS_MAX_FDR = 0.001;
   private static renderedObjects = [];
   private static OVERLAPPING_INTERACTIONS_MAP = new Map();
   private static POSITIVE_TAU_COLOR = 'red';
@@ -339,7 +340,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     }).add());
 
     this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawText(
-      hchart, 90.5, CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX - 0.05, 'BEST CANDIDATES')
+      hchart, 90.5, CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX - 0.1, 'BEST CANDIDATES')
       .css({color: 'red', fontWeight: 'bold', opacity: 0.5})
       .add());
 
@@ -367,7 +368,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     }).add());
 
     this.renderedObjects.push(CmapUpDownSignatureResultsGraphComponent.drawText(
-      hchart, -99.5, CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX - 0.05, 'BEST CANDIDATES')
+      hchart, -99.5, CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX - 0.1, 'BEST CANDIDATES')
       .css({color: 'green', fontWeight: 'bold', opacity: 0.5})
       .add());
 
@@ -502,7 +503,7 @@ export class CmapUpDownSignatureResultsGraphComponent implements AfterViewInit, 
     const y = CmapUpDownSignatureResultsGraphComponent.convertFdr(
       Math.max(
         Math.min(interaction.upFdr, interaction.downFdr),
-        0.005
+        CmapUpDownSignatureResultsGraphComponent.Y_AXIS_MAX_FDR
       )
     );
 
