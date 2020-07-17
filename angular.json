@@ -105,6 +105,9 @@
           "configurations": {
             "production": {
               "browserTarget": "dreimt-frontend:build:production"
+            },
+            "development": {
+              "browserTarget": "dreimt-frontend:build:development"
             }
           }
         },
@@ -159,6 +162,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "dreimt-frontend:serve:production"
+            },
+            "development": {
+              "devServerTarget": "dreimt-frontend:serve:development"
             }
           }
         },

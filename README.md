@@ -15,9 +15,23 @@ DREIMT can also prioritize drug associations from user-provided immune signature
 
 ## Development
 
-### Development server
+### Local development server
 
-Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` for a local dev server. This configuration will use the `environment.ts` configuration file.
+
+A browser will be automatically opened for the URL `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+### Remote development server
+
+Run `npm run start-development` for a remote dev server. This configuration will use the `environment.development.ts` configuration file.
+
+A browser will be automatically opened for the URL `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+### Production server
+
+Run `npm run start-production` for a remote production server (the one used by [Dreimt](http://dreimnt.org)). This configuration will use the `environment.prod.ts` configuration file.
+
+A browser will be automatically opened for the URL `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ### Code scaffolding
 
@@ -40,7 +54,7 @@ Run `npm test` to execute the unit tests via [Karma](https://karma-runner.github
 Run `npm run e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/). Before running the tests make sure you are serving the app via `ng serve`.
 
 ### Building with Docker
-Run `docker build -t evoppi-frontend:latest .` to build de image using the configuration in `Dockerfile`.
+Run `docker build -t dreimt-frontend:latest .` to build de image using the configuration in `Dockerfile`.
 
 ### Running with Docker
 Run `docker run -d --name evoppi-frontend -p 8080:80 evoppi-frontend:latest` to start the container running the frontend using [Nginx](https://github.com/nginx/nginx).
