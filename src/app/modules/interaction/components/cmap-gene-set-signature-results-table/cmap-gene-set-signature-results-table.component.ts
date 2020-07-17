@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2020 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -51,7 +51,9 @@ import {
 import {InteractionType} from '../../../../models/interaction-type.enum';
 import {SignaturesSummaryHelper} from '../../../database/helpers/SignaturesSummaryHelper';
 import {GeneSetType} from '../../../../models/geneset-type.enum';
+import {Drug} from '../../../../models/drug.model';
 import {formatTitle} from '../../../../utils/types';
+import {faExclamation} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cmap-gene-set-signature-results-table',
@@ -59,6 +61,8 @@ import {formatTitle} from '../../../../utils/types';
   styleUrls: ['./cmap-gene-set-signature-results-table.component.scss']
 })
 export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnChanges {
+  public readonly faExclamation = faExclamation;
+
   public static DEFAULT_TAU_FILTER = 75;
 
   public readonly debounceTime: number;
@@ -376,14 +380,12 @@ export class CmapGeneSetSignatureResultsTableComponent implements OnDestroy, OnC
     }
   }
 
-  public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
-    let tooltip = 'Source name: ' + interaction.drug.sourceName;
-    tooltip = tooltip + '\nStatus: ' + interaction.drug.status;
-    if (interaction.drug.targetGenes.length > 0) {
-      tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
-    }
+  public drugTooltip(drug: Drug): string {
+    return Drug.getTooltip(drug);
+  }
 
-    return tooltip;
+  public drugLink(drug: Drug): string {
+    return Drug.getPubChemLink(drug);
   }
 
   public navigateToDatabase(drugCommonName: string): void {

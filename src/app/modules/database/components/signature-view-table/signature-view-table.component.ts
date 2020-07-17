@@ -43,6 +43,8 @@ import {SignaturesSummaryHelper} from '../../helpers/SignaturesSummaryHelper';
 import {CellSignature} from '../../../../models/database/cell-signature.model';
 import {InteractionType} from '../../../../models/interaction-type.enum';
 import {formatTitle} from '../../../../utils/types';
+import {Drug} from '../../../../models/drug.model';
+import {faExclamation} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-signature-view-table',
@@ -50,6 +52,8 @@ import {formatTitle} from '../../../../utils/types';
   styleUrls: ['./signature-view-table.component.scss']
 })
 export class SignatureViewTableComponent implements OnDestroy, OnChanges {
+  public readonly faExclamation = faExclamation;
+
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -371,13 +375,12 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     }
   }
 
-  public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
-    let tooltip = 'Source name: ' + interaction.drug.sourceName;
-    if (interaction.drug.targetGenes.length > 0) {
-      tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
-    }
+  public drugTooltip(drug: Drug): string {
+    return Drug.getTooltip(drug);
+  }
 
-    return tooltip;
+  public drugLink(drug: Drug): string {
+    return Drug.getPubChemLink(drug);
   }
 
   public getSummary(interaction: DrugCellDatabaseInteraction): string {

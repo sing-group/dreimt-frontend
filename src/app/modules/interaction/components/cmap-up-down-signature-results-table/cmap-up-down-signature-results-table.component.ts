@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2020 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2019 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -45,10 +45,14 @@ import {Subscription} from 'rxjs';
 import {NumberFieldComponent} from '../../../shared/components/number-field/number-field.component';
 import {DrugCellDatabaseInteraction} from '../../../../models/database/drug-cell-database-interaction.model';
 import {Router} from '@angular/router';
-import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
+import {
+  CmapUpDownSignatureDrugInteraction
+} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {SignaturesSummaryHelper} from '../../../database/helpers/SignaturesSummaryHelper';
 import {InteractionType} from '../../../../models/interaction-type.enum';
 import {formatTitle} from '../../../../utils/types';
+import {Drug} from '../../../../models/drug.model';
+import {faExclamation} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-table',
@@ -56,6 +60,8 @@ import {formatTitle} from '../../../../utils/types';
   styleUrls: ['./cmap-up-down-signature-results-table.component.scss']
 })
 export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnChanges {
+  public readonly faExclamation = faExclamation;
+
   private static DEFAULT_TAU_FILTER = 75;
 
   public readonly debounceTime: number;
@@ -373,13 +379,12 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     }
   }
 
-  public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
-    let tooltip = 'Source name: ' + interaction.drug.sourceName;
-    if (interaction.drug.targetGenes.length > 0) {
-      tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
-    }
+  public drugTooltip(drug: Drug): string {
+    return Drug.getTooltip(drug);
+  }
 
-    return tooltip;
+  public drugLink(drug: Drug): string {
+    return Drug.getPubChemLink(drug);
   }
 
   public navigateToDatabase(drugCommonName: string): void {

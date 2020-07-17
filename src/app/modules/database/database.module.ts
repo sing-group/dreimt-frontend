@@ -49,6 +49,7 @@ import {SignatureViewTableComponent} from './components/signature-view-table/sig
 import {ExportGenesDialogComponent} from '../shared/components/export-genes-dialog/export-genes-dialog.component';
 import {SignatureViewGraphComponent} from './components/signature-view-graph/signature-view-graph.component';
 import {InteractionModule} from '../interaction/interaction.module';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import {InteractionModule} from '../interaction/interaction.module';
   imports: [
     CommonModule,
     DatabaseRoutingModule,
+    FontAwesomeModule,
     FormsModule,
     HttpClientModule,
     InteractionModule,

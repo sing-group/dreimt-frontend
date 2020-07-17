@@ -19,14 +19,27 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+export class DrugTargetGene {
+  public readonly geneName: string;
+  public readonly geneId: string;
+
+  public static isA(object: any): object is DrugTargetGene {
+    return object !== undefined && object !== null
+      && typeof object.geneName === 'string'
+      && typeof object.geneId === 'string';
+  }
+}
+
 export class Drug {
   public readonly commonName: string;
   public readonly sourceName: string;
   public readonly sourceDb: string;
   public readonly status: string;
   public readonly moa: string[];
-  public readonly targetGenes: string[];
+  public readonly targetGenes: DrugTargetGene[];
   public readonly dss: number;
+  public readonly pubChemId: string;
+  public readonly dbProfilesCount: number;
 
   public static isA(object: any): object is Drug {
     return object !== undefined && object !== null
@@ -35,11 +48,43 @@ export class Drug {
       && typeof object.sourceDb === 'string'
       && typeof object.status === 'string'
       && typeof object.dss === 'number'
+      && typeof object.pubChemId === 'string'
+      && typeof object.dbProfilesCount === 'number'
       && object.moa.every(function (i) {
         return typeof i === 'string';
       })
       && object.targetGenes.every(function (i) {
-        return typeof i === 'string';
+        return DrugTargetGene.isA(i);
       });
+  }
+
+  public static getPubChemLink(drug: Drug): string {
+    if (drug.pubChemId) {
+      return 'https://pubchem.ncbi.nlm.nih.gov/compound/' + drug.pubChemId;
+    } else {
+      return 'https://pubchem.ncbi.nlm.nih.gov/#query=' + drug.commonName;
+    }
+  }
+
+  public static getTooltip(drug: Drug): string {
+    let tooltip = '';
+
+    if (drug.sourceName) {
+      tooltip = tooltip + 'Source name: ' + drug.sourceName;
+    }
+
+    if (drug.targetGenes.length > 0) {
+      const targetGenes = drug.targetGenes.map(function (x) {
+        return x.geneName + (x.geneId === 'NA' ? '' : '(' + x.geneId + ')');
+      });
+      tooltip = tooltip + '\nTarget genes: ' + targetGenes;
+    }
+
+    if (drug.dbProfilesCount > 1) {
+      tooltip = tooltip + '\n\nWarning: this drug contains multiple drug profiles in DREIMT (multiple Broad IDs). ' +
+        'Contradictory conflicting results might appear.';
+    }
+
+    return tooltip;
   }
 }

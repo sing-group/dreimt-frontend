@@ -35,6 +35,8 @@ import {DatabaseTableFiltersComponent} from '../database-table-filters/database-
 import {InteractionType} from '../../../../models/interaction-type.enum';
 import {SignaturesSummaryHelper} from '../../helpers/SignaturesSummaryHelper';
 import {Subscription} from 'rxjs';
+import {Drug} from '../../../../models/drug.model';
+import {faExclamation} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-database',
@@ -42,6 +44,8 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./database-table.component.scss']
 })
 export class DatabaseTableComponent implements AfterViewInit, OnInit {
+  public readonly faExclamation = faExclamation;
+
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
@@ -186,13 +190,12 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     };
   }
 
-  public drugTooltip(interaction: DrugCellDatabaseInteraction): string {
-    let tooltip = 'Source name: ' + interaction.drug.sourceName;
-    if (interaction.drug.targetGenes.length > 0) {
-      tooltip = tooltip + '\nTarget genes: ' + interaction.drug.targetGenes;
-    }
+  public drugTooltip(drug: Drug): string {
+    return Drug.getTooltip(drug);
+  }
 
-    return tooltip;
+  public drugLink(drug: Drug): string {
+    return Drug.getPubChemLink(drug);
   }
 
   public getTauStyleColor(tau: number): string {

@@ -65,8 +65,7 @@ import {MarkdownModule} from 'ngx-markdown';
       pauseOnHover: true,
       clickToClose: true
     }),
-    WorkModule,
-    FontAwesomeModule
+    WorkModule
   ],
   providers: [
     {
