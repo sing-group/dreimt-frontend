@@ -1,3 +1,24 @@
+<!--
+  ~ DREIMT Frontend
+  ~
+  ~  Copyright (C) 2018-2020 - Hugo López-Fernández,
+  ~  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
+  ~  Fátima Al-Sharhour and Gonzalo Gómez-López.
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
 <mat-card>
   <mat-card-title>Filter Database Fields</mat-card-title>
   <mat-card-content>
@@ -10,36 +31,35 @@
 
       <app-filter-field class="basic-filter-cell"
                         label="Cell type/subtype 1"
-                        [options]="cellTypeAndSubtype1FieldFilter.options"
-                        [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
-                        (filterChange)="updateFilterValues()"
+                        [model]="cellTypeAndSubtype1FieldFilter"
                         [matTooltip]="TOOLTIP_CELL_TYPE_1"
                         [debounceTime]="debounceTime"
-                        [maxOptions]="maxOptions"></app-filter-field>
+                        [maxOptions]="maxOptions"
+                        (optionSelected)="onCellTypeAndSubtype1Change()"
+      ></app-filter-field>
 
       <app-filter-field class="basic-filter-drug-effect"
                         #cellType1EffectBasic
                         label="Drug effect"
-                        [options]="cellType1EffectFieldFilter.options"
+                        [model]="cellType1EffectFieldFilter"
                         [optionLabelMapper]="mapDrugEffectValues"
-                        [(filter)]="cellType1EffectFieldFilter.filter"
-                        (filterChange)="updateFilterValues()"
-                        fixedValues="true"
                         [matTooltip]="getCellType1DependentTooltip(TOOLTIP_DRUG_EFFECT)"
                         [debounceTime]="debounceTime"
-                        [maxOptions]="maxOptions"></app-filter-field>
+                        [maxOptions]="maxOptions"
+                        (optionSelected)="onParametersChanged(cellType1EffectFieldFilter)"
+      ></app-filter-field>
 
       <app-filter-field class="basic-filter-drug"
                         label="Drug name"
-                        [options]="drugCommonNameFieldFilter.options"
-                        [(filter)]="drugCommonNameFieldFilter.filter"
-                        (filterChange)="updateFilterValues()"
+                        [model]="drugCommonNameFieldFilter"
                         [matTooltip]="TOOLTIP_DRUG"
                         [debounceTime]="debounceTime"
-                        [maxOptions]="maxOptions"></app-filter-field>
+                        [maxOptions]="maxOptions"
+                        (optionSelected)="onParametersChanged(drugCommonNameFieldFilter)"
+      ></app-filter-field>
     </div>
 
-    <mat-expansion-panel (opened)="advancedPanelOpened()" (closed)="advancedPanelClosed()"
+    <mat-expansion-panel (opened)="onAdvancedPanelOpened()" (closed)="onAdvancedPanelClosed()"
                          [expanded]="isAdvancedPanelOpened">
       <mat-expansion-panel-header>
         <mat-panel-title>Advanced Filters</mat-panel-title>
@@ -60,53 +80,50 @@
                           (valueChange)="maxDownFdrFilter.setValue($event)"></app-number-field>
 
         <app-filter-field label="Interaction type"
-                          [options]="interactionTypeFilter.options"
+                          [model]="interactionTypeFilter"
                           [optionLabelMapper]="mapInteractionType"
-                          [(filter)]="interactionTypeFilter.filter"
-                          fixedValues="true"
-                          (filterChange)="updateFilterValues()"
                           [matTooltip]="TOOLTIP_INTERACTION_TYPE"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(interactionTypeFilter)"
+        ></app-filter-field>
 
         <div class="title-row">Drug filters</div>
 
         <app-filter-field #cellType1EffectAdvanced
                           label="Drug effect"
-                          [options]="cellType1EffectFieldFilter.options"
+                          [model]="cellType1EffectFieldFilter"
                           [optionLabelMapper]="mapDrugEffectValues"
-                          [(filter)]="cellType1EffectFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
-                          fixedValues="true"
                           [matTooltip]="getCellType1DependentTooltip(TOOLTIP_DRUG_EFFECT)"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(cellType1EffectFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="Drug name"
-                          [options]="drugCommonNameFieldFilter.options"
-                          [(filter)]="drugCommonNameFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="drugCommonNameFieldFilter"
                           [matTooltip]="TOOLTIP_DRUG"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(drugCommonNameFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="MOA"
-                          [options]="drugMoaFieldFilter.options"
-                          [(filter)]="drugMoaFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="drugMoaFieldFilter"
                           [matTooltip]="TOOLTIP_DRUG_MOA"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(drugMoaFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="Drug status"
-                          [options]="drugStatusFieldFilter.options"
+                          [model]="drugStatusFieldFilter"
                           [optionLabelMapper]="mapDrugStatus"
-                          [(filter)]="drugStatusFieldFilter.filter"
-                          fixed="true"
-                          (filterChange)="updateFilterValues()"
                           [matTooltip]="TOOLTIP_DRUG_STATUS"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(drugStatusFieldFilter)"
+        ></app-filter-field>
 
         <app-number-field #minDrugDss label="Min. drug specificity score" [debounceTime]="debounceTime" [min]="0"
                           [max]="1" [step]="0.05"
@@ -116,89 +133,88 @@
         <div class="title-row">Signature/Geneset filters</div>
 
         <app-filter-field label="Name"
-                          [options]="signatureNameFieldFilter.options"
-                          [(filter)]="signatureNameFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="signatureNameFieldFilter"
                           [matTooltip]="TOOLTIP_SIGNATURE_NAME"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(signatureNameFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="Source DB"
-                          [options]="signatureSourceDbFieldFilter.options"
-                          [(filter)]="signatureSourceDbFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="signatureSourceDbFieldFilter"
                           [matTooltip]="TOOLTIP_SIGNATURE_SOURCE_DB"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(signatureSourceDbFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="PubMed ID"
-                          [options]="pubMedIdFieldFilter.options"
-                          [(filter)]="pubMedIdFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="pubMedIdFieldFilter"
                           [matTooltip]="TOOLTIP_SIGNATURE_PUBMED"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(pubMedIdFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="Experimental design"
-                          [options]="experimentalDesignFilter.options"
+                          [model]="experimentalDesignFilter"
                           [optionLabelMapper]="mapExperimentalDesign"
-                          [(filter)]="experimentalDesignFilter.filter"
-                          fixedValues="true"
-                          (filterChange)="updateFilterValues()"
                           [matTooltip]="TOOLTIP_SIGNATURE_EXPERIMENTAL_DESIGN"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(experimentalDesignFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="Cell type/subtype 1"
-                          [options]="cellTypeAndSubtype1FieldFilter.options"
-                          [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="cellTypeAndSubtype1FieldFilter"
                           [debounceTime]="debounceTime"
                           [matTooltip]="TOOLTIP_CELL_TYPE_1"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onCellTypeAndSubtype1Change()"
+        ></app-filter-field>
 
         <app-filter-field #cellType1Disease
                           label="Cell type 1 disease"
-                          [options]="cellType1DiseaseFieldFilter.options"
-                          [(filter)]="cellType1DiseaseFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="cellType1DiseaseFieldFilter"
                           [matTooltip]="getCellType1DependentTooltip(TOOLTIP_SIGNATURE_CELL_TYPE_1_DISEASE)"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(cellType1DiseaseFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field #cellType1Treatment
                           label="Cell type 1 treatment"
-                          [options]="cellType1TreatmentFieldFilter.options"
-                          [(filter)]="cellType1TreatmentFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="cellType1TreatmentFieldFilter"
                           [matTooltip]="getCellType1DependentTooltip(TOOLTIP_SIGNATURE_CELL_TYPE_1_TREATMENT)"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(cellType1TreatmentFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="Cell type/subtype 2"
                           #cellTypeAndSubtype2
-                          [options]="cellTypeAndSubtype2FieldFilter.options"
-                          [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="cellTypeAndSubtype2FieldFilter"
                           [debounceTime]="debounceTime"
                           [matTooltip]="TOOLTIP_SIGNATURE_CELL_TYPE_2"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(cellTypeAndSubtype2FieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="Condition"
-                          [options]="diseaseFieldFilter.options"
-                          [(filter)]="diseaseFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="diseaseFieldFilter"
                           [matTooltip]="TOOLTIP_SIGNATURE_CONDITION"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(diseaseFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field label="Organism"
-                          [options]="organismFieldFilter.options"
-                          [(filter)]="organismFieldFilter.filter"
-                          (filterChange)="updateFilterValues()"
+                          [model]="organismFieldFilter"
                           [matTooltip]="TOOLTIP_SIGNATURE_ORGANISM"
                           [debounceTime]="debounceTime"
-                          [maxOptions]="maxOptions"></app-filter-field>
+                          [maxOptions]="maxOptions"
+                          (optionSelected)="onParametersChanged(organismFieldFilter)"
+        ></app-filter-field>
       </div>
     </mat-expansion-panel>
   </mat-card-content>

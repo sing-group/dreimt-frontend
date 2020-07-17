@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -32,6 +32,7 @@ import {toPlainObject} from '../../../utils/types';
 import {CellTypeAndSubtype} from '../../../models/cell-type-and-subtype.model';
 import {UpDownGenes} from '../../../models/interactions/up-down-gene-set.model';
 import saveAs from 'file-saver';
+import {UriParamEncoder} from '../../../utils/uri-param-encoder';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,8 @@ export class InteractionsService {
         'Accept': 'application/json'
       }),
       params: new HttpParams({
-        fromObject: toPlainObject(queryParams)
+        fromObject: toPlainObject(queryParams),
+        encoder: UriParamEncoder.INSTANCE
       }),
       observe: 'response' as 'response'
     };
@@ -71,7 +73,8 @@ export class InteractionsService {
         'Accept': 'application/json'
       }),
       params: new HttpParams({
-        fromObject: toPlainObject(queryParams)
+        fromObject: toPlainObject(queryParams),
+        encoder: UriParamEncoder.INSTANCE
       })
     };
 
@@ -93,7 +96,8 @@ export class InteractionsService {
   private listCellTypeAndSubtypeValues(resource: string, queryParams: DatabaseQueryParams): Observable<CellTypeAndSubtype[]> {
     const options = {
       params: new HttpParams({
-        fromObject: toPlainObject(queryParams, DatabaseQueryParams.MANIPULATION_FIELDS)
+        fromObject: toPlainObject(queryParams, DatabaseQueryParams.MANIPULATION_FIELDS),
+        encoder: UriParamEncoder.INSTANCE
       })
     };
 
@@ -137,11 +141,11 @@ export class InteractionsService {
     return this.listValues('cell-subtype-2', queryParams);
   }
 
-  public loadCellType1DiseaseValues(queryParams: DatabaseQueryParams): Observable<string[]> {
+  public listCellType1DiseaseValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('cell-type-1-disease', queryParams);
   }
 
-  public loadCellType1TreatmentValues(queryParams: DatabaseQueryParams): Observable<string[]> {
+  public listCellType1TreatmentValues(queryParams: DatabaseQueryParams): Observable<string[]> {
     return this.listValues('cell-type-1-treatment', queryParams);
   }
 
@@ -181,7 +185,8 @@ export class InteractionsService {
   ): Observable<string[]> {
     const options = {
       params: new HttpParams({
-        fromObject: toPlainObject(queryParams, DatabaseQueryParams.MANIPULATION_FIELDS)
+        fromObject: toPlainObject(queryParams, DatabaseQueryParams.MANIPULATION_FIELDS),
+        encoder: UriParamEncoder.INSTANCE
       })
     };
 
@@ -214,7 +219,8 @@ export class InteractionsService {
       }),
       responseType: 'blob',
       params: new HttpParams({
-        fromObject: toPlainObject(queryParams)
+        fromObject: toPlainObject(queryParams),
+        encoder: UriParamEncoder.INSTANCE
       })
     })
       .pipe(

@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -24,8 +24,12 @@ import {NgModule} from '@angular/core';
 import {ResultsViewComponent} from './components/results-view/results-view.component';
 import {CmapQueryPanelComponent} from './components/cmap-query-panel/cmap-query-panel.component';
 import {JaccardQueryPanelComponent} from './components/jaccard-query-panel/jaccard-query-panel.component';
-import {CmapUpDownSignatureResultsViewComponent} from './components/cmap-up-down-signature-results-view/cmap-up-down-signature-results-view.component';
-import {CmapGeneSetSignatureResultsViewComponent} from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
+import {
+  CmapUpDownSignatureResultsViewComponent
+} from './components/cmap-up-down-signature-results-view/cmap-up-down-signature-results-view.component';
+import {
+  CmapGeneSetSignatureResultsViewComponent
+} from './components/cmap-gene-set-signature-results-view/cmap-gene-set-signature-results-view.component';
 import {JaccardResultsViewComponent} from './components/jaccard-results-view/jaccard-results-view.component';
 
 const routes: Routes = [

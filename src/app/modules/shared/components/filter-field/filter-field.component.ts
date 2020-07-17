@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -21,75 +21,97 @@
 
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {FieldFilterModel} from './field-filter.model';
 
 @Component({
   selector: 'app-filter-field',
   templateUrl: './filter-field.component.html',
   styleUrls: ['./filter-field.component.scss']
 })
-export class FilterFieldComponent implements OnInit {
+export class FilterFieldComponent<T> implements OnInit {
   @Input() public label: string;
-  @Input() public options: Observable<string[]>;
   @Input() public optionLabelMapper: (string) => string;
   @Input() public debounceTime: number;
   @Input() public maxOptions: number;
-  @Input() public fixedValues: boolean;
   @Input() public showOptionsTooltip: boolean;
   @Input() public clearable: boolean;
+  @Input() public model: FieldFilterModel<T>;
 
-  @Output() public filterChange: EventEmitter<string>;
+  @Output() public optionSelected: EventEmitter<string>;
 
   @ViewChild(MatAutocompleteTrigger, {static: false}) private autocomplete: MatAutocompleteTrigger;
   @ViewChild('filterInput', {static: false}) private filterInput: ElementRef;
 
+  private disabled: boolean;
+  private notifyNext: boolean;
+
   public readonly formControl: FormControl;
 
-  constructor() {
+  private options: string[];
+  public sortedOptions: string[];
+
+  public constructor() {
     this.debounceTime = 500;
     this.maxOptions = 100;
-    this.fixedValues = false;
     this.showOptionsTooltip = false;
     this.clearable = true;
     this.optionLabelMapper = value => value;
+    this.disabled = false;
+    this.notifyNext = false;
+    this.options = [];
 
     this.formControl = new FormControl('');
-    this.filterChange = new EventEmitter<string>();
+    this.optionSelected = new EventEmitter<string>();
   }
 
   public ngOnInit(): void {
+    this.formControl.setValue(this.model.filter);
     this.formControl.valueChanges
       .pipe(
         debounceTime(this.debounceTime),
         distinctUntilChanged()
       )
-      .subscribe(value => this.filterChange.emit(value));
+      .subscribe(value => {
+        this.model.filter = value;
+        this.updateSortedOptions();
+
+        if (this.notifyNext) {
+          this.notifyNext = false;
+          this.optionSelected.next(this.model.filter);
+        }
+      });
+
+    this.model.filterChange.subscribe(
+      filter => this.formControl.setValue(filter)
+    );
+
+    this.model.isLoading.subscribe(
+      loading => loading || this.disabled ? this.formControl.disable() : this.formControl.enable()
+    );
+
+    this.model.options.subscribe(
+      options => {
+        this.options = options;
+        this.updateSortedOptions();
+      }
+    );
+
+    this.updateSortedOptions();
   }
 
-  @Input()
-  public set filter(value: string) {
-    if (this.filter !== value) {
-      this.formControl.setValue(value);
-    }
-  }
+  private updateSortedOptions(): void {
+    let sortedOptions;
 
-  public get filter(): string {
-    return this.formControl.value;
-  }
-
-  public get sortedOptions(): Observable<string[]> {
-    let mapper;
-
-    if (this.filter === undefined || this.filter.trim() === '') {
-      mapper = options => options.slice(0).sort();
+    if (!Boolean(this.formControl.value.trim())) {
+      sortedOptions = this.options.slice(0, this.maxOptions).sort();
     } else {
-      const prefix = this.filter.trim().toLowerCase();
-      mapper = options => {
-        options = options.slice(0);
+      const prefix = this.formControl.value.trim().toLowerCase();
 
-        options = options.sort((o1, o2) => {
+      sortedOptions = this.options
+        .filter(option => option.toLowerCase().includes(prefix))
+        .sort((o1, o2) => {
           o1 = o1.toLowerCase();
           o2 = o2.toLowerCase();
 
@@ -97,49 +119,51 @@ export class FilterFieldComponent implements OnInit {
           const o2StartsWithPrefix = o2.startsWith(prefix);
 
           if (o1StartsWithPrefix === o2StartsWithPrefix) {
-            return o1 === o2 ? 0 : o1 < o2 ? -1 : 1;
+            return o1.localeCompare(o2);
           } else {
             return o1StartsWithPrefix ? -1 : 1;
           }
         });
 
-        if (this.maxOptions !== undefined) {
-          options = options.slice(0, this.maxOptions);
-        }
-
-        return options;
-      };
+      if (Boolean(this.maxOptions)) {
+        sortedOptions = sortedOptions.slice(0, this.maxOptions);
+      }
     }
 
-    return this.options.pipe(
-      map(mapper)
-    );
-  }
-
-  public hasFilterValue(): boolean {
-    return this.filter !== '';
+    this.sortedOptions = sortedOptions;
   }
 
   public clearValue($event: MouseEvent): void {
-    this.filter = '';
+    this.notifyNext = true;
+    this.formControl.setValue('');
     $event.stopPropagation(); // Prevents autocomplete trigger
-  }
-
-  public isAutocompleteVisible(): boolean {
-    return this.autocomplete.panelOpen;
+    this.clearSelection();
   }
 
   public clearSelection(): void {
-    this.filterInput.nativeElement.blur();
-    this.autocomplete.closePanel();
+    if (this.filterInput !== undefined) {
+      this.filterInput.nativeElement.blur();
+    }
+    if (this.autocomplete !== undefined) {
+      this.autocomplete.closePanel();
+    }
   }
 
   public enable(): void {
-    this.formControl.enable();
+    if (this.disabled) {
+      this.disabled = false;
+
+      if (!this.model.loading) {
+        this.formControl.enable();
+      }
+    }
   }
 
   public disable(): void {
-    this.formControl.disable();
+    if (!this.disabled) {
+      this.disabled = true;
+      this.formControl.disable();
+    }
   }
 
   public optionTooltip(option: string): string {
@@ -148,5 +172,9 @@ export class FilterFieldComponent implements OnInit {
     } else {
       return undefined;
     }
+  }
+
+  public onSelectionChanged(): void {
+    this.notifyNext = true;
   }
 }

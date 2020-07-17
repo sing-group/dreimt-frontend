@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2020 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -21,20 +21,35 @@
 
 import {FieldFilterModel} from './field-filter.model';
 import {CellTypeAndSubtype} from '../../../../models/cell-type-and-subtype.model';
+import {Observable} from 'rxjs';
 
-export class FieldFilterCellTypeModel extends FieldFilterModel {
+export class FieldFilterCellTypeModel extends FieldFilterModel<CellTypeAndSubtype> {
+  private _isAllowedCellSubtype: boolean;
 
-  public constructor() {
-    super();
+  public constructor(
+    dataLoader: () => Observable<CellTypeAndSubtype[]>
+  ) {
+    super(
+      dataLoader,
+      (values: CellTypeAndSubtype[]) => {
+        const cellTypes = new Set<string>();
+        values.map(cts => cts.type).forEach(val => cellTypes.add(val));
+        if (this.isAllowedCellSubtype) {
+          values.map(cts => cts.type + ' / ' + cts.subType).forEach(val => cellTypes.add(val));
+        }
+
+        return Array.from(cellTypes.values());
+      }
+    );
+    this._isAllowedCellSubtype = true;
   }
 
-  public updateCellTypeAndSubTypeValues(values: CellTypeAndSubtype[], isAllowedCellSubtype: boolean): void {
-    const cellTypes = new Set<string>();
-    values.map(cts => cts.type).forEach(val => cellTypes.add(val));
-    if (isAllowedCellSubtype) {
-      values.map(cts => cts.type + ' / ' + cts.subType).forEach(val => cellTypes.add(val));
-    }
-    super.update(Array.from(cellTypes.values()));
+  public get isAllowedCellSubtype(): boolean {
+    return this._isAllowedCellSubtype;
+  }
+
+  public set isAllowedCellSubtype(allowed: boolean) {
+    this._isAllowedCellSubtype = allowed;
   }
 
   public setCellTypeAndSubType(cellType: string, cellSubtype: string) {

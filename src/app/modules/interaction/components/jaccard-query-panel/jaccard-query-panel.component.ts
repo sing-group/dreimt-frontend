@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,8 +19,10 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {JaccardCalculateInteractionsQueryParams} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
+import {Component, ViewChild} from '@angular/core';
+import {
+  JaccardCalculateInteractionsQueryParams
+} from '../../../../models/interactions/jaccard/jaccard-calculate-interactions-query-params.model';
 import {SignaturesService} from '../../services/signatures.service';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {ExperimentalDesign} from '../../../../models/experimental-design.enum';
@@ -40,7 +42,13 @@ import {formatTitle} from '../../../../utils/types';
   templateUrl: './jaccard-query-panel.component.html',
   styleUrls: ['./jaccard-query-panel.component.scss']
 })
-export class JaccardQueryPanelComponent implements OnInit {
+export class JaccardQueryPanelComponent {
+  private static readonly DEFAULT_VALUES = {
+    debounceTime: 500,
+    maxOptions: 100,
+    considerOnlyUniverseGenes: false
+  };
+
   public readonly TOOLTIP_WARNING_CELL_TYPE_1 = 'This filter is disabled, the cell type/subtype 1 must be selected to enable it.';
   public readonly TOOLTIP_CELL_TYPE_1 = 'Specify an immune cell type of interest.';
   public readonly TOOLTIP_SIGNATURE_SOURCE_DB = 'Specify a database source of signatures.';
@@ -52,36 +60,35 @@ export class JaccardQueryPanelComponent implements OnInit {
   public readonly TOOLTIP_SIGNATURE_CONDITION = 'Specify a treatment or disease applied to generate the signature.';
   public readonly TOOLTIP_SIGNATURE_ORGANISM = 'Specify the organism source of the immune cells. ';
 
-  private static readonly DEFAULT_VALUES = {
-    debounceTime: 500,
-    maxOptions: 100,
-    considerOnlyUniverseGenes: false
-  };
-
   public queryTitle: string;
   private upGenes: string[];
   private downGenes: string[];
-
-  private previousQueryParams: JaccardCalculateInteractionsQueryParams;
 
   public readonly debounceTime: number;
   public readonly maxOptions: number;
 
   public readonly cellTypeAndSubtype1FieldFilter: FieldFilterCellTypeModel;
   public readonly cellTypeAndSubtype2FieldFilter: FieldFilterCellTypeModel;
-  private lastCellType1RawFilterValue: string;
+  public readonly experimentalDesignFieldFilter: FieldFilterModel<string>;
 
-  public readonly experimentalDesignFieldFilter: FieldFilterModel;
-  public readonly organismFieldFilter: FieldFilterModel;
-  public readonly diseaseFieldFilter: FieldFilterModel;
-  public readonly signatureSourceDbFieldFilter: FieldFilterModel;
+  public readonly organismFieldFilter: FieldFilterModel<string>;
+  public readonly diseaseFieldFilter: FieldFilterModel<string>;
+  public readonly signatureSourceDbFieldFilter: FieldFilterModel<string>;
+
+  private readonly fieldFilters: FieldFilterModel<any>[];
 
   public considerOnlyUniverseGenes: boolean;
 
   private precalculatedExamples: PrecalculatedExample[];
   public signaturesCount: number;
 
-  @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent;
+  @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent<string>;
+
+  private static cleanAndFilterGenes(genes: string): string[] {
+    return genes.split(/\s+/)
+      .map(gene => gene.trim())
+      .filter(gene => gene.length > 0);
+  }
 
   constructor(
     private service: SignaturesService,
@@ -97,12 +104,33 @@ export class JaccardQueryPanelComponent implements OnInit {
     this.upGenes = [];
     this.downGenes = [];
 
-    this.cellTypeAndSubtype1FieldFilter = new FieldFilterCellTypeModel();
-    this.cellTypeAndSubtype2FieldFilter = new FieldFilterCellTypeModel();
-    this.experimentalDesignFieldFilter = new FieldFilterModel();
-    this.organismFieldFilter = new FieldFilterModel();
-    this.diseaseFieldFilter = new FieldFilterModel();
-    this.signatureSourceDbFieldFilter = new FieldFilterModel();
+    this.cellTypeAndSubtype1FieldFilter = new FieldFilterCellTypeModel(
+      () => this.service.listCellTypeAndSubtype1Values(this.createQueryParameters())
+    );
+    this.cellTypeAndSubtype2FieldFilter = new FieldFilterCellTypeModel(
+      () => this.service.listCellTypeAndSubtype2Values(this.createQueryParameters())
+    );
+    this.experimentalDesignFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listExperimentalDesignValues(this.createQueryParameters())
+    );
+    this.organismFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listOrganismValues(this.createQueryParameters())
+    );
+    this.diseaseFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listDiseaseValues(this.createQueryParameters())
+    );
+    this.signatureSourceDbFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listSignatureSourceDbValues(this.createQueryParameters())
+    );
+
+    this.fieldFilters = [
+      this.cellTypeAndSubtype1FieldFilter,
+      this.cellTypeAndSubtype2FieldFilter,
+      this.experimentalDesignFieldFilter,
+      this.organismFieldFilter,
+      this.diseaseFieldFilter,
+      this.signatureSourceDbFieldFilter
+    ];
 
     this.considerOnlyUniverseGenes = JaccardQueryPanelComponent.DEFAULT_VALUES.considerOnlyUniverseGenes;
 
@@ -113,12 +141,6 @@ export class JaccardQueryPanelComponent implements OnInit {
 
   private updateSignaturesCount() {
     this.service.countSignatures(this.createQueryParameters()).subscribe(count => this.signaturesCount = count);
-  }
-
-  private static cleanAndFilterGenes(genes: string): string[] {
-    return genes.split(/\s+/)
-      .map(gene => gene.trim())
-      .filter(gene => gene.length > 0);
   }
 
   public mapExperimentalDesign(experimentalDesign: string): string {
@@ -132,83 +154,6 @@ export class JaccardQueryPanelComponent implements OnInit {
   public onDownGenesChanged(genes: string): void {
     this.downGenes = JaccardQueryPanelComponent.cleanAndFilterGenes(genes);
   }
-
-  public ngOnInit(): void {
-    this.updateFieldValues();
-  }
-
-  public updateFieldValues(): void {
-    this.checkCellTypeAndSubType2FiltersStatus();
-
-    const queryParams = this.createQueryParameters();
-
-    if (!JaccardCalculateInteractionsQueryParams.equals(queryParams, this.previousQueryParams)) {
-      this.loadCellTypeAndSubtype1Values(queryParams);
-      this.loadExperimentalDesignValues(queryParams);
-      this.loadOrganismValues(queryParams);
-      this.loadDiseaseValues(queryParams);
-      this.loadSignatureSourceDbValues(queryParams);
-
-      const newCellType1RawFilterValue = this.cellTypeAndSubtype1FieldFilter.getClearedFilter();
-      if (newCellType1RawFilterValue) {
-        if (this.lastCellType1RawFilterValue !== undefined &&
-          this.lastCellType1RawFilterValue !== newCellType1RawFilterValue) {
-          this.cellTypeAndSubtype2FieldFilter.filter = '';
-        }
-        this.lastCellType1RawFilterValue = newCellType1RawFilterValue;
-        this.loadCellTypeAndSubtype2Values(queryParams);
-      }
-
-      this.updateSignaturesCount();
-
-      this.previousQueryParams = queryParams;
-    }
-  }
-
-  private checkCellTypeAndSubType2FiltersStatus(): void {
-    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
-      this.cellTypeAndSubType2Component.enable();
-    } else {
-      this.cellTypeAndSubtype2FieldFilter.filter = '';
-      this.cellTypeAndSubType2Component.disable();
-    }
-  }
-
-  private loadCellTypeAndSubtype1Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellTypeAndSubtype1Values(queryParams)
-      .subscribe(values => this.cellTypeAndSubtype1FieldFilter.updateCellTypeAndSubTypeValues(values, true));
-  }
-
-  private loadCellTypeAndSubtype2Values(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listCellTypeAndSubtype2Values(queryParams)
-      .subscribe(values => this.cellTypeAndSubtype2FieldFilter.updateCellTypeAndSubTypeValues(values, this.isAllowedCellSubtype2()));
-  }
-
-  private isAllowedCellSubtype2(): boolean {
-    return true;
-  }
-
-  private loadDiseaseValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listDiseaseValues(queryParams)
-      .subscribe(values => this.diseaseFieldFilter.update(values));
-  }
-
-  private loadExperimentalDesignValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listExperimentalDesignValues(queryParams)
-      .subscribe(values => this.experimentalDesignFieldFilter.update(values));
-  }
-
-  private loadOrganismValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listOrganismValues(queryParams)
-      .subscribe(values => this.organismFieldFilter.update(values));
-  }
-
-  private loadSignatureSourceDbValues(queryParams: JaccardCalculateInteractionsQueryParams): void {
-    this.service.listSignatureSourceDbValues(queryParams)
-      .subscribe(values => this.signatureSourceDbFieldFilter.update(values));
-  }
-
-  ff;
 
   private createQueryParameters(): JaccardCalculateInteractionsQueryParams {
     const experimentalDesign = this.experimentalDesignFieldFilter.hasValue()
@@ -304,5 +249,30 @@ export class JaccardQueryPanelComponent implements OnInit {
     } else {
       return tooltip + '\n\n' + this.TOOLTIP_WARNING_CELL_TYPE_1;
     }
+  }
+
+  public onParametersChanged(fieldFilter?: FieldFilterModel<any>): void {
+    for (const filter of this.fieldFilters) {
+      if (filter !== fieldFilter) {
+        filter.reset(false);
+      }
+    }
+
+    this.updateSignaturesCount();
+  }
+
+  public onCellTypeAndSubtype1Change(): void {
+    this.cellTypeAndSubtype2FieldFilter.filter = '';
+    if (this.cellTypeAndSubtype1FieldFilter.hasValue()) {
+      this.cellTypeAndSubType2Component.enable();
+    } else {
+      this.cellTypeAndSubType2Component.disable();
+    }
+
+    this.onParametersChanged(this.cellTypeAndSubtype1FieldFilter);
+  }
+
+  public onConsiderOnlyUniverseGenesChange(): void {
+    this.updateSignaturesCount();
   }
 }

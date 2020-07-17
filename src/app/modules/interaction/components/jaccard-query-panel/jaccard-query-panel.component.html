@@ -1,7 +1,7 @@
 <!--
   ~ DREIMT Frontend
   ~
-  ~  Copyright (C) 2018-2019 - Hugo López-Fernández,
+  ~  Copyright (C) 2018-2020 - Hugo López-Fernández,
   ~  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
   ~  Fátima Al-Sharhour and Gonzalo Gómez-López.
   ~
@@ -44,62 +44,61 @@
       <div class="jaccard-form">
         <app-filter-field
           label="Cell type/subtype 1"
-          [options]="cellTypeAndSubtype1FieldFilter.options"
-          [(filter)]="cellTypeAndSubtype1FieldFilter.filter"
-          (filterChange)="updateFieldValues()"
+          [model]="cellTypeAndSubtype1FieldFilter"
           [matTooltip]="TOOLTIP_CELL_TYPE_1"
           [debounceTime]="debounceTime"
-          [maxOptions]="maxOptions"></app-filter-field>
+          [maxOptions]="maxOptions"
+          (optionSelected)="onCellTypeAndSubtype1Change()"
+        ></app-filter-field>
 
         <app-filter-field
           #cellTypeAndSubtype2
           label="Cell type/subtype 2"
-          [options]="cellTypeAndSubtype2FieldFilter.options"
-          [(filter)]="cellTypeAndSubtype2FieldFilter.filter"
-          (filterChange)="updateFieldValues()"
+          [model]="cellTypeAndSubtype2FieldFilter"
           [matTooltip]="getCellType1DependentTooltip(TOOLTIP_SIGNATURE_CELL_TYPE_2)"
           [debounceTime]="debounceTime"
-          [maxOptions]="maxOptions"></app-filter-field>
+          [maxOptions]="maxOptions"
+          (optionSelected)="onParametersChanged(cellTypeAndSubtype2FieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field
           label="Organism"
-          [options]="organismFieldFilter.options"
-          [(filter)]="organismFieldFilter.filter"
-          (filterChange)="updateFieldValues()"
+          [model]="organismFieldFilter"
           [matTooltip]="TOOLTIP_SIGNATURE_ORGANISM"
           [debounceTime]="debounceTime"
-          [maxOptions]="maxOptions"></app-filter-field>
+          [maxOptions]="maxOptions"
+          (optionSelected)="onParametersChanged(organismFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field
           label="Condition"
-          [options]="diseaseFieldFilter.options"
-          [(filter)]="diseaseFieldFilter.filter"
-          (filterChange)="updateFieldValues()"
+          [model]="diseaseFieldFilter"
           [matTooltip]="TOOLTIP_SIGNATURE_CONDITION"
           [debounceTime]="debounceTime"
-          [maxOptions]="maxOptions"></app-filter-field>
+          [maxOptions]="maxOptions"
+          (optionSelected)="onParametersChanged(diseaseFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field
           label="Source DB"
-          [options]="signatureSourceDbFieldFilter.options"
-          [(filter)]="signatureSourceDbFieldFilter.filter"
-          (filterChange)="updateFieldValues()"
+          [model]="signatureSourceDbFieldFilter"
           [matTooltip]="TOOLTIP_SIGNATURE_SOURCE_DB"
           [debounceTime]="debounceTime"
-          [maxOptions]="maxOptions"></app-filter-field>
+          [maxOptions]="maxOptions"
+          (optionSelected)="onParametersChanged(signatureSourceDbFieldFilter)"
+        ></app-filter-field>
 
         <app-filter-field
           label="Experimental design"
-          [options]="experimentalDesignFieldFilter.options"
-          [optionLabelMapper]="mapExperimentalDesign"
-          [(filter)]="experimentalDesignFieldFilter.filter"
+          [model]="experimentalDesignFieldFilter"
           fixedValues="true"
-          (filterChange)="updateFieldValues()"
           [matTooltip]="TOOLTIP_SIGNATURE_EXPERIMENTAL_DESIGN"
           [debounceTime]="debounceTime"
-          [maxOptions]="maxOptions"></app-filter-field>
+          [maxOptions]="maxOptions"
+          (optionSelected)="onParametersChanged(experimentalDesignFieldFilter)"
+        ></app-filter-field>
 
-        <mat-checkbox [(ngModel)]="considerOnlyUniverseGenes" (change)="updateFieldValues()">
+        <mat-checkbox [(ngModel)]="considerOnlyUniverseGenes" (change)="onConsiderOnlyUniverseGenesChange()">
           Perform analysis using only genes in DREIMT
         </mat-checkbox>
 

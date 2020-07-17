@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -33,7 +33,6 @@ import {FieldFilterCellTypeModel} from '../../../shared/components/filter-field/
 import {ParamMap} from '@angular/router';
 import {DrugEffect} from '../../../../models/database/drug-effect.enum';
 import {formatTitle} from '../../../../utils/types';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-database-table-filters',
@@ -71,50 +70,35 @@ export class DatabaseTableFiltersComponent implements OnInit {
   public readonly maxOptions: number;
 
   public isAdvancedPanelOpened: boolean;
-  private previousDatabaseQueryParams: DatabaseQueryParams = undefined;
-  private lastCellType1RawFilterValue: string;
 
-  public readonly drugCommonNameFieldFilter: FieldFilterModel;
-  public readonly drugMoaFieldFilter: FieldFilterModel;
-  public readonly drugStatusFieldFilter: FieldFilterModel;
+  public readonly drugCommonNameFieldFilter: FieldFilterModel<string>;
+  public readonly drugMoaFieldFilter: FieldFilterModel<string>;
+  public readonly drugStatusFieldFilter: FieldFilterModel<string>;
 
-  public readonly signatureNameFieldFilter: FieldFilterModel;
-  public readonly cellType1EffectFieldFilter: FieldFilterModel;
-  public readonly cellType1TreatmentFieldFilter: FieldFilterModel;
-  public readonly cellType1DiseaseFieldFilter: FieldFilterModel;
+  public readonly signatureNameFieldFilter: FieldFilterModel<string>;
+  public readonly cellType1EffectFieldFilter: FieldFilterModel<string>;
+  public readonly cellType1TreatmentFieldFilter: FieldFilterModel<string>;
+  public readonly cellType1DiseaseFieldFilter: FieldFilterModel<string>;
   public readonly cellTypeAndSubtype1FieldFilter: FieldFilterCellTypeModel;
   public readonly cellTypeAndSubtype2FieldFilter: FieldFilterCellTypeModel;
-  public readonly diseaseFieldFilter: FieldFilterModel;
-  public readonly organismFieldFilter: FieldFilterModel;
-  public readonly signatureSourceDbFieldFilter: FieldFilterModel;
-  public readonly pubMedIdFieldFilter: FieldFilterModel;
-  public readonly experimentalDesignFilter: FieldFilterModel;
-  public readonly interactionTypeFilter: FieldFilterModel;
+  public readonly diseaseFieldFilter: FieldFilterModel<string>;
+  public readonly organismFieldFilter: FieldFilterModel<string>;
+  public readonly signatureSourceDbFieldFilter: FieldFilterModel<string>;
+  public readonly pubMedIdFieldFilter: FieldFilterModel<string>;
+  public readonly experimentalDesignFilter: FieldFilterModel<string>;
+  public readonly interactionTypeFilter: FieldFilterModel<string>;
   public readonly minDrugDssFilter: FormControl;
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
 
-  private drugCommonNameValuesObservable: Subscription;
-  private signatureNameSubscription: Subscription;
-  private cellTypeAndSubtype1ValuesSubscription: Subscription;
-  private cellTypeAndSubtype2ValuesSubscription: Subscription;
-  private cellType1DiseaseValuesSubscription: Subscription;
-  private cellType1TreatmentValuesSubscription: Subscription;
-  private diseasesSubscription: Subscription;
-  private organismsSubscription: Subscription;
-  private signatureSourceDbsSubscription: Subscription;
-  private signaturePubMedIdsSubscription: Subscription;
-  private experimentalDesignSubscription: Subscription;
-  private drugStatusValuesSubscription: Subscription;
-  private drugMoasSubscription: Subscription;
-  private interactionTypesSubscription: Subscription;
+  private readonly fieldFilters: FieldFilterModel<any>[];
 
-  @ViewChild('cellType1EffectBasic', {static: true}) private cellType1EffectBasicComponent: FilterFieldComponent;
-  @ViewChild('cellType1EffectAdvanced', {static: true}) private cellType1EffectAdvancedComponent: FilterFieldComponent;
-  @ViewChild('cellType1Treatment', {static: true}) private cellType1TreatmentComponent: FilterFieldComponent;
-  @ViewChild('cellType1Disease', {static: true}) private cellType1DiseaseComponent: FilterFieldComponent;
-  @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent;
+  @ViewChild('cellType1EffectBasic', {static: true}) private cellType1EffectBasicComponent: FilterFieldComponent<string>;
+  @ViewChild('cellType1EffectAdvanced', {static: true}) private cellType1EffectAdvancedComponent: FilterFieldComponent<string>;
+  @ViewChild('cellType1Treatment', {static: true}) private cellType1TreatmentComponent: FilterFieldComponent<string>;
+  @ViewChild('cellType1Disease', {static: true}) private cellType1DiseaseComponent: FilterFieldComponent<string>;
+  @ViewChild('cellTypeAndSubtype2', {static: true}) private cellTypeAndSubType2Component: FilterFieldComponent<string>;
   @ViewChild('minDrugDss', {static: true}) minDrugDssFilterComponent: NumberFieldComponent;
   @ViewChild('tauMin', {static: true}) minTauFilterComponent: NumberFieldComponent;
   @ViewChild('maxUpFdr', {static: true}) maxUpFdrFilterComponent: NumberFieldComponent;
@@ -127,27 +111,74 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.debounceTime = 500;
     this.maxOptions = 100;
 
-    this.drugCommonNameFieldFilter = new FieldFilterModel();
-    this.drugMoaFieldFilter = new FieldFilterModel();
-    this.drugStatusFieldFilter = new FieldFilterModel();
-    this.signatureNameFieldFilter = new FieldFilterModel();
-    this.cellType1EffectFieldFilter = new FieldFilterModel();
-    this.cellType1TreatmentFieldFilter = new FieldFilterModel();
-    this.cellType1DiseaseFieldFilter = new FieldFilterModel();
-    this.cellTypeAndSubtype1FieldFilter = new FieldFilterCellTypeModel();
-    this.cellTypeAndSubtype2FieldFilter = new FieldFilterCellTypeModel();
-    this.diseaseFieldFilter = new FieldFilterModel();
-    this.organismFieldFilter = new FieldFilterModel();
-    this.signatureSourceDbFieldFilter = new FieldFilterModel();
-    this.pubMedIdFieldFilter = new FieldFilterModel();
-    this.experimentalDesignFilter = new FieldFilterModel();
-    this.interactionTypeFilter = new FieldFilterModel();
+    this.drugCommonNameFieldFilter = new FieldFilterModel(
+      () => this.service.listDrugCommonNameValues(this.createQueryParameters('drugCommonName'))
+    );
+    this.drugMoaFieldFilter = new FieldFilterModel(
+      () => this.service.listDrugMoaValues(this.createQueryParameters('drugMoa'))
+    );
+    this.drugStatusFieldFilter = new FieldFilterModel(
+      () => this.service.listDrugStatusValues(this.createQueryParameters('drugStatus'))
+    );
+    this.signatureNameFieldFilter = new FieldFilterModel(
+      () => this.service.listSignatureNameValues(this.createQueryParameters('signatureName'))
+    );
+    this.cellType1EffectFieldFilter = new FieldFilterModel(
+      Object.keys(DrugEffect)
+    );
+    this.cellType1TreatmentFieldFilter = new FieldFilterModel(
+      () => this.service.listCellType1TreatmentValues(this.createQueryParameters('cellType1Treatment'))
+    );
+    this.cellType1DiseaseFieldFilter = new FieldFilterModel(
+      () => this.service.listCellType1DiseaseValues(this.createQueryParameters('cellType1Disease'))
+    );
+    this.cellTypeAndSubtype1FieldFilter = new FieldFilterCellTypeModel(
+      () => this.service.listCellTypeAndSubtype1Values(this.createQueryParameters(['cellTypeOrSubType1', 'cellType1', 'cellSubType1']))
+    );
+    this.cellTypeAndSubtype2FieldFilter = new FieldFilterCellTypeModel(
+      () => this.service.listCellTypeAndSubtype2Values(this.createQueryParameters(['cellTypeOrSubType2', 'cellType2', 'cellSubType2']))
+    );
+    this.diseaseFieldFilter = new FieldFilterModel(
+      () => this.service.listDiseaseValues(this.createQueryParameters('disease'))
+    );
+    this.organismFieldFilter = new FieldFilterModel(
+      () => this.service.listOrganismValues(this.createQueryParameters('organism'))
+    );
+    this.signatureSourceDbFieldFilter = new FieldFilterModel(
+      () => this.service.listSignatureSourceDbValues(this.createQueryParameters('signatureSourceDb'))
+    );
+    this.pubMedIdFieldFilter = new FieldFilterModel(
+      () => this.service.listSignaturePubMedIdValues(this.createQueryParameters('signaturePubMedId'))
+    );
+    this.experimentalDesignFilter = new FieldFilterModel(
+      () => this.service.listExperimentalDesignValues(this.createQueryParameters('experimentalDesign'))
+    );
+    this.interactionTypeFilter = new FieldFilterModel(
+      () => this.service.listInteractionTypeValues(this.createQueryParameters('interactionType'))
+    );
+
+    this.fieldFilters = [
+      this.drugCommonNameFieldFilter,
+      this.drugMoaFieldFilter,
+      this.drugStatusFieldFilter,
+      this.signatureNameFieldFilter,
+      this.cellType1EffectFieldFilter,
+      this.cellType1TreatmentFieldFilter,
+      this.cellType1DiseaseFieldFilter,
+      this.cellTypeAndSubtype1FieldFilter,
+      this.cellTypeAndSubtype2FieldFilter,
+      this.diseaseFieldFilter,
+      this.organismFieldFilter,
+      this.signatureSourceDbFieldFilter,
+      this.pubMedIdFieldFilter,
+      this.experimentalDesignFilter,
+      this.interactionTypeFilter
+    ];
+
     this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
     this.maxDownFdrFilter = new FormControl();
-
-    this.cellType1EffectFieldFilter.update(Object.keys(DrugEffect));
 
     this.applyDatabaseFilters = new EventEmitter<DatabaseQueryParams>();
     this.invalidDatabaseFilters = new EventEmitter<boolean>();
@@ -158,7 +189,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.watchForChanges(this.minTauFilter);
     this.watchForChanges(this.maxUpFdrFilter);
     this.watchForChanges(this.maxDownFdrFilter);
-    this.updateFilterValues();
   }
 
   private watchForChanges(field: FormControl): void {
@@ -167,7 +197,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
         debounceTime(this.debounceTime),
         distinctUntilChanged()
       )
-      .subscribe(() => this.updateFilterValues());
+      .subscribe(() => this.onParametersChanged());
   }
 
   public mapDrugEffectValues(value: string): string {
@@ -186,46 +216,6 @@ export class DatabaseTableFiltersComponent implements OnInit {
     return formatTitle(experimentalDesign);
   }
 
-  public updateFilterValues(): void {
-    this.checkCellType1EffectFilterStatus();
-    this.checkCellType1DependentFilterStatus(this.cellTypeAndSubtype2FieldFilter, this.cellTypeAndSubType2Component);
-    this.checkCellType1DependentFilterStatus(this.cellType1DiseaseFieldFilter, this.cellType1DiseaseComponent);
-    this.checkCellType1DependentFilterStatus(this.cellType1TreatmentFieldFilter, this.cellType1TreatmentComponent);
-
-    const queryParams = this.createQueryParameters();
-
-    if (!DatabaseQueryParams.equals(queryParams, this.previousDatabaseQueryParams)) {
-      this.loadDrugCommonNames(queryParams);
-      this.loadDrugMoas(queryParams);
-      this.loadDrugStatusValues(queryParams);
-      this.loadSignatureNames(queryParams);
-      this.loadCellTypeAndSubtype1Values(queryParams);
-      this.loadDiseases(queryParams);
-      this.loadOrganisms(queryParams);
-      this.loadSignatureSourceDbs(queryParams);
-      this.loadSignaturePubMedIds(queryParams);
-      this.loadExperimentalDesigns(queryParams);
-      this.loadInteractionTypes(queryParams);
-
-      const newCellType1RawFilterValue = this.cellTypeAndSubtype1FieldFilter.getClearedFilter();
-      if (newCellType1RawFilterValue) {
-        if (this.lastCellType1RawFilterValue !== undefined &&
-          this.lastCellType1RawFilterValue !== newCellType1RawFilterValue) {
-          this.cellTypeAndSubtype2FieldFilter.filter = '';
-          this.cellType1DiseaseFieldFilter.filter = '';
-          this.cellType1TreatmentFieldFilter.filter = '';
-        }
-        this.lastCellType1RawFilterValue = newCellType1RawFilterValue;
-        this.loadCellTypeAndSubtype2Values(queryParams);
-        this.loadCellType1DiseaseValues(queryParams);
-        this.loadCellType1TreatmentValues(queryParams);
-      }
-
-      this.previousDatabaseQueryParams = queryParams;
-      this.emitDatabaseFiltersEvent(queryParams);
-    }
-  }
-
   private emitDatabaseFiltersEvent(queryParams: DatabaseQueryParams): void {
     if (DatabaseQueryParams.hasModifiers(queryParams)) {
       this.applyDatabaseFilters.emit(queryParams);
@@ -234,175 +224,19 @@ export class DatabaseTableFiltersComponent implements OnInit {
     }
   }
 
-  private checkCellType1DependentFilterStatus(fieldFilter: FieldFilterModel, component: FilterFieldComponent): void {
-    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
-      component.enable();
-    } else {
-      fieldFilter.filter = '';
-      component.disable();
-    }
-  }
+  private createQueryParameters(ignore?: string | string[]): DatabaseQueryParams {
+    const params = this.isAdvancedPanelOpened
+      ? this.createFullQueryParameters() : this.createBasicQueryParameters();
 
-  private checkCellType1EffectFilterStatus(): void {
-    if (this.cellTypeAndSubtype1FieldFilter.getClearedFilter()) {
-      this.cellType1EffectBasicComponent.enable();
-      this.cellType1EffectAdvancedComponent.enable();
-    } else {
-      this.cellType1EffectFieldFilter.filter = '';
-      this.cellType1EffectBasicComponent.disable();
-      this.cellType1EffectAdvancedComponent.disable();
-    }
-  }
+    if (Boolean(ignore)) {
+      const fieldsToIgnore = Array.isArray(ignore) ? ignore : [ignore];
 
-  private loadDrugCommonNames(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.drugCommonNameValuesObservable)) {
-      this.drugCommonNameValuesObservable.unsubscribe();
-      this.drugCommonNameValuesObservable = null;
+      fieldsToIgnore
+        .filter(field => Boolean(params[field]))
+        .forEach(field => delete params[field]);
     }
-    this.drugCommonNameValuesObservable =
-      this.service.listDrugCommonNameValues(queryParams)
-        .subscribe(values => this.drugCommonNameFieldFilter.update(values));
-  }
 
-  private loadDrugMoas(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.drugMoasSubscription)) {
-      this.drugMoasSubscription.unsubscribe();
-      this.drugMoasSubscription = null;
-    }
-    this.drugMoasSubscription =
-      this.service.listDrugMoaValues(queryParams)
-      .subscribe(values => this.drugMoaFieldFilter.update(values));
-  }
-
-  private loadDrugStatusValues(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.drugStatusValuesSubscription)) {
-      this.drugStatusValuesSubscription.unsubscribe();
-      this.drugStatusValuesSubscription = null;
-    }
-    this.drugStatusValuesSubscription = this.service.listDrugStatusValues(queryParams)
-      .subscribe(values => this.drugStatusFieldFilter.update(values));
-  }
-
-  private loadSignatureNames(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.signatureNameSubscription)) {
-      this.signatureNameSubscription.unsubscribe();
-      this.signatureNameSubscription = null;
-    }
-    this.signatureNameSubscription =
-      this.service.listSignatureNameValues(queryParams)
-      .subscribe(values => this.signatureNameFieldFilter.update(values));
-  }
-
-  private loadCellTypeAndSubtype1Values(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.cellTypeAndSubtype1ValuesSubscription)) {
-      this.cellTypeAndSubtype1ValuesSubscription.unsubscribe();
-      this.cellTypeAndSubtype1ValuesSubscription = null;
-    }
-    this.cellTypeAndSubtype1ValuesSubscription =
-      this.service.listCellTypeAndSubtype1Values(queryParams)
-      .subscribe(values => this.cellTypeAndSubtype1FieldFilter.updateCellTypeAndSubTypeValues(values, true));
-  }
-
-  private loadCellTypeAndSubtype2Values(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.cellTypeAndSubtype2ValuesSubscription)) {
-      this.cellTypeAndSubtype2ValuesSubscription.unsubscribe();
-      this.cellTypeAndSubtype2ValuesSubscription = null;
-    }
-    this.cellTypeAndSubtype2ValuesSubscription =
-      this.service.listCellTypeAndSubtype2Values(queryParams)
-      .subscribe(values => this.cellTypeAndSubtype2FieldFilter.updateCellTypeAndSubTypeValues(values, this.isAllowedCellSubtype2()));
-  }
-
-  private loadCellType1DiseaseValues(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.cellType1DiseaseValuesSubscription)) {
-      this.cellType1DiseaseValuesSubscription.unsubscribe();
-      this.cellType1DiseaseValuesSubscription = null;
-    }
-    this.cellType1DiseaseValuesSubscription =
-      this.service.loadCellType1DiseaseValues(queryParams)
-      .subscribe(values => this.cellType1DiseaseFieldFilter.update(values));
-  }
-
-  private loadCellType1TreatmentValues(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.cellType1TreatmentValuesSubscription)) {
-      this.cellType1TreatmentValuesSubscription.unsubscribe();
-      this.cellType1TreatmentValuesSubscription = null;
-    }
-    this.cellType1TreatmentValuesSubscription =
-      this.service.loadCellType1TreatmentValues(queryParams)
-      .subscribe(values => this.cellType1TreatmentFieldFilter.update(values));
-  }
-
-  private isAllowedCellSubtype2(): boolean {
-    return true;
-  }
-
-  private loadDiseases(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.diseasesSubscription)) {
-      this.diseasesSubscription.unsubscribe();
-      this.diseasesSubscription = null;
-    }
-    this.diseasesSubscription =
-      this.service.listDiseaseValues(queryParams)
-      .subscribe(values => this.diseaseFieldFilter.update(values));
-  }
-
-  private loadOrganisms(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.organismsSubscription)) {
-      this.organismsSubscription.unsubscribe();
-      this.organismsSubscription = null;
-    }
-    this.organismsSubscription =
-      this.service.listOrganismValues(queryParams)
-      .subscribe(values => this.organismFieldFilter.update(values));
-  }
-
-  private loadSignatureSourceDbs(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.signatureSourceDbsSubscription)) {
-      this.signatureSourceDbsSubscription.unsubscribe();
-      this.signatureSourceDbsSubscription = null;
-    }
-    this.signatureSourceDbsSubscription =
-      this.service.listSignatureSourceDbValues(queryParams)
-      .subscribe(values => this.signatureSourceDbFieldFilter.update(values));
-  }
-
-  private loadSignaturePubMedIds(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.signaturePubMedIdsSubscription)) {
-      this.signaturePubMedIdsSubscription.unsubscribe();
-      this.signaturePubMedIdsSubscription = null;
-    }
-    this.signaturePubMedIdsSubscription =
-      this.service.listSignaturePubMedIdValues(queryParams)
-      .subscribe(values => this.pubMedIdFieldFilter.update(values));
-  }
-
-  private loadExperimentalDesigns(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.experimentalDesignSubscription)) {
-      this.experimentalDesignSubscription.unsubscribe();
-      this.experimentalDesignSubscription = null;
-    }
-    this.experimentalDesignSubscription =
-      this.service.listExperimentalDesignValues(queryParams)
-      .subscribe(values => this.experimentalDesignFilter.update(values));
-  }
-
-  private loadInteractionTypes(queryParams: DatabaseQueryParams): void {
-    if (Boolean(this.interactionTypesSubscription)) {
-      this.interactionTypesSubscription.unsubscribe();
-      this.interactionTypesSubscription = null;
-    }
-    this.interactionTypesSubscription =
-      this.service.listInteractionTypeValues(queryParams)
-      .subscribe(values => this.interactionTypeFilter.update(values));
-  }
-
-  private createQueryParameters(): DatabaseQueryParams {
-    if (this.isAdvancedPanelOpened) {
-      return this.createFullQueryParameters();
-    } else {
-      return this.createBasicQueryParameters();
-    }
+    return params;
   }
 
   private createFullQueryParameters(): DatabaseQueryParams {
@@ -458,12 +292,18 @@ export class DatabaseTableFiltersComponent implements OnInit {
     };
   }
 
-  private getCellTypeFilters() {
+  private getCellTypeFilters(): {
+    cellTypeOrSubType1?: string,
+    cellType1?: string,
+    cellSubType1?: string,
+    cellTypeOrSubType2?: string,
+    cellType2?: string,
+    cellSubType2?: string
+  } {
     let cellType1Filters = {};
     let cellType2Filters = {};
 
     if (this.cellTypeAndSubtype1FieldFilter.hasValue()) {
-
       if (this.cellTypeAndSubtype1FieldFilter.isOr()) {
         cellType1Filters = {
           cellTypeOrSubType1: this.cellTypeAndSubtype1FieldFilter.getCellTypeOrSubTypeFilter()
@@ -650,16 +490,9 @@ export class DatabaseTableFiltersComponent implements OnInit {
     }
 
     this.isAdvancedPanelOpened = openAdvancedPanel;
-  }
 
-  public advancedPanelOpened(): void {
-    this.isAdvancedPanelOpened = true;
-    this.updateFilterValues();
-  }
-
-  public advancedPanelClosed(): void {
-    this.isAdvancedPanelOpened = false;
-    this.updateFilterValues();
+    this.checkCellType1EffectFilterStatus();
+    this.emitDatabaseFiltersEvent(this.createQueryParameters());
   }
 
   public isFiltersWarningMessageHidden(): boolean {
@@ -672,6 +505,50 @@ export class DatabaseTableFiltersComponent implements OnInit {
       return tooltip;
     } else {
       return tooltip + '\n\n' + this.TOOLTIP_WARNING_CELL_TYPE_1;
+    }
+  }
+
+  public onAdvancedPanelOpened(): void {
+    this.isAdvancedPanelOpened = true;
+  }
+
+  public onAdvancedPanelClosed(): void {
+    this.isAdvancedPanelOpened = false;
+  }
+
+  public onParametersChanged(fieldFilter?: FieldFilterModel<any>): void {
+    for (const filter of this.fieldFilters) {
+      if (filter !== fieldFilter) {
+        filter.reset(false);
+      }
+    }
+
+    this.emitDatabaseFiltersEvent(this.createQueryParameters());
+  }
+
+  public onCellTypeAndSubtype1Change(): void {
+    this.cellTypeAndSubtype2FieldFilter.filter = '';
+    this.cellType1DiseaseFieldFilter.filter = '';
+    this.cellType1TreatmentFieldFilter.filter = '';
+
+    this.checkCellType1EffectFilterStatus();
+    this.onParametersChanged(this.cellTypeAndSubtype1FieldFilter);
+  }
+
+  private checkCellType1EffectFilterStatus(): void {
+    if (this.cellTypeAndSubtype1FieldFilter.hasValue()) {
+      this.cellType1EffectBasicComponent.enable();
+      this.cellType1EffectAdvancedComponent.enable();
+      this.cellTypeAndSubType2Component.enable();
+      this.cellType1DiseaseComponent.enable();
+      this.cellType1TreatmentComponent.enable();
+    } else {
+      this.cellType1EffectFieldFilter.filter = '';
+      this.cellType1EffectBasicComponent.disable();
+      this.cellType1EffectAdvancedComponent.disable();
+      this.cellTypeAndSubType2Component.disable();
+      this.cellType1DiseaseComponent.disable();
+      this.cellType1TreatmentComponent.disable();
     }
   }
 }

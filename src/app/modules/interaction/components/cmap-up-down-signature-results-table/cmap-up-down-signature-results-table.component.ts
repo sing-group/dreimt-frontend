@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -25,11 +25,15 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {SortDirection} from '../../../../models/sort-direction.enum';
-import {CmapUpDownSignatureDrugInteractionResultsQueryParams} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
+import {
+  CmapUpDownSignatureDrugInteractionResultsQueryParams
+} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction-results-query-params';
 import {CmapUpDownSignatureResultsDataSource} from '../cmap-up-down-signature-results-view/cmap-up-down-signature-results-data-source';
 import {CmapUpDownResultsService} from '../../services/cmap-up-down-results.service';
 import {CmapUpDownSignatureResultField} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-result-field.enum';
-import {CmapQueryUpDownSignatureResultsMetadata} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
+import {
+  CmapQueryUpDownSignatureResultsMetadata
+} from '../../../../models/interactions/cmap-up-down/cmap-query-up-down-signature-results-metadata';
 import {FormControl} from '@angular/forms';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {ExportGenesDialogComponent} from '../../../shared/components/export-genes-dialog/export-genes-dialog.component';
@@ -44,6 +48,7 @@ import {Router} from '@angular/router';
 import {CmapUpDownSignatureDrugInteraction} from '../../../../models/interactions/cmap-up-down/cmap-up-down-signature-drug-interaction.model';
 import {SignaturesSummaryHelper} from '../../../database/helpers/SignaturesSummaryHelper';
 import {InteractionType} from '../../../../models/interaction-type.enum';
+import {formatTitle} from '../../../../utils/types';
 
 @Component({
   selector: 'app-cmap-up-down-signature-results-table',
@@ -66,9 +71,12 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) private sort: MatSort;
 
-  public readonly drugCommonNameFieldFilter: FieldFilterModel;
-  public readonly drugMoaFieldFilter: FieldFilterModel;
-  public readonly drugStatusFieldFilter: FieldFilterModel;
+  public readonly drugCommonNameFieldFilter: FieldFilterModel<string>;
+  public readonly drugMoaFieldFilter: FieldFilterModel<string>;
+  public readonly drugStatusFieldFilter: FieldFilterModel<string>;
+
+  private readonly fieldFilters: FieldFilterModel<any>[];
+
   public readonly minDrugDssFilter: FormControl;
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
@@ -98,9 +106,22 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
       'drug', 'summary', 'upFdr', 'downFdr', 'tau', 'drugDss', 'drugStatus', 'drugMoa'
     ];
 
-    this.drugCommonNameFieldFilter = new FieldFilterModel();
-    this.drugMoaFieldFilter = new FieldFilterModel();
-    this.drugStatusFieldFilter = new FieldFilterModel();
+    this.drugCommonNameFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listDrugCommonNameValues(this.metadata.id, this.createQueryParameters())
+    );
+    this.drugMoaFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listDrugMoaValues(this.metadata.id, this.createQueryParameters())
+    );
+    this.drugStatusFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listDrugStatusValues(this.metadata.id, this.createQueryParameters())
+    );
+
+    this.fieldFilters = [
+      this.drugCommonNameFieldFilter,
+      this.drugStatusFieldFilter,
+      this.drugMoaFieldFilter
+    ];
+
     this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
@@ -220,12 +241,7 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
   public updateResults(): void {
     this.resetPage();
 
-    const queryParams = this.createPaginatedQueryParameters();
-
-    this.updatePage(queryParams);
-    this.loadDrugCommonNameValues(queryParams);
-    this.loadDrugMoaValues(queryParams);
-    this.loadDrugStatusValues(queryParams);
+    this.updatePage(this.createPaginatedQueryParameters());
   }
 
   public ngOnDestroy(): void {
@@ -249,21 +265,6 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
     } else {
       return undefined;
     }
-  }
-
-  private loadDrugMoaValues(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugMoaValues(this.metadata.id, queryParams)
-      .subscribe(values => this.drugMoaFieldFilter.update(values));
-  }
-
-  private loadDrugStatusValues(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugStatusValues(this.metadata.id, queryParams)
-      .subscribe(values => this.drugStatusFieldFilter.update(values));
-  }
-
-  private loadDrugCommonNameValues(queryParams: CmapUpDownSignatureDrugInteractionResultsQueryParams): void {
-    this.service.listDrugCommonNameValues(this.metadata.id, queryParams)
-      .subscribe(values => this.drugCommonNameFieldFilter.update(values));
   }
 
   private createQueryParameters(): CmapUpDownSignatureDrugInteractionResultsQueryParams {
@@ -383,5 +384,19 @@ export class CmapUpDownSignatureResultsTableComponent implements OnDestroy, OnCh
 
   public navigateToDatabase(drugCommonName: string): void {
     this.router.navigate(['/database'], {queryParams: {drugCommonName: drugCommonName}});
+  }
+
+  public mapDrugStatus(status: string): string {
+    return formatTitle(status);
+  }
+
+  public onParametersChanged(fieldFilter?: FieldFilterModel<any>): void {
+    for (const filter of this.fieldFilters) {
+      if (filter !== fieldFilter) {
+        filter.reset(false);
+      }
+    }
+
+    this.updateResults();
   }
 }

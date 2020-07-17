@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -70,7 +70,9 @@ export class DatabaseTableComponent implements AfterViewInit, OnInit {
     this.maxOptions = 100;
 
     this.dataSource = new DatabaseDataSource(this.service);
-    this.columns = ['drug', 'summary', 'cellTypeA', 'cellTypeB', 'signature', 'upFdr', 'downFdr', 'tau', 'dss', 'drugStatus', 'drugMoa', 'additional-info'];
+    this.columns = [
+      'drug', 'summary', 'cellTypeA', 'cellTypeB', 'signature', 'upFdr', 'downFdr', 'tau', 'dss', 'drugStatus', 'drugMoa', 'additional-info'
+    ];
 
     this.filterParams = {};
 

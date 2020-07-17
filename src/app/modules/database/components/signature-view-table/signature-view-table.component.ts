@@ -1,3 +1,24 @@
+/*
+ * DREIMT Frontend
+ *
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
+ *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
+ *  Fátima Al-Sharhour and Gonzalo Gómez-López.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
 import {SignatureViewDataSource} from '../signature-view/signature-view-data-source';
 import {MatDialog} from '@angular/material/dialog';
@@ -43,14 +64,17 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) private sort: MatSort;
 
-  public readonly drugCommonNameFieldFilter: FieldFilterModel;
-  public readonly drugMoaFieldFilter: FieldFilterModel;
-  public readonly drugStatusFieldFilter: FieldFilterModel;
+  public readonly drugCommonNameFieldFilter: FieldFilterModel<string>;
+  public readonly drugMoaFieldFilter: FieldFilterModel<string>;
+  public readonly drugStatusFieldFilter: FieldFilterModel<string>;
+  public readonly interactionTypeFilter: FieldFilterModel<string>;
+
+  private readonly fieldFilters: FieldFilterModel<any>[];
+
   public readonly minDrugDssFilter: FormControl;
   public readonly minTauFilter: FormControl;
   public readonly maxUpFdrFilter: FormControl;
   public readonly maxDownFdrFilter: FormControl;
-  public readonly interactionTypeFilter: FieldFilterModel;
 
   @ViewChild('minDrugDss', {static: false}) minDrugDssFilterComponent: NumberFieldComponent;
   @ViewChild('minTau', {static: false}) minTauFilterComponent: NumberFieldComponent;
@@ -71,10 +95,26 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     this.debounceTime = 500;
     this.maxOptions = 100;
 
-    this.drugCommonNameFieldFilter = new FieldFilterModel();
-    this.drugMoaFieldFilter = new FieldFilterModel();
-    this.drugStatusFieldFilter = new FieldFilterModel();
-    this.interactionTypeFilter = new FieldFilterModel();
+    this.drugCommonNameFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listDrugCommonNameValues(this.createQueryParameters())
+    );
+    this.drugMoaFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listDrugMoaValues(this.createQueryParameters())
+    );
+    this.drugStatusFieldFilter = new FieldFilterModel<string>(
+      () => this.service.listDrugStatusValues(this.createQueryParameters())
+    );
+    this.interactionTypeFilter = new FieldFilterModel<string>(
+      () => this.service.listInteractionTypeValues(this.createQueryParameters())
+    );
+
+    this.fieldFilters = [
+      this.drugCommonNameFieldFilter,
+      this.drugStatusFieldFilter,
+      this.drugMoaFieldFilter,
+      this.interactionTypeFilter
+    ];
+
     this.minDrugDssFilter = new FormControl();
     this.minTauFilter = new FormControl();
     this.maxUpFdrFilter = new FormControl();
@@ -84,7 +124,6 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     this.positiveTauColorMap = interpolate(['tomato', 'red']);
     this.negativeTauColorMap = interpolate(['lightgreen', 'darkgreen']);
   }
-
 
   private updateSort(active: string, sortDirection): void {
     this.sort.direction = sortDirection;
@@ -210,13 +249,7 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
   public updateResults(): void {
     this.resetPage();
 
-    const queryParams = this.createPaginatedQueryParameters();
-
-    this.updatePage(queryParams);
-    this.loadDrugCommonNameValues(queryParams);
-    this.loadDrugMoaValues(queryParams);
-    this.loadDrugStatusValues(queryParams);
-    this.loadInteractionTypeValues(queryParams);
+    this.updatePage(this.createPaginatedQueryParameters());
   }
 
   public ngOnDestroy(): void {
@@ -240,26 +273,6 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     } else {
       return undefined;
     }
-  }
-
-  private loadDrugMoaValues(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugMoaValues(queryParams)
-      .subscribe(values => this.drugMoaFieldFilter.update(values));
-  }
-
-  private loadDrugStatusValues(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugStatusValues(queryParams)
-      .subscribe(values => this.drugStatusFieldFilter.update(values));
-  }
-
-  private loadDrugCommonNameValues(queryParams: DatabaseQueryParams): void {
-    this.service.listDrugCommonNameValues(queryParams)
-      .subscribe(values => this.drugCommonNameFieldFilter.update(values));
-  }
-
-  private loadInteractionTypeValues(queryParams: DatabaseQueryParams): void {
-    this.service.listInteractionTypeValues(queryParams)
-      .subscribe(values => this.interactionTypeFilter.update(values));
   }
 
   private createQueryParameters(): DatabaseQueryParams {
@@ -388,8 +401,21 @@ export class SignatureViewTableComponent implements OnDestroy, OnChanges {
     return formatTitle(interactionType);
   }
 
+  public mapDrugStatus(drugStatus: string): string {
+    return formatTitle(drugStatus);
+  }
 
-  public downloadCsv() {
+  public downloadCsv(): void {
     this.service.downloadCsv(this.createQueryParameters());
+  }
+
+  public onParameterChanged(fieldFilter: FieldFilterModel<string>): void {
+    for (const filter of this.fieldFilters) {
+      if (filter !== fieldFilter) {
+        filter.reset(false);
+      }
+    }
+
+    this.updateResults();
   }
 }

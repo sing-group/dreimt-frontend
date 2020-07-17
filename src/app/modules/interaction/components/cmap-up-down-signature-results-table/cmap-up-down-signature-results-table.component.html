@@ -1,7 +1,7 @@
 <!--
   ~ DREIMT Frontend
   ~
-  ~  Copyright (C) 2018-2019 - Hugo López-Fernández,
+  ~  Copyright (C) 2018-2020 - Hugo López-Fernández,
   ~  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
   ~  Fátima Al-Sharhour and Gonzalo Gómez-López.
   ~
@@ -34,11 +34,11 @@
           <span mat-sort-header="DRUG_COMMON_NAME">Drug common name</span>
 
           <app-filter-field label="Filter"
-                            [options]="drugCommonNameFieldFilter.options"
-                            [(filter)]="drugCommonNameFieldFilter.filter"
-                            (filterChange)="updateResults()"
+                            [model]="drugCommonNameFieldFilter"
                             [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
+                            [maxOptions]="maxOptions"
+                            (optionSelected)="onParametersChanged(drugCommonNameFieldFilter)"
+          ></app-filter-field>
         </th>
         <td mat-cell *matCellDef="let interaction" [matTooltip]="drugTooltip(interaction)">
           <a href="https://www.ncbi.nlm.nih.gov/pccompound?term={{interaction.drug.commonName}}" target="_blank">
@@ -115,12 +115,12 @@
           <span mat-sort-header="DRUG_STATUS">Status</span>
 
           <app-filter-field label="Filter"
-                            [options]="drugStatusFieldFilter.options"
-                            [(filter)]="drugStatusFieldFilter.filter"
-                            fixedValues="true"
-                            (filterChange)="updateResults()"
+                            [model]="drugStatusFieldFilter"
+                            [optionLabelMapper]="mapDrugStatus"
                             [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
+                            [maxOptions]="maxOptions"
+                            (optionSelected)="onParametersChanged(drugStatusFieldFilter)"
+          ></app-filter-field>
         </th>
         <td mat-cell *matCellDef="let interaction"
             [innerHTML]="interaction.drug.status | capitalize | drugStatusPipe"></td>
@@ -131,11 +131,11 @@
           <div>MOA</div>
 
           <app-filter-field label="Filter"
-                            [options]="drugMoaFieldFilter.options"
-                            [(filter)]="drugMoaFieldFilter.filter"
-                            (filterChange)="updateResults()"
+                            [model]="drugMoaFieldFilter"
                             [debounceTime]="debounceTime"
-                            [maxOptions]="maxOptions"></app-filter-field>
+                            [maxOptions]="maxOptions"
+                            (optionSelected)="onParametersChanged(drugMoaFieldFilter)"
+          ></app-filter-field>
         </th>
         <td mat-cell *matCellDef="let interaction">{{interaction.drug.moa}}</td>
       </ng-container>

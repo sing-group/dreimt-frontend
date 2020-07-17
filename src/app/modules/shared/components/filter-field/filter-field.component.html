@@ -1,7 +1,7 @@
 <!--
   ~ DREIMT Frontend
   ~
-  ~  Copyright (C) 2018-2019 - Hugo López-Fernández,
+  ~  Copyright (C) 2018-2020 - Hugo López-Fernández,
   ~  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
   ~  Fátima Al-Sharhour and Gonzalo Gómez-López.
   ~
@@ -19,31 +19,37 @@
   ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<mat-form-field class="field-filter-component" floatLabel="never" *ngIf="fixedValues">
+<mat-form-field class="field-filter-component" floatLabel="never" *ngIf="model.hasFixedValues(); else autocompleteField">
   <mat-label>{{label}}</mat-label>
-  <mat-select [formControl]="formControl">
+  <mat-select [formControl]="formControl" (opened)="model.update()" (selectionChange)="onSelectionChanged()">
     <mat-option *ngIf="clearable" class="clear-option">Clear filter</mat-option>
-    <mat-option *ngFor="let option of sortedOptions | async" [value]="option">{{optionLabelMapper(option)}}</mat-option>
+    <mat-option *ngFor="let option of sortedOptions" [value]="option">{{optionLabelMapper(option)}}</mat-option>
   </mat-select>
-  <button *ngIf="clearable" mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!hasFilterValue()"
-          (click)="clearValue($event)">
-    <mat-icon>close</mat-icon>
-  </button>
+  <mat-progress-spinner *ngIf="model.isLoading | async; else clearButton" mode="indeterminate" diameter="14" matSuffix></mat-progress-spinner>
+  <ng-template #clearButton>
+    <button *ngIf="clearable" mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!model.hasValue()"
+            (click)="clearValue($event)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </ng-template>
 </mat-form-field>
 
-<mat-form-field class="field-filter-component" floatLabel="never" *ngIf="!fixedValues">
-  <mat-label>{{label}}</mat-label>
+<ng-template #autocompleteField>
+  <mat-form-field class="field-filter-component" floatLabel="never">
+    <mat-label>{{label}}</mat-label>
 
-  <input #filterInput matInput [formControl]="formControl" [matAutocomplete]="auto" (keyup.enter)="clearSelection()"
-         [innerHTML]="optionLabelMapper(filter)">
-  <button *ngIf="clearable" mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!hasFilterValue()"
-          (click)="clearValue($event)">
-    <mat-icon>close</mat-icon>
-  </button>
+    <input #filterInput matInput [formControl]="formControl" [matAutocomplete]="auto" (keyup.enter)="clearSelection()"
+           [innerHTML]="optionLabelMapper(model.filter)" (focusin)="model.update()">
+    <button *ngIf="!(model.isLoading | async) && clearable" mat-button matSuffix mat-icon-button aria-label="Clear"
+            [disabled]="!model.hasValue()" (click)="clearValue($event)">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-progress-spinner *ngIf="model.isLoading | async" mode="indeterminate" diameter="14" matSuffix></mat-progress-spinner>
 
-  <mat-autocomplete #auto="matAutocomplete" class="autocomplete-panel" [displayWith]="optionLabelMapper">
-    <mat-option *ngFor="let option of sortedOptions | async" [value]="option"
-                [innerHTML]="optionLabelMapper(option) | highlight: filter"
-                [matTooltip]="optionTooltip(option)"></mat-option>
-  </mat-autocomplete>
-</mat-form-field>
+    <mat-autocomplete #auto="matAutocomplete" class="autocomplete-panel" [displayWith]="optionLabelMapper" (optionSelected)="onSelectionChanged()">
+      <mat-option *ngFor="let option of sortedOptions" [value]="option"
+                  [innerHTML]="optionLabelMapper(option) | highlight: model.filter"
+                  [matTooltip]="optionTooltip(option)"></mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</ng-template>

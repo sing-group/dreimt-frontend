@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -48,6 +48,7 @@ import {DrugStatusPipe} from './pipes/drug-status.pipe';
 import {MatMenuModule} from '@angular/material/menu';
 import {ReplacePipe} from './pipes/replace.pipe';
 import {StatisticalTestsService} from './service/statistical-tests.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -63,25 +64,26 @@ import {StatisticalTestsService} from './service/statistical-tests.service';
     DrugStatusPipe,
     ReplacePipe
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatTooltipModule,
-    ReactiveFormsModule,
-    MatMenuModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatAutocompleteModule,
+        MatButtonModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatTooltipModule,
+        ReactiveFormsModule,
+        MatMenuModule,
+        MatProgressSpinnerModule
+    ],
   exports: [
     FilterFieldComponent,
     NumberFieldComponent,

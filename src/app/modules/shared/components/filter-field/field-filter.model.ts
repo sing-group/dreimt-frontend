@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -19,37 +19,96 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-export class FieldFilterModel {
-  private readonly optionsSubject: BehaviorSubject<string[]>;
-  private filterValue: string;
+export class FieldFilterModel<T> {
+  protected readonly loadingChange: BehaviorSubject<boolean>;
+  protected readonly optionsChange: BehaviorSubject<T[]>;
+  protected readonly _filterChange: BehaviorSubject<string>;
 
-  public constructor() {
+  protected filterValue: string;
+
+  protected isUpdated: boolean;
+
+  public constructor(
+    protected readonly dataLoader: (() => Observable<T[]>) | T[],
+    protected readonly mappingFunction = (values: T[]) => values.map(value => String(value))
+  ) {
     this.filterValue = '';
-    this.optionsSubject = new BehaviorSubject<string[]>([]);
-  }
+    this.loadingChange = new BehaviorSubject<boolean>(false);
+    this._filterChange = new BehaviorSubject<string>(this.filterValue);
 
-  public update(values: string[]): void {
-    if (!this.areArraysEqual(this.optionsSubject.value, values)) {
-      this.optionsSubject.next(values);
+    if (Array.isArray(this.dataLoader)) {
+      this.isUpdated = true;
+      this.optionsChange = new BehaviorSubject<T[]>(this.dataLoader);
+    } else {
+      this.isUpdated = false;
+      this.optionsChange = new BehaviorSubject<T[]>([]);
     }
   }
 
-  private areArraysEqual(a1: string[], a2: string[]): boolean {
-    return a1.every(value => a2.includes(value)) && a2.every(value => a1.includes(value));
+  public update(): void {
+    if (!this.isUpdated) {
+      this.loadingChange.next(true);
+
+      const subscription = (this.dataLoader as () => Observable<T[]>)()
+        .subscribe(
+          values => {
+            this.isUpdated = true;
+            this.optionsChange.next(values);
+          },
+          () => {},
+          () => {
+            subscription.unsubscribe();
+            this.loadingChange.next(false);
+          }
+        );
+    }
+  }
+
+  public reset(resetFilter = true): void {
+    if (!this.hasFixedValues() && this.isUpdated) {
+      this.isUpdated = false;
+      this.optionsChange.next([]);
+      if (resetFilter) {
+        this.filter = '';
+      }
+    }
+  }
+
+  public hasFixedValues(): boolean {
+    return Array.isArray(this.dataLoader);
   }
 
   public get options(): Observable<string[]> {
-    return this.optionsSubject.asObservable();
+    return this.optionsChange.asObservable()
+      .pipe(
+        map(this.mappingFunction)
+      );
   }
 
-  public get filter() {
+  public get isLoading(): Observable<boolean> {
+    return this.loadingChange.asObservable();
+  }
+
+  public get loading(): boolean {
+    return this.loadingChange.value;
+  }
+
+  public get filter(): string {
     return this.filterValue;
   }
 
   public set filter(value: string) {
-    this.filterValue = value;
+    if (this.filterValue !== value) {
+      this.filterValue = value;
+      this._filterChange.next(this.filterValue);
+    }
+  }
+
+  public get filterChange(): Observable<string> {
+    return this._filterChange.asObservable();
   }
 
   public hasValue(): boolean {
