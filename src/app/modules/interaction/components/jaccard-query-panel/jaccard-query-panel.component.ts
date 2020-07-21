@@ -263,11 +263,7 @@ export class JaccardQueryPanelComponent {
 
   public onCellTypeAndSubtype1Change(): void {
     this.cellTypeAndSubtype2FieldFilter.filter = '';
-    if (this.cellTypeAndSubtype1FieldFilter.hasValue()) {
-      this.cellTypeAndSubType2Component.enable();
-    } else {
-      this.cellTypeAndSubType2Component.disable();
-    }
+    this.cellTypeAndSubType2Component.disabled = !this.cellTypeAndSubtype1FieldFilter.hasValue();
 
     this.onParametersChanged(this.cellTypeAndSubtype1FieldFilter);
   }

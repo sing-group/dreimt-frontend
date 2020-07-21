@@ -1,7 +1,7 @@
 <!--
   ~ DREIMT Frontend
   ~
-  ~  Copyright (C) 2018-2019 - Hugo López-Fernández,
+  ~  Copyright (C) 2018-2020 - Hugo López-Fernández,
   ~  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
   ~  Fátima Al-Sharhour and Gonzalo Gómez-López.
   ~
@@ -22,8 +22,10 @@
 <mat-card>
   <mat-card-title>Database</mat-card-title>
   <mat-card-content>
-    <app-database-table-filters (applyDatabaseFilters)="applyDatabaseFilters($event)"
-                                (invalidDatabaseFilters)="invalidDatabaseFilters($event)"></app-database-table-filters>
+    <app-database-table-filters [loading]="dataSource.loading$ | async"
+                                (applyDatabaseFilters)="applyDatabaseFilters($event)"
+                                (invalidDatabaseFilters)="invalidDatabaseFilters($event)"
+    ></app-database-table-filters>
 
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="drug">

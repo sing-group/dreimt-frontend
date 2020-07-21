@@ -1,7 +1,7 @@
 <!--
   ~ DREIMT Frontend
   ~
-  ~  Copyright (C) 2018-2019 - Hugo López-Fernández,
+  ~  Copyright (C) 2018-2020 - Hugo López-Fernández,
   ~  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
   ~  Fátima Al-Sharhour and Gonzalo Gómez-López.
   ~
@@ -25,7 +25,7 @@
     <input matInput type="number" [min]="min" [step]="step" [max]="max" [formControl]="formControl"
            [placeholder]="label">
   </div>
-  <button mat-button *ngIf="clearable" matSuffix mat-icon-button aria-label="Clear" [disabled]="!hasValue()"
+  <button mat-button *ngIf="clearable" matSuffix mat-icon-button aria-label="Clear" [disabled]="!hasValue() || disabled"
           (click)="clearValue()">
     <mat-icon>close</mat-icon>
   </button>

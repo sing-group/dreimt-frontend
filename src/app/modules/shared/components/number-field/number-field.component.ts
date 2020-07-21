@@ -1,7 +1,7 @@
 /*
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -41,8 +41,11 @@ export class NumberFieldComponent implements OnInit {
 
   public readonly formControl: FormControl;
 
+  private _disabled: boolean;
+
   constructor() {
     this.clearable = true;
+    this._disabled = false;
     this.formControl = new FormControl('');
     this.valueChange = new EventEmitter<number>();
   }
@@ -61,6 +64,23 @@ export class NumberFieldComponent implements OnInit {
           this.valueChange.emit(value);
         }
       });
+  }
+
+  @Input()
+  public set disabled(disabled: boolean) {
+    if (this._disabled !== disabled) {
+      this._disabled = disabled;
+
+      if (this._disabled) {
+        this.formControl.disable();
+      } else {
+        this.formControl.enable();
+      }
+    }
+  }
+
+  public get disabled(): boolean {
+    return this._disabled;
   }
 
   public hasValue(): boolean {

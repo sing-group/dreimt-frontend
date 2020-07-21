@@ -35,6 +35,7 @@
                         [matTooltip]="TOOLTIP_CELL_TYPE_1"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"
+                        [disabled]="loading"
                         (optionSelected)="onCellTypeAndSubtype1Change()"
       ></app-filter-field>
 
@@ -46,6 +47,7 @@
                         [matTooltip]="getCellType1DependentTooltip(TOOLTIP_DRUG_EFFECT)"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"
+                        [disabled]="loading || !hasCellTypeAndSubtype1Value()"
                         (optionSelected)="onParametersChanged(cellType1EffectFieldFilter)"
       ></app-filter-field>
 
@@ -55,6 +57,7 @@
                         [matTooltip]="TOOLTIP_DRUG"
                         [debounceTime]="debounceTime"
                         [maxOptions]="maxOptions"
+                        [disabled]="loading"
                         (optionSelected)="onParametersChanged(drugCommonNameFieldFilter)"
       ></app-filter-field>
     </div>
@@ -66,17 +69,15 @@
       </mat-expansion-panel-header>
       <div class="filters-form">
         <app-number-field #tauMin label="Min. tau" [debounceTime]="debounceTime" [min]="0" [max]="100" [step]="1"
-                          [matTooltip]="TOOLTIP_MIN_TAU"
+                          [matTooltip]="TOOLTIP_MIN_TAU" [disabled]="loading"
                           (valueChange)="minTauFilter.setValue($event)"></app-number-field>
 
         <app-number-field #maxUpFdr label="Max. up genes FDR" [debounceTime]="debounceTime" [min]="0" [max]="1"
-                          [step]="0.05"
-                          [matTooltip]="TOOLTIP_MAX_UP_FDR"
+                          [step]="0.05" [matTooltip]="TOOLTIP_MAX_UP_FDR" [disabled]="loading"
                           (valueChange)="maxUpFdrFilter.setValue($event)"></app-number-field>
 
         <app-number-field #maxDownFdr label="Max. down genes FDR" [debounceTime]="debounceTime" [min]="0" [max]="1"
-                          [step]="0.05"
-                          [matTooltip]="TOOLTIP_MAX_DOWN_FDR"
+                          [step]="0.05" [matTooltip]="TOOLTIP_MAX_DOWN_FDR" [disabled]="loading"
                           (valueChange)="maxDownFdrFilter.setValue($event)"></app-number-field>
 
         <app-filter-field label="Interaction type"
@@ -85,6 +86,7 @@
                           [matTooltip]="TOOLTIP_INTERACTION_TYPE"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(interactionTypeFilter)"
         ></app-filter-field>
 
@@ -97,6 +99,7 @@
                           [matTooltip]="getCellType1DependentTooltip(TOOLTIP_DRUG_EFFECT)"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading || !hasCellTypeAndSubtype1Value()"
                           (optionSelected)="onParametersChanged(cellType1EffectFieldFilter)"
         ></app-filter-field>
 
@@ -105,6 +108,7 @@
                           [matTooltip]="TOOLTIP_DRUG"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(drugCommonNameFieldFilter)"
         ></app-filter-field>
 
@@ -113,6 +117,7 @@
                           [matTooltip]="TOOLTIP_DRUG_MOA"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(drugMoaFieldFilter)"
         ></app-filter-field>
 
@@ -122,6 +127,7 @@
                           [matTooltip]="TOOLTIP_DRUG_STATUS"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(drugStatusFieldFilter)"
         ></app-filter-field>
 
@@ -137,6 +143,7 @@
                           [matTooltip]="TOOLTIP_SIGNATURE_NAME"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(signatureNameFieldFilter)"
         ></app-filter-field>
 
@@ -145,6 +152,7 @@
                           [matTooltip]="TOOLTIP_SIGNATURE_SOURCE_DB"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(signatureSourceDbFieldFilter)"
         ></app-filter-field>
 
@@ -153,6 +161,7 @@
                           [matTooltip]="TOOLTIP_SIGNATURE_PUBMED"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(pubMedIdFieldFilter)"
         ></app-filter-field>
 
@@ -162,6 +171,7 @@
                           [matTooltip]="TOOLTIP_SIGNATURE_EXPERIMENTAL_DESIGN"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(experimentalDesignFilter)"
         ></app-filter-field>
 
@@ -170,6 +180,7 @@
                           [debounceTime]="debounceTime"
                           [matTooltip]="TOOLTIP_CELL_TYPE_1"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onCellTypeAndSubtype1Change()"
         ></app-filter-field>
 
@@ -179,6 +190,7 @@
                           [matTooltip]="getCellType1DependentTooltip(TOOLTIP_SIGNATURE_CELL_TYPE_1_DISEASE)"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading || !hasCellTypeAndSubtype1Value()"
                           (optionSelected)="onParametersChanged(cellType1DiseaseFieldFilter)"
         ></app-filter-field>
 
@@ -188,6 +200,7 @@
                           [matTooltip]="getCellType1DependentTooltip(TOOLTIP_SIGNATURE_CELL_TYPE_1_TREATMENT)"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading || !hasCellTypeAndSubtype1Value()"
                           (optionSelected)="onParametersChanged(cellType1TreatmentFieldFilter)"
         ></app-filter-field>
 
@@ -197,6 +210,7 @@
                           [debounceTime]="debounceTime"
                           [matTooltip]="TOOLTIP_SIGNATURE_CELL_TYPE_2"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading || !hasCellTypeAndSubtype1Value()"
                           (optionSelected)="onParametersChanged(cellTypeAndSubtype2FieldFilter)"
         ></app-filter-field>
 
@@ -205,6 +219,7 @@
                           [matTooltip]="TOOLTIP_SIGNATURE_CONDITION"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(diseaseFieldFilter)"
         ></app-filter-field>
 
@@ -213,12 +228,19 @@
                           [matTooltip]="TOOLTIP_SIGNATURE_ORGANISM"
                           [debounceTime]="debounceTime"
                           [maxOptions]="maxOptions"
+                          [disabled]="loading"
                           (optionSelected)="onParametersChanged(organismFieldFilter)"
         ></app-filter-field>
       </div>
     </mat-expansion-panel>
   </mat-card-content>
-  <mat-card-actions align="end">
+  <mat-card-actions>
+    <div>
+      <ng-template [ngIf]="loading">
+        <mat-progress-spinner mode="indeterminate" [diameter]="24" aria-label="Loading..."></mat-progress-spinner>
+        <span>Loading...</span>
+      </ng-template>
+    </div>
     <button mat-button id="clearFiltersButton" (click)="clearFiltersAction()">
       <mat-icon>delete_sweep</mat-icon>
       Clear Filters

@@ -27,7 +27,7 @@
   </mat-select>
   <mat-progress-spinner *ngIf="model.isLoading | async; else clearButton" mode="indeterminate" diameter="14" matSuffix></mat-progress-spinner>
   <ng-template #clearButton>
-    <button *ngIf="clearable" mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!model.hasValue()"
+    <button *ngIf="clearable" mat-button matSuffix mat-icon-button aria-label="Clear" [disabled]="!model.hasValue() || disabled"
             (click)="clearValue($event)">
       <mat-icon>close</mat-icon>
     </button>
@@ -41,7 +41,7 @@
     <input #filterInput matInput [formControl]="formControl" [matAutocomplete]="auto" (keyup.enter)="clearSelection()"
            [innerHTML]="optionLabelMapper(model.filter)" (focusin)="model.update()">
     <button *ngIf="!(model.isLoading | async) && clearable" mat-button matSuffix mat-icon-button aria-label="Clear"
-            [disabled]="!model.hasValue()" (click)="clearValue($event)">
+            [disabled]="!model.hasValue() || disabled" (click)="clearValue($event)">
       <mat-icon>close</mat-icon>
     </button>
     <mat-progress-spinner *ngIf="model.isLoading | async" mode="indeterminate" diameter="14" matSuffix></mat-progress-spinner>

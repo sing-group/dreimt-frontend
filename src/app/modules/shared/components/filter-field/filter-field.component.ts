@@ -44,7 +44,7 @@ export class FilterFieldComponent<T> implements OnInit {
   @ViewChild(MatAutocompleteTrigger, {static: false}) private autocomplete: MatAutocompleteTrigger;
   @ViewChild('filterInput', {static: false}) private filterInput: ElementRef;
 
-  private disabled: boolean;
+  private _disabled: boolean;
   private notifyNext: boolean;
 
   public readonly formControl: FormControl;
@@ -58,7 +58,7 @@ export class FilterFieldComponent<T> implements OnInit {
     this.showOptionsTooltip = false;
     this.clearable = true;
     this.optionLabelMapper = value => value;
-    this.disabled = false;
+    this._disabled = false;
     this.notifyNext = false;
     this.options = [];
 
@@ -88,7 +88,7 @@ export class FilterFieldComponent<T> implements OnInit {
     );
 
     this.model.isLoading.subscribe(
-      loading => loading || this.disabled ? this.formControl.disable() : this.formControl.enable()
+      loading => loading || this._disabled ? this.formControl.disable() : this.formControl.enable()
     );
 
     this.model.options.subscribe(
@@ -99,6 +99,25 @@ export class FilterFieldComponent<T> implements OnInit {
     );
 
     this.updateSortedOptions();
+  }
+
+  @Input()
+  public set disabled(disabled: boolean) {
+    if (this._disabled !== disabled) {
+      this._disabled = disabled;
+
+      if (this._disabled) {
+        this.formControl.disable();
+      } else {
+        if (!this.model.loading) {
+          this.formControl.enable();
+        }
+      }
+    }
+  }
+
+  public get disabled(): boolean {
+    return this._disabled || this.formControl.disabled;
   }
 
   private updateSortedOptions(): void {
@@ -146,23 +165,6 @@ export class FilterFieldComponent<T> implements OnInit {
     }
     if (this.autocomplete !== undefined) {
       this.autocomplete.closePanel();
-    }
-  }
-
-  public enable(): void {
-    if (this.disabled) {
-      this.disabled = false;
-
-      if (!this.model.loading) {
-        this.formControl.enable();
-      }
-    }
-  }
-
-  public disable(): void {
-    if (!this.disabled) {
-      this.disabled = true;
-      this.formControl.disable();
     }
   }
 

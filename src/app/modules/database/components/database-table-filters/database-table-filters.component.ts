@@ -19,7 +19,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FieldFilterModel} from '../../../shared/components/filter-field/field-filter.model';
 import {FormControl} from '@angular/forms';
 import {DatabaseQueryParams} from '../../../../models/database/database-query-params.model';
@@ -103,6 +103,9 @@ export class DatabaseTableFiltersComponent implements OnInit {
   @ViewChild('tauMin', {static: true}) minTauFilterComponent: NumberFieldComponent;
   @ViewChild('maxUpFdr', {static: true}) maxUpFdrFilterComponent: NumberFieldComponent;
   @ViewChild('maxDownFdr', {static: true}) maxDownFdrFilterComponent: NumberFieldComponent;
+
+  @Input()
+  public loading = true;
 
   @Output() public readonly applyDatabaseFilters: EventEmitter<DatabaseQueryParams>;
   @Output() public readonly invalidDatabaseFilters: EventEmitter<boolean>;
@@ -252,7 +255,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
       drugCommonName: this.drugCommonNameFieldFilter.getClearedFilter(),
       drugMoa: this.drugMoaFieldFilter.getClearedFilter(),
       drugStatus: this.drugStatusFieldFilter.getClearedFilter(),
-      minDrugDss: this.minDrugDssFilter.value,
+      minDrugDss: this.minDrugDssFilter.value ? this.minDrugDssFilter.value : undefined,
       signatureName: this.signatureNameFieldFilter.getClearedFilter(),
       cellType1Effect: this.cellType1EffectFieldFilter.getClearedFilter(),
       cellType1Disease: this.cellType1DiseaseFieldFilter.getClearedFilter(),
@@ -263,9 +266,9 @@ export class DatabaseTableFiltersComponent implements OnInit {
       signaturePubMedId: this.pubMedIdFieldFilter.getClearedFilter(),
       experimentalDesign: experimentalDesign,
       interactionType: interactionType,
-      minTau: this.minTauFilter.value,
-      maxUpFdr: this.maxUpFdrFilter.value,
-      maxDownFdr: this.maxDownFdrFilter.value,
+      minTau: this.minTauFilter.value ? this.minTauFilter.value : undefined,
+      maxUpFdr: this.maxUpFdrFilter.value ? this.maxUpFdrFilter.value : undefined,
+      maxDownFdr: this.maxDownFdrFilter.value ? this.maxDownFdrFilter.value : undefined,
       ...this.getCellTypeFilters()
     };
   }
@@ -491,7 +494,7 @@ export class DatabaseTableFiltersComponent implements OnInit {
 
     this.isAdvancedPanelOpened = openAdvancedPanel;
 
-    this.checkCellType1EffectFilterStatus();
+    // this.checkCellType1EffectFilterStatus();
     this.emitDatabaseFiltersEvent(this.createQueryParameters());
   }
 
@@ -531,24 +534,13 @@ export class DatabaseTableFiltersComponent implements OnInit {
     this.cellType1DiseaseFieldFilter.filter = '';
     this.cellType1TreatmentFieldFilter.filter = '';
 
-    this.checkCellType1EffectFilterStatus();
+    if (!this.cellTypeAndSubtype1FieldFilter.hasValue()) {
+      this.cellType1EffectFieldFilter.filter = '';
+    }
     this.onParametersChanged(this.cellTypeAndSubtype1FieldFilter);
   }
 
-  private checkCellType1EffectFilterStatus(): void {
-    if (this.cellTypeAndSubtype1FieldFilter.hasValue()) {
-      this.cellType1EffectBasicComponent.enable();
-      this.cellType1EffectAdvancedComponent.enable();
-      this.cellTypeAndSubType2Component.enable();
-      this.cellType1DiseaseComponent.enable();
-      this.cellType1TreatmentComponent.enable();
-    } else {
-      this.cellType1EffectFieldFilter.filter = '';
-      this.cellType1EffectBasicComponent.disable();
-      this.cellType1EffectAdvancedComponent.disable();
-      this.cellTypeAndSubType2Component.disable();
-      this.cellType1DiseaseComponent.disable();
-      this.cellType1TreatmentComponent.disable();
-    }
+  public hasCellTypeAndSubtype1Value(): boolean {
+    return this.cellTypeAndSubtype1FieldFilter.hasValue();
   }
 }

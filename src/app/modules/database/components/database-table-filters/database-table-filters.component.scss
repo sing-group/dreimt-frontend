@@ -1,7 +1,7 @@
 /*!
  * DREIMT Frontend
  *
- *  Copyright (C) 2018-2019 - Hugo López-Fernández,
+ *  Copyright (C) 2018-2020 - Hugo López-Fernández,
  *  Daniel González-Peña, Miguel Reboiro-Jato, Kevin Troulé,
  *  Fátima Al-Sharhour and Gonzalo Gómez-López.
  *
@@ -84,4 +84,19 @@
 
 #clearFiltersButton {
   margin: 10px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-items: start;
+
+    span {
+      margin-left: 8px;
+    }
+  }
 }
