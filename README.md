@@ -29,7 +29,7 @@ A browser will be automatically opened for the URL `http://localhost:4200/`. The
 
 ### Production server
 
-Run `npm run start-production` for a remote production server (the one used by [Dreimt](http://dreimnt.org)). This configuration will use the `environment.prod.ts` configuration file.
+Run `npm run start-production` for a remote production server (the one used by [DREIMT](http://dreimt.org)). This configuration will use the `environment.prod.ts` configuration file.
 
 A browser will be automatically opened for the URL `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
@@ -52,14 +52,6 @@ Run `npm test` to execute the unit tests via [Karma](https://karma-runner.github
 ### Running end-to-end tests
 
 Run `npm run e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/). Before running the tests make sure you are serving the app via `ng serve`.
-
-### Building with Docker
-Run `docker build -t dreimt-frontend:latest .` to build de image using the configuration in `Dockerfile`.
-
-### Running with Docker
-Run `docker run -d --name evoppi-frontend -p 8080:80 evoppi-frontend:latest` to start the container running the frontend using [Nginx](https://github.com/nginx/nginx).
-
-The fronted will be available at `http://localhost:8080` or `http://<docker-ip>:8080` depending on your local [Docker](https://www.docker.com/) configuration.
 
 ### Other Angular commands
 In order to run other `ng` commands you can run `npm run ng -- <parameters>`.
