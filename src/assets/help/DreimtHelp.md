@@ -135,7 +135,7 @@ DREIMTdb in its **online** version only offers drug profile-immune gene expressi
 #### 3.1 Database fields<a name="fields"></a>
 DREIMTdb contains 12 information fields:
 
-- **Drug**: drug common name and link to PubChem. Hovering the mouse over this field will display a tooltip with the drug's BRIAD ID and gene targets.
+- **Drug**: drug common name and link to PubChem. Hovering the mouse over this field will display a tooltip with the drug's BROAD's ID, gene targets NCBI gene ID and a warning indicating that DREIMT contains multiple drug profiles for a given compound.
 
 - **Summary**: summarized sentence that includes relevant manually annotated information to ease drug association interpretation.  
 
@@ -617,7 +617,12 @@ The query its out of the required range of a minimum 15 genes and maximum of 200
 
 ## 9. FAQ<a name="faqs"></a>
 #### 9.1 Why are there duplicated drugs?<a name="f1"></a>
-DREIMTdb contains 4,690 different drug profiles of which 3,580 correspond to unique compounds. Duplicated drugs correspond to compounds with different BROAD ID. Because of this, duplicated drugs in DREIMTdb might show different, even opposite tau scores for the same immune signature.
+DREIMTdb contains 4,690 different drug profiles of which 3,580 correspond to unique compounds. Duplicated drugs correspond to compounds with different BROAD ID. Because of this, duplicated drugs in DREIMTdb might show different, even opposite tau scores for the same immune signature. DREIMTdb indicates compounds with multiple drug profiles with and exclamation mark icon and adding a warning in the drug tooltip.
+
+<p align="center">
+<img src="assets/help/assets/help/Duplicateddrug.png" alt="Error 2" style="max-width: 20%"></img>
+</p>
+
 #### 9.2 Why did the tau score change?<a name="f2"></a>
 Changes in tau prioritization score and FDR values can occur after a database update.
 #### 9.3 How do I interpret the tau score?<a name="f3"></a>
