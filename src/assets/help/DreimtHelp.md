@@ -620,7 +620,7 @@ The query its out of the required range of a minimum 15 genes and maximum of 200
 DREIMTdb contains 4,690 different drug profiles of which 3,580 correspond to unique compounds. Duplicated drugs correspond to compounds with different BROAD ID. Because of this, duplicated drugs in DREIMTdb might show different, even opposite tau scores for the same immune signature. DREIMTdb indicates compounds with multiple drug profiles with and exclamation mark icon and adding a warning in the drug tooltip.
 
 <p align="center">
-<img src="assets/help/assets/help/Duplicateddrug.png" alt="Error 2" style="max-width: 20%"></img>
+<img src="assets/help/assets/help/DuplicatedDrug.png" alt="Drug warning" style="max-width: 10%"></img>
 </p>
 
 #### 9.2 Why did the tau score change?<a name="f2"></a>
