@@ -43,7 +43,7 @@ export class QueryCaseReferenceTypesComponent implements OnInit {
 
   public readonly caseTypeFormControl: FormControl;
   public readonly referenceTypeFormControl: FormControl;
-  public readonly queryTypeFilter: FieldFilterModel<string>;
+  public readonly queryTypeFormControl: FormControl;
 
   @ViewChild('queryType', {static: true}) private queryTypeComponent: FilterFieldComponent<string>;
   @ViewChild('referenceTypeComponent', {static: true}) private referenceTypeComponent;
@@ -53,15 +53,12 @@ export class QueryCaseReferenceTypesComponent implements OnInit {
     this.caseTypeChanged = new EventEmitter<string>();
     this.referenceTypeFormControl = new FormControl();
     this.referenceTypeChanged = new EventEmitter<string>();
-    this.queryTypeFilter = new FieldFilterModel<string>(
-      () => of(Object.keys(InteractionType))
-    );
+    this.queryTypeFormControl = new FormControl();
     this.queryTypeChanged = new EventEmitter<InteractionType>();
-
-    this.queryTypeFilter.filter = InteractionType.SIGNATURE;
   }
 
   ngOnInit(): void {
+
     this.caseTypeFormControl.valueChanges
       .pipe(
         debounceTime(this.debounceTime),
@@ -80,7 +77,22 @@ export class QueryCaseReferenceTypesComponent implements OnInit {
         this.referenceTypeChanged.emit(value);
       });
 
-    this.queryTypeFilterChanged();
+    this.queryTypeFormControl.valueChanges
+      .pipe(
+        debounceTime(this.debounceTime),
+        distinctUntilChanged()
+      )
+      .subscribe(value => {
+        const interactionType = InteractionType[value];
+        this.checkReferenceTypeStatus(interactionType);
+        this.queryTypeChanged.emit(interactionType);
+      });
+
+    this.queryTypeFormControl.setValue(InteractionType.SIGNATURE);
+  }
+
+  public getInteractionTypes(): string[] {
+    return Object.keys(InteractionType);
   }
 
   public getInfoTooltip(): string {
@@ -96,12 +108,6 @@ export class QueryCaseReferenceTypesComponent implements OnInit {
       '\n\t-Signature down (downregulated genes)\n\t-Geneset (gene list without specified direction).';
   }
 
-  public queryTypeFilterChanged(): void {
-    const value = InteractionType[this.queryTypeFilter.getClearedFilter()];
-    this.checkReferenceTypeStatus(value);
-    this.queryTypeChanged.emit(value);
-  }
-
   private checkReferenceTypeStatus(queryType: InteractionType): void {
     if (queryType === InteractionType.GENESET) {
       this.referenceTypeFormControl.disable();
@@ -111,6 +117,6 @@ export class QueryCaseReferenceTypesComponent implements OnInit {
   }
 
   public updateQueryType(queryType: InteractionType): void {
-    this.queryTypeFilter.filter = queryType;
+    this.queryTypeFormControl.setValue(queryType);
   }
 }
