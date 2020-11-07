@@ -109,10 +109,15 @@ export class QueryCaseReferenceTypesComponent implements OnInit {
   }
 
   private checkReferenceTypeStatus(queryType: InteractionType): void {
-    if (queryType === InteractionType.GENESET) {
+    if (queryType === InteractionType.GENESET || queryType === InteractionType.SIGNATURE_UP) {
       this.referenceTypeFormControl.disable();
+      this.caseTypeFormControl.enable();
+    } else if (queryType === InteractionType.SIGNATURE_DOWN) {
+      this.referenceTypeFormControl.enable();
+      this.caseTypeFormControl.disable();
     } else {
       this.referenceTypeFormControl.enable();
+      this.caseTypeFormControl.enable();
     }
   }
 
