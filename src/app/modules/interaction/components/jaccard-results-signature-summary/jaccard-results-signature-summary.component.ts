@@ -39,8 +39,16 @@ export class JaccardResultsSignatureSummaryComponent implements OnInit, OnChange
           const tmpCellSubTypeMap = new Map();
           data.map(gO => gO.targetSignatureData).forEach(signature => {
             if (!signaturesSet.has(signature.signatureName)) {
-              tmpCellTypeMap.set(signature.signatureName, new Set<string>(signature.cellTypeA.concat(signature.cellTypeB)));
-              tmpCellSubTypeMap.set(signature.signatureName, new Set<string>(signature.cellSubTypeA.concat(signature.cellSubTypeB)));
+              const cellTypesSet = new Set<String>();
+              cellTypesSet.add(signature.cellTypeA);
+              cellTypesSet.add(signature.cellTypeB);
+              tmpCellTypeMap.set(signature.signatureName, cellTypesSet);
+
+              const cellSubtypesSet = new Set<String>();
+              cellSubtypesSet.add(signature.cellSubTypeA);
+              cellSubtypesSet.add(signature.cellSubTypeB);
+              tmpCellSubTypeMap.set(signature.signatureName, cellSubtypesSet);
+
               signaturesSet.add(signature.signatureName);
             }
           });

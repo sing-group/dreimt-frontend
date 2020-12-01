@@ -1,7 +1,7 @@
 {
   "name": "@dreimt/frontend",
   "description": "DREIMT - A tool for immune modulation drug prioritization",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "license": "GPL-3.0",
   "author": {
     "name": "Hugo López-Fernández",
