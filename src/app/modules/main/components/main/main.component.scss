@@ -216,5 +216,14 @@ $highlight: #f5085c;
       border-radius: 4px;
       border: 2px solid lightgoldenrodyellow;
     }
+
+    div#citeus {
+      grid-column: 1 / span 2;
+
+      background-color: #dee8eb;
+      padding: 1em;
+      border-radius: 4px;
+      border: 2px solid lightblue;
+    }
   }
 }
