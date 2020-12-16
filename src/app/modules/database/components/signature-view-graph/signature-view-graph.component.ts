@@ -39,7 +39,7 @@ export interface DataModel {
 export class SignatureViewGraphComponent implements AfterViewInit, OnInit, OnDestroy {
   private static DIALOG: MatDialog;
 
-  private static TAU_THRESHOLD = 75;
+  private static TAU_THRESHOLD = 85;
   private static Y_AXIS_MAX = 3.1;
   private static Y_AXIS_MAX_FDR = 0.001;
   private static renderedObjects = [];
